@@ -1,0 +1,90 @@
+name: Publish to npm
+
+# Every push to main is scanned for conventional-commit prefixes since the last
+# v* tag and the version is bumped automatically:
+#   major: "type!:" or "BREAKING CHANGE" in the commit
+#   minor: feat:
+#   patch: fix: bug: ui: style: perf: refactor:
+#   none:  docs: chore: ci: test: build: (no release is made)
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write # push version commit + tag
+  id-token: write # npm provenance
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+          registry-url: https://registry.npmjs.org
+
+      - name: Work out version bump
+        id: bump
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 --match 'v*' 2>/dev/null || true)
+          if [ -n "$LAST_TAG" ]; then RANGE="$LAST_TAG..HEAD"; else RANGE="HEAD"; fi
+          echo "Last tag: ${LAST_TAG:-none}"
+
+          LEVEL=none
+          rank() { case "$1" in major) echo 3;; minor) echo 2;; patch) echo 1;; *) echo 0;; esac; }
+          raise() { [ "$(rank "$1")" -gt "$(rank "$LEVEL")" ] && LEVEL=$1 || true; }
+
+          while IFS= read -r -d $'\x1e' COMMIT; do
+            SUBJECT=$(printf '%s' "$COMMIT" | head -n1 | sed 's/^[[:space:]]*//')
+            case "$SUBJECT" in "chore(release):"*) continue;; esac
+            if printf '%s' "$COMMIT" | grep -q 'BREAKING CHANGE' \
+              || printf '%s' "$SUBJECT" | grep -qiE '^[a-z]+(\([^)]*\))?!:'; then
+              raise major
+            elif printf '%s' "$SUBJECT" | grep -qiE '^feat(\([^)]*\))?:'; then
+              raise minor
+            elif printf '%s' "$SUBJECT" | grep -qiE '^(fix|bug|ui|style|perf|refactor)(\([^)]*\))?:'; then
+              raise patch
+            fi
+          done < <(git log "$RANGE" --format='%B%x1e')
+
+          echo "Bump level: $LEVEL"
+          echo "level=$LEVEL" >> "$GITHUB_OUTPUT"
+
+      - name: Install, lint, build
+        if: steps.bump.outputs.level != 'none'
+        run: |
+          yarn install --frozen-lockfile
+          yarn lint
+          yarn build
+
+      - name: Bump version
+        if: steps.bump.outputs.level != 'none'
+        id: version
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          npm version "${{ steps.bump.outputs.level }}" --no-git-tag-version
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          git commit -am "chore(release): v$VERSION [skip ci]"
+          git tag "v$VERSION"
+
+      - name: Publish
+        if: steps.bump.outputs.level != 'none'
+        run: npm publish --provenance --access public --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Push version commit and tag
+        if: steps.bump.outputs.level != 'none'
+        run: git push origin HEAD:main --follow-tags
