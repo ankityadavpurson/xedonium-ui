@@ -1,5 +1,23 @@
 /* xedonium theme tokens + base styles. Plain CSS (no Tailwind directives) so it can be imported anywhere. */
 
+/*
+ * Minimal reset the components rely on, so they look right even where Tailwind's preflight is
+ * disabled (e.g. next to Infima/Docusaurus). :where() keeps specificity at zero, so Tailwind
+ * utilities such as `border` and any app styles always win.
+ */
+:where(*, *::before, *::after) {
+	border-style: solid;
+	border-width: 0;
+}
+
+:where(button, input, select, textarea) {
+	font-family: inherit;
+	font-size: 100%;
+	line-height: inherit;
+	color: inherit;
+	margin: 0;
+}
+
 :root {
 	--color-app-bg: 239 239 240;
 	--color-app-card: 255 255 255;
