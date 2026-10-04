@@ -27,6 +27,36 @@ function Demo() {
 }
 ```
 
+## SortableList (drag and drop)
+
+Reorder by dragging, or focus a row's handle and press Up / Down. Items need a unique `key`; `onChange` receives the
+new order.
+
+```jsx live
+function Demo() {
+	const [items, setItems] = useState([
+		{ key: 'a', label: 'Design' },
+		{ key: 'b', label: 'Build' },
+		{ key: 'c', label: 'Ship' },
+	])
+	return <SortableList items={items} onChange={setItems} renderItem={item => item.label} />
+}
+```
+
+## VirtualList
+
+Renders only the visible rows of a long list. Rows need a fixed `itemHeight`.
+
+```jsx live
+<VirtualList
+	label="Ten thousand rows"
+	items={Array.from({ length: 10000 }, (_, i) => `Row ${i + 1}`)}
+	itemHeight={36}
+	height={216}
+	renderItem={item => item}
+/>
+```
+
 ## useKeyboardShortcuts
 
 ```jsx live

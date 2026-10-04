@@ -1,0 +1,74 @@
+---
+title: Charts
+---
+
+SVG charts with no dependencies. They scale to their container width, follow the theme, and expose every value through
+hover titles and an `aria-label`. `labels` names the x positions; each series in `series: [{ name, values, color? }]`
+has one value per label. The first series uses the theme color; override with `color`.
+
+## LineChart
+
+```jsx live
+<LineChart
+	label="Visits per month"
+	labels={['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']}
+	series={[
+		{ name: 'Visits', values: [120, 180, 150, 240, 310, 280] },
+		{ name: 'Signups', values: [30, 45, 40, 80, 95, 90] },
+	]}
+/>
+```
+
+## AreaChart
+
+Same props as `LineChart` with the area under each line filled.
+
+```jsx live
+<AreaChart
+	label="Traffic"
+	labels={['Mon', 'Tue', 'Wed', 'Thu', 'Fri']}
+	series={[{ name: 'Requests', values: [400, 520, 480, 700, 650] }]}
+/>
+```
+
+## BarChart
+
+Series are grouped by default; add `stacked` to stack them.
+
+```jsx live
+<BarChart
+	label="Revenue by quarter"
+	labels={['Q1', 'Q2', 'Q3', 'Q4']}
+	series={[
+		{ name: '2024', values: [40, 55, 48, 70] },
+		{ name: '2025', values: [52, 61, 66, 90] },
+	]}
+/>
+```
+
+## PieChart
+
+`data: [{ label, value, color? }]`. Add `donut` (and optionally `center`) for a ring.
+
+```jsx live
+<Grid cols={2}>
+	<PieChart
+		label="Browser share"
+		data={[
+			{ label: 'Chrome', value: 62 },
+			{ label: 'Safari', value: 21 },
+			{ label: 'Firefox', value: 9 },
+			{ label: 'Other', value: 8 },
+		]}
+	/>
+	<PieChart
+		donut
+		center="100%"
+		label="Status"
+		data={[
+			{ label: 'Done', value: 70 },
+			{ label: 'Open', value: 30 },
+		]}
+	/>
+</Grid>
+```

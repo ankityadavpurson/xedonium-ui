@@ -1,0 +1,61 @@
+---
+title: Date & time
+---
+
+Dates are plain `Date` objects at local midnight. Everything is dependency-free and uses `Intl` for formatting, so
+pass `locale` to localise it.
+
+## Calendar
+
+Arrow keys move by day or week, PageUp / PageDown by month, Home / End to the week edges. `min` / `max` disable days,
+`weekStartsOn` is 0 (Sunday) or 1 (Monday).
+
+```jsx live
+function Demo() {
+	const [date, setDate] = useState(new Date())
+	return <Calendar value={date} onChange={setDate} weekStartsOn={1} />
+}
+```
+
+## DatePicker
+
+```jsx live
+function Demo() {
+	const [date, setDate] = useState(null)
+	return (
+		<div className="w-64">
+			<DatePicker label="Due date" value={date} onChange={setDate} />
+		</div>
+	)
+}
+```
+
+## DateRangePicker
+
+Click the start, then the end (either order). The value is `{ start, end }`.
+
+```jsx live
+function Demo() {
+	const [range, setRange] = useState({ start: null, end: null })
+	return (
+		<div className="w-72">
+			<DateRangePicker label="Stay" value={range} onChange={setRange} />
+		</div>
+	)
+}
+```
+
+## TimePicker
+
+Wraps the native time control, so it gets the platform's picker. Values are `"HH:MM"` strings; `step` is in seconds.
+
+```jsx live
+function Demo() {
+	const [time, setTime] = useState('09:30')
+	return (
+		<div className="w-40">
+			<TimePicker label="Start" value={time} onChange={setTime} />
+		</div>
+	)
+}
+```

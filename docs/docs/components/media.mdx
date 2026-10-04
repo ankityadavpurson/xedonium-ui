@@ -15,6 +15,32 @@ Shows the image if it loads, otherwise initials. `size`: `sm`, `md`, `lg`.
 </Flex>
 ```
 
+## Video
+
+Player with themed controls: play, seek, time, mute and fullscreen. Extra props go to the `<video>` element; pass
+`<track>` children for captions.
+
+```jsx live
+<div className="max-w-md">
+	<Video title="Sample clip" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" />
+</div>
+```
+
+## Carousel
+
+Each child is a slide. Controlled via `index` + `onIndexChange` or uncontrolled via `defaultIndex`. `autoPlay` (ms)
+pauses on hover and focus; `loop={false}` stops at the ends. Arrow keys work while it has focus.
+
+```jsx live
+<Carousel label="Highlights">
+	{['One', 'Two', 'Three'].map(name => (
+		<div key={name} className="flex h-40 items-center justify-center text-2xl font-bold">
+			{name}
+		</div>
+	))}
+</Carousel>
+```
+
 ## Image
 
 `ratio`: `square`, `video`, `photo`. Falls back to a labelled box if loading fails.
