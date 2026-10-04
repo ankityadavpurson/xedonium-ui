@@ -1,0 +1,41 @@
+---
+title: Data display
+---
+
+## Card
+
+```jsx live
+<Card title="Server" subtitle="eu-west-1" actions={<Button variant="secondary">Edit</Button>} footer="Updated 2 min ago">
+	Healthy, 3 of 3 checks passing.
+</Card>
+```
+
+## Table
+
+`columns: [{ key, header, render?(row), align? }]`; `rowKey` (default `id`) names the unique field.
+
+```jsx live
+<Table
+	columns={[
+		{ key: 'name', header: 'Name' },
+		{ key: 'role', header: 'Role' },
+		{ key: 'seats', header: 'Seats', align: 'right' },
+		{ key: 'actions', header: '', render: row => <Button variant="secondary">View {row.name}</Button> },
+	]}
+	rows={[
+		{ id: 1, name: 'Ada', role: 'Admin', seats: 3 },
+		{ id: 2, name: 'Linus', role: 'Editor', seats: 12 },
+	]}
+/>
+```
+
+## List
+
+```jsx live
+<List
+	items={[
+		{ key: 'a', leading: <Avatar name="Ada Lovelace" />, primary: 'Ada Lovelace', secondary: 'Admin', trailing: 'Online' },
+		{ key: 'b', leading: <Avatar name="Linus T" />, primary: 'Linus T', secondary: 'Editor', onClick: () => {} },
+	]}
+/>
+```

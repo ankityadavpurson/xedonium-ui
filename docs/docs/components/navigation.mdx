@@ -1,5 +1,5 @@
 ---
-title: Layout & navigation
+title: Navigation
 ---
 
 ## AppBar
@@ -27,3 +27,50 @@ takes `title`, `subtitle` and action children.
 	<Button variant="secondary">Action</Button>
 </PageHeader>
 ```
+
+## Tabs
+
+`items: [{ key, label, content?, disabled? }]`. Controlled with `value` / `onChange`, or uncontrolled with
+`defaultValue`. Arrow, Home and End keys move between tabs.
+
+```jsx live
+<Tabs
+	items={[
+		{ key: 'a', label: 'Overview', content: 'Overview content' },
+		{ key: 'b', label: 'Activity', content: 'Activity content' },
+		{ key: 'c', label: 'Disabled', disabled: true },
+	]}
+/>
+```
+
+## Breadcrumb
+
+The last item is the current page. Supports `linkComponent` / `linkProp` for routers.
+
+```jsx live
+<Breadcrumb items={[{ label: 'Home', href: '#' }, { label: 'Projects', href: '#' }, { label: 'Xedonium' }]} />
+```
+
+## Pagination
+
+`page` is 1-based; `onChange` receives the new page.
+
+```jsx live
+function Demo() {
+	const [page, setPage] = useState(5)
+	return <Pagination page={page} pageCount={12} onChange={setPage} />
+}
+```
+
+## Stepper
+
+`current` is the 0-based active step.
+
+```jsx live
+<Stepper
+	current={1}
+	steps={[{ label: 'Account', description: 'Create login' }, { label: 'Profile', description: 'Tell us more' }, { label: 'Done' }]}
+/>
+```
+
+`ActionMenu` (see [Overlays](./overlays)) serves as the menu component.

@@ -1,0 +1,14 @@
+---
+title: Typography
+---
+
+The library inherits your font family. Labels use small, bold, uppercase, widely tracked text; body text is `text-sm`.
+
+```jsx live
+<Stack gap={3}>
+	<h1 className="text-2xl font-bold tracking-tight text-app-text sm:text-3xl">Page title</h1>
+	<p className="text-sm text-app-text">Body text uses text-sm and the app-text color.</p>
+	<p className="text-xs text-app-muted">Helper text uses text-xs and app-muted.</p>
+	<span className="text-xs font-semibold uppercase tracking-widest text-app-muted">Label</span>
+</Stack>
+```

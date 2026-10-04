@@ -1,0 +1,31 @@
+---
+title: Icons
+---
+
+Icons are inline SVGs that inherit `currentColor`. Pass `className` to size or color them (the defaults vary per icon).
+
+```jsx live
+<Flex wrap gap={6} className="text-app-text">
+	{Object.entries({
+		ArrowLeftIcon,
+		CheckIcon,
+		CloseIcon,
+		EyeIcon,
+		EyeOffIcon,
+		GridIcon,
+		HomeIcon,
+		InfoIcon,
+		LogoutIcon,
+		MenuIcon,
+		PencilIcon,
+		RefreshIcon,
+		SettingsIcon,
+		ShieldIcon,
+	}).map(([name, Icon]) => (
+		<div key={name} className="flex w-24 flex-col items-center gap-2">
+			<Icon className="h-6 w-6" />
+			<code className="text-[10px]">{name}</code>
+		</div>
+	))}
+</Flex>
+```

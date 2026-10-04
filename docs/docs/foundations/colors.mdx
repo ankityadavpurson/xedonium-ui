@@ -1,0 +1,30 @@
+---
+title: Colors & tokens
+---
+
+Colors are space-separated RGB channel variables, exposed to Tailwind as `app-*` colors so opacity modifiers work
+(`bg-app-strong/20`). They change with the theme.
+
+```jsx live
+<Grid cols={4} gap={3}>
+	{['bg', 'card', 'border', 'text', 'muted', 'soft', 'strong'].map(name => (
+		<div key={name} className="flex flex-col gap-1">
+			<div className="h-12 border border-app-border" style={{ background: `rgb(var(--color-app-${name}))` }} />
+			<code className="text-xs">app-{name}</code>
+		</div>
+	))}
+</Grid>
+```
+
+| Token        | CSS variable         | Use                          |
+| ------------ | -------------------- | ---------------------------- |
+| `app-bg`     | `--color-app-bg`     | Page background, input fill  |
+| `app-card`   | `--color-app-card`   | Surfaces: cards, dialogs     |
+| `app-border` | `--color-app-border` | Borders and dividers         |
+| `app-text`   | `--color-app-text`   | Primary text                 |
+| `app-muted`  | `--color-app-muted`  | Secondary text, labels       |
+| `app-soft`   | `--color-app-soft`   | Titles, emphasis             |
+| `app-strong` | `--color-app-strong` | Primary actions, focus rings |
+
+Other tokens: `--xd-z-modal` (80), `--xd-z-toast` (90) and `--xd-z-tooltip` (70) control overlay stacking, and the
+preset adds the `fade-up` and `indeterminate` animations.

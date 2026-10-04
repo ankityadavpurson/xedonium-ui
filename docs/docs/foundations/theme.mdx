@@ -1,0 +1,18 @@
+---
+title: Theme
+---
+
+Light and dark are driven by `<html data-theme="light|dark">`. Wrap your app in `ThemeProvider` to set it (it follows
+the OS until the user toggles, and persists the override under `storageKey`).
+
+```jsx
+<ThemeProvider storageKey="my-app-theme" favicon>
+	<App />
+</ThemeProvider>
+```
+
+- `useTheme()` returns `{ activeTheme, toggleTheme }`.
+- `ThemeToggle` is a ready-made button for `toggleTheme`.
+- `buildFaviconHref(theme)` builds a theme-colored favicon data URL.
+
+Tailwind's `dark:` variant is wired to the same attribute by the preset (`darkMode: ['selector', '[data-theme="dark"]']`).

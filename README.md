@@ -46,7 +46,11 @@ import { ThemeProvider, AppBar, PageLayout, Button } from 'xedonium'
 
 - Components: `Button`, `Tooltip`, `Modal`, `ConfirmDialog`, `Field`, `Toast`, `ActionMenu`, `AppBar`,
   `PageLayout`, `PageHeader`, `ThemeToggle`, `FanFavicon`, `LoadingScreen`, `RackServer`, plus 14 icons.
-- Hooks: `useTimedToast`, `useEscapeKey`, `useDialogFocus`, `useLeaveWarning`, `useDocumentTitle(title, suffix)`.
+- Also: layout (`Container`, `Stack`, `Flex`, `Grid`, `Divider`), inputs (`Input`, `Select`, `Checkbox`, `Radio`, `RadioGroup`,
+  `Switch`, `Slider`, `FileUpload`), navigation (`Tabs`, `Breadcrumb`, `Pagination`, `Stepper`), feedback (`Alert`,
+  `Progress`, `Skeleton`), overlays (`Drawer`, `Popover`), data (`Card`, `Table`, `List`), media (`Avatar`, `Image`),
+  utilities (`Portal`, `FocusTrap`).
+- Hooks: `useKeyboardShortcuts`, `useTimedToast`, `useEscapeKey`, `useDialogFocus`, `useLeaveWarning`, `useDocumentTitle(title, suffix)`.
 - Theme: `ThemeProvider`, `useTheme`, `useAppTheme`, `buildFaviconHref`.
 
 `AppBar` has no router dependency. For react-router pass `linkComponent={Link} linkProp="to"`.

@@ -1,0 +1,59 @@
+---
+title: Inputs
+---
+
+All value callbacks receive the **value**, not the event.
+
+```jsx live
+function Demo() {
+	const [text, setText] = useState('')
+	const [fruit, setFruit] = useState('apple')
+	const [agree, setAgree] = useState(false)
+	const [size, setSize] = useState('m')
+	const [on, setOn] = useState(true)
+	const [volume, setVolume] = useState(40)
+	return (
+		<Stack gap={5} className="max-w-sm">
+			<Input value={text} onChange={setText} placeholder="Bare Input" aria-label="Bare input" />
+			<Select
+				label="Fruit"
+				value={fruit}
+				onChange={setFruit}
+				options={[
+					{ value: 'apple', label: 'Apple' },
+					{ value: 'pear', label: 'Pear' },
+					{ value: 'plum', label: 'Plum', disabled: true },
+				]}
+			/>
+			<Checkbox label="I agree" checked={agree} onChange={setAgree} />
+			<RadioGroup
+				label="Size"
+				value={size}
+				onChange={setSize}
+				direction="row"
+				options={[
+					{ value: 's', label: 'Small' },
+					{ value: 'm', label: 'Medium' },
+					{ value: 'l', label: 'Large' },
+				]}
+			/>
+			<Switch label="Notifications" checked={on} onChange={setOn} />
+			<Slider label="Volume" value={volume} onChange={setVolume} />
+		</Stack>
+	)
+}
+```
+
+- **Input**: unlabeled; use `Field` when you need a label and error text. `invalid` sets the error style.
+- **Select**: native `<select>` with `options`, optional `placeholder` and `error`.
+- **Checkbox**: `indeterminate` shows the mixed state. **Radio** is the single control; **RadioGroup** manages a set.
+- **Switch**: `role="switch"`.
+- **Slider**: `min`, `max`, `step`, `showValue`; `onChange` gets a number.
+
+## FileUpload
+
+Drop zone and picker; `onChange` receives an array of `File`s. Props: `accept`, `multiple`, `disabled`, `label`.
+
+```jsx live
+<FileUpload multiple accept="image/*" />
+```

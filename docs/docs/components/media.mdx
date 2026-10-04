@@ -1,0 +1,26 @@
+---
+title: Media
+---
+
+## Avatar
+
+Shows the image if it loads, otherwise initials. `size`: `sm`, `md`, `lg`.
+
+```jsx live
+<Flex align="center">
+	<Avatar name="Ada Lovelace" size="sm" />
+	<Avatar name="Ada Lovelace" />
+	<Avatar name="Ada Lovelace" size="lg" />
+	<Avatar src="/missing.png" name="Fallback User" />
+</Flex>
+```
+
+## Image
+
+`ratio`: `square`, `video`, `photo`. Falls back to a labelled box if loading fails.
+
+```jsx live
+<div className="max-w-xs">
+	<Image src="/missing.png" alt="Example" ratio="video" fallback="No image" />
+</div>
+```

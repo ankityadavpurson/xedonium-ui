@@ -34,7 +34,43 @@ function Demo() {
 }
 ```
 
-## ConfirmDialog / Modal
+## Drawer
+
+Side panel dialog (`side`: `right` or `left`) with focus trap, Escape and backdrop to close.
+
+```jsx live
+function Demo() {
+	const [open, setOpen] = useState(false)
+	return (
+		<>
+			<Button onClick={() => setOpen(true)}>Open drawer</Button>
+			<Drawer
+				open={open}
+				onClose={() => setOpen(false)}
+				title="Settings"
+				footer={<Button onClick={() => setOpen(false)}>Done</Button>}
+			>
+				<p>Drawer content.</p>
+			</Drawer>
+		</>
+	)
+}
+```
+
+## Popover
+
+Button that toggles a floating panel with any content. Closes on outside click and Escape.
+
+```jsx live
+<Popover trigger="Details" label="Details">
+	<p className="m-0">Popover content goes here.</p>
+</Popover>
+```
+
+## Dialog (Modal / ConfirmDialog)
+
+`Modal` is the dialog shell and `ConfirmDialog` is built on it. `ActionMenu` doubles as the dropdown / menu
+component.
 
 `ConfirmDialog` shows a spinner on the confirm button while `busy`; Escape, backdrop and close are ignored then. Use
 `tone="danger"` for destructive actions.

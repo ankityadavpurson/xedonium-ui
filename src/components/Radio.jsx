@@ -1,0 +1,23 @@
+import { useId } from 'react'
+
+/** Single radio; normally used through RadioGroup. */
+const Radio = ({ label, className = '', disabled = false, ...rest }) => {
+	const id = useId()
+	return (
+		<label
+			htmlFor={id}
+			className={`inline-flex items-center gap-2 text-sm text-app-text ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} ${className}`}
+		>
+			<input
+				id={id}
+				type="radio"
+				disabled={disabled}
+				className="h-4 w-4 cursor-[inherit] accent-[rgb(var(--color-app-strong))]"
+				{...rest}
+			/>
+			{label}
+		</label>
+	)
+}
+
+export default Radio

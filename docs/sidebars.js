@@ -3,7 +3,28 @@ const sidebars = {
 	docs: [
 		'intro',
 		'getting-started',
-		{ type: 'category', label: 'Components', items: ['components/button', 'components/field', 'components/overlays', 'components/navigation', 'components/loaders'] },
+		{
+			type: 'category',
+			label: 'Foundations',
+			items: ['foundations/theme', 'foundations/colors', 'foundations/typography', 'foundations/icons'],
+		},
+		{
+			type: 'category',
+			label: 'Components',
+			items: [
+				'components/layout',
+				'components/button',
+				'components/inputs',
+				'components/field',
+				'components/navigation',
+				'components/feedback',
+				'components/overlays',
+				'components/data-display',
+				'components/media',
+				'components/loaders',
+				'components/utilities',
+			],
+		},
 		'hooks',
 	],
 }

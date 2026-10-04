@@ -1,0 +1,16 @@
+/** Horizontal or vertical rule, with optional centered label (horizontal only). */
+const Divider = ({ orientation = 'horizontal', label, className = '' }) => {
+	if (orientation === 'vertical') {
+		return <div role="separator" aria-orientation="vertical" className={`w-px self-stretch bg-app-border ${className}`} />
+	}
+	if (!label) return <hr className={`border-0 border-t border-app-border ${className}`} />
+	return (
+		<div role="separator" className={`flex items-center gap-3 ${className}`}>
+			<span className="h-px flex-1 bg-app-border" />
+			<span className="text-xs font-semibold uppercase tracking-widest text-app-muted">{label}</span>
+			<span className="h-px flex-1 bg-app-border" />
+		</div>
+	)
+}
+
+export default Divider
