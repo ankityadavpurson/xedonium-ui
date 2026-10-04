@@ -1,0 +1,26 @@
+---
+title: "Select"
+sidebar_position: 4
+---
+
+Native `<select>` with `options: [{ value, label, disabled? }]`, optional `placeholder` and `error`.
+
+```jsx live
+function Demo() {
+	const [fruit, setFruit] = useState('apple')
+	return (
+		<div className="max-w-sm">
+			<Select
+				label="Fruit"
+				value={fruit}
+				onChange={setFruit}
+				options={[
+					{ value: 'apple', label: 'Apple' },
+					{ value: 'pear', label: 'Pear' },
+					{ value: 'plum', label: 'Plum', disabled: true },
+				]}
+			/>
+		</div>
+	)
+}
+```

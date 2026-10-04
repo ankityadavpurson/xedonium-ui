@@ -1,0 +1,16 @@
+---
+title: "Grid"
+sidebar_position: 3
+---
+
+`cols` is 1-6 or 12 and collapses on small screens unless `responsive={false}`.
+
+```jsx live
+<Grid cols={3} gap={3}>
+	{[1, 2, 3, 4, 5, 6].map(n => (
+		<div key={n} className="border border-app-border bg-app-card p-4 text-center text-sm">
+			{n}
+		</div>
+	))}
+</Grid>
+```

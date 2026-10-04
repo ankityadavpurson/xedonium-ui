@@ -1,0 +1,9 @@
+{
+  "label": "Media",
+  "position": 9,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Images, avatars, video and carousels."
+  }
+}

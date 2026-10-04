@@ -1,0 +1,29 @@
+---
+title: "PieChart"
+sidebar_position: 4
+---
+
+`data: [{ label, value, color? }]`. Add `donut` (and optionally `center`) for a ring.
+
+```jsx live
+<Grid cols={2}>
+	<PieChart
+		label="Browser share"
+		data={[
+			{ label: 'Chrome', value: 62 },
+			{ label: 'Safari', value: 21 },
+			{ label: 'Firefox', value: 9 },
+			{ label: 'Other', value: 8 },
+		]}
+	/>
+	<PieChart
+		donut
+		center="100%"
+		label="Status"
+		data={[
+			{ label: 'Done', value: 70 },
+			{ label: 'Open', value: 30 },
+		]}
+	/>
+</Grid>
+```

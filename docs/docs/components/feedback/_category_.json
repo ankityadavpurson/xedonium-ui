@@ -1,0 +1,9 @@
+{
+  "label": "Feedback",
+  "position": 4,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Messages, progress and loading states."
+  }
+}

@@ -1,0 +1,18 @@
+---
+title: "Input"
+sidebar_position: 3
+---
+
+Unlabeled text input; use `Field` when you need a label and error text. `onChange` receives the value string, and
+`invalid` sets the error style.
+
+```jsx live
+function Demo() {
+	const [text, setText] = useState('')
+	return (
+		<div className="max-w-sm">
+			<Input value={text} onChange={setText} placeholder="Bare Input" aria-label="Bare input" />
+		</div>
+	)
+}
+```

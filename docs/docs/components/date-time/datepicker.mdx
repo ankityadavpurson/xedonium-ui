@@ -1,0 +1,15 @@
+---
+title: "DatePicker"
+sidebar_position: 2
+---
+
+```jsx live
+function Demo() {
+	const [date, setDate] = useState(null)
+	return (
+		<div className="w-64">
+			<DatePicker label="Due date" value={date} onChange={setDate} />
+		</div>
+	)
+}
+```

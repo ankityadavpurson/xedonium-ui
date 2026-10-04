@@ -1,0 +1,17 @@
+---
+title: "Carousel"
+sidebar_position: 3
+---
+
+Each child is a slide. Controlled via `index` + `onIndexChange` or uncontrolled via `defaultIndex`. `autoPlay` (ms)
+pauses on hover and focus; `loop={false}` stops at the ends. Arrow keys work while it has focus.
+
+```jsx live
+<Carousel label="Highlights">
+	{['One', 'Two', 'Three'].map(name => (
+		<div key={name} className="flex h-40 items-center justify-center text-2xl font-bold">
+			{name}
+		</div>
+	))}
+</Carousel>
+```

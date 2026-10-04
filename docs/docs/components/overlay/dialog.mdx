@@ -1,0 +1,40 @@
+---
+title: "Dialog (Modal)"
+sidebar_position: 5
+---
+
+`Modal` is the dialog shell and `ConfirmDialog` is built on it. `ActionMenu` doubles as the dropdown / menu
+component.
+
+`ConfirmDialog` shows a spinner on the confirm button while `busy`; Escape, backdrop and close are ignored then. Use
+`tone="danger"` for destructive actions.
+
+```jsx live
+function Demo() {
+	const [open, setOpen] = useState(false)
+	const [busy, setBusy] = useState(false)
+	const confirm = () => {
+		setBusy(true)
+		setTimeout(() => {
+			setBusy(false)
+			setOpen(false)
+		}, 1200)
+	}
+	return (
+		<>
+			<Button onClick={() => setOpen(true)}>Open dialog</Button>
+			<ConfirmDialog
+				open={open}
+				onClose={() => setOpen(false)}
+				onConfirm={confirm}
+				busy={busy}
+				title="Confirm action"
+				confirmLabel="Confirm"
+				busyLabel="Working..."
+			>
+				<p>Are you sure you want to continue?</p>
+			</ConfirmDialog>
+		</>
+	)
+}
+```

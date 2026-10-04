@@ -1,0 +1,12 @@
+---
+title: "Image"
+sidebar_position: 4
+---
+
+`ratio`: `square`, `video`, `photo`. Falls back to a labelled box if loading fails.
+
+```jsx live
+<div className="max-w-xs">
+	<Image src="/missing.png" alt="Example" ratio="video" fallback="No image" />
+</div>
+```

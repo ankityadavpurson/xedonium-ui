@@ -1,0 +1,18 @@
+---
+title: "Navbar"
+sidebar_position: 1
+---
+
+Plain horizontal nav (no sticky positioning or theme toggle; use `AppBar` for that). Supports `linkComponent` /
+`linkProp` for routers.
+
+```jsx live
+<Navbar
+	brand="Acme"
+	links={[
+		{ href: '#', label: 'Home', active: true },
+		{ href: '#docs', label: 'Docs' },
+	]}
+	actions={<Button variant="secondary">Sign in</Button>}
+/>
+```

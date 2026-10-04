@@ -1,0 +1,16 @@
+---
+title: "VirtualList"
+sidebar_position: 4
+---
+
+Renders only the visible rows of a long list. Rows need a fixed `itemHeight`.
+
+```jsx live
+<VirtualList
+	label="Ten thousand rows"
+	items={Array.from({ length: 10000 }, (_, i) => `Row ${i + 1}`)}
+	itemHeight={36}
+	height={216}
+	renderItem={item => item}
+/>
+```

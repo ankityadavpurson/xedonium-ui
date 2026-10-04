@@ -1,0 +1,9 @@
+{
+  "label": "Date & time",
+  "position": 8,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Dependency-free pickers. Dates are plain Date objects at local midnight; pass locale to localise."
+  }
+}

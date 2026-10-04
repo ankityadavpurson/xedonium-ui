@@ -1,0 +1,9 @@
+{
+  "label": "Utilities",
+  "position": 11,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Helpers for focus, portals, shortcuts, reordering and large lists."
+  }
+}

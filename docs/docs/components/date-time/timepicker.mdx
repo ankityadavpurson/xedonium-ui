@@ -1,0 +1,17 @@
+---
+title: "TimePicker"
+sidebar_position: 4
+---
+
+Wraps the native time control, so it gets the platform's picker. Values are `"HH:MM"` strings; `step` is in seconds.
+
+```jsx live
+function Demo() {
+	const [time, setTime] = useState('09:30')
+	return (
+		<div className="w-40">
+			<TimePicker label="Start" value={time} onChange={setTime} />
+		</div>
+	)
+}
+```

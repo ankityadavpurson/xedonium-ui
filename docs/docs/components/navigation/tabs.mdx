@@ -1,0 +1,17 @@
+---
+title: "Tabs"
+sidebar_position: 2
+---
+
+`items: [{ key, label, content?, disabled? }]`. Controlled with `value` / `onChange`, or uncontrolled with
+`defaultValue`. Arrow, Home and End keys move between tabs.
+
+```jsx live
+<Tabs
+	items={[
+		{ key: 'a', label: 'Overview', content: 'Overview content' },
+		{ key: 'b', label: 'Activity', content: 'Activity content' },
+		{ key: 'c', label: 'Disabled', disabled: true },
+	]}
+/>
+```

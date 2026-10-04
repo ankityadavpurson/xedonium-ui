@@ -1,0 +1,22 @@
+---
+title: "useKeyboardShortcuts"
+sidebar_position: 5
+---
+
+```jsx live
+function Demo() {
+	const [last, setLast] = useState('none')
+	useKeyboardShortcuts({
+		'mod+k': () => setLast('mod+k'),
+		'shift+?': () => setLast('?'),
+		g: () => setLast('g'),
+	})
+	return (
+		<p>
+			Try Ctrl/Cmd+K, Shift+? or g. Last: <code>{last}</code>
+		</p>
+	)
+}
+```
+
+`mod` is Cmd on macOS and Ctrl elsewhere. Shortcuts without a modifier are ignored while typing in a field.

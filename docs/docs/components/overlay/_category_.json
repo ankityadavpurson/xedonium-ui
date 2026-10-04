@@ -1,0 +1,9 @@
+{
+  "label": "Overlay",
+  "position": 5,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "description": "Dialogs, panels and floating content."
+  }
+}

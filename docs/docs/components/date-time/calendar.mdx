@@ -1,0 +1,14 @@
+---
+title: "Calendar"
+sidebar_position: 1
+---
+
+Arrow keys move by day or week, PageUp / PageDown by month, Home / End to the week edges. `min` / `max` disable days,
+`weekStartsOn` is 0 (Sunday) or 1 (Monday).
+
+```jsx live
+function Demo() {
+	const [date, setDate] = useState(new Date())
+	return <Calendar value={date} onChange={setDate} weekStartsOn={1} />
+}
+```
