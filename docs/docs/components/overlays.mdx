@@ -1,0 +1,75 @@
+---
+title: Overlays
+---
+
+## Tooltip
+
+```jsx live
+<Tooltip text="Plain tooltip">
+	<span className="border border-app-border px-2 py-1 text-xs">Tooltip target</span>
+</Tooltip>
+```
+
+## ActionMenu
+
+`items: [{ key, label, description?, badge?, tone?, disabled?, hasDialog?, onClick }]`. Closes on outside click and
+Escape.
+
+```jsx live
+function Demo() {
+	const { toast, showToast } = useTimedToast()
+	return (
+		<>
+			<ActionMenu
+				label="Actions"
+				trigger="Actions"
+				items={[
+					{ key: 'a', label: 'First', description: 'Does a thing', onClick: () => showToast('First') },
+					{ key: 'b', label: 'Second', badge: 3, onClick: () => showToast('Second', 'error') },
+				]}
+			/>
+			<Toast toast={toast} />
+		</>
+	)
+}
+```
+
+## ConfirmDialog / Modal
+
+`ConfirmDialog` shows a spinner on the confirm button while `busy`; Escape, backdrop and close are ignored then. Use
+`tone="danger"` for destructive actions.
+
+```jsx live
+function Demo() {
+	const [open, setOpen] = useState(false)
+	const [busy, setBusy] = useState(false)
+	const confirm = () => {
+		setBusy(true)
+		setTimeout(() => {
+			setBusy(false)
+			setOpen(false)
+		}, 1200)
+	}
+	return (
+		<>
+			<Button onClick={() => setOpen(true)}>Open dialog</Button>
+			<ConfirmDialog
+				open={open}
+				onClose={() => setOpen(false)}
+				onConfirm={confirm}
+				busy={busy}
+				title="Confirm action"
+				confirmLabel="Confirm"
+				busyLabel="Working..."
+			>
+				<p>Are you sure you want to continue?</p>
+			</ConfirmDialog>
+		</>
+	)
+}
+```
+
+## Toast
+
+Drive it with [`useTimedToast`](../hooks); render `<Toast toast={toast} />` once. The live region is always mounted so
+screen readers announce changes.

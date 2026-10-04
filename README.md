@@ -59,3 +59,12 @@ Overlay z-indexes can be overridden with `--xd-z-modal`, `--xd-z-toast`, `--xd-z
 yarn dev     # playground at http://localhost:3100
 yarn build   # dist/ (ESM, CJS, .d.ts, styles.css)
 ```
+
+## Docs
+
+Docusaurus site in `docs/` (live examples, uses the built `dist/`). Install once with `yarn --cwd docs install`.
+
+```bash
+yarn docs         # builds the lib, then serves at http://localhost:3000
+yarn docs:build   # static site in docs/build
+```

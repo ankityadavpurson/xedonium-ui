@@ -1,0 +1,29 @@
+---
+title: Layout & navigation
+---
+
+## AppBar
+
+Sticky top bar. `links: [{ href, label, active?, ...extraLinkProps }]`. Also: `brand`, `logo`, `brandHref`, `actions`,
+`themeToggle`, `hideBrandOnMobile`, `linkComponent`, `linkProp`, `maxWidth`.
+
+```jsx live
+<AppBar
+	brand="Xedonium"
+	links={[
+		{ href: '#', label: 'Apps', active: true },
+		{ href: '#admin', label: 'Admin' },
+	]}
+/>
+```
+
+## PageLayout and PageHeader
+
+`PageLayout` accepts `maxWidth`, `centerContent`, `themeToggle`, `outerClassName` and `innerClassName`. `PageHeader`
+takes `title`, `subtitle` and action children.
+
+```jsx live
+<PageHeader title="Playground" subtitle="Every component, light and dark">
+	<Button variant="secondary">Action</Button>
+</PageHeader>
+```

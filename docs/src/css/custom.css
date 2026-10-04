@@ -1,0 +1,24 @@
+@import 'xedonium/styles.css';
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--ifm-color-primary: #3a3a3a;
+	--ifm-color-primary-dark: #333;
+	--ifm-color-primary-darker: #303030;
+	--ifm-color-primary-darkest: #272727;
+	--ifm-color-primary-light: #414141;
+	--ifm-color-primary-lighter: #444;
+	--ifm-color-primary-lightest: #4d4d4d;
+	--ifm-global-radius: 0;
+}
+
+[data-theme='dark'] {
+	--ifm-color-primary: #e8e8e8;
+	--ifm-color-primary-dark: #d1d1d1;
+	--ifm-color-primary-darker: #c5c5c5;
+	--ifm-color-primary-darkest: #a2a2a2;
+	--ifm-color-primary-light: #fff;
+	--ifm-color-primary-lighter: #fff;
+	--ifm-color-primary-lightest: #fff;
+}

@@ -1,0 +1,50 @@
+---
+title: Getting started
+---
+
+```bash
+yarn add xedonium   # peers: react, react-dom, tailwindcss ^3.4
+```
+
+## 1. Tailwind
+
+Use the preset and scan the library's files:
+
+```js title="tailwind.config.js"
+import xedonium from 'xedonium/tailwind-preset'
+
+export default {
+	presets: [xedonium],
+	content: ['./index.html', './src/**/*.{js,jsx}', './node_modules/xedonium/dist/**/*.js'],
+}
+```
+
+## 2. Styles
+
+Import the theme tokens and base styles once, before your Tailwind CSS:
+
+```js
+import 'xedonium/styles.css'
+```
+
+## 3. Provider
+
+```jsx
+import { ThemeProvider, AppBar, PageLayout, Button } from 'xedonium'
+
+<ThemeProvider storageKey="my-app-theme">
+	<AppBar brand="My App" />
+	<PageLayout>
+		<Button>Hello</Button>
+	</PageLayout>
+</ThemeProvider>
+```
+
+`AppBar` has no router dependency. For react-router pass `linkComponent={Link} linkProp="to"`.
+
+Overlay z-indexes can be overridden with `--xd-z-modal`, `--xd-z-toast` and `--xd-z-tooltip`.
+
+:::note
+These docs don't wrap examples in `ThemeProvider`; Docusaurus owns `data-theme` here. `ThemeToggle` is therefore
+inert in the live examples.
+:::
