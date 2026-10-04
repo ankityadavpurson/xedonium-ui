@@ -8,8 +8,11 @@ const config = {
 	favicon: 'img/favicon.ico',
 	future: { v4: true },
 
-	url: 'https://xedonium.example.com',
-	baseUrl: '/',
+	url: 'https://ankityadavpurson.github.io',
+	baseUrl: '/xedonium-ui/',
+	organizationName: 'ankityadavpurson',
+	projectName: 'xedonium-ui',
+	trailingSlash: false,
 
 	onBrokenLinks: 'throw',
 	i18n: { defaultLocale: 'en', locales: ['en'] },
