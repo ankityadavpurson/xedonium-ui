@@ -6,7 +6,8 @@ Square corners, semantic `app-*` color tokens, light/dark via `<html data-theme>
 ## Install
 
 ```bash
-yarn add xedonium   # peers: react, react-dom, tailwindcss ^3.4
+npm i xedonium      # or: yarn add xedonium
+# peers: react, react-dom, tailwindcss ^3.4
 ```
 
 ## Setup

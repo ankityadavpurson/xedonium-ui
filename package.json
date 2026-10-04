@@ -4,6 +4,25 @@
 	"description": "Minimal, theme-aware React + Tailwind UI components extracted from Boot Bridge",
 	"type": "module",
 	"license": "MIT",
+	"author": "Ankit Yadav",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ankityadavpurson/xedonium-ui.git"
+	},
+	"bugs": {
+		"url": "https://github.com/ankityadavpurson/xedonium-ui/issues"
+	},
+	"homepage": "https://github.com/ankityadavpurson/xedonium-ui#readme",
+	"keywords": [
+		"react",
+		"tailwind",
+		"tailwindcss",
+		"ui",
+		"components"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
 	"sideEffects": [
 		"*.css"
 	],
@@ -28,6 +47,7 @@
 		"build": "vite build && npm run build:types && node scripts/copy-css.js",
 		"build:types": "tsc -p tsconfig.build.json",
 		"lint": "eslint .",
+		"prepublishOnly": "npm run lint && npm run build",
 		"docs": "yarn --cwd docs start",
 		"docs:build": "yarn --cwd docs build",
 		"format": "prettier --write ."
