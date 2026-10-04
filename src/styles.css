@@ -1,0 +1,61 @@
+/* xedonium theme tokens + base styles. Plain CSS (no Tailwind directives) so it can be imported anywhere. */
+
+:root {
+	--color-app-bg: 239 239 240;
+	--color-app-card: 255 255 255;
+	--color-app-border: 181 181 181;
+	--color-app-text: 21 21 21;
+	--color-app-muted: 98 98 98;
+	--color-app-soft: 58 58 58;
+	--color-app-strong: 34 34 34;
+}
+
+html[data-theme='dark'] {
+	--color-app-bg: 37 37 41;
+	--color-app-card: 31 31 31;
+	--color-app-border: 94 94 94;
+	--color-app-text: 255 255 255;
+	--color-app-muted: 163 163 163;
+	--color-app-soft: 216 216 216;
+	--color-app-strong: 232 232 232;
+}
+
+html {
+	background-color: rgb(var(--color-app-bg));
+	color-scheme: light;
+}
+
+html[data-theme='dark'] {
+	color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+	transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+	transition-duration: 180ms;
+	transition-timing-function: ease;
+}
+
+body {
+	min-height: 100vh;
+	background-color: rgb(var(--color-app-bg));
+	color: rgb(var(--color-app-text));
+}
+
+/* Keyboard focus is always visible, in both themes */
+:focus-visible {
+	outline: 2px solid rgb(var(--color-app-strong));
+	outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
