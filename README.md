@@ -49,7 +49,10 @@ import { ThemeProvider, AppBar, PageLayout, Button } from 'xedonium'
 - Also: layout (`Container`, `Stack`, `Flex`, `Grid`, `Divider`), inputs (`Input`, `Select`, `Checkbox`, `Radio`, `RadioGroup`,
   `Switch`, `Slider`, `FileUpload`), navigation (`Tabs`, `Breadcrumb`, `Pagination`, `Stepper`), feedback (`Alert`,
   `Progress`, `Skeleton`), overlays (`Drawer`, `Popover`), data (`Card`, `Table`, `List`), media (`Avatar`, `Image`),
-  utilities (`Portal`, `FocusTrap`).
+  utilities (`Portal`, `FocusTrap`, `SortableList`, `VirtualList`), date & time (`Calendar`, `DatePicker`,
+  `DateRangePicker`, `TimePicker`), charts (`LineChart`, `AreaChart`, `BarChart`, `PieChart`), more data and media
+  (`DataGrid`, `Tree`, `Timeline`, `Video`, `Carousel`), and application blocks (`Navbar`, `Sidebar`, `AppShell`,
+  `Dashboard`, `StatCard`, `CommandPalette`, `NotificationCenter`).
 - Hooks: `useKeyboardShortcuts`, `useTimedToast`, `useEscapeKey`, `useDialogFocus`, `useLeaveWarning`, `useDocumentTitle(title, suffix)`.
 - Theme: `ThemeProvider`, `useTheme`, `useAppTheme`, `buildFaviconHref`.
 
