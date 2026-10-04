@@ -14,7 +14,16 @@ const flatten = (nodes, expanded, depth = 0, parent = null, out = []) => {
  * expansion is uncontrolled via `defaultExpanded` (array of keys) unless `expanded` + `onExpandedChange` are given.
  * Keys: Up / Down move, Right expands or enters, Left collapses or goes to the parent, Enter / Space selects.
  */
-const Tree = ({ nodes, selected, onSelect, defaultExpanded = [], expanded, onExpandedChange, label = 'Tree', className = '' }) => {
+const Tree = ({
+	nodes,
+	selected,
+	onSelect,
+	defaultExpanded = [],
+	expanded,
+	onExpandedChange,
+	label = 'Tree',
+	className = '',
+}) => {
 	const [innerExpanded, setInnerExpanded] = useState(defaultExpanded)
 	const open = expanded ?? innerExpanded
 	const [focusKey, setFocusKey] = useState(null)

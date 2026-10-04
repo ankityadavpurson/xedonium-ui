@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react'
+import useFlipAlign from '../hooks/useFlipAlign'
 import Button from './Button'
 
 /**
@@ -8,6 +9,8 @@ import Button from './Button'
 const Popover = ({ trigger, label, variant = 'secondary', align = 'start', className = '', children }) => {
 	const [open, setOpen] = useState(false)
 	const rootRef = useRef(null)
+	const panelRef = useRef(null)
+	const side = useFlipAlign(open, panelRef, align)
 	const panelId = useId()
 
 	useEffect(() => {
@@ -43,11 +46,12 @@ const Popover = ({ trigger, label, variant = 'secondary', align = 'start', class
 			</Button>
 			{open && (
 				<div
+					ref={panelRef}
 					id={panelId}
 					role="dialog"
 					aria-label={label}
 					className={`absolute top-full z-[var(--xd-z-tooltip,70)] mt-1 min-w-[12rem] border border-app-border bg-app-card p-4 text-sm text-app-text shadow-xl ${
-						align === 'end' ? 'right-0' : 'left-0'
+						side === 'end' ? 'right-0' : 'left-0'
 					} ${className}`}
 				>
 					{children}

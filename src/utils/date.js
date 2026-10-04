@@ -37,7 +37,8 @@ export const weekdayLabels = (weekStartsOn = 0, locale) =>
 		return new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(day)
 	})
 
-export const formatMonth = (date, locale) => new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(date)
+export const formatMonth = (date, locale) =>
+	new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(date)
 
 export const formatDate = (date, locale) =>
 	date ? new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric' }).format(date) : ''

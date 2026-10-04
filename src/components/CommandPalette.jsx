@@ -8,7 +8,13 @@ import useEscapeKey from '../hooks/useEscapeKey'
  * commands: [{ key, label, description?, group?, shortcut?, onSelect }]. Arrow keys move, Enter runs, Escape closes.
  * `onClose` is called after a command runs as well, so the parent just sets `open` to false.
  */
-const CommandPalette = ({ open, onClose, commands, placeholder = 'Type a command…', empty = 'No matching commands' }) => {
+const CommandPalette = ({
+	open,
+	onClose,
+	commands,
+	placeholder = 'Type a command…',
+	empty = 'No matching commands',
+}) => {
 	const [query, setQuery] = useState('')
 	const [active, setActive] = useState(0)
 	const dialogRef = useRef(null)
@@ -27,8 +33,12 @@ const CommandPalette = ({ open, onClose, commands, placeholder = 'Type a command
 
 	const results = useMemo(() => {
 		const needle = query.trim().toLowerCase()
-		if (!needle) return commands
-		return commands.filter(c => `${c.label} ${c.description ?? ''} ${c.group ?? ''}`.toLowerCase().includes(needle))
+		const matching = needle
+			? commands.filter(c => `${c.label} ${c.description ?? ''} ${c.group ?? ''}`.toLowerCase().includes(needle))
+			: commands
+		// Keep each group together (in order of first appearance) so its heading shows once
+		const groups = [...new Set(matching.map(c => c.group))]
+		return groups.flatMap(group => matching.filter(c => c.group === group))
 	}, [commands, query])
 
 	useEffect(() => {
@@ -84,7 +94,13 @@ const CommandPalette = ({ open, onClose, commands, placeholder = 'Type a command
 					aria-label="Search commands"
 					className="w-full border-b border-app-border bg-transparent px-4 py-3 text-sm text-app-text outline-none placeholder:text-app-muted"
 				/>
-				<ul id={listId} ref={listRef} role="listbox" aria-label="Commands" className="m-0 flex-1 list-none overflow-y-auto p-0">
+				<ul
+					id={listId}
+					ref={listRef}
+					role="listbox"
+					aria-label="Commands"
+					className="m-0 flex-1 list-none overflow-y-auto p-0"
+				>
 					{results.length === 0 && <li className="px-4 py-6 text-center text-sm text-app-muted">{empty}</li>}
 					{results.map((command, index) => {
 						const showGroup = command.group && command.group !== results[index - 1]?.group
@@ -114,7 +130,9 @@ const CommandPalette = ({ open, onClose, commands, placeholder = 'Type a command
 										)}
 									</span>
 									{command.shortcut && (
-										<kbd className={`shrink-0 border px-1.5 py-0.5 text-[10px] ${index === active ? 'border-app-bg/40' : 'border-app-border text-app-muted'}`}>
+										<kbd
+											className={`shrink-0 border px-1.5 py-0.5 text-[10px] ${index === active ? 'border-app-bg/40' : 'border-app-border text-app-muted'}`}
+										>
 											{command.shortcut}
 										</kbd>
 									)}

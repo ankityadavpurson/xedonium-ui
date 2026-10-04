@@ -35,7 +35,12 @@ const PieChart = ({ data, donut = false, center, label = 'Pie chart', className 
 
 	return (
 		<figure className={`m-0 ${className}`}>
-			<svg role="img" aria-label={label} viewBox={`0 0 ${SIZE} ${SIZE}`} className="mx-auto block h-auto w-full max-w-xs">
+			<svg
+				role="img"
+				aria-label={label}
+				viewBox={`0 0 ${SIZE} ${SIZE}`}
+				className="mx-auto block h-auto w-full max-w-xs"
+			>
 				{slices.map(slice => (
 					<path
 						key={slice.label}

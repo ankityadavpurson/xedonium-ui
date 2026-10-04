@@ -82,6 +82,7 @@ export { default as ShieldIcon } from './components/icons/Shield'
 
 export { default as useDialogFocus } from './hooks/useDialogFocus'
 export { default as useDocumentTitle } from './hooks/useDocumentTitle'
+export { default as useFlipAlign } from './hooks/useFlipAlign'
 export { default as useEscapeKey } from './hooks/useEscapeKey'
 export { default as useDismissable } from './hooks/useDismissable'
 export { default as useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'

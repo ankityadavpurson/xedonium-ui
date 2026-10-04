@@ -19,17 +19,7 @@ const navButton =
  * `rangeStart` / `rangeEnd` highlight a range (used by DateRangePicker). `min` / `max` disable days outside them.
  * Arrow keys move by day / week, PageUp / PageDown by month, Home / End to the start / end of the week.
  */
-const Calendar = ({
-	value,
-	onChange,
-	rangeStart,
-	rangeEnd,
-	min,
-	max,
-	weekStartsOn = 0,
-	locale,
-	className = '',
-}) => {
+const Calendar = ({ value, onChange, rangeStart, rangeEnd, min, max, weekStartsOn = 0, locale, className = '' }) => {
 	const today = startOfDay(new Date())
 	const anchor = value ?? rangeStart ?? today
 	const [focused, setFocused] = useState(startOfDay(anchor))
@@ -74,7 +64,8 @@ const Calendar = ({
 		setFocused(new Date(nextView.getFullYear(), nextView.getMonth(), Math.min(focused.getDate(), 28)))
 	}
 
-	const [from, to] = rangeStart && rangeEnd && isBefore(rangeEnd, rangeStart) ? [rangeEnd, rangeStart] : [rangeStart, rangeEnd]
+	const [from, to] =
+		rangeStart && rangeEnd && isBefore(rangeEnd, rangeStart) ? [rangeEnd, rangeStart] : [rangeStart, rangeEnd]
 	const weeks = monthGrid(view, weekStartsOn)
 
 	return (

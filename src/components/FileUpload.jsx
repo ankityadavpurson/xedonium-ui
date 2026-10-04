@@ -1,7 +1,13 @@
 import { useId, useState } from 'react'
 
 /** Drop zone + file picker. `onChange` receives an array of File objects; selected names are listed below. */
-const FileUpload = ({ label = 'Choose files or drop them here', accept, multiple = false, onChange, disabled = false }) => {
+const FileUpload = ({
+	label = 'Choose files or drop them here',
+	accept,
+	multiple = false,
+	onChange,
+	disabled = false,
+}) => {
 	const id = useId()
 	const [files, setFiles] = useState([])
 	const [dragging, setDragging] = useState(false)

@@ -56,7 +56,11 @@ const Video = ({ src, poster, title = 'Video', ratio = 'video', className = '', 
 			>
 				{children}
 			</video>
-			<div role="group" aria-label={`${title} controls`} className="flex items-center gap-1 border-t border-app-border px-1 py-1">
+			<div
+				role="group"
+				aria-label={`${title} controls`}
+				className="flex items-center gap-1 border-t border-app-border px-1 py-1"
+			>
 				<button type="button" className={controlClass} onClick={toggle} aria-label={playing ? 'Pause' : 'Play'}>
 					{playing ? 'Pause' : 'Play'}
 				</button>

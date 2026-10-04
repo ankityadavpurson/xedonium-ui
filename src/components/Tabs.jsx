@@ -33,7 +33,11 @@ const Tabs = ({ items, value, defaultValue, onChange, className = '' }) => {
 
 	return (
 		<div className={className}>
-			<div role="tablist" onKeyDown={handleKeyDown} className="flex overflow-x-auto border-b border-app-border">
+			<div
+				role="tablist"
+				onKeyDown={handleKeyDown}
+				className="flex overflow-x-auto overflow-y-hidden shadow-[inset_0_-1px_0_rgb(var(--color-app-border))]"
+			>
 				{items.map(item => {
 					const selected = item.key === active
 					return (
@@ -48,10 +52,8 @@ const Tabs = ({ items, value, defaultValue, onChange, className = '' }) => {
 							tabIndex={selected ? 0 : -1}
 							disabled={item.disabled}
 							onClick={() => select(item.key)}
-							className={`-mb-px whitespace-nowrap border-b-2 px-4 py-2 text-xs font-semibold uppercase tracking-widest transition disabled:cursor-not-allowed disabled:opacity-50 ${
-								selected
-									? 'border-app-strong text-app-text'
-									: 'border-transparent text-app-muted hover:text-app-text'
+							className={`whitespace-nowrap border-b-2 px-4 py-2 text-xs font-semibold uppercase tracking-widest transition disabled:cursor-not-allowed disabled:opacity-50 ${
+								selected ? 'border-app-strong text-app-text' : 'border-transparent text-app-muted hover:text-app-text'
 							}`}
 						>
 							{item.label}

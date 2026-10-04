@@ -1,21 +1,32 @@
-import { AxesFrame, Legend, MARGIN, WIDTH, legendItems } from './charts/ChartFrame'
+import { AxesFrame, Legend, MARGIN, legendItems, useChartWidth } from './charts/ChartFrame'
 import { colorFor, niceScale } from './charts/chartUtils'
 
 /**
  * Line chart. `labels` names the x positions; `series: [{ name, values, color? }]` has one value per label.
  * `area` fills under each line (see AreaChart). Hover a point for its value.
  */
-const LineChart = ({ labels, series, height = 300, area = false, label = 'Line chart', legend = true, className = '' }) => {
+const LineChart = ({
+	labels,
+	series,
+	height = 300,
+	area = false,
+	label = 'Line chart',
+	legend = true,
+	className = '',
+}) => {
+	const [ref, width] = useChartWidth()
 	const all = series.flatMap(s => s.values)
 	const scale = niceScale(Math.min(...all), Math.max(...all))
 	const plotLeft = MARGIN.left
-	const plotRight = WIDTH - MARGIN.right
-	const x = i => (labels.length === 1 ? (plotLeft + plotRight) / 2 : plotLeft + ((plotRight - plotLeft) * i) / (labels.length - 1))
+	const plotRight = width - MARGIN.right
+	const x = i =>
+		labels.length === 1 ? (plotLeft + plotRight) / 2 : plotLeft + ((plotRight - plotLeft) * i) / (labels.length - 1)
 	const xPositions = labels.map((_, i) => x(i))
 
 	return (
-		<div className={className}>
+		<div ref={ref} className={className}>
 			<AxesFrame
+				width={width}
 				height={height}
 				scale={scale}
 				labels={labels}

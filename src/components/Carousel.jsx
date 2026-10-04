@@ -7,7 +7,16 @@ const arrow =
  * Slide carousel; each child is one slide. Controlled with `index` + `onIndexChange`, or uncontrolled via
  * `defaultIndex`. `autoPlay` (ms) advances automatically and pauses on hover / focus. `loop` wraps around.
  */
-const Carousel = ({ children, index, defaultIndex = 0, onIndexChange, autoPlay = 0, loop = true, label = 'Carousel', className = '' }) => {
+const Carousel = ({
+	children,
+	index,
+	defaultIndex = 0,
+	onIndexChange,
+	autoPlay = 0,
+	loop = true,
+	label = 'Carousel',
+	className = '',
+}) => {
 	const slides = Children.toArray(children)
 	const [inner, setInner] = useState(defaultIndex)
 	const [paused, setPaused] = useState(false)
@@ -71,7 +80,13 @@ const Carousel = ({ children, index, defaultIndex = 0, onIndexChange, autoPlay =
 			</div>
 			{slides.length > 1 && (
 				<>
-					<button type="button" aria-label="Previous slide" className={`${arrow} left-2`} disabled={!loop && current === 0} onClick={() => go(current - 1)}>
+					<button
+						type="button"
+						aria-label="Previous slide"
+						className={`${arrow} left-2`}
+						disabled={!loop && current === 0}
+						onClick={() => go(current - 1)}
+					>
 						&lsaquo;
 					</button>
 					<button

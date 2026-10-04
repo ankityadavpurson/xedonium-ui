@@ -1,7 +1,17 @@
 import { useId } from 'react'
 
 /** Range input. `onChange` receives a number. */
-const Slider = ({ label, value, onChange, min = 0, max = 100, step = 1, showValue = true, className = '', ...rest }) => {
+const Slider = ({
+	label,
+	value,
+	onChange,
+	min = 0,
+	max = 100,
+	step = 1,
+	showValue = true,
+	className = '',
+	...rest
+}) => {
 	const id = useId()
 	return (
 		<div className={`flex flex-col gap-1 ${className}`}>

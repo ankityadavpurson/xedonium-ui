@@ -1,7 +1,9 @@
 /** Horizontal or vertical rule, with optional centered label (horizontal only). */
 const Divider = ({ orientation = 'horizontal', label, className = '' }) => {
 	if (orientation === 'vertical') {
-		return <div role="separator" aria-orientation="vertical" className={`w-px self-stretch bg-app-border ${className}`} />
+		return (
+			<div role="separator" aria-orientation="vertical" className={`w-px self-stretch bg-app-border ${className}`} />
+		)
 	}
 	if (!label) return <hr className={`border-0 border-t border-app-border ${className}`} />
 	return (

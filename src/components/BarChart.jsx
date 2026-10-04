@@ -1,26 +1,36 @@
-import { AxesFrame, Legend, MARGIN, WIDTH, legendItems } from './charts/ChartFrame'
+import { AxesFrame, Legend, MARGIN, legendItems, useChartWidth } from './charts/ChartFrame'
 import { colorFor, niceScale } from './charts/chartUtils'
 
 /**
  * Bar chart. `labels` names the categories; `series: [{ name, values, color? }]` has one value per label.
  * Multiple series are grouped side by side, or stacked with `stacked`.
  */
-const BarChart = ({ labels, series, height = 300, stacked = false, label = 'Bar chart', legend = true, className = '' }) => {
+const BarChart = ({
+	labels,
+	series,
+	height = 300,
+	stacked = false,
+	label = 'Bar chart',
+	legend = true,
+	className = '',
+}) => {
+	const [ref, width] = useChartWidth()
 	const totals = labels.map((_, i) => series.reduce((sum, s) => sum + s.values[i], 0))
 	const max = stacked ? Math.max(...totals) : Math.max(...series.flatMap(s => s.values))
 	const min = stacked ? 0 : Math.min(...series.flatMap(s => s.values))
 	const scale = niceScale(min, max)
 
 	const plotLeft = MARGIN.left
-	const plotWidth = WIDTH - MARGIN.right - MARGIN.left
+	const plotWidth = width - MARGIN.right - MARGIN.left
 	const band = plotWidth / labels.length
 	const groupWidth = band * 0.7
 	const barWidth = stacked ? groupWidth : groupWidth / series.length
 	const xPositions = labels.map((_, i) => plotLeft + band * i + band / 2)
 
 	return (
-		<div className={className}>
+		<div ref={ref} className={className}>
 			<AxesFrame
+				width={width}
 				height={height}
 				scale={scale}
 				labels={labels}

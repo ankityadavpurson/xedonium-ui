@@ -27,4 +27,5 @@ export const niceScale = (min, max, tickCount = 5) => {
 	return { min: niceMin, max: niceMax, ticks }
 }
 
-export const formatTick = value => new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 1 }).format(value)
+export const formatTick = value =>
+	new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 1 }).format(value)

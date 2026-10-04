@@ -41,11 +41,19 @@ const DataGrid = ({
 	const processed = useMemo(() => {
 		const needle = query.trim().toLowerCase()
 		let result = needle
-			? rows.filter(row => columns.some(column => String(valueOf(row, column) ?? '').toLowerCase().includes(needle)))
+			? rows.filter(row =>
+					columns.some(column =>
+						String(valueOf(row, column) ?? '')
+							.toLowerCase()
+							.includes(needle)
+					)
+				)
 			: rows
 		if (sort) {
 			const column = columns.find(c => c.key === sort.key)
-			result = [...result].sort((a, b) => compare(valueOf(a, column), valueOf(b, column)) * (sort.dir === 'asc' ? 1 : -1))
+			result = [...result].sort(
+				(a, b) => compare(valueOf(a, column), valueOf(b, column)) * (sort.dir === 'asc' ? 1 : -1)
+			)
 		}
 		return result
 	}, [rows, columns, query, sort])
@@ -65,7 +73,11 @@ const DataGrid = ({
 	const toggleSort = column => {
 		setPage(1)
 		setSort(current =>
-			current?.key !== column.key ? { key: column.key, dir: 'asc' } : current.dir === 'asc' ? { key: column.key, dir: 'desc' } : null
+			current?.key !== column.key
+				? { key: column.key, dir: 'asc' }
+				: current.dir === 'asc'
+					? { key: column.key, dir: 'desc' }
+					: null
 		)
 	}
 
@@ -112,7 +124,9 @@ const DataGrid = ({
 									<th
 										key={column.key}
 										scope="col"
-										aria-sort={active ? (sort.dir === 'asc' ? 'ascending' : 'descending') : column.sortable ? 'none' : undefined}
+										aria-sort={
+											active ? (sort.dir === 'asc' ? 'ascending' : 'descending') : column.sortable ? 'none' : undefined
+										}
 										className={`px-4 py-2.5 text-xs font-semibold uppercase tracking-widest text-app-muted ${ALIGN[column.align ?? 'left']}`}
 									>
 										{column.sortable ? (

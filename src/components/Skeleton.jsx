@@ -9,7 +9,9 @@ const Skeleton = ({ lines, circle = false, className = 'h-4 w-full' }) => {
 			</div>
 		)
 	}
-	return <div aria-hidden="true" className={`animate-pulse bg-app-border ${circle ? 'rounded-full' : ''} ${className}`} />
+	return (
+		<div aria-hidden="true" className={`animate-pulse bg-app-border ${circle ? 'rounded-full' : ''} ${className}`} />
+	)
 }
 
 export default Skeleton

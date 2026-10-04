@@ -36,7 +36,11 @@ const DatePicker = ({ label, value, onChange, min, max, placeholder = 'Select da
 				{value ? formatDate(value, locale) : placeholder}
 			</button>
 			{open && (
-				<div role="dialog" aria-label="Choose date" className="absolute left-0 top-full z-[var(--xd-z-tooltip,70)] mt-1 shadow-xl">
+				<div
+					role="dialog"
+					aria-label="Choose date"
+					className="absolute left-0 top-full z-[var(--xd-z-tooltip,70)] mt-1 shadow-xl"
+				>
 					<Calendar
 						value={value}
 						min={min}

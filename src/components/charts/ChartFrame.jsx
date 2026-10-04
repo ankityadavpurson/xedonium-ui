@@ -1,7 +1,27 @@
+import { useEffect, useRef, useState } from 'react'
 import { colorFor, formatTick } from './chartUtils'
 
-export const WIDTH = 600
+const DEFAULT_WIDTH = 600
 export const MARGIN = { top: 12, right: 16, bottom: 28, left: 44 }
+
+// Tracks the container width so the SVG renders 1:1 (axis text keeps its size instead of scaling with the viewBox)
+export const useChartWidth = () => {
+	const ref = useRef(null)
+	const [width, setWidth] = useState(DEFAULT_WIDTH)
+
+	useEffect(() => {
+		const node = ref.current
+		if (!node || typeof ResizeObserver === 'undefined') return undefined
+		const observer = new ResizeObserver(([entry]) => {
+			const next = Math.round(entry.contentRect.width)
+			if (next > 0) setWidth(next)
+		})
+		observer.observe(node)
+		return () => observer.disconnect()
+	}, [])
+
+	return [ref, width]
+}
 
 export const Legend = ({ items }) => (
 	<ul className="m-0 mt-2 flex list-none flex-wrap justify-center gap-x-4 gap-y-1 p-0 text-xs text-app-muted">
@@ -15,7 +35,7 @@ export const Legend = ({ items }) => (
 )
 
 // Axes + gridlines shared by Line / Area / Bar. `children` receives nothing; draw inside the plot area via the same margins.
-export const AxesFrame = ({ height, scale, labels, xPositions, label, children, legend }) => {
+export const AxesFrame = ({ width, height, scale, labels, xPositions, label, children, legend }) => {
 	const plotBottom = height - MARGIN.bottom
 	const plotHeight = plotBottom - MARGIN.top
 	const y = value => MARGIN.top + plotHeight * (1 - (value - scale.min) / (scale.max - scale.min))
@@ -24,22 +44,31 @@ export const AxesFrame = ({ height, scale, labels, xPositions, label, children, 
 			<svg
 				role="img"
 				aria-label={label}
-				viewBox={`0 0 ${WIDTH} ${height}`}
-				className="block h-auto w-full text-app-muted"
+				width={width}
+				height={height}
+				viewBox={`0 0 ${width} ${height}`}
+				className="block max-w-full text-app-muted"
 				fontFamily="inherit"
 			>
 				{scale.ticks.map(tick => (
 					<g key={tick}>
 						<line
 							x1={MARGIN.left}
-							x2={WIDTH - MARGIN.right}
+							x2={width - MARGIN.right}
 							y1={y(tick)}
 							y2={y(tick)}
 							stroke="rgb(var(--color-app-border))"
 							strokeWidth="1"
 							strokeDasharray={tick === scale.min ? undefined : '3 3'}
 						/>
-						<text x={MARGIN.left - 6} y={y(tick)} textAnchor="end" dominantBaseline="middle" fontSize="11" fill="currentColor">
+						<text
+							x={MARGIN.left - 6}
+							y={y(tick)}
+							textAnchor="end"
+							dominantBaseline="middle"
+							fontSize="11"
+							fill="currentColor"
+						>
 							{formatTick(tick)}
 						</text>
 					</g>

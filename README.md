@@ -44,16 +44,12 @@ import { ThemeProvider, AppBar, PageLayout, Button } from 'xedonium'
 
 ## What's included
 
-- Components: `Button`, `Tooltip`, `Modal`, `ConfirmDialog`, `Field`, `Toast`, `ActionMenu`, `AppBar`,
-  `PageLayout`, `PageHeader`, `ThemeToggle`, `FanFavicon`, `LoadingScreen`, `RackServer`, plus 14 icons.
-- Also: layout (`Container`, `Stack`, `Flex`, `Grid`, `Divider`), inputs (`Input`, `Select`, `Checkbox`, `Radio`, `RadioGroup`,
-  `Switch`, `Slider`, `FileUpload`), navigation (`Tabs`, `Breadcrumb`, `Pagination`, `Stepper`), feedback (`Alert`,
-  `Progress`, `Skeleton`), overlays (`Drawer`, `Popover`), data (`Card`, `Table`, `List`), media (`Avatar`, `Image`),
-  utilities (`Portal`, `FocusTrap`, `SortableList`, `VirtualList`), date & time (`Calendar`, `DatePicker`,
-  `DateRangePicker`, `TimePicker`), charts (`LineChart`, `AreaChart`, `BarChart`, `PieChart`), more data and media
-  (`DataGrid`, `Tree`, `Timeline`, `Video`, `Carousel`), and application blocks (`Navbar`, `Sidebar`, `AppShell`,
-  `Dashboard`, `StatCard`, `CommandPalette`, `NotificationCenter`).
-- Hooks: `useKeyboardShortcuts`, `useTimedToast`, `useEscapeKey`, `useDialogFocus`, `useLeaveWarning`, `useDocumentTitle(title, suffix)`.
+- Layout: `AppShell`, `AppBar`, `Navbar`, `Sidebar`, `PageLayout`, `PageHeader`, `Container`, `Flex`, `Stack`, `Grid`, `Card`, `Dashboard`, `Divider`, `Tabs`, `Breadcrumb`
+- Forms: `Button`, `Field`, `Input`, `Select`, `Checkbox`, `Radio`, `RadioGroup`, `Switch`, `Slider`, `DatePicker`, `DateRangePicker`, `TimePicker`, `FileUpload`
+- Data: `Table`, `DataGrid`, `List`, `SortableList`, `VirtualList`, `Tree`, `Pagination`, `Calendar`, `Carousel`, `Timeline`, `Stepper`, `StatCard`, and charts (`LineChart`, `AreaChart`, `BarChart`, `PieChart`)
+- Feedback and overlays: `Alert`, `Toast`, `Tooltip`, `Modal`, `ConfirmDialog`, `Drawer`, `Popover`, `ActionMenu`, `CommandPalette`, `NotificationCenter`, `Progress`, `Skeleton`, `FanFavicon`, `LoadingScreen`, `RackServer`
+- Media and utilities: `Avatar`, `Image`, `Video`, `Portal`, `FocusTrap`, `ThemeToggle`, plus 14 icons
+- Hooks: `useTimedToast`, `useEscapeKey`, `useDialogFocus`, `useDismissable`, `useFlipAlign`, `useKeyboardShortcuts`, `useLeaveWarning`, `useDocumentTitle(title, suffix)`.
 - Theme: `ThemeProvider`, `useTheme`, `useAppTheme`, `buildFaviconHref`.
 
 `AppBar` has no router dependency. For react-router pass `linkComponent={Link} linkProp="to"`.
@@ -63,7 +59,7 @@ Overlay z-indexes can be overridden with `--xd-z-modal`, `--xd-z-toast`, `--xd-z
 ## Develop
 
 ```bash
-yarn dev     # playground at http://localhost:3100
+yarn dev     # playground (every component, tabbed) at http://localhost:3100
 yarn build   # dist/ (ESM, CJS, .d.ts, styles.css)
 ```
 

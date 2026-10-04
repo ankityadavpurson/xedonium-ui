@@ -4,7 +4,16 @@ import { useState } from 'react'
  * Windowed list for large datasets: only the visible rows (plus `overscan`) are rendered.
  * Rows must have a fixed `itemHeight` (px). `renderItem(item, index)` renders a row; `getKey(item, index)` keys it.
  */
-const VirtualList = ({ items, itemHeight, height = 320, overscan = 4, renderItem, getKey, label = 'List', className = '' }) => {
+const VirtualList = ({
+	items,
+	itemHeight,
+	height = 320,
+	overscan = 4,
+	renderItem,
+	getKey,
+	label = 'List',
+	className = '',
+}) => {
 	const [scrollTop, setScrollTop] = useState(0)
 	const start = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan)
 	const end = Math.min(items.length, Math.ceil((scrollTop + height) / itemHeight) + overscan)
