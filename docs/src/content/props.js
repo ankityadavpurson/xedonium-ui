@@ -81,7 +81,7 @@ const props = {
 	// Inputs
 	button: {
 		Button: [
-			['variant', "'default' | 'secondary' | 'danger' | 'warning'", "'default'", 'Visual style.'],
+			['variant', "'default' | 'secondary' | 'success' | 'danger' | 'warning'", "'default'", 'Visual style.'],
 			['tooltip', 'string', '', 'Shows a styled Tooltip (use instead of the native `title`).'],
 			['tooltipPlacement', 'string', "'bottom'", 'Tooltip placement (see Tooltip).'],
 			['onClick', '(event) => void', '', 'Click handler.'],

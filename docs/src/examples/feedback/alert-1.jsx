@@ -3,7 +3,7 @@ import { Alert, Button, Stack } from 'xedonium'
 
 const TONES = [
 	{ tone: 'info', variant: 'secondary', title: 'Heads up', text: 'Something you should know.' },
-	{ tone: 'success', variant: 'default', title: 'Saved', text: 'Your changes were saved.' },
+	{ tone: 'success', variant: 'success', title: 'Saved', text: 'Your changes were saved.' },
 	{ tone: 'warning', variant: 'warning', title: 'Careful', text: 'This cannot be undone.' },
 	{ tone: 'danger', variant: 'danger', title: 'Failed', text: 'Could not reach the server.' },
 ]

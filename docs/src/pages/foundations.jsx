@@ -1,5 +1,5 @@
 import * as Xedonium from 'xedonium'
-import { Flex, Stack, Table } from 'xedonium'
+import { Flex, Table } from 'xedonium'
 import CodeBlock from '../components/CodeBlock'
 import { Code } from '../components/Markdown'
 import Markdown from '../components/Markdown'
@@ -68,18 +68,52 @@ const ColorsPage = () => (
 	</Page>
 )
 
+// Each style: preview markup plus the exact JSX to copy
+const TYPE_STYLES = [
+	{
+		name: 'Page title',
+		code: '<h1 className="text-2xl font-bold tracking-tight text-app-text sm:text-3xl">Page title</h1>',
+		preview: <h1 className="m-0 text-2xl font-bold tracking-tight text-app-text sm:text-3xl">Page title</h1>,
+	},
+	{
+		name: 'Body',
+		code: '<p className="text-sm text-app-text">Body text uses text-sm and the app-text color.</p>',
+		preview: <p className="m-0 text-sm text-app-text">Body text uses text-sm and the app-text color.</p>,
+	},
+	{
+		name: 'Helper text',
+		code: '<p className="text-xs text-app-muted">Helper text uses text-xs and app-muted.</p>',
+		preview: <p className="m-0 text-xs text-app-muted">Helper text uses text-xs and app-muted.</p>,
+	},
+	{
+		name: 'Label',
+		code: '<span className="text-xs font-semibold uppercase tracking-widest text-app-muted">Label</span>',
+		preview: <span className="text-xs font-semibold uppercase tracking-widest text-app-muted">Label</span>,
+	},
+	{
+		name: 'Link',
+		code: '<a href="#" className="text-sm text-app-text underline underline-offset-2 hover:text-app-strong">Link</a>',
+		preview: (
+			<a href="#" className="text-sm text-app-text underline underline-offset-2 hover:text-app-strong">
+				Link
+			</a>
+		),
+	},
+]
+
 const TypographyPage = () => (
 	<Page title="Typography" subtitle="Type scale">
 		<Markdown>
 			The library inherits your font family. Labels use small, bold, uppercase, widely tracked text; body text is
-			`text-sm`.
+			`text-sm`. Copy the markup for any style below.
 		</Markdown>
-		<Stack gap={3}>
-			<h1 className="m-0 text-2xl font-bold tracking-tight text-app-text sm:text-3xl">Page title</h1>
-			<p className="m-0 text-sm text-app-text">Body text uses text-sm and the app-text color.</p>
-			<p className="m-0 text-xs text-app-muted">Helper text uses text-xs and app-muted.</p>
-			<span className="text-xs font-semibold uppercase tracking-widest text-app-muted">Label</span>
-		</Stack>
+		{TYPE_STYLES.map(({ name, code, preview }) => (
+			<section key={name} className="flex flex-col gap-2">
+				<H2>{name}</H2>
+				<div className="border border-app-border bg-app-bg p-4">{preview}</div>
+				<CodeBlock code={code} />
+			</section>
+		))}
 	</Page>
 )
 

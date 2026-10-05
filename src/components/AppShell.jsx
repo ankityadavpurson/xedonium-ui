@@ -24,7 +24,7 @@ const AppShell = ({ header, sidebar, sidebarTitle = 'Menu', children, className 
 	const sidebarNode = typeof sidebar === 'function' ? sidebar(close) : sidebar
 
 	return (
-		<div className={`flex h-screen flex-col bg-app-bg text-app-text ${className}`}>
+		<div className={`relative flex h-screen flex-col overflow-hidden bg-app-bg text-app-text ${className}`}>
 			<header className="flex shrink-0 items-center gap-3 border-b border-app-border bg-app-card px-4 py-2">
 				{sidebar && (
 					<span className="md:hidden">
@@ -37,7 +37,7 @@ const AppShell = ({ header, sidebar, sidebarTitle = 'Menu', children, className 
 			</header>
 			<div className="flex min-h-0 flex-1">
 				{sidebar && <aside className="hidden shrink-0 md:block">{sidebarNode}</aside>}
-				<main className="min-w-0 flex-1 overflow-y-auto p-4 sm:p-6">{children}</main>
+				<main className="relative min-w-0 flex-1 overflow-y-auto p-4 sm:p-6">{children}</main>
 			</div>
 			{sidebar && (
 				<Drawer open={open} onClose={close} title={sidebarTitle} side="left" width="max-w-xs" padded={false}>
