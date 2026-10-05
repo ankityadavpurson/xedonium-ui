@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
-import { Breadcrumb, PageHeader, useDocumentTitle } from 'xedonium'
+import { Breadcrumb, Label, PageHeader, useDocumentTitle } from 'xedonium'
 import Example from '../components/Example'
 import Markdown from '../components/Markdown'
 import PropsTable from '../components/PropsTable'
@@ -52,7 +52,7 @@ const ComponentPage = () => {
 			)}
 			{props && (
 				<section className="flex flex-col gap-3">
-					<h2 className="m-0 text-xs font-semibold uppercase tracking-widest text-app-muted">Props</h2>
+					<Label as="h2">Props</Label>
 					<PropsTable groups={props} />
 				</section>
 			)}

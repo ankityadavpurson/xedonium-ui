@@ -1,4 +1,4 @@
-import { PageHeader, useDocumentTitle } from 'xedonium'
+import { Label, PageHeader, useDocumentTitle } from 'xedonium'
 
 // Shared wrapper for the hand-written guide pages
 const Page = ({ title, subtitle, children }) => {
@@ -12,7 +12,9 @@ const Page = ({ title, subtitle, children }) => {
 }
 
 export const H2 = ({ children }) => (
-	<h2 className="m-0 mt-2 text-xs font-semibold uppercase tracking-widest text-app-muted">{children}</h2>
+	<Label as="h2" className="mt-2">
+		{children}
+	</Label>
 )
 
 export default Page

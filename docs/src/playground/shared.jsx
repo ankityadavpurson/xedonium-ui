@@ -1,6 +1,8 @@
+import { Label } from 'xedonium'
+
 export const Section = ({ title, children, className = '' }) => (
 	<section className="flex flex-col gap-3 border border-app-border bg-app-card p-5">
-		<h2 className="text-xs font-semibold uppercase tracking-widest text-app-muted">{title}</h2>
+		<Label as="h2">{title}</Label>
 		<div className={`flex flex-wrap items-center gap-3 ${className}`}>{children}</div>
 	</section>
 )

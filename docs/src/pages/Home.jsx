@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Button, Card, Grid, RackServer, useDocumentTitle } from 'xedonium'
+import { Button, Card, Grid, Label, RackServer, useDocumentTitle } from 'xedonium'
 import { categories, pages } from '../content'
 
 const Home = () => {
@@ -23,9 +23,7 @@ const Home = () => {
 				</div>
 			</section>
 			<section className="flex flex-col gap-4">
-				<h2 className="m-0 text-xs font-semibold uppercase tracking-widest text-app-muted">
-					{pages.length} components
-				</h2>
+				<Label as="h2">{pages.length} components</Label>
 				<Grid cols={3} gap={4}>
 					{categories.map(category => (
 						<Link key={category.slug} to={`/components/${category.slug}`} className="block">
