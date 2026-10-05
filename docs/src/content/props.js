@@ -78,6 +78,29 @@ const props = {
 		],
 	},
 
+	// Typography
+	'page-title': {
+		PageTitle: [['as', 'ElementType', "'h1'", 'Element to render.'], className, children, rest],
+	},
+	'body-text': {
+		BodyText: [['as', 'ElementType', "'p'", 'Element to render.'], className, children, rest],
+	},
+	'helper-text': {
+		HelperText: [['as', 'ElementType', "'p'", 'Element to render.'], className, children, rest],
+	},
+	label: {
+		Label: [
+			['htmlFor', 'string', '', 'id of the control this labels; renders a <label> when set.'],
+			['as', 'ElementType', '', 'Element to render (default: label with htmlFor, otherwise span).'],
+			className,
+			children,
+			rest,
+		],
+	},
+	'text-link': {
+		TextLink: [['href', 'string', '', 'Link destination.'], ...link, className, children, rest],
+	},
+
 	// Inputs
 	button: {
 		Button: [

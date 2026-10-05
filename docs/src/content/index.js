@@ -9,6 +9,7 @@ import media from './media'
 import navigation from './navigation'
 import overlay from './overlay'
 import props from './props'
+import typography from './typography'
 import utilities from './utilities'
 
 // Demo components and their source text, keyed by path, e.g. "../examples/inputs/select-1.jsx"
@@ -17,6 +18,7 @@ const sources = import.meta.glob('../examples/**/*.jsx', { query: '?raw', import
 
 export const categories = [
 	layout,
+	typography,
 	inputs,
 	navigation,
 	feedback,

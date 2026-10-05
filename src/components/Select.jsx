@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import useDismissable from '../hooks/useDismissable'
 import FloatingPanel from './FloatingPanel'
+import Label from './Label'
 import inputClass from './inputClass'
 
 const Chevron = ({ open }) => (
@@ -130,9 +131,9 @@ const Select = ({
 	return (
 		<div ref={rootRef} className="relative flex flex-col gap-1">
 			{label && (
-				<label id={labelId} htmlFor={id} className="text-xs font-semibold uppercase tracking-widest text-app-muted">
+				<Label id={labelId} htmlFor={id}>
 					{label}
-				</label>
+				</Label>
 			)}
 			<button
 				ref={buttonRef}

@@ -1,4 +1,5 @@
 import { useId } from 'react'
+import Label from './Label'
 
 const Field = ({
 	label,
@@ -16,9 +17,7 @@ const Field = ({
 
 	return (
 		<div className="flex flex-col gap-1">
-			<label htmlFor={id} className="text-xs font-semibold uppercase tracking-widest text-app-muted">
-				{label}
-			</label>
+			<Label htmlFor={id}>{label}</Label>
 			<input
 				id={id}
 				type={type}

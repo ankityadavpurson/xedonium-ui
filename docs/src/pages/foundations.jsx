@@ -1,5 +1,6 @@
 import * as Xedonium from 'xedonium'
-import { Flex, Table } from 'xedonium'
+import { Link } from 'react-router-dom'
+import { BodyText, Flex, HelperText, Label, PageTitle, Table, TextLink } from 'xedonium'
 import CodeBlock from '../components/CodeBlock'
 import { Code } from '../components/Markdown'
 import Markdown from '../components/Markdown'
@@ -68,48 +69,53 @@ const ColorsPage = () => (
 	</Page>
 )
 
-// Each style: preview markup plus the exact JSX to copy
+// Each style is a library component: preview, the JSX to copy, and the page that documents it
 const TYPE_STYLES = [
 	{
 		name: 'Page title',
-		code: '<h1 className="text-2xl font-bold tracking-tight text-app-text sm:text-3xl">Page title</h1>',
-		preview: <h1 className="m-0 text-2xl font-bold tracking-tight text-app-text sm:text-3xl">Page title</h1>,
+		to: '/components/typography/page-title',
+		code: '<PageTitle>Page title</PageTitle>',
+		preview: <PageTitle>Page title</PageTitle>,
 	},
 	{
 		name: 'Body',
-		code: '<p className="text-sm text-app-text">Body text uses text-sm and the app-text color.</p>',
-		preview: <p className="m-0 text-sm text-app-text">Body text uses text-sm and the app-text color.</p>,
+		to: '/components/typography/body-text',
+		code: '<BodyText>Body text uses text-sm and the app-text color.</BodyText>',
+		preview: <BodyText>Body text uses text-sm and the app-text color.</BodyText>,
 	},
 	{
 		name: 'Helper text',
-		code: '<p className="text-xs text-app-muted">Helper text uses text-xs and app-muted.</p>',
-		preview: <p className="m-0 text-xs text-app-muted">Helper text uses text-xs and app-muted.</p>,
+		to: '/components/typography/helper-text',
+		code: '<HelperText>Helper text uses text-xs and app-muted.</HelperText>',
+		preview: <HelperText>Helper text uses text-xs and app-muted.</HelperText>,
 	},
 	{
 		name: 'Label',
-		code: '<span className="text-xs font-semibold uppercase tracking-widest text-app-muted">Label</span>',
-		preview: <span className="text-xs font-semibold uppercase tracking-widest text-app-muted">Label</span>,
+		to: '/components/typography/label',
+		code: '<Label>Label</Label>',
+		preview: <Label>Label</Label>,
 	},
 	{
 		name: 'Link',
-		code: '<a href="#" className="text-sm text-app-text underline underline-offset-2 hover:text-app-strong">Link</a>',
-		preview: (
-			<a href="#" className="text-sm text-app-text underline underline-offset-2 hover:text-app-strong">
-				Link
-			</a>
-		),
+		to: '/components/typography/text-link',
+		code: '<TextLink href="#">Link</TextLink>',
+		preview: <TextLink href="#">Link</TextLink>,
 	},
 ]
 
 const TypographyPage = () => (
 	<Page title="Typography" subtitle="Type scale">
 		<Markdown>
-			The library inherits your font family. Labels use small, bold, uppercase, widely tracked text; body text is
-			`text-sm`. Copy the markup for any style below.
+			The library inherits your font family. Each text style below is a component; click a name for its props and
+			examples, or copy the markup.
 		</Markdown>
-		{TYPE_STYLES.map(({ name, code, preview }) => (
+		{TYPE_STYLES.map(({ name, to, code, preview }) => (
 			<section key={name} className="flex flex-col gap-2">
-				<H2>{name}</H2>
+				<H2>
+					<Link to={to} className="underline-offset-2 hover:underline">
+						{name}
+					</Link>
+				</H2>
 				<div className="border border-app-border bg-app-bg p-4">{preview}</div>
 				<CodeBlock code={code} />
 			</section>
