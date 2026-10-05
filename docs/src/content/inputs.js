@@ -44,7 +44,7 @@ export default {
 			name: 'Select',
 			blocks: [
 				{
-					md: 'Native `<select>` with `options: [{ value, label, disabled? }]`, optional `placeholder` and `error`.',
+					md: 'Themed select with a listbox panel that is never clipped by its container. `options: [{ value, label, disabled? }]`, optional `placeholder` and `error`. Keyboard: Up / Down / Home / End move, Enter or Space picks, Escape closes, and typing jumps to a match.',
 				},
 				{
 					example: 1,

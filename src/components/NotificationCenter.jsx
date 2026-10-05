@@ -1,7 +1,7 @@
 import { useId, useRef, useState } from 'react'
 import useDismissable from '../hooks/useDismissable'
-import useFlipAlign from '../hooks/useFlipAlign'
 import Button from './Button'
+import FloatingPanel from './FloatingPanel'
 
 const BellIcon = () => (
 	<svg
@@ -38,11 +38,10 @@ const NotificationCenter = ({
 	const [open, setOpen] = useState(false)
 	const rootRef = useRef(null)
 	const panelRef = useRef(null)
-	const side = useFlipAlign(open, panelRef, align)
 	const panelId = useId()
 	const unread = notifications.filter(n => !n.read).length
 
-	useDismissable(open, rootRef, reason => {
+	useDismissable(open, [rootRef, panelRef], reason => {
 		setOpen(false)
 		if (reason === 'escape') rootRef.current?.querySelector('button')?.focus()
 	})
@@ -69,74 +68,73 @@ const NotificationCenter = ({
 					)}
 				</span>
 			</Button>
-			{open && (
-				<div
-					ref={panelRef}
-					id={panelId}
-					role="dialog"
-					aria-label="Notifications"
-					className={`absolute top-full z-[var(--xd-z-tooltip,70)] mt-1 flex max-h-96 w-80 max-w-[calc(100vw-2rem)] flex-col border border-app-border bg-app-card shadow-xl ${
-						side === 'end' ? 'right-0' : 'left-0'
-					}`}
-				>
-					<div className="flex items-center justify-between gap-2 border-b border-app-border px-4 py-2.5">
-						<span className="text-xs font-semibold uppercase tracking-widest text-app-text">Notifications</span>
-						<span className="flex gap-3 text-xs">
-							{onMarkAllRead && unread > 0 && (
-								<button
-									type="button"
-									onClick={onMarkAllRead}
-									className="text-app-muted underline underline-offset-2 hover:text-app-text"
-								>
-									Mark all read
-								</button>
-							)}
-							{onClear && notifications.length > 0 && (
-								<button
-									type="button"
-									onClick={onClear}
-									className="text-app-muted underline underline-offset-2 hover:text-app-text"
-								>
-									Clear
-								</button>
-							)}
-						</span>
-					</div>
-					{notifications.length === 0 ? (
-						<p className="m-0 px-4 py-8 text-center text-sm text-app-muted">{empty}</p>
-					) : (
-						<ul className="m-0 flex-1 list-none overflow-y-auto p-0">
-							{notifications.map(n => (
-								<li key={n.id} className="border-b border-app-border last:border-b-0">
-									<button
-										type="button"
-										onClick={() => {
-											if (!n.read) onMarkRead?.(n.id)
-											onSelect?.(n)
-										}}
-										className="flex w-full items-start gap-3 px-4 py-3 text-left transition hover:bg-app-bg"
-									>
-										<span
-											aria-hidden="true"
-											className={`mt-1.5 h-2 w-2 shrink-0 ${n.read ? 'bg-transparent' : 'bg-red-500'}`}
-										/>
-										<span className="min-w-0 flex-1">
-											<span className={`block text-sm text-app-text ${n.read ? '' : 'font-semibold'}`}>{n.title}</span>
-											{n.body && <span className="block text-xs text-app-muted">{n.body}</span>}
-											{n.time && (
-												<span className="mt-0.5 block text-[10px] uppercase tracking-widest text-app-muted">
-													{n.time}
-												</span>
-											)}
-										</span>
-										{!n.read && <span className="sr-only">Unread</span>}
-									</button>
-								</li>
-							))}
-						</ul>
-					)}
+			<FloatingPanel
+				open={open}
+				anchorRef={rootRef}
+				panelRef={panelRef}
+				placement={`bottom-${align}`}
+				id={panelId}
+				role="dialog"
+				aria-label="Notifications"
+				className="flex max-h-96 w-80 max-w-[calc(100vw-1rem)] flex-col border border-app-border bg-app-card shadow-xl"
+			>
+				<div className="flex items-center justify-between gap-2 border-b border-app-border px-4 py-2.5">
+					<span className="text-xs font-semibold uppercase tracking-widest text-app-text">Notifications</span>
+					<span className="flex gap-3 text-xs">
+						{onMarkAllRead && unread > 0 && (
+							<button
+								type="button"
+								onClick={onMarkAllRead}
+								className="text-app-muted underline underline-offset-2 hover:text-app-text"
+							>
+								Mark all read
+							</button>
+						)}
+						{onClear && notifications.length > 0 && (
+							<button
+								type="button"
+								onClick={onClear}
+								className="text-app-muted underline underline-offset-2 hover:text-app-text"
+							>
+								Clear
+							</button>
+						)}
+					</span>
 				</div>
-			)}
+				{notifications.length === 0 ? (
+					<p className="m-0 px-4 py-8 text-center text-sm text-app-muted">{empty}</p>
+				) : (
+					<ul className="m-0 flex-1 list-none overflow-y-auto p-0">
+						{notifications.map(n => (
+							<li key={n.id} className="border-b border-app-border last:border-b-0">
+								<button
+									type="button"
+									onClick={() => {
+										if (!n.read) onMarkRead?.(n.id)
+										onSelect?.(n)
+									}}
+									className="flex w-full items-start gap-3 px-4 py-3 text-left transition hover:bg-app-bg"
+								>
+									<span
+										aria-hidden="true"
+										className={`mt-1.5 h-2 w-2 shrink-0 ${n.read ? 'bg-transparent' : 'bg-red-500'}`}
+									/>
+									<span className="min-w-0 flex-1">
+										<span className={`block text-sm text-app-text ${n.read ? '' : 'font-semibold'}`}>{n.title}</span>
+										{n.body && <span className="block text-xs text-app-muted">{n.body}</span>}
+										{n.time && (
+											<span className="mt-0.5 block text-[10px] uppercase tracking-widest text-app-muted">
+												{n.time}
+											</span>
+										)}
+									</span>
+									{!n.read && <span className="sr-only">Unread</span>}
+								</button>
+							</li>
+						))}
+					</ul>
+				)}
+			</FloatingPanel>
 		</div>
 	)
 }

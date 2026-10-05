@@ -6,7 +6,7 @@ const Home = () => {
 	useDocumentTitle('Xedonium')
 	return (
 		<div className="flex flex-col gap-10">
-			<section className="flex flex-col items-start gap-4 py-6">
+			<section className="flex flex-col items-center gap-4 py-6">
 				<RackServer />
 				<h1 className="m-0 text-3xl font-bold tracking-tight text-app-text sm:text-4xl">Xedonium</h1>
 				<p className="m-0 max-w-xl text-base text-app-text">

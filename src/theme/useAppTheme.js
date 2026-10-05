@@ -4,7 +4,7 @@ import { buildFaviconHref } from './favicon'
 import { getStoredThemeOverride, getSystemTheme } from './systemTheme'
 
 // Tracks the OS theme plus a user override (persisted), mirrors the result to <html data-theme>,
-// and swaps the favicon when `favicon` is true and a <link rel="icon"> exists.
+// and, when `favicon` is true, sets the fan favicon for the active theme (adding the <link rel="icon"> if missing).
 const useAppTheme = ({ storageKey = DEFAULT_THEME_STORAGE_KEY, favicon = true, faviconTitle = '' } = {}) => {
 	const [systemTheme, setSystemTheme] = useState(getSystemTheme)
 	const [themeOverride, setThemeOverride] = useState(() => getStoredThemeOverride(storageKey))
@@ -33,8 +33,16 @@ const useAppTheme = ({ storageKey = DEFAULT_THEME_STORAGE_KEY, favicon = true, f
 		document.documentElement.setAttribute('data-theme', activeTheme)
 		if (!favicon) return
 
-		const link = document.getElementById('app-favicon') || document.querySelector("link[rel='icon']")
-		if (link) link.setAttribute('href', buildFaviconHref(activeTheme, faviconTitle))
+		// Create the <link> when the page has none, so the fan icon works without any index.html setup
+		let link = document.getElementById('app-favicon') || document.querySelector("link[rel~='icon']")
+		if (!link) {
+			link = document.createElement('link')
+			link.id = 'app-favicon'
+			link.rel = 'icon'
+			document.head.appendChild(link)
+		}
+		link.setAttribute('type', 'image/svg+xml')
+		link.setAttribute('href', buildFaviconHref(activeTheme, faviconTitle))
 	}, [activeTheme, favicon, faviconTitle])
 
 	const toggleTheme = () => setThemeOverride(current => ((current || systemTheme) === 'dark' ? 'light' : 'dark'))

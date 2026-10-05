@@ -1,6 +1,6 @@
 import { useId } from 'react'
 
-/** Range input. `onChange` receives a number. */
+/** Range input with a square thumb and a filled track (styled in styles.css). `onChange` receives a number. */
 const Slider = ({
 	label,
 	value,
@@ -13,6 +13,8 @@ const Slider = ({
 	...rest
 }) => {
 	const id = useId()
+	const span = max - min
+	const fill = span > 0 ? Math.min(100, Math.max(0, ((value - min) / span) * 100)) : 0
 	return (
 		<div className={`flex flex-col gap-1 ${className}`}>
 			{(label || showValue) && (
@@ -29,7 +31,8 @@ const Slider = ({
 				step={step}
 				value={value}
 				onChange={e => onChange?.(Number(e.target.value))}
-				className="w-full cursor-pointer accent-[rgb(var(--color-app-strong))]"
+				style={{ '--xd-fill': `${fill}%` }}
+				className="xd-slider w-full"
 				{...rest}
 			/>
 		</div>

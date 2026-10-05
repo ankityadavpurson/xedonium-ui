@@ -62,7 +62,7 @@ const ColorsPage = () => (
 		/>
 		<Markdown>
 			{
-				'Other tokens: `--xd-z-modal` (80), `--xd-z-toast` (90) and `--xd-z-tooltip` (70) control overlay stacking, and the preset adds the `fade-up` and `indeterminate` animations.'
+				'Other tokens: `--xd-z-modal` (80), `--xd-z-popover` (85, menus, pickers, popovers), `--xd-z-toast` (90) and `--xd-z-tooltip` (100) control overlay stacking, and the preset adds the `fade-up` and `indeterminate` animations.'
 			}
 		</Markdown>
 	</Page>

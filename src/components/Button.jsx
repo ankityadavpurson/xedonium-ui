@@ -1,10 +1,11 @@
 import Tooltip from './Tooltip'
 
-// `tooltip` shows a styled Tooltip (used instead of the native `title` attribute)
+// `tooltip` shows a styled Tooltip (used instead of the native `title` attribute); `tooltipPlacement` is its placement
 const Button = props => {
 	const {
 		onClick,
 		tooltip,
+		tooltipPlacement,
 		variant = 'default',
 		className = '',
 		children,
@@ -32,7 +33,13 @@ const Button = props => {
 		</button>
 	)
 
-	return tooltip ? <Tooltip text={tooltip}>{button}</Tooltip> : button
+	return tooltip ? (
+		<Tooltip text={tooltip} placement={tooltipPlacement}>
+			{button}
+		</Tooltip>
+	) : (
+		button
+	)
 }
 
 export default Button

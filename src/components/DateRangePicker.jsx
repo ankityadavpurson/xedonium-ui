@@ -2,6 +2,7 @@ import { useId, useRef, useState } from 'react'
 import useDismissable from '../hooks/useDismissable'
 import { formatDate, isBefore } from '../utils/date'
 import Calendar from './Calendar'
+import FloatingPanel from './FloatingPanel'
 import inputClass from './inputClass'
 
 /**
@@ -23,6 +24,8 @@ const DateRangePicker = ({
 	// Pending start while the user is choosing the end date
 	const [pending, setPending] = useState(null)
 	const rootRef = useRef(null)
+	const buttonRef = useRef(null)
+	const panelRef = useRef(null)
 	const id = useId()
 	const errorId = `${id}-error`
 
@@ -30,7 +33,7 @@ const DateRangePicker = ({
 		setOpen(false)
 		setPending(null)
 	}
-	useDismissable(open, rootRef, reason => {
+	useDismissable(open, [rootRef, panelRef], reason => {
 		close()
 		if (reason === 'escape') rootRef.current?.querySelector('button')?.focus()
 	})
@@ -59,6 +62,7 @@ const DateRangePicker = ({
 				</label>
 			)}
 			<button
+				ref={buttonRef}
 				id={id}
 				type="button"
 				aria-haspopup="dialog"
@@ -70,23 +74,25 @@ const DateRangePicker = ({
 			>
 				{text || placeholder}
 			</button>
-			{open && (
-				<div
-					role="dialog"
-					aria-label="Choose date range"
-					className="absolute left-0 top-full z-[var(--xd-z-tooltip,70)] mt-1 shadow-xl"
-				>
-					<Calendar
-						rangeStart={pending ?? value?.start}
-						rangeEnd={pending ? null : value?.end}
-						min={min}
-						max={max}
-						locale={locale}
-						weekStartsOn={weekStartsOn}
-						onChange={pick}
-					/>
-				</div>
-			)}
+			<FloatingPanel
+				open={open}
+				anchorRef={buttonRef}
+				panelRef={panelRef}
+				placement="bottom-start"
+				role="dialog"
+				aria-label="Choose date range"
+				className="shadow-xl"
+			>
+				<Calendar
+					rangeStart={pending ?? value?.start}
+					rangeEnd={pending ? null : value?.end}
+					min={min}
+					max={max}
+					locale={locale}
+					weekStartsOn={weekStartsOn}
+					onChange={pick}
+				/>
+			</FloatingPanel>
 			{error && (
 				<span id={errorId} className="text-xs text-red-700 dark:text-red-400">
 					{error}

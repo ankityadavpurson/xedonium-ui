@@ -2,3 +2,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Code token colors (see components/highlight.jsx) */
+:root {
+	--tok-comment: #6b7280;
+	--tok-string: #0b7a4b;
+	--tok-keyword: #9b2fae;
+	--tok-tag: #1d4ed8;
+	--tok-attr: #b45309;
+	--tok-number: #b91c1c;
+	--tok-fn: #0e7490;
+}
+
+html[data-theme='dark'] {
+	--tok-comment: #8d8d96;
+	--tok-string: #86d9a0;
+	--tok-keyword: #d6a0ff;
+	--tok-tag: #7cb7ff;
+	--tok-attr: #f0b866;
+	--tok-number: #ff9e9e;
+	--tok-fn: #67d4e8;
+}
+
+.tok-comment {
+	color: var(--tok-comment);
+	font-style: italic;
+}
+.tok-string {
+	color: var(--tok-string);
+}
+.tok-keyword {
+	color: var(--tok-keyword);
+}
+.tok-tag {
+	color: var(--tok-tag);
+}
+.tok-attr {
+	color: var(--tok-attr);
+}
+.tok-number {
+	color: var(--tok-number);
+}
+.tok-fn {
+	color: var(--tok-fn);
+}

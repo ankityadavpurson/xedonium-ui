@@ -25,7 +25,7 @@ const sourceProps = name => {
 	const file = path.join(root, 'src/components', `${name}.jsx`)
 	if (!fs.existsSync(file)) return null
 	const text = fs.readFileSync(file, 'utf8')
-	const match = text.match(/=\s*(?:forwardRef\()?\(\{([\s\S]*?)\}\)\s*=>/)
+	const match = text.match(new RegExp(String.raw`const ${name} =\s*(?:forwardRef\()?\(\{([\s\S]*?)\}\)\s*=>`))
 	if (!match) return null
 	return match[1]
 		.split(/,(?![^{[(]*[}\])])/)

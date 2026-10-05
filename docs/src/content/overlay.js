@@ -8,6 +8,9 @@ export default {
 			name: 'Tooltip',
 			blocks: [
 				{
+					md: 'Shows on hover and keyboard focus. `placement` is `top`, `bottom`, `left`, `right` or `auto` (best fit), optionally with `-start` / `-end`; it flips when there is no room. On a `Button`, use `tooltip` and `tooltipPlacement`.',
+				},
+				{
 					example: 1,
 				},
 			],
@@ -45,6 +48,12 @@ export default {
 				},
 				{
 					example: 1,
+				},
+				{
+					md: '**Never clipped.** `Popover`, `ActionMenu`, `Select`, `DatePicker`, `DateRangePicker`, `TimePicker` and `NotificationCenter` render their panels into the page body, so containers with `overflow: hidden` or scrolling cannot cut them off. They flip to the other side when there is no room, and `placement` chooses where they open.',
+				},
+				{
+					example: 2,
 				},
 			],
 		},

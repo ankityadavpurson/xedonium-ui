@@ -41,10 +41,13 @@ export default {
 			name: 'TimePicker',
 			blocks: [
 				{
-					md: 'Wraps the native time control, so it gets the platform\'s picker. Values are `"HH:MM"` strings; `step` is in seconds.',
+					md: 'Themed hour and minute columns (no native control). Values are 24-hour `"HH:MM"` strings; `step` is the minute granularity in seconds, `min` / `max` disable times outside a range, and `hour12` shows an AM / PM clock. Arrow keys move within a column and between columns.',
 				},
 				{
 					example: 1,
+				},
+				{
+					example: 2,
 				},
 			],
 		},

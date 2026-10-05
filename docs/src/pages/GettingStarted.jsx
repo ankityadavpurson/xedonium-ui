@@ -26,7 +26,7 @@ const provider = `import { ThemeProvider, AppBar, PageLayout, Button } from 'xed
 const GettingStarted = () => (
 	<Page title="Getting started" subtitle="Install and set up">
 		<H2>Install</H2>
-		<CodeBlock code={install} />
+		<CodeBlock code={install} lang="bash" />
 		<H2>1. Tailwind</H2>
 		<Markdown>{"Use the preset and scan the library's files so its classes are generated:"}</Markdown>
 		<CodeBlock code={tailwind} />

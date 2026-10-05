@@ -55,7 +55,7 @@ import { ThemeProvider, AppBar, PageLayout, Button } from 'xedonium'
 
 `AppBar` has no router dependency. For react-router pass `linkComponent={Link} linkProp="to"`.
 
-Overlay z-indexes can be overridden with `--xd-z-modal`, `--xd-z-toast`, `--xd-z-tooltip`.
+Overlay z-indexes can be overridden with `--xd-z-modal`, `--xd-z-popover`, `--xd-z-toast`, `--xd-z-tooltip`.
 
 ## Develop
 

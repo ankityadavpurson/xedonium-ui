@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { highlight } from './highlight'
 
 // Clipboard API needs a secure, focused document; fall back to a hidden textarea + execCommand otherwise
 const copyText = async text => {
@@ -48,12 +49,12 @@ export const CopyButton = ({ text, className = '' }) => {
 	)
 }
 
-/** Preformatted code with a copy button. */
-const CodeBlock = ({ code, className = '' }) => (
+/** Syntax-highlighted code with a copy button. `lang` is js (default, also JSX) or bash. */
+const CodeBlock = ({ code, lang = 'js', className = '' }) => (
 	<div className={`relative border border-app-border bg-app-card ${className}`}>
 		<CopyButton text={code} className="absolute right-2 top-2" />
 		<pre className="m-0 overflow-x-auto p-4 pr-20 text-xs leading-relaxed text-app-text">
-			<code>{code.trim()}</code>
+			<code>{highlight(code.trim(), lang)}</code>
 		</pre>
 	</div>
 )

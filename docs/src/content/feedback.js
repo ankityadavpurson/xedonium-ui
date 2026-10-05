@@ -41,7 +41,7 @@ export default {
 			name: 'Loaders',
 			blocks: [
 				{
-					md: '`LoadingScreen` is a full-screen loader. `FanFavicon` and `RackServer` are the animated pieces.',
+					md: '`FanFavicon` is the loader: a spinning fan that follows the theme. Pass `size` and a `label` when it is the only sign that something is loading. `LoadingScreen` centers it on a full page.',
 				},
 				{
 					example: 1,
