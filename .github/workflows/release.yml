@@ -1,7 +1,9 @@
-name: Publish to npm
+name: Release
 
-# Every push to main is scanned for conventional-commit prefixes since the last
-# v* tag and the version is bumped automatically:
+# One run per push to main. Docs deploy and npm publish run in parallel.
+#
+# npm version is bumped automatically from conventional-commit prefixes since
+# the last v* tag:
 #   major: "type!:" or "BREAKING CHANGE" in the commit
 #   minor: feat:
 #   patch: fix: bug: ui: style: perf: refactor:
@@ -11,18 +13,48 @@ on:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: write # push version commit + tag
-  id-token: write # npm provenance
-
-concurrency:
-  group: publish
-  cancel-in-progress: false
-
 jobs:
+  docs-build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn docs:check
+      - run: yarn docs:build # also writes dist/404.html so deep links work on Pages
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/dist
+
+  docs-deploy:
+    needs: docs-build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
   publish:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    permissions:
+      contents: write # push version commit + tag
+      id-token: write # npm provenance
+    concurrency:
+      group: publish
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
         with:
