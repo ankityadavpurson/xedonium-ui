@@ -1,6 +1,6 @@
 {
 	"name": "xedonium",
-	"version": "0.4.0",
+	"version": "0.5.0",
 	"description": "Minimal, theme-aware React + Tailwind UI components extracted from Boot Bridge",
 	"type": "module",
 	"license": "MIT",
