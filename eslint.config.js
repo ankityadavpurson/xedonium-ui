@@ -4,11 +4,14 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import globals from 'globals'
 
 export default [
-	{ ignores: ['dist', 'docs/dist'] },
+	{ ignores: ['dist', 'docs/dist', 'coverage'] },
 	js.configs.recommended,
 	{
-		files: ['src/**/*.{js,jsx}', 'docs/src/**/*.{js,jsx}'],
-		languageOptions: { globals: globals.browser, parserOptions: { ecmaFeatures: { jsx: true } } },
+		files: ['src/**/*.{js,jsx}', 'docs/src/**/*.{js,jsx}', 'test/**/*.{js,jsx}'],
+		languageOptions: {
+			globals: { ...globals.browser, ...globals.vitest },
+			parserOptions: { ecmaFeatures: { jsx: true } },
+		},
 		settings: { react: { version: 'detect' } },
 		plugins: { react, 'react-hooks': reactHooks },
 		rules: {

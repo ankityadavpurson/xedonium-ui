@@ -1,6 +1,7 @@
 name: Release
 
-# One run per push to main. Docs deploy and npm publish run in parallel.
+# One run per push to main: verify (lint, tests with 90% coverage, build) first,
+# then docs deploy and npm publish run in parallel.
 #
 # npm version is bumped automatically from conventional-commit prefixes since
 # the last v* tag:
@@ -14,7 +15,28 @@ on:
   workflow_dispatch:
 
 jobs:
+  verify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn lint
+      - run: yarn test:coverage # fails below 90% coverage (thresholds in vitest.config.js)
+      - run: yarn build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          if-no-files-found: error
+
   docs-build:
+    needs: verify
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -48,6 +70,7 @@ jobs:
         uses: actions/deploy-pages@v4
 
   publish:
+    needs: verify
     runs-on: ubuntu-latest
     permissions:
       contents: write # push version commit + tag
@@ -93,12 +116,12 @@ jobs:
           echo "Bump level: $LEVEL"
           echo "level=$LEVEL" >> "$GITHUB_OUTPUT"
 
-      - name: Install, lint, build
+      - name: Get built library
         if: steps.bump.outputs.level != 'none'
-        run: |
-          yarn install --frozen-lockfile
-          yarn lint
-          yarn build
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
 
       - name: Bump version
         if: steps.bump.outputs.level != 'none'
