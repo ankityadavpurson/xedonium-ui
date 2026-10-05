@@ -6,7 +6,7 @@ const Switch = ({ checked, onChange, label, disabled = false, className = '', ..
 		aria-checked={checked}
 		disabled={disabled}
 		onClick={() => onChange?.(!checked)}
-		className={`inline-flex items-center gap-2 text-sm text-app-text disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+		className={`inline-flex min-h-8 items-center gap-2 text-sm text-app-text disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
 		{...rest}
 	>
 		<span

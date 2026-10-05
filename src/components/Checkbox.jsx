@@ -16,7 +16,7 @@ const Checkbox = ({ label, checked, onChange, indeterminate = false, disabled = 
 	return (
 		<label
 			htmlFor={id}
-			className={`inline-flex items-center gap-2 align-middle text-sm leading-none text-app-text ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} ${className}`}
+			className={`inline-flex min-h-8 items-center gap-2 align-middle text-sm leading-none text-app-text ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} ${className}`}
 		>
 			<input
 				ref={ref}

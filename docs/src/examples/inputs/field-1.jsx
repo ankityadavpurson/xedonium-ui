@@ -4,7 +4,7 @@ import { Field } from 'xedonium'
 export default function Demo() {
 	const [name, setName] = useState('')
 	return (
-		<div className="w-72">
+		<div className="w-72 max-w-full">
 			<Field
 				label="Name"
 				value={name}

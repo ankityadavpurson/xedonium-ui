@@ -96,9 +96,9 @@ const App = () => {
 
 	const header = (
 		<div className="flex items-center gap-3">
-			<Link to="/" className="flex items-center gap-2 text-sm font-bold tracking-tight text-app-text">
+			<Link to="/" className="flex min-h-9 items-center gap-2 text-sm font-bold tracking-tight text-app-text">
 				<Logo />
-				Xedonium
+				<span className="hidden min-[360px]:inline">Xedonium</span>
 			</Link>
 			<span className="flex-1" />
 			<Button variant="secondary" onClick={() => setSearchOpen(true)} aria-label="Search the docs">
@@ -107,7 +107,7 @@ const App = () => {
 			<a
 				href="https://github.com/ankityadavpurson/xedonium-ui"
 				aria-label="Xedonium on GitHub"
-				className="flex h-9 w-9 items-center justify-center border border-app-border bg-app-bg text-app-soft transition hover:border-app-strong hover:text-app-text"
+				className="flex h-9 w-9 shrink-0 items-center justify-center border border-app-border bg-app-bg text-app-soft transition hover:border-app-strong hover:text-app-text"
 			>
 				<GitHubIcon />
 			</a>

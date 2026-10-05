@@ -12,7 +12,7 @@ const buildPages = (page, pageCount, siblings) => {
 }
 
 const itemClass = (active = false) =>
-	`min-w-[2.25rem] border px-2 py-1.5 text-xs font-semibold tracking-widest transition disabled:cursor-not-allowed disabled:opacity-50 ${
+	`min-h-9 min-w-9 border px-2 py-1.5 text-xs font-semibold tracking-widest transition disabled:cursor-not-allowed disabled:opacity-50 ${
 		active
 			? 'border-app-strong bg-app-strong text-app-bg'
 			: 'border-app-border bg-app-bg text-app-text hover:border-app-strong'

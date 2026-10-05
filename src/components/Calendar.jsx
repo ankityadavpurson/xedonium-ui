@@ -12,7 +12,7 @@ import {
 } from '../utils/date'
 
 const navButton =
-	'border border-app-border bg-app-bg px-2 py-1 text-xs font-semibold text-app-text transition hover:border-app-strong disabled:cursor-not-allowed disabled:opacity-50'
+	'min-h-8 min-w-8 border border-app-border bg-app-bg px-2 py-1 text-xs font-semibold text-app-text transition hover:border-app-strong disabled:cursor-not-allowed disabled:opacity-50'
 
 /**
  * Month calendar. `value` is a Date (or null); `onChange` receives the picked Date.
@@ -88,7 +88,7 @@ const Calendar = ({ value, onChange, rangeStart, rangeEnd, min, max, weekStartsO
 							<th
 								key={label}
 								scope="col"
-								className="h-8 w-9 text-[10px] font-semibold uppercase tracking-widest text-app-muted"
+								className="h-8 w-7 text-[10px] min-[360px]:w-8 sm:w-9 font-semibold uppercase tracking-widest text-app-muted"
 							>
 								{label.slice(0, 2)}
 							</th>
@@ -119,7 +119,7 @@ const Calendar = ({ value, onChange, rangeStart, rangeEnd, min, max, weekStartsO
 												setFocused(day)
 												onChange?.(day)
 											}}
-											className={`h-9 w-9 text-xs transition disabled:cursor-not-allowed disabled:opacity-30 ${tone} ${
+											className={`h-8 w-7 text-xs transition min-[360px]:w-8 sm:h-9 sm:w-9 disabled:cursor-not-allowed disabled:opacity-30 ${tone} ${
 												isSameDay(day, today) && !selected ? 'font-bold underline underline-offset-2' : ''
 											}`}
 										>

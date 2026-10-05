@@ -10,7 +10,7 @@ const Neighbour = ({ page, label, align }) =>
 	page ? (
 		<Link
 			to={pathOf(page.category, page.component)}
-			className={`flex flex-1 flex-col gap-1 border border-app-border bg-app-card p-4 transition hover:border-app-strong ${align}`}
+			className={`flex min-w-0 flex-1 flex-col gap-1 break-words border border-app-border bg-app-card p-4 transition hover:border-app-strong ${align}`}
 		>
 			<span className="text-[10px] font-semibold uppercase tracking-widest text-app-muted">{label}</span>
 			<span className="text-sm font-semibold text-app-text">{page.component.name}</span>

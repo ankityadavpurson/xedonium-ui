@@ -4,7 +4,7 @@ import { DatePicker } from 'xedonium'
 export default function Demo() {
 	const [date, setDate] = useState(null)
 	return (
-		<div className="w-64">
+		<div className="w-64 max-w-full">
 			<DatePicker label="Due date" value={date} onChange={setDate} />
 		</div>
 	)

@@ -1,7 +1,7 @@
 import ThemeToggle from './ThemeToggle'
 
 const linkClass = active =>
-	`px-2.5 py-1.5 text-xs font-semibold uppercase tracking-widest transition sm:px-3 ${
+	`flex min-h-9 items-center px-2.5 py-1.5 text-xs font-semibold uppercase tracking-widest transition sm:px-3 ${
 		active ? 'bg-app-card text-app-text' : 'text-app-muted hover:text-app-text'
 	}`
 
@@ -24,7 +24,7 @@ const AppBar = ({
 }) => (
 	<header className="sticky top-0 z-40 border-b border-app-border bg-app-bg/95 backdrop-blur">
 		<div className={`mx-auto flex h-14 w-full ${maxWidth} items-center justify-between gap-3 px-4`}>
-			<Link {...{ [linkProp]: brandHref }} className="flex shrink-0 items-center gap-2 text-app-text">
+			<Link {...{ [linkProp]: brandHref }} className="flex min-h-9 shrink-0 items-center gap-2 text-app-text">
 				{logo}
 				<span className={`text-base font-bold tracking-tight ${hideBrandOnMobile ? 'hidden sm:inline' : ''}`}>
 					{brand}
@@ -32,7 +32,7 @@ const AppBar = ({
 			</Link>
 
 			{links.length > 0 && (
-				<nav aria-label="Main" className="flex items-center gap-1">
+				<nav aria-label="Main" className="flex min-w-0 items-center gap-1 overflow-x-auto">
 					{links.map(({ href, label, active = false, ...linkProps }) => (
 						<Link
 							key={href}

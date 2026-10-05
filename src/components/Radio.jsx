@@ -6,7 +6,7 @@ const Radio = ({ label, className = '', disabled = false, ...rest }) => {
 	return (
 		<label
 			htmlFor={id}
-			className={`inline-flex items-center gap-2 text-sm text-app-text ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} ${className}`}
+			className={`inline-flex min-h-8 items-center gap-2 text-sm text-app-text ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} ${className}`}
 		>
 			<input
 				id={id}

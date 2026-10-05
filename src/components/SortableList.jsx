@@ -67,7 +67,7 @@ const SortableList = ({ items, onChange, renderItem, label = 'Sortable list', cl
 								// Keep focus on the handle after the row re-renders in its new place
 								requestAnimationFrame(() => handle.focus())
 							}}
-							className="cursor-grab select-none px-1 text-app-muted transition hover:text-app-text active:cursor-grabbing"
+							className="-my-2 cursor-grab select-none px-2 py-2 text-app-muted transition hover:text-app-text active:cursor-grabbing"
 						>
 							<span aria-hidden="true">⋮⋮</span>
 						</button>

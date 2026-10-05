@@ -18,15 +18,15 @@ export default function Demo() {
 				]}
 			/>
 			<Popover trigger="Popover" label="Popover" placement="bottom-start">
-				<p className="m-0 w-48">Not clipped by the box around it.</p>
+				<p className="m-0 w-48 max-w-full">Not clipped by the box around it.</p>
 			</Popover>
 			<Popover trigger="Opens up" label="Opens up" placement="top-start">
-				<p className="m-0 w-48">Preferred side: top.</p>
+				<p className="m-0 w-48 max-w-full">Preferred side: top.</p>
 			</Popover>
-			<div className="w-44">
+			<div className="w-44 max-w-full">
 				<DatePicker value={date} onChange={setDate} />
 			</div>
-			<div className="w-40">
+			<div className="w-40 max-w-full">
 				<Select
 					value={color}
 					onChange={setColor}

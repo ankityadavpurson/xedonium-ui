@@ -39,7 +39,7 @@ export const CopyButton = ({ text, className = '' }) => {
 		<button
 			type="button"
 			onClick={copy}
-			className={`border border-app-border bg-app-card px-2 py-1 text-[10px] font-semibold uppercase tracking-widest text-app-muted transition hover:border-app-strong hover:text-app-text ${className}`}
+			className={`border border-app-border bg-app-card px-2 py-2 text-[10px] font-semibold uppercase tracking-widest text-app-muted transition hover:border-app-strong sm:py-1 hover:text-app-text ${className}`}
 		>
 			{state === 'copied' ? 'Copied' : state === 'failed' ? 'Copy failed' : 'Copy'}
 			<span role="status" className="sr-only">

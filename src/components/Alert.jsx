@@ -24,7 +24,7 @@ const Alert = ({ tone = 'info', title, onClose, icon, className = '', children }
 				type="button"
 				onClick={onClose}
 				aria-label="Dismiss"
-				className="shrink-0 opacity-70 transition hover:opacity-100"
+				className="-m-2 shrink-0 p-2 opacity-70 transition hover:opacity-100"
 			>
 				<CloseIcon className="h-4 w-4" />
 			</button>
