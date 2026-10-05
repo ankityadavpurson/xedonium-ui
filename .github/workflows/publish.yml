@@ -45,7 +45,8 @@ jobs:
           raise() { [ "$(rank "$1")" -gt "$(rank "$LEVEL")" ] && LEVEL=$1 || true; }
 
           while IFS= read -r -d $'\x1e' COMMIT; do
-            SUBJECT=$(printf '%s' "$COMMIT" | head -n1 | sed 's/^[[:space:]]*//')
+            COMMIT=$(printf '%s' "$COMMIT" | sed '/[^[:space:]]/,$!d') # drop leading blank lines
+            SUBJECT=$(printf '%s' "$COMMIT" | head -n1)
             case "$SUBJECT" in "chore(release):"*) continue;; esac
             if printf '%s' "$COMMIT" | grep -q 'BREAKING CHANGE' \
               || printf '%s' "$SUBJECT" | grep -qiE '^[a-z]+(\([^)]*\))?!:'; then
