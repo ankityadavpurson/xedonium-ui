@@ -6,8 +6,11 @@ Square corners, semantic `app-*` color tokens, light/dark via `<html data-theme>
 ## Install
 
 ```bash
-npm i xedonium      # or: yarn add xedonium
-# peers: react, react-dom, tailwindcss ^3.4
+npm install xedonium
+# or: yarn add xedonium
+# or: pnpm add xedonium
+
+# peers: react, react-dom (18+), tailwindcss ^3.4
 ```
 
 ## Setup
@@ -46,6 +49,7 @@ import { ThemeProvider, AppBar, PageLayout, Button } from 'xedonium'
 ## What's included
 
 - Layout: `AppShell`, `AppBar`, `Navbar`, `Sidebar`, `PageLayout`, `PageHeader`, `Container`, `Flex`, `Stack`, `Grid`, `Card`, `Dashboard`, `Divider`, `Tabs`, `Breadcrumb`
+- Typography: `PageTitle`, `BodyText`, `HelperText`, `Label`, `TextLink`
 - Forms: `Button`, `Field`, `Input`, `Select`, `Checkbox`, `Radio`, `RadioGroup`, `Switch`, `Slider`, `DatePicker`, `DateRangePicker`, `TimePicker`, `FileUpload`
 - Data: `Table`, `DataGrid`, `List`, `SortableList`, `VirtualList`, `Tree`, `Pagination`, `Calendar`, `Carousel`, `Timeline`, `Stepper`, `StatCard`, and charts (`LineChart`, `AreaChart`, `BarChart`, `PieChart`)
 - Feedback and overlays: `Alert`, `Toast`, `Tooltip`, `Modal`, `ConfirmDialog`, `Drawer`, `Popover`, `ActionMenu`, `CommandPalette`, `NotificationCenter`, `Progress`, `Skeleton`, `FanFavicon`, `LoadingScreen`, `RackServer`
@@ -55,20 +59,24 @@ import { ThemeProvider, AppBar, PageLayout, Button } from 'xedonium'
 
 `AppBar` has no router dependency. For react-router pass `linkComponent={Link} linkProp="to"`.
 
-Overlay z-indexes can be overridden with `--xd-z-modal`, `--xd-z-toast`, `--xd-z-tooltip`.
+Overlay z-indexes can be overridden with `--xd-z-modal`, `--xd-z-popover`, `--xd-z-toast`, `--xd-z-tooltip`.
 
 ## Develop
 
 ```bash
-yarn dev     # playground (every component, tabbed) at http://localhost:3100
+yarn docs    # docs site + playground at http://localhost:3100
 yarn build   # dist/ (ESM, CJS, .d.ts, styles.css)
 ```
 
 ## Docs
 
-Docusaurus site in `docs/` (live examples, uses the built `dist/`). Install once with `yarn --cwd docs install`.
+The docs site in `docs/` is a small Vite + React app built with the library itself (imported from `src/`, no build step needed).
+
+- Pages: `docs/src/content/<category>.js` lists each component's page; its demos live in `docs/src/examples/<category>/<slug>-<n>.jsx` and the code shown is exactly the file that is rendered.
+- Props tables: `docs/src/content/props.js`. `yarn docs:check` fails if a component's props and its table drift apart.
 
 ```bash
-yarn docs         # builds the lib, then serves at http://localhost:3000
-yarn docs:build   # static site in docs/build
+yarn docs:build     # static site in docs/dist (+ 404.html for GitHub Pages deep links)
+yarn docs:preview   # serve the production build
+yarn docs:check     # verify props tables and example files
 ```

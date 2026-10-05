@@ -1,7 +1,7 @@
 import { Children, useEffect, useState } from 'react'
 
 const arrow =
-	'absolute top-1/2 z-10 -translate-y-1/2 border border-app-border bg-app-card/90 px-2 py-2 text-app-text transition hover:border-app-strong disabled:cursor-not-allowed disabled:opacity-40'
+	'absolute top-1/2 z-10 -translate-y-1/2 border border-app-border bg-app-card/90 px-3 py-2 text-app-text transition hover:border-app-strong disabled:cursor-not-allowed disabled:opacity-40'
 
 /**
  * Slide carousel; each child is one slide. Controlled with `index` + `onIndexChange`, or uncontrolled via
@@ -106,8 +106,12 @@ const Carousel = ({
 								aria-label={`Go to slide ${i + 1}`}
 								aria-current={i === current}
 								onClick={() => go(i)}
-								className={`h-2 w-2 border border-app-strong transition ${i === current ? 'bg-app-strong' : 'bg-transparent'}`}
-							/>
+								className="flex h-6 w-6 items-center justify-center"
+							>
+								<span
+									className={`h-2 w-2 border border-app-strong transition ${i === current ? 'bg-app-strong' : 'bg-transparent'}`}
+								/>
+							</button>
 						))}
 					</div>
 				</>

@@ -1,16 +1,17 @@
 import { cloneElement, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { computePosition } from '../utils/position'
 
 const GAP = 6 // px between trigger and tooltip
-const EDGE = 8 // px kept clear of the viewport edges
 
 // Replaces the native `title` attribute. Shows `text` next to the child on hover or keyboard focus
 // (:focus-visible, so focus restored after a mouse-closed dialog doesn't reopen it).
 // Rendered into <body> with fixed positioning so dialogs and scroll containers can't clip it;
-// prefers below the trigger, flips above when there's no room, and stays inside the viewport.
+// `placement` is top | bottom | left | right | auto (default bottom), optionally with -start / -end; the tooltip
+// flips to the opposite side when there is no room and always stays inside the viewport.
 // Hover is tracked on the wrapper, so it also works for disabled buttons.
 // `className` styles the wrapper (e.g. to position it where the bare button used to sit).
-const Tooltip = ({ text, children, className = '' }) => {
+const Tooltip = ({ text, children, placement = 'bottom', className = '' }) => {
 	const id = useId()
 	const triggerRef = useRef(null)
 	const tipRef = useRef(null)
@@ -27,15 +28,9 @@ const Tooltip = ({ text, children, className = '' }) => {
 		if (!open || !triggerRef.current || !tipRef.current) return
 		const trigger = triggerRef.current.getBoundingClientRect()
 		const tip = tipRef.current.getBoundingClientRect()
-		const viewportWidth = document.documentElement.clientWidth
-		const viewportHeight = window.innerHeight
-
-		let top = trigger.bottom + GAP
-		if (top + tip.height > viewportHeight - EDGE) top = Math.max(EDGE, trigger.top - GAP - tip.height)
-		const centred = trigger.left + trigger.width / 2 - tip.width / 2
-		const left = Math.min(Math.max(EDGE, centred), viewportWidth - EDGE - tip.width)
+		const { top, left } = computePosition(trigger, tip, { placement, gap: GAP })
 		setPosition({ top, left })
-	}, [open, text])
+	}, [open, text, placement])
 
 	// Dismissible (Escape) and never left floating after the page moves
 	useEffect(() => {

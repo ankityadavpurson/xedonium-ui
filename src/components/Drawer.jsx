@@ -7,8 +7,11 @@ import CloseIcon from './icons/Close'
 
 const SIDES = { right: 'right-0 border-l', left: 'left-0 border-r' }
 
-/** Side panel dialog: backdrop, focus trap, Escape / backdrop to close. side: right | left. */
-const Drawer = ({ open, onClose, title, side = 'right', width = 'max-w-md', footer, children }) => {
+/**
+ * Side panel dialog: backdrop, focus trap, Escape / backdrop to close. side: right | left.
+ * `padded={false}` removes the body padding and lets the content fill (and scroll) itself, e.g. a Sidebar.
+ */
+const Drawer = ({ open, onClose, title, side = 'right', width = 'max-w-md', padded = true, footer, children }) => {
 	const ref = useRef(null)
 	const titleId = useId()
 	useEscapeKey(open, onClose)
@@ -45,7 +48,7 @@ const Drawer = ({ open, onClose, title, side = 'right', width = 'max-w-md', foot
 						<CloseIcon />
 					</Button>
 				</div>
-				<div className="flex-1 overflow-y-auto p-6">{children}</div>
+				<div className={`min-h-0 flex-1 ${padded ? 'overflow-y-auto p-6' : 'flex flex-col'}`}>{children}</div>
 				{footer && (
 					<div className="flex shrink-0 flex-wrap items-center justify-end gap-3 border-t border-app-border px-6 py-4">
 						{footer}

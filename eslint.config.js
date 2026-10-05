@@ -4,10 +4,10 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import globals from 'globals'
 
 export default [
-	{ ignores: ['dist', 'docs'] },
+	{ ignores: ['dist', 'docs/dist'] },
 	js.configs.recommended,
 	{
-		files: ['src/**/*.{js,jsx}', 'playground/**/*.{js,jsx}'],
+		files: ['src/**/*.{js,jsx}', 'docs/src/**/*.{js,jsx}'],
 		languageOptions: { globals: globals.browser, parserOptions: { ecmaFeatures: { jsx: true } } },
 		settings: { react: { version: 'detect' } },
 		plugins: { react, 'react-hooks': reactHooks },
@@ -19,7 +19,7 @@ export default [
 		},
 	},
 	{
-		files: ['scripts/**/*.js', '*.config.js', 'playground/*.config.js', 'tailwind-preset.js'],
+		files: ['scripts/**/*.{js,mjs}', '*.config.js', 'docs/*.config.js', 'tailwind-preset.js'],
 		languageOptions: { globals: globals.node },
 	},
 ]

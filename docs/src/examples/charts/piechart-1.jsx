@@ -1,0 +1,26 @@
+import { Grid, PieChart } from 'xedonium'
+
+export default function Demo() {
+	return (
+		<Grid cols={2}>
+			<PieChart
+				label="Browser share"
+				data={[
+					{ label: 'Chrome', value: 62 },
+					{ label: 'Safari', value: 21 },
+					{ label: 'Firefox', value: 9 },
+					{ label: 'Other', value: 8 },
+				]}
+			/>
+			<PieChart
+				donut
+				center="100%"
+				label="Status"
+				data={[
+					{ label: 'Done', value: 70 },
+					{ label: 'Open', value: 30 },
+				]}
+			/>
+		</Grid>
+	)
+}

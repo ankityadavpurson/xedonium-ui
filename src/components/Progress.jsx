@@ -1,3 +1,5 @@
+import Label from './Label'
+
 /** Progress bar. `value` is 0-100; omit it for an indeterminate bar. */
 const Progress = ({ value, label, showValue = false, className = '' }) => {
 	const indeterminate = value === undefined
@@ -5,9 +7,13 @@ const Progress = ({ value, label, showValue = false, className = '' }) => {
 	return (
 		<div className={`flex flex-col gap-1 ${className}`}>
 			{(label || (showValue && !indeterminate)) && (
-				<div className="flex items-center justify-between text-xs font-semibold uppercase tracking-widest text-app-muted">
-					<span>{label}</span>
-					{showValue && !indeterminate && <span className="text-app-text">{Math.round(clamped)}%</span>}
+				<div className="flex items-center justify-between gap-2">
+					<Label>{label}</Label>
+					{showValue && !indeterminate && (
+						<span className="text-xs font-semibold uppercase tracking-widest text-app-text">
+							{Math.round(clamped)}%
+						</span>
+					)}
 				</div>
 			)}
 			<div

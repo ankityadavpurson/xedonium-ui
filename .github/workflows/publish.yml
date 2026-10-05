@@ -71,8 +71,8 @@ jobs:
         if: steps.bump.outputs.level != 'none'
         id: version
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "Ankit Yadav"
+          git config user.email "41839222+ankityadavpurson@users.noreply.github.com"
           npm version "${{ steps.bump.outputs.level }}" --no-git-tag-version
           VERSION=$(node -p "require('./package.json').version")
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"

@@ -1,3 +1,5 @@
+import Label from './Label'
+
 /** Horizontal or vertical rule, with optional centered label (horizontal only). */
 const Divider = ({ orientation = 'horizontal', label, className = '' }) => {
 	if (orientation === 'vertical') {
@@ -9,7 +11,7 @@ const Divider = ({ orientation = 'horizontal', label, className = '' }) => {
 	return (
 		<div role="separator" className={`flex items-center gap-3 ${className}`}>
 			<span className="h-px flex-1 bg-app-border" />
-			<span className="text-xs font-semibold uppercase tracking-widest text-app-muted">{label}</span>
+			<Label>{label}</Label>
 			<span className="h-px flex-1 bg-app-border" />
 		</div>
 	)

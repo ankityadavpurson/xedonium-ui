@@ -8,7 +8,7 @@ const format = seconds => {
 }
 
 const controlClass =
-	'px-2 py-1 text-xs font-semibold uppercase tracking-widest text-app-text transition hover:bg-app-bg focus-visible:outline-offset-[-2px]'
+	'min-h-9 px-2 py-1 text-xs font-semibold uppercase tracking-widest text-app-text transition hover:bg-app-bg focus-visible:outline-offset-[-2px]'
 
 /** Video player with themed controls (play, seek, time, mute, fullscreen). Extra props go to the <video> element. */
 const Video = ({ src, poster, title = 'Video', ratio = 'video', className = '', children, ...rest }) => {

@@ -133,7 +133,7 @@ const DataGrid = ({
 											<button
 												type="button"
 												onClick={() => toggleSort(column)}
-												className="inline-flex items-center gap-1 uppercase tracking-widest transition hover:text-app-text"
+												className="-my-2 inline-flex min-h-8 items-center gap-1 uppercase tracking-widest transition hover:text-app-text"
 											>
 												{column.header}
 												<span aria-hidden="true">{active ? (sort.dir === 'asc' ? '↑' : '↓') : '↕'}</span>

@@ -1,36 +1,25 @@
-import { useEffect, useId, useRef, useState } from 'react'
-import useFlipAlign from '../hooks/useFlipAlign'
+import { useId, useRef, useState } from 'react'
+import useDismissable from '../hooks/useDismissable'
 import Button from './Button'
+import FloatingPanel from './FloatingPanel'
 
 /**
  * Button that toggles a floating panel with arbitrary content. Closes on outside click and Escape
- * (focus returns to the trigger). align: start | end. Use ActionMenu for a plain list of actions.
+ * (focus returns to the trigger). The panel is portalled to <body>, so it is never clipped by an
+ * ancestor, and it flips when there is no room.
+ * placement: top | bottom | left | right | auto, optionally with -start / -end. `align` (start | end) is the
+ * shorthand for bottom-start / bottom-end. Use ActionMenu for a plain list of actions.
  */
-const Popover = ({ trigger, label, variant = 'secondary', align = 'start', className = '', children }) => {
+const Popover = ({ trigger, label, variant = 'secondary', align = 'start', placement, className = '', children }) => {
 	const [open, setOpen] = useState(false)
 	const rootRef = useRef(null)
 	const panelRef = useRef(null)
-	const side = useFlipAlign(open, panelRef, align)
 	const panelId = useId()
 
-	useEffect(() => {
-		if (!open) return undefined
-		const onPointerDown = event => {
-			if (!rootRef.current?.contains(event.target)) setOpen(false)
-		}
-		const onKeyDown = event => {
-			if (event.key === 'Escape') {
-				setOpen(false)
-				rootRef.current?.querySelector('button')?.focus()
-			}
-		}
-		document.addEventListener('mousedown', onPointerDown)
-		document.addEventListener('keydown', onKeyDown)
-		return () => {
-			document.removeEventListener('mousedown', onPointerDown)
-			document.removeEventListener('keydown', onKeyDown)
-		}
-	}, [open])
+	useDismissable(open, [rootRef, panelRef], reason => {
+		setOpen(false)
+		if (reason === 'escape') rootRef.current?.querySelector('button')?.focus()
+	})
 
 	return (
 		<div ref={rootRef} className="relative inline-block">
@@ -44,19 +33,18 @@ const Popover = ({ trigger, label, variant = 'secondary', align = 'start', class
 			>
 				{trigger}
 			</Button>
-			{open && (
-				<div
-					ref={panelRef}
-					id={panelId}
-					role="dialog"
-					aria-label={label}
-					className={`absolute top-full z-[var(--xd-z-tooltip,70)] mt-1 min-w-[12rem] border border-app-border bg-app-card p-4 text-sm text-app-text shadow-xl ${
-						side === 'end' ? 'right-0' : 'left-0'
-					} ${className}`}
-				>
-					{children}
-				</div>
-			)}
+			<FloatingPanel
+				open={open}
+				anchorRef={rootRef}
+				panelRef={panelRef}
+				placement={placement ?? `bottom-${align}`}
+				id={panelId}
+				role="dialog"
+				aria-label={label}
+				className={`min-w-[12rem] max-w-[calc(100vw-1rem)] border border-app-border bg-app-card p-4 text-sm text-app-text shadow-xl ${className}`}
+			>
+				{children}
+			</FloatingPanel>
 		</div>
 	)
 }

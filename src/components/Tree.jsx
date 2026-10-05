@@ -107,8 +107,18 @@ const Tree = ({
 								if (hasChildren) toggle(node.key)
 							}}
 						>
-							<span aria-hidden="true" className="w-4 text-center text-xs text-app-muted">
-								{hasChildren ? (isOpen ? '▾' : '▸') : ''}
+							<span aria-hidden="true" className="flex h-5 w-5 shrink-0 items-center justify-center text-app-muted">
+								{hasChildren && (
+									<svg
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth="2.5"
+										className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-90' : ''}`}
+									>
+										<path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+									</svg>
+								)}
 							</span>
 							{node.label}
 						</div>

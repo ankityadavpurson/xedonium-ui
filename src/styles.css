@@ -77,3 +77,91 @@ body {
 		scroll-behavior: auto !important;
 	}
 }
+
+/* Square scrollbars in both themes (WebKit/Blink); Firefox gets thin themed bars via scrollbar-color */
+::-webkit-scrollbar {
+	width: 12px;
+	height: 12px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+	background: rgb(var(--color-app-bg));
+	border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgb(var(--color-app-border));
+	border: 3px solid rgb(var(--color-app-bg));
+	border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: rgb(var(--color-app-muted));
+}
+
+@supports not selector(::-webkit-scrollbar) {
+	* {
+		scrollbar-width: thin;
+		scrollbar-color: rgb(var(--color-app-border)) rgb(var(--color-app-bg));
+	}
+}
+
+/* Slider: square thumb, filled track. --xd-fill (set by <Slider>) is the filled percentage. */
+.xd-slider {
+	-webkit-appearance: none;
+	appearance: none;
+	height: 18px;
+	margin: 0;
+	background: transparent;
+	cursor: pointer;
+}
+
+.xd-slider:disabled {
+	cursor: not-allowed;
+	opacity: 0.5;
+}
+
+.xd-slider::-webkit-slider-runnable-track {
+	height: 4px;
+	border-radius: 0;
+	background: linear-gradient(
+		to right,
+		rgb(var(--color-app-strong)) var(--xd-fill, 0%),
+		rgb(var(--color-app-border)) var(--xd-fill, 0%)
+	);
+}
+
+.xd-slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 14px;
+	height: 14px;
+	margin-top: -5px;
+	border: 2px solid rgb(var(--color-app-bg));
+	border-radius: 0;
+	background: rgb(var(--color-app-strong));
+	box-shadow: 0 0 0 1px rgb(var(--color-app-strong));
+}
+
+.xd-slider::-moz-range-track {
+	height: 4px;
+	border-radius: 0;
+	background: rgb(var(--color-app-border));
+}
+
+.xd-slider::-moz-range-progress {
+	height: 4px;
+	border-radius: 0;
+	background: rgb(var(--color-app-strong));
+}
+
+.xd-slider::-moz-range-thumb {
+	box-sizing: border-box;
+	width: 14px;
+	height: 14px;
+	border: 2px solid rgb(var(--color-app-bg));
+	border-radius: 0;
+	background: rgb(var(--color-app-strong));
+	box-shadow: 0 0 0 1px rgb(var(--color-app-strong));
+}

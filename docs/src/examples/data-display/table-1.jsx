@@ -1,0 +1,18 @@
+import { Button, Table } from 'xedonium'
+
+export default function Demo() {
+	return (
+		<Table
+			columns={[
+				{ key: 'name', header: 'Name' },
+				{ key: 'role', header: 'Role' },
+				{ key: 'seats', header: 'Seats', align: 'right' },
+				{ key: 'actions', header: '', render: row => <Button variant="secondary">View {row.name}</Button> },
+			]}
+			rows={[
+				{ id: 1, name: 'Ada', role: 'Admin', seats: 3 },
+				{ id: 2, name: 'Linus', role: 'Editor', seats: 12 },
+			]}
+		/>
+	)
+}
