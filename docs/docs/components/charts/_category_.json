@@ -1,9 +1,0 @@
-{
-  "label": "Charts",
-  "position": 7,
-  "collapsed": true,
-  "link": {
-    "type": "generated-index",
-    "description": "Dependency-free SVG charts that follow the theme. labels names the x positions; each series is { name, values, color? } with one value per label."
-  }
-}

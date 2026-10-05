@@ -1,9 +1,0 @@
-{
-  "label": "Inputs",
-  "position": 2,
-  "collapsed": true,
-  "link": {
-    "type": "generated-index",
-    "description": "Buttons and form controls. Value callbacks receive the value, not the event."
-  }
-}

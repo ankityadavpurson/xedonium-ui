@@ -1,7 +1,13 @@
 {
 	"version": "0.0.1",
 	"configurations": [
-		{ "name": "playground", "runtimeExecutable": "yarn", "runtimeArgs": ["dev"], "port": 3100 },
-		{ "name": "docs", "runtimeExecutable": "yarn", "runtimeArgs": ["docs"], "port": 3000 }
+		{
+			"name": "docs",
+			"runtimeExecutable": "yarn",
+			"runtimeArgs": [
+				"docs"
+			],
+			"port": 3100
+		}
 	]
 }

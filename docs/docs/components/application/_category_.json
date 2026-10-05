@@ -1,9 +1,0 @@
-{
-  "label": "Application",
-  "position": 10,
-  "collapsed": true,
-  "link": {
-    "type": "generated-index",
-    "description": "Building blocks for full app screens."
-  }
-}

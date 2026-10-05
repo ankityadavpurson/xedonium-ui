@@ -1,9 +1,0 @@
-{
-  "label": "Navigation",
-  "position": 3,
-  "collapsed": true,
-  "link": {
-    "type": "generated-index",
-    "description": "Moving around an app: bars, tabs, breadcrumbs, pagination and steps."
-  }
-}

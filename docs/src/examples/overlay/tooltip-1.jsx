@@ -1,0 +1,9 @@
+import { Tooltip } from 'xedonium'
+
+export default function Demo() {
+	return (
+		<Tooltip text="Plain tooltip">
+			<span className="border border-app-border px-2 py-1 text-xs">Tooltip target</span>
+		</Tooltip>
+	)
+}
