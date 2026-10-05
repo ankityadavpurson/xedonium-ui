@@ -4,6 +4,7 @@ import { formatDate, isBefore } from '../utils/date'
 import Calendar from './Calendar'
 import FloatingPanel from './FloatingPanel'
 import inputClass from './inputClass'
+import Label from './Label'
 
 /**
  * Labelled date range field. `value` is `{ start, end }` (Dates or null); `onChange` receives the same shape.
@@ -56,11 +57,7 @@ const DateRangePicker = ({
 
 	return (
 		<div ref={rootRef} className="relative flex flex-col gap-1">
-			{label && (
-				<label htmlFor={id} className="text-xs font-semibold uppercase tracking-widest text-app-muted">
-					{label}
-				</label>
-			)}
+			{label && <Label htmlFor={id}>{label}</Label>}
 			<button
 				ref={buttonRef}
 				id={id}

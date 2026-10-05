@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import useDismissable from '../hooks/useDismissable'
 import FloatingPanel from './FloatingPanel'
 import inputClass from './inputClass'
+import Label from './Label'
 
 const pad = n => String(n).padStart(2, '0')
 
@@ -188,11 +189,7 @@ const TimePicker = ({
 
 	return (
 		<div ref={rootRef} className="relative flex flex-col gap-1">
-			{label && (
-				<label htmlFor={id} className="text-xs font-semibold uppercase tracking-widest text-app-muted">
-					{label}
-				</label>
-			)}
+			{label && <Label htmlFor={id}>{label}</Label>}
 			<button
 				ref={buttonRef}
 				id={id}

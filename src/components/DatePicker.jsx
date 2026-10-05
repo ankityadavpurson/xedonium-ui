@@ -4,6 +4,7 @@ import { formatDate } from '../utils/date'
 import Calendar from './Calendar'
 import FloatingPanel from './FloatingPanel'
 import inputClass from './inputClass'
+import Label from './Label'
 
 /** Labelled date field that opens a Calendar. `value` is a Date or null; `onChange` receives the picked Date. */
 const DatePicker = ({ label, value, onChange, min, max, placeholder = 'Select date', error, locale, weekStartsOn }) => {
@@ -21,11 +22,7 @@ const DatePicker = ({ label, value, onChange, min, max, placeholder = 'Select da
 
 	return (
 		<div ref={rootRef} className="relative flex flex-col gap-1">
-			{label && (
-				<label htmlFor={id} className="text-xs font-semibold uppercase tracking-widest text-app-muted">
-					{label}
-				</label>
-			)}
+			{label && <Label htmlFor={id}>{label}</Label>}
 			<button
 				ref={buttonRef}
 				id={id}

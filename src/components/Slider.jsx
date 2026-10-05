@@ -1,4 +1,5 @@
 import { useId } from 'react'
+import Label from './Label'
 
 /** Range input with a square thumb and a filled track (styled in styles.css). `onChange` receives a number. */
 const Slider = ({
@@ -18,9 +19,9 @@ const Slider = ({
 	return (
 		<div className={`flex flex-col gap-1 ${className}`}>
 			{(label || showValue) && (
-				<div className="flex items-center justify-between text-xs font-semibold uppercase tracking-widest text-app-muted">
-					<label htmlFor={id}>{label}</label>
-					{showValue && <span className="text-app-text">{value}</span>}
+				<div className="flex items-center justify-between gap-2">
+					{label ? <Label htmlFor={id}>{label}</Label> : <span />}
+					{showValue && <span className="text-xs font-semibold uppercase tracking-widest text-app-text">{value}</span>}
 				</div>
 			)}
 			<input
