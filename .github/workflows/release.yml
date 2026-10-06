@@ -143,7 +143,7 @@ jobs:
 
       - name: Push version commit and tag
         if: steps.bump.outputs.level != 'none'
-        run: git push origin HEAD:main --follow-tags
+        run: git push origin HEAD:main "v${{ steps.version.outputs.version }}" # --follow-tags skips lightweight tags
 
       - name: Create GitHub release
         if: steps.bump.outputs.level != 'none'
