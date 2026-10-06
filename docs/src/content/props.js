@@ -820,6 +820,17 @@ const props = {
 			rest,
 		],
 	},
+	sound: {
+		Sound: [
+			['src', 'string', '', 'Audio URL.'],
+			['title', 'string', "'Audio'", 'Track title, also the accessible name of the player.'],
+			['artist', 'string', '', 'Second line under the title.'],
+			['speeds', 'number[]', '[0.5, 0.75, 1, 1.25, 1.5, 2]', 'Playback rates offered in the speed menu (1 is normal).'],
+			className,
+			['children', 'ReactNode', '', 'e.g. <source> elements for several formats.'],
+			['...rest', '', '', 'Passed to the <audio> element.'],
+		],
+	},
 	carousel: {
 		Carousel: [
 			['children', 'ReactNode', '', 'One child per slide.'],

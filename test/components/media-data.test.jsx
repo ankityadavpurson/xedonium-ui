@@ -4,6 +4,7 @@ import CommandPalette from '../../src/components/CommandPalette'
 import DataGrid from '../../src/components/DataGrid'
 import NotificationCenter from '../../src/components/NotificationCenter'
 import RackServer from '../../src/components/RackServer'
+import Sound from '../../src/components/Sound'
 import Video from '../../src/components/Video'
 
 describe('Video', () => {
@@ -378,6 +379,131 @@ describe('Video', () => {
 		const { video } = setup({ controls: false, 'data-x': '1', children: <track kind="captions" /> })
 		expect(video).toHaveAttribute('data-x', '1')
 		expect(screen.getByRole('group', { name: 'Clip controls' })).toBeInTheDocument()
+	})
+})
+
+describe('Sound', () => {
+	const setup = (props = {}) => {
+		const utils = render(<Sound src="/a.mp3" title="Track" artist="Band" {...props} />)
+		const audio = utils.container.querySelector('audio')
+		Object.defineProperty(audio, 'paused', { value: true, writable: true, configurable: true })
+		audio.play = vi.fn().mockImplementation(() => {
+			audio.paused = false
+			return Promise.resolve()
+		})
+		audio.pause = vi.fn().mockImplementation(() => {
+			audio.paused = true
+		})
+		return { audio, ...utils }
+	}
+
+	it('labels the track and plays or pauses', () => {
+		const { audio } = setup()
+		expect(screen.getByRole('group', { name: 'Track player' })).toBeInTheDocument()
+		expect(screen.getByText('Band')).toBeInTheDocument()
+		fireEvent.click(screen.getByRole('button', { name: 'Play' }))
+		expect(audio.play).toHaveBeenCalled()
+		fireEvent.play(audio)
+		fireEvent.click(screen.getByRole('button', { name: 'Pause' }))
+		expect(audio.pause).toHaveBeenCalled()
+		fireEvent.pause(audio)
+		expect(screen.getByRole('button', { name: 'Play' })).toBeInTheDocument()
+	})
+
+	it('works without an artist and swallows a blocked play()', async () => {
+		const { audio } = setup({ artist: undefined })
+		expect(screen.queryByText('Band')).toBeNull()
+		audio.play = vi.fn().mockRejectedValue(new Error('blocked'))
+		fireEvent.click(screen.getByRole('button', { name: 'Play' }))
+		await Promise.resolve()
+		expect(audio.play).toHaveBeenCalled()
+	})
+
+	it('shows times, seeks, shows a popover and the loaded band', () => {
+		const { audio } = setup()
+		Object.defineProperty(audio, 'duration', { value: 3725, configurable: true })
+		Object.defineProperty(audio, 'currentTime', { value: 65, writable: true, configurable: true })
+		const ranges = [[0, 600]]
+		Object.defineProperty(audio, 'buffered', {
+			value: { length: 1, start: i => ranges[i][0], end: i => ranges[i][1] },
+			configurable: true,
+		})
+		fireEvent.loadedMetadata(audio)
+		fireEvent.timeUpdate(audio)
+		expect(screen.getByText('1:02:05')).toBeInTheDocument()
+		expect(screen.getByText('1:05')).toBeInTheDocument()
+		const seek = screen.getByLabelText('Seek')
+		expect(seek.style.getPropertyValue('--xd-buffer')).not.toBe('')
+		fireEvent.pointerDown(seek)
+		fireEvent.change(seek, { target: { value: '90' } })
+		expect(audio.currentTime).toBe(90)
+		expect(document.querySelector('.pointer-events-none.border')).toHaveTextContent('1:30')
+		fireEvent.pointerUp(window)
+		fireEvent.progress(audio)
+		fireEvent.seeked(audio)
+	})
+
+	it('formats non-finite durations as 0:00', () => {
+		const { audio } = setup()
+		Object.defineProperty(audio, 'duration', { value: Infinity, configurable: true })
+		fireEvent.loadedMetadata(audio)
+		expect(screen.getAllByText('0:00')).toHaveLength(2)
+	})
+
+	it('sets the volume, mutes, and restores the volume when unmuting from zero', () => {
+		const { audio } = setup()
+		const slider = screen.getByLabelText('Volume')
+		const mute = () => screen.getByRole('button', { name: /mute/i })
+		expect(mute().querySelectorAll('path')).toHaveLength(3)
+		fireEvent.change(slider, { target: { value: '0.3' } })
+		expect(audio.volume).toBeCloseTo(0.3)
+		expect(mute().querySelectorAll('path')).toHaveLength(2)
+		fireEvent.click(mute())
+		expect(screen.getByRole('button', { name: 'Unmute' })).toHaveAttribute('aria-pressed', 'true')
+		expect(slider).toHaveValue('0')
+		fireEvent.change(slider, { target: { value: '0.6' } })
+		expect(screen.getByRole('button', { name: 'Mute' })).toBeInTheDocument()
+		fireEvent.change(slider, { target: { value: '0' } })
+		fireEvent.click(screen.getByRole('button', { name: 'Unmute' }))
+		expect(audio.volume).toBe(1)
+	})
+
+	it('changes the playback speed and accepts custom speeds', () => {
+		const { audio, rerender } = setup()
+		fireEvent.click(screen.getByRole('combobox', { name: 'Playback speed' }))
+		fireEvent.click(screen.getByRole('option', { name: '1.5x' }))
+		expect(audio.playbackRate).toBe(1.5)
+		audio.playbackRate = 1
+		fireEvent.loadedMetadata(audio)
+		expect(audio.playbackRate).toBe(1.5)
+		rerender(<Sound src="/a.mp3" speeds={[1, 3]} />)
+		fireEvent.click(screen.getByRole('combobox', { name: 'Playback speed' }))
+		expect(screen.getAllByRole('option').map(o => o.textContent)).toEqual(['1x', '3x'])
+	})
+
+	it('shows a spinner when playback stalls and hides it when it resumes', () => {
+		vi.useFakeTimers()
+		const { audio } = setup()
+		fireEvent.waiting(audio)
+		act(() => vi.advanceTimersByTime(299))
+		expect(screen.queryByRole('status')).toBeNull()
+		act(() => vi.advanceTimersByTime(2))
+		expect(screen.getByRole('status')).toHaveTextContent('Buffering')
+		for (const hide of [fireEvent.playing, fireEvent.canPlay, fireEvent.pause, fireEvent.ended, fireEvent.error]) {
+			fireEvent.waiting(audio)
+			act(() => vi.advanceTimersByTime(400))
+			expect(screen.queryByRole('status')).not.toBeNull()
+			hide(audio)
+			expect(screen.queryByRole('status')).toBeNull()
+		}
+		vi.useRealTimers()
+	})
+
+	it('forwards extra props and children to the audio element', () => {
+		const { audio } = setup({ loop: true, 'data-x': '1', children: <source src="/a.ogg" type="audio/ogg" /> })
+		expect(audio).toHaveAttribute('data-x', '1')
+		expect(audio.loop).toBe(true)
+		expect(audio.querySelector('source')).toBeInTheDocument()
 	})
 })
 
