@@ -521,6 +521,12 @@ const props = {
 			],
 			['toast', '{ msg, type?, ... } | null', '', 'A single toast, when you do not need a stack.'],
 			[
+				'position',
+				"'top-left' | 'top-center' | 'top-right' | 'middle-left' | 'middle-center' | 'middle-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'",
+				"'bottom-right'",
+				'Where the toasts appear on the screen.',
+			],
+			[
 				'onClose',
 				'(id) => void',
 				'',

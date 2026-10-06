@@ -487,6 +487,37 @@ describe('Toast', () => {
 	})
 })
 
+describe('Toast position', () => {
+	it('places the stack in each of the nine spots and falls back to bottom-right', () => {
+		const spots = {
+			'top-left': ['top-5', 'left-5'],
+			'top-center': ['top-5', 'left-1/2'],
+			'top-right': ['top-5', 'right-5'],
+			'middle-left': ['top-1/2', 'left-5'],
+			'middle-center': ['top-1/2', 'left-1/2'],
+			'middle-right': ['top-1/2', 'right-5'],
+			'bottom-left': ['bottom-5', 'left-5'],
+			'bottom-center': ['bottom-5', 'left-1/2'],
+			'bottom-right': ['bottom-5', 'right-5'],
+		}
+		const { rerender } = render(<Toast toasts={[]} />)
+		expect(screen.getByRole('status')).toHaveClass('bottom-5', 'right-5')
+		for (const [position, classes] of Object.entries(spots)) {
+			rerender(<Toast toasts={[]} position={position} />)
+			expect(screen.getByRole('status'), position).toHaveClass(...classes)
+		}
+		rerender(<Toast toasts={[]} position="nowhere" />)
+		expect(screen.getByRole('status')).toHaveClass('bottom-5', 'right-5')
+	})
+
+	it('puts the newest toast nearest the edge for top positions', () => {
+		const { rerender } = render(<Toast toasts={[]} position="top-right" />)
+		expect(screen.getByRole('status')).toHaveClass('flex-col-reverse')
+		rerender(<Toast toasts={[]} position="bottom-right" />)
+		expect(screen.getByRole('status')).toHaveClass('flex-col')
+	})
+})
+
 describe('Toast stacking', () => {
 	it('renders every toast and closes one by id', () => {
 		const onClose = vi.fn()

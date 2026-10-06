@@ -10,6 +10,19 @@ const TONES = {
 	info: 'bg-sky-700 text-white',
 }
 
+// Where the stack sits; top positions put the newest toast nearest the edge, like the bottom ones do
+const POSITIONS = {
+	'top-left': 'top-5 left-5 items-start flex-col-reverse',
+	'top-center': 'top-5 left-1/2 -translate-x-1/2 items-center flex-col-reverse',
+	'top-right': 'top-5 right-5 items-end flex-col-reverse',
+	'middle-left': 'top-1/2 left-5 -translate-y-1/2 items-start flex-col',
+	'middle-center': 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 items-center flex-col',
+	'middle-right': 'top-1/2 right-5 -translate-y-1/2 items-end flex-col',
+	'bottom-left': 'bottom-5 left-5 items-start flex-col',
+	'bottom-center': 'bottom-5 left-1/2 -translate-x-1/2 items-center flex-col',
+	'bottom-right': 'bottom-5 right-5 items-end flex-col',
+}
+
 const toneOf = type => (type === 'error' ? 'danger' : TONES[type] ? type : 'success')
 
 /**
@@ -17,9 +30,10 @@ const toneOf = type => (type === 'error' ? 'danger' : TONES[type] ? type : 'succ
  * Pass `toasts` (the array from `useTimedToast`) to stack several, or `toast` for a single one.
  * toast: { id?, msg, type?, link?, actions?, icon? }. type: success (default) | danger (or error) | warning | info.
  * actions: [{ label, onClick }] render as buttons (the toast is dismissed after one is used, when `onClose` is
- * given). `onClose(id)` also adds a dismiss button to each toast; pass `hideToast`.
+ * given). `position`: top | middle | bottom + left | center | right, e.g. "top-center" (default "bottom-right").
+ * `onClose(id)` also adds a dismiss button to each toast; pass `hideToast`.
  */
-const Toast = ({ toast, toasts, onClose }) => {
+const Toast = ({ toast, toasts, onClose, position = 'bottom-right' }) => {
 	const items = toasts ?? (toast ? [toast] : [])
 
 	return (
@@ -28,7 +42,7 @@ const Toast = ({ toast, toasts, onClose }) => {
 			aria-live="polite"
 			aria-atomic="false"
 			aria-relevant="additions"
-			className="fixed bottom-5 right-5 z-[var(--xd-z-toast,90)] flex flex-col items-end gap-2"
+			className={`fixed z-[var(--xd-z-toast,90)] flex max-w-[calc(100vw-2.5rem)] gap-2 ${POSITIONS[position] ?? POSITIONS['bottom-right']}`}
 		>
 			{items.map((item, index) => {
 				const tone = toneOf(item.type)
