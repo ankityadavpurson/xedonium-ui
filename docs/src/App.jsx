@@ -12,6 +12,7 @@ import {
 	useTheme,
 } from 'xedonium'
 import DocsNav from './components/DocsNav'
+import RouteBoundary from './components/RouteBoundary'
 import VersionBadge from './components/VersionBadge'
 import { categories, pages, pathOf } from './content'
 import { guidePath, guideSections } from './guides/hooks'
@@ -154,12 +155,14 @@ const App = () => {
 	// Whole-page previews have no docs chrome
 	if (pathname.startsWith('/preview/')) {
 		return (
-			<Suspense fallback={<PageFallback />}>
-				<Routes>
-					<Route path="/preview/loading-screen" element={<LoadingScreenPreview />} />
-					<Route path="*" element={<NotFound />} />
-				</Routes>
-			</Suspense>
+			<RouteBoundary key={pathname}>
+				<Suspense fallback={<PageFallback />}>
+					<Routes>
+						<Route path="/preview/loading-screen" element={<LoadingScreenPreview />} />
+						<Route path="*" element={<NotFound />} />
+					</Routes>
+				</Suspense>
+			</RouteBoundary>
 		)
 	}
 
@@ -188,27 +191,29 @@ const App = () => {
 				)}
 			>
 				<div className="mx-auto w-full max-w-4xl">
-					<Suspense fallback={<PageFallback />}>
-						<Routes>
-							<Route path="/" element={<Home />} />
-							<Route path="/getting-started" element={<GettingStarted />} />
-							{foundations.map(f => (
-								<Route key={f.path} path={f.path} element={<f.Page />} />
-							))}
-							<Route path="/components/:category" element={<CategoryPage />} />
-							<Route path="/components/:category/:slug" element={<ComponentPage />} />
-							{guideSections.map(section => [
-								<Route key={section.slug} path={section.path} element={<GuideIndex section={section} />} />,
-								<Route
-									key={`${section.slug}-entry`}
-									path={`${section.path}/:id`}
-									element={<GuideEntry section={section} />}
-								/>,
-							])}
-							<Route path="/playground" element={<Playground />} />
-							<Route path="*" element={<NotFound />} />
-						</Routes>
-					</Suspense>
+					<RouteBoundary key={pathname}>
+						<Suspense fallback={<PageFallback />}>
+							<Routes>
+								<Route path="/" element={<Home />} />
+								<Route path="/getting-started" element={<GettingStarted />} />
+								{foundations.map(f => (
+									<Route key={f.path} path={f.path} element={<f.Page />} />
+								))}
+								<Route path="/components/:category" element={<CategoryPage />} />
+								<Route path="/components/:category/:slug" element={<ComponentPage />} />
+								{guideSections.map(section => [
+									<Route key={section.slug} path={section.path} element={<GuideIndex section={section} />} />,
+									<Route
+										key={`${section.slug}-entry`}
+										path={`${section.path}/:id`}
+										element={<GuideEntry section={section} />}
+									/>,
+								])}
+								<Route path="/playground" element={<Playground />} />
+								<Route path="*" element={<NotFound />} />
+							</Routes>
+						</Suspense>
+					</RouteBoundary>
 				</div>
 			</AppShell>
 			<CommandPalette

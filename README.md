@@ -1,13 +1,12 @@
-<div style="text-align: center;">
+<div align="center">
 
-<div style="display: flex; align-items: center; justify-content: center; width: 100%;">
-	<img src="docs/public/favicon.svg" alt="xedonium" width="54" />
-	<span style="margin-left:12px; font-size: 44px; font-weight: 700;">Xedonium</span>
-</div>
-<h3>Minimal, theme-aware React UI</h3>
+![Xedonium logo](.github/readme-logo.svg)
 
-Forms, charts, overlays and 160+ icons with light and dark themes,</br>
-each one a separate module you can import on its own.
+# Xedonium
+
+### Minimal, theme-aware React UI
+
+Forms, charts, overlays and 160+ icons with light and dark themes, each one a separate module you can import on its own.
 
 [Live docs](https://ankityadavpurson.github.io/xedonium-ui/)
 

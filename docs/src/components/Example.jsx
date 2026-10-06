@@ -1,5 +1,6 @@
 import { Component, Suspense, useEffect, useState } from 'react'
 import { lazyDemo, loadSource } from '../exampleLoader'
+import { reloadOnStaleChunk } from '../reloadOnStaleChunk'
 import CodeBlock, { CopyButton } from './CodeBlock'
 
 // One broken demo should not take down the whole page
@@ -8,6 +9,10 @@ class DemoBoundary extends Component {
 
 	static getDerivedStateFromError(error) {
 		return { error }
+	}
+
+	componentDidCatch(error) {
+		reloadOnStaleChunk(error)
 	}
 
 	render() {
