@@ -10,22 +10,52 @@ const initialsOf = name =>
 		.map(part => part[0].toUpperCase())
 		.join('')
 
-/** Round avatar: image when `src` loads, otherwise initials from `name`. size: sm | md | lg. */
-const Avatar = ({ src, name, size = 'md', className = '' }) => {
-	const [failed, setFailed] = useState(false)
-	const showImage = src && !failed
-	return (
+/**
+ * Round avatar. What it shows, in order: the image at `src` (any image URL) if it loads, then `children` (your own
+ * content, e.g. an icon or an <img>), then initials from `name`. size: sm | md | lg.
+ * Pass `href` to make it a link to a profile or page; `linkComponent` / `linkProp` swap in a router link as in AppBar,
+ * and other props (target, rel, onClick...) go to the link. `name` is the accessible name either way.
+ */
+const Avatar = ({
+	src,
+	alt = '',
+	name,
+	size = 'md',
+	href,
+	linkComponent: Link = 'a',
+	linkProp = 'href',
+	className = '',
+	children,
+	...rest
+}) => {
+	const [failedSrc, setFailedSrc] = useState(null)
+	const showImage = src && failedSrc !== src
+	const linked = href !== undefined
+
+	const circle = (
 		<span
-			role="img"
-			aria-label={name}
-			className={`inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-app-border bg-app-bg font-semibold uppercase tracking-wider text-app-soft ${SIZES[size]} ${className}`}
+			{...(linked ? {} : { role: 'img', 'aria-label': name, ...rest })}
+			className={`inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-app-border bg-app-bg font-semibold uppercase tracking-wider text-app-soft ${SIZES[size]} ${linked ? '' : className}`}
 		>
 			{showImage ? (
-				<img src={src} alt="" className="h-full w-full object-cover" onError={() => setFailed(true)} />
+				<img src={src} alt={alt} className="h-full w-full object-cover" onError={() => setFailedSrc(src)} />
 			) : (
-				initialsOf(name) || '?'
+				(children ?? (initialsOf(name) || '?'))
 			)}
 		</span>
+	)
+
+	if (!linked) return circle
+
+	return (
+		<Link
+			{...{ [linkProp]: href }}
+			aria-label={name}
+			className={`inline-flex shrink-0 rounded-full transition hover:opacity-80 ${className}`}
+			{...rest}
+		>
+			{circle}
+		</Link>
 	)
 }
 

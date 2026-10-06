@@ -6,6 +6,8 @@ export default function Demo() {
 			<Avatar name="Ada Lovelace" size="sm" />
 			<Avatar name="Linus Torvalds" />
 			<Avatar name="Grace Hopper" size="lg" />
+			<Avatar src="https://i.pravatar.cc/120?img=12" name="Ada Lovelace" />
+			<Avatar href="#profile" name="Linus Torvalds" />
 			<div className="w-56">
 				<Progress value={62} label="Upload" showValue />
 			</div>
