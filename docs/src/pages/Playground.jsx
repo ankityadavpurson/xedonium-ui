@@ -1,32 +1,23 @@
 import { Tabs } from 'xedonium'
+import LiveSection from '../components/LiveSection'
+import { sourceOf, tabs } from '../playground'
 import Page from './Page'
-import Basics from '../playground/Basics'
-import Data from '../playground/Data'
-import Forms from '../playground/Forms'
-import Layout from '../playground/Layout'
-import Overlays from '../playground/Overlays'
 
-const tab = (key, label, Content) => ({
-	key,
-	label,
-	content: (
-		<div className="pt-4">
-			<Content />
-		</div>
-	),
-})
-
-// Every component on one screen, for visual checks in light and dark
+// Every component on one screen. Each section shows its code; edit it and the result updates live.
 const Playground = () => (
-	<Page title="Playground" subtitle="Every component, light and dark">
+	<Page title="Playground" subtitle="Edit the code, see it run">
 		<Tabs
-			items={[
-				tab('basics', 'Basics', Basics),
-				tab('forms', 'Forms', Forms),
-				tab('data', 'Data', Data),
-				tab('overlays', 'Overlays', Overlays),
-				tab('layout', 'Layout', Layout),
-			]}
+			items={tabs.map(({ key, label, sections }) => ({
+				key,
+				label,
+				content: (
+					<div className="flex flex-col gap-4 pt-4">
+						{sections.map(([slug, title]) => (
+							<LiveSection key={slug} title={title} source={sourceOf(key, slug)} />
+						))}
+					</div>
+				),
+			}))}
 		/>
 	</Page>
 )

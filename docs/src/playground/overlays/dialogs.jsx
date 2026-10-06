@@ -1,28 +1,13 @@
 import { useState } from 'react'
-import {
-	Button,
-	CommandPalette,
-	ConfirmDialog,
-	Drawer,
-	Modal,
-	NotificationCenter,
-	Popover,
-	useKeyboardShortcuts,
-} from 'xedonium'
-import { Section } from './shared'
+import { Button, CommandPalette, ConfirmDialog, Drawer, Modal, useKeyboardShortcuts } from 'xedonium'
 
-const Overlays = () => {
+export default function Demo() {
 	const [dialog, setDialog] = useState(false)
 	const [busy, setBusy] = useState(false)
 	const [modal, setModal] = useState(false)
 	const [drawer, setDrawer] = useState(null)
 	const [palette, setPalette] = useState(false)
 	const [last, setLast] = useState('')
-	const [notes, setNotes] = useState([
-		{ id: 1, title: 'Deploy finished', body: 'Build 42 is live', time: '2m' },
-		{ id: 2, title: 'Health check failed', body: 'api.example.com', time: '1h' },
-		{ id: 3, title: 'Welcome', read: true },
-	])
 
 	useKeyboardShortcuts({ 'mod+k': () => setPalette(true) })
 
@@ -35,35 +20,21 @@ const Overlays = () => {
 	}
 
 	return (
-		<div className="flex flex-col gap-4">
-			<Section title="Dialogs">
-				<Button onClick={() => setDialog(true)}>Confirm dialog</Button>
-				<Button variant="secondary" onClick={() => setModal(true)}>
-					Modal
-				</Button>
-				<Button variant="secondary" onClick={() => setDrawer('right')}>
-					Drawer right
-				</Button>
-				<Button variant="secondary" onClick={() => setDrawer('left')}>
-					Drawer left
-				</Button>
-				<Button variant="secondary" onClick={() => setPalette(true)}>
-					Command palette (Ctrl+K)
-				</Button>
-				<span className="text-xs text-app-muted">{last && `Ran: ${last}`}</span>
-			</Section>
-			<Section title="Popover / Notifications">
-				<Popover trigger="Popover" label="Popover">
-					<div className="w-56 p-3 text-sm">Arbitrary content in a floating panel.</div>
-				</Popover>
-				<NotificationCenter
-					notifications={notes}
-					onSelect={() => {}}
-					onMarkRead={id => setNotes(n => n.map(x => (x.id === id ? { ...x, read: true } : x)))}
-					onMarkAllRead={() => setNotes(n => n.map(x => ({ ...x, read: true })))}
-					onClear={() => setNotes([])}
-				/>
-			</Section>
+		<div className="flex flex-wrap items-center gap-3">
+			<Button onClick={() => setDialog(true)}>Confirm dialog</Button>
+			<Button variant="secondary" onClick={() => setModal(true)}>
+				Modal
+			</Button>
+			<Button variant="secondary" onClick={() => setDrawer('right')}>
+				Drawer right
+			</Button>
+			<Button variant="secondary" onClick={() => setDrawer('left')}>
+				Drawer left
+			</Button>
+			<Button variant="secondary" onClick={() => setPalette(true)}>
+				Command palette (Ctrl+K)
+			</Button>
+			<span className="text-xs text-app-muted">{last && `Ran: ${last}`}</span>
 
 			<ConfirmDialog
 				open={dialog}
@@ -110,5 +81,3 @@ const Overlays = () => {
 		</div>
 	)
 }
-
-export default Overlays
