@@ -76,7 +76,7 @@ import { ThemeProvider, useTheme } from 'xedonium/theme'
 - Forms: `Button`, `ButtonLink`, `Field`, `Input`, `PasswordInput`, `TextArea`, `Select`, `MultiSelect`, `SearchSelect`, `Checkbox`, `Radio`, `RadioGroup`, `Switch`, `Slider`, `DatePicker`, `DateRangePicker`, `TimePicker`, `FileUpload`
 - Data: `Accordion`, `Badge`, `Chip`, `CodeDisplay`, `Table`, `DataGrid`, `List`, `SortableList`, `VirtualList`, `Tree`, `Pagination`, `Calendar`, `Carousel`, `Timeline`, `Stepper`, `StatCard`, and charts (`LineChart`, `AreaChart`, `BarChart`, `PieChart`)
 - Feedback and overlays: `Alert`, `Toast`, `Tooltip`, `Modal`, `ConfirmDialog`, `Drawer`, `Popover`, `ActionMenu`, `CommandPalette`, `NotificationCenter`, `Progress`, `Skeleton`, `Loader`, `FanFavicon`, `LoadingScreen`, `RackServer`
-- Media and utilities: `Avatar`, `Image`, `Video`, `Sound`, `Portal`, `FocusTrap`, `ThemeToggle`, plus 177 outline icons (see the Icons page; each is also importable as `xedonium/icons/<Name>`)
+- Media and utilities: `Avatar`, `Image`, `Video`, `Sound`, `Portal`, `FocusTrap`, `ThemeToggle`, plus 189 outline icons (see the Icons page; each is also importable as `xedonium/icons/<Name>`)
 - Hooks: `useTimedToast`, `useEscapeKey`, `useDialogFocus`, `useDismissable`, `useFlipAlign`, `useKeyboardShortcuts`, `useLeaveWarning`, `useDocumentTitle(title, suffix)`.
 - Theme: `ThemeProvider`, `useTheme`, `useAppTheme`, `buildFaviconHref`.
 
