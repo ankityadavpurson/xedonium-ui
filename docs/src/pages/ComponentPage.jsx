@@ -4,6 +4,7 @@ import Example from '../components/Example'
 import Markdown from '../components/Markdown'
 import PropsTable from '../components/PropsTable'
 import { exampleFor, findPage, pages, pathOf, propsFor } from '../content'
+import { playgroundPath, sectionFor } from '../playground'
 import NotFound from './NotFound'
 
 const Neighbour = ({ page, label, align }) =>
@@ -28,6 +29,7 @@ const ComponentPage = () => {
 	const { category, component } = page
 	const index = pages.indexOf(page)
 	const props = propsFor(component)
+	const playground = sectionFor(Object.keys(props ?? {}))
 
 	return (
 		<article className="flex flex-col gap-8">
@@ -41,7 +43,16 @@ const ComponentPage = () => {
 						{ label: component.name },
 					]}
 				/>
-				<PageHeader title={component.name} />
+				<PageHeader title={component.name}>
+					{playground && (
+						<Link
+							to={playgroundPath(playground)}
+							className="border border-app-border bg-app-bg px-3 py-2 text-xs font-semibold uppercase tracking-widest text-app-text transition hover:border-app-strong"
+						>
+							Open in Playground
+						</Link>
+					)}
+				</PageHeader>
 			</div>
 			{component.blocks.map((block, i) =>
 				block.md ? (

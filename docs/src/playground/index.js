@@ -1,60 +1,19 @@
-// The Playground's tabs and sections. Each section's code lives in ./<tab>/<slug>.jsx and is loaded as raw text:
-// that text is what the visitor sees, edits and runs.
+// Loads each Playground section's code as raw text: that text is what the visitor sees, edits and runs.
+import { pickSection } from './match'
+import { tabs } from './registry'
+
+export { tabs }
+
 const sources = import.meta.glob('./*/*.jsx', { query: '?raw', import: 'default', eager: true })
 
-export const tabs = [
-	{
-		key: 'basics',
-		label: 'Basics',
-		sections: [
-			['buttons', 'Buttons'],
-			['alerts', 'Alerts'],
-			['stat-cards-card', 'Stat cards / Card'],
-			['avatar-progress-skeleton-divider', 'Avatar / Progress / Skeleton / Divider'],
-			['breadcrumb-stepper-timeline', 'Breadcrumb / Stepper / Timeline'],
-			['loaders', 'Loaders'],
-		],
-	},
-	{
-		key: 'forms',
-		label: 'Forms',
-		sections: [
-			['text-inputs', 'Text inputs'],
-			['toggles', 'Toggles'],
-			['date-and-time', 'Date and time'],
-			['file-upload', 'File upload'],
-		],
-	},
-	{
-		key: 'data',
-		label: 'Data',
-		sections: [
-			['charts', 'Charts'],
-			['table-datagrid', 'Table / DataGrid'],
-			['lists', 'Lists'],
-			['pagination-calendar-carousel', 'Pagination / Calendar / Carousel'],
-		],
-	},
-	{
-		key: 'overlays',
-		label: 'Overlays',
-		sections: [
-			['dialogs', 'Dialogs'],
-			['popover-notifications', 'Popover / Notifications'],
-		],
-	},
-	{
-		key: 'layout',
-		label: 'Layout',
-		sections: [
-			['navbar-tabs', 'Navbar / Tabs'],
-			['sidebar-appshell', 'Sidebar / AppShell'],
-			['flex-stack-grid-container', 'Flex / Stack / Grid / Container'],
-			['media', 'Media'],
-			['dashboard', 'Dashboard'],
-			['focustrap-portal', 'FocusTrap / Portal'],
-		],
-	},
-]
-
 export const sourceOf = (tab, slug) => sources[`./${tab}/${slug}.jsx`]
+
+// Flat list in display order: [{ tab, slug, title, source }]
+export const sections = tabs.flatMap(({ key, sections: list }) =>
+	list.map(([slug, title]) => ({ tab: key, slug, title, source: sourceOf(key, slug) }))
+)
+
+// The Playground section that shows these components (names as in the props tables), if any
+export const sectionFor = names => pickSection(names, sections)
+
+export const playgroundPath = ({ tab, slug }) => `/playground?tab=${tab}&section=${slug}`

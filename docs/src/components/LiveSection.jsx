@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { LiveError, LivePreview, LiveProvider } from 'react-live'
 import { Label } from 'xedonium'
 import { scope, toLiveCode } from '../playground/live'
@@ -9,15 +9,28 @@ const toolButton =
 	'text-[10px] font-semibold uppercase tracking-widest text-app-muted transition hover:text-app-text disabled:cursor-not-allowed disabled:opacity-40'
 
 /**
- * One playground section: the running result on top, its source below. The source is editable and re-runs on
+ * One playground section (`focused`: it was linked to, so its code starts open and it is scrolled into view): the running result on top, its source below. The source is editable and re-runs on
  * every change (react-live); Reset restores the original and Copy takes the current text.
  */
-const LiveSection = ({ title, source }) => {
+const LiveSection = ({ title, source, id, focused = false }) => {
 	const [code, setCode] = useState(source)
-	const [open, setOpen] = useState(false)
+	const [open, setOpen] = useState(focused)
+	const ref = useRef(null)
+
+	// Linked to from a docs page: show the code and bring the section into view
+	useEffect(() => {
+		if (!focused) return
+		setOpen(true)
+		ref.current?.scrollIntoView({ block: 'start' })
+	}, [focused])
 
 	return (
-		<section className="flex flex-col border border-app-border bg-app-card">
+		<section
+			ref={ref}
+			id={id}
+			aria-label={title}
+			className={`flex scroll-mt-4 flex-col border bg-app-card ${focused ? 'border-app-strong shadow-[0_0_0_1px_rgb(var(--color-app-strong))]' : 'border-app-border'}`}
+		>
 			<LiveProvider code={toLiveCode(code)} scope={scope} noInline>
 				<div className="flex flex-col gap-3 p-5">
 					<Label as="h2">{title}</Label>
