@@ -953,6 +953,31 @@ const props = {
 			['empty', 'string', "'No matching commands'", 'Shown when nothing matches.'],
 		],
 	},
+	notfoundpage: {
+		NotFoundPage: [
+			[
+				'code',
+				'string',
+				"'404'",
+				'Large status code shown above the title (read out before the title by screen readers).',
+			],
+			['title', 'string', "'Page not found'", 'Heading of the page.'],
+			[
+				'description',
+				'string',
+				"'The page you are looking for does not exist or has moved.'",
+				'Short explanation; pass an empty string to hide it.',
+			],
+			['homeHref', 'string | null', "'/'", 'Destination of the home link; `null` hides it.'],
+			['homeLabel', 'string', "'Go home'", 'Text of the home link.'],
+			['onBack', '() => void', '', 'Adds a "go back" button that calls this (e.g. `() => navigate(-1)`).'],
+			['backLabel', 'string', "'Go back'", 'Text of the back button.'],
+			...link,
+			['fullScreen', 'boolean', 'false', 'Center it in the whole viewport instead of filling the space it is given.'],
+			className,
+			['children', 'ReactNode', '', 'Extra content under the buttons.'],
+		],
+	},
 	notificationcenter: {
 		NotificationCenter: [
 			['notifications', '{ id, title, body?, time?, read? }[]', '', 'Notifications, newest first.'],

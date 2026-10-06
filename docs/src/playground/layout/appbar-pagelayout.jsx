@@ -1,4 +1,4 @@
-import { AppBar, Button, PageHeader, PageLayout } from 'xedonium'
+import { AppBar, Button, NotFoundPage, PageHeader, PageLayout } from 'xedonium'
 
 // A whole page in miniature: AppBar on top, PageLayout filling the rest, PageHeader at the start of the content
 export default function Demo() {
@@ -17,6 +17,7 @@ export default function Demo() {
 					<Button variant="secondary">Action</Button>
 				</PageHeader>
 				<p className="m-0 text-sm text-app-text">Page content goes here.</p>
+				<NotFoundPage className="!py-8" homeHref="#home" />
 			</PageLayout>
 		</div>
 	)
