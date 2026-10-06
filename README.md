@@ -52,7 +52,7 @@ import { ThemeProvider, AppBar, PageLayout, Button } from 'xedonium'
 - Typography: `PageTitle`, `BodyText`, `HelperText`, `Label`, `TextLink`
 - Forms: `Button`, `Field`, `Input`, `Select`, `Checkbox`, `Radio`, `RadioGroup`, `Switch`, `Slider`, `DatePicker`, `DateRangePicker`, `TimePicker`, `FileUpload`
 - Data: `Table`, `DataGrid`, `List`, `SortableList`, `VirtualList`, `Tree`, `Pagination`, `Calendar`, `Carousel`, `Timeline`, `Stepper`, `StatCard`, and charts (`LineChart`, `AreaChart`, `BarChart`, `PieChart`)
-- Feedback and overlays: `Alert`, `Toast`, `Tooltip`, `Modal`, `ConfirmDialog`, `Drawer`, `Popover`, `ActionMenu`, `CommandPalette`, `NotificationCenter`, `Progress`, `Skeleton`, `FanFavicon`, `LoadingScreen`, `RackServer`
+- Feedback and overlays: `Alert`, `Toast`, `Tooltip`, `Modal`, `ConfirmDialog`, `Drawer`, `Popover`, `ActionMenu`, `CommandPalette`, `NotificationCenter`, `Progress`, `Skeleton`, `Loader`, `FanFavicon`, `LoadingScreen`, `RackServer`
 - Media and utilities: `Avatar`, `Image`, `Video`, `Portal`, `FocusTrap`, `ThemeToggle`, plus 14 icons
 - Hooks: `useTimedToast`, `useEscapeKey`, `useDialogFocus`, `useDismissable`, `useFlipAlign`, `useKeyboardShortcuts`, `useLeaveWarning`, `useDocumentTitle(title, suffix)`.
 - Theme: `ThemeProvider`, `useTheme`, `useAppTheme`, `buildFaviconHref`.
@@ -73,6 +73,7 @@ yarn build   # dist/ (ESM, CJS, .d.ts, styles.css)
 The docs site in `docs/` is a small Vite + React app built with the library itself (imported from `src/`, no build step needed).
 
 - Pages: `docs/src/content/<category>.js` lists each component's page; its demos live in `docs/src/examples/<category>/<slug>-<n>.jsx` and the code shown is exactly the file that is rendered.
+- Playground: every section on the Playground page is a snippet in `docs/src/playground/<tab>/<slug>.jsx`, shown with an editor and run live with `react-live`. To add one, create the file and list it in `docs/src/playground/registry.js`. Every component page links to the section that uses it ("Open in Playground"), and `yarn docs:check` fails if a component has no section.
 - Props tables: `docs/src/content/props.js`. `yarn docs:check` fails if a component's props and its table drift apart.
 
 ```bash

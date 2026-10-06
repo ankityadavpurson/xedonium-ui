@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
+import { Suspense, lazy, useEffect, useMemo, useState } from 'react'
 import { Link, NavLink, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import {
 	AppShell,
 	Button,
 	CommandPalette,
+	FanFavicon,
 	Sidebar,
 	ThemeToggle,
 	Tooltip,
@@ -18,8 +19,11 @@ import ComponentPage from './pages/ComponentPage'
 import GettingStarted from './pages/GettingStarted'
 import Home from './pages/Home'
 import Hooks from './pages/Hooks'
+import LoadingScreenPreview from './pages/LoadingScreenPreview'
 import NotFound from './pages/NotFound'
-import Playground from './pages/Playground'
+
+// The Playground compiles JSX in the browser (react-live); load it only when someone opens it
+const Playground = lazy(() => import('./pages/Playground'))
 
 const GitHubIcon = () => (
 	<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
@@ -124,6 +128,16 @@ const App = () => {
 		</div>
 	)
 
+	// Whole-page previews have no docs chrome
+	if (pathname.startsWith('/preview/')) {
+		return (
+			<Routes>
+				<Route path="/preview/loading-screen" element={<LoadingScreenPreview />} />
+				<Route path="*" element={<NotFound />} />
+			</Routes>
+		)
+	}
+
 	return (
 		<>
 			<AppShell
@@ -151,7 +165,20 @@ const App = () => {
 						<Route path="/components/:category" element={<CategoryPage />} />
 						<Route path="/components/:category/:slug" element={<ComponentPage />} />
 						<Route path="/hooks" element={<Hooks />} />
-						<Route path="/playground" element={<Playground />} />
+						<Route
+							path="/playground"
+							element={
+								<Suspense
+									fallback={
+										<div className="flex justify-center py-24">
+											<FanFavicon label="Loading the playground" />
+										</div>
+									}
+								>
+									<Playground />
+								</Suspense>
+							}
+						/>
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</div>

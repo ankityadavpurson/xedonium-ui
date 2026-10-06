@@ -272,9 +272,11 @@ const props = {
 	},
 	progress: {
 		Progress: [
-			['value', 'number', '', '0-100. Omit for an indeterminate bar.'],
+			['value', 'number', '', '0-100. Omit for an indeterminate bar or spinning ring.'],
 			['label', 'string', '', 'Label and accessible name.'],
-			['showValue', 'boolean', 'false', 'Show the percentage.'],
+			['showValue', 'boolean', 'false', 'Show the percentage (beside the label, or inside the ring).'],
+			['variant', "'linear' | 'circular'", "'linear'", 'A bar or a ring.'],
+			['size', "'sm' | 'md' | 'lg'", "'md'", 'Ring size (32 / 64 / 96 px). Ignored by the linear bar.'],
 			className,
 		],
 	},
@@ -286,11 +288,41 @@ const props = {
 		],
 	},
 	loaders: {
-		LoadingScreen: [['(none)', '', '', 'Full-page centered loader.']],
+		Loader: [
+			[
+				'variant',
+				"'fan' | 'spinner' | 'dots' | 'shimmer' | 'inline' | 'stacked' | 'card'",
+				"'fan'",
+				'Loader style. fan renders FanFavicon; the others are described above.',
+			],
+			[
+				'size',
+				"'sm' | 'md' | 'lg'",
+				"'md'",
+				'Overall size (fan 32 / 64 / 96 px, ring 16 / 32 / 48 px; the text scales with it).',
+			],
+			[
+				'label',
+				'string',
+				"'Loading'",
+				'Loading text shown by every variant except spinner (which keeps it for screen readers only).',
+			],
+			['description', 'string', '', 'Helper line under the label (card variant only).'],
+			className,
+		],
 		FanFavicon: [
 			['size', 'number', '64', 'Size in px.'],
 			['theme', "'light' | 'dark'", '', 'Force a theme instead of following the page.'],
 			['label', 'string', '', 'Accessible label.'],
+		],
+	},
+
+	'loading-screen': {
+		LoadingScreen: [
+			['variant', 'string', "'fan'", 'Same as Loader.'],
+			['size', "'sm' | 'md' | 'lg'", "'md'", 'Same as Loader.'],
+			['label', 'string', "'Loading'", 'Same as Loader.'],
+			['description', 'string', '', 'Same as Loader (card variant).'],
 		],
 	},
 

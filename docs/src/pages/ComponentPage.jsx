@@ -1,10 +1,15 @@
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, Label, PageHeader, useDocumentTitle } from 'xedonium'
 import Example from '../components/Example'
+import FullPagePreview from '../components/FullPagePreview'
 import Markdown from '../components/Markdown'
 import PropsTable from '../components/PropsTable'
 import { exampleFor, findPage, pages, pathOf, propsFor } from '../content'
+import { playgroundPath, sectionFor } from '../playground'
 import NotFound from './NotFound'
+
+// Docs-only blocks that are components instead of Markdown or an example file
+const CUSTOM_BLOCKS = { 'full-page-preview': FullPagePreview }
 
 const Neighbour = ({ page, label, align }) =>
 	page ? (
@@ -28,6 +33,7 @@ const ComponentPage = () => {
 	const { category, component } = page
 	const index = pages.indexOf(page)
 	const props = propsFor(component)
+	const playground = sectionFor(Object.keys(props ?? {}))
 
 	return (
 		<article className="flex flex-col gap-8">
@@ -41,15 +47,25 @@ const ComponentPage = () => {
 						{ label: component.name },
 					]}
 				/>
-				<PageHeader title={component.name} />
+				<PageHeader title={component.name}>
+					{playground && (
+						<Link
+							to={playgroundPath(playground)}
+							className="border border-app-border bg-app-bg px-3 py-2 text-xs font-semibold uppercase tracking-widest text-app-text transition hover:border-app-strong"
+						>
+							Open in Playground
+						</Link>
+					)}
+				</PageHeader>
 			</div>
-			{component.blocks.map((block, i) =>
-				block.md ? (
-					<Markdown key={i}>{block.md}</Markdown>
-				) : (
-					<Example key={i} {...exampleFor(category, component, block.example)} />
-				)
-			)}
+			{component.blocks.map((block, i) => {
+				if (block.md) return <Markdown key={i}>{block.md}</Markdown>
+				if (block.custom) {
+					const Custom = CUSTOM_BLOCKS[block.custom]
+					return Custom ? <Custom key={i} /> : null
+				}
+				return <Example key={i} {...exampleFor(category, component, block.example)} />
+			})}
 			{props && (
 				<section className="flex flex-col gap-3">
 					<Label as="h2">Props</Label>

@@ -165,3 +165,69 @@ body {
 	background: rgb(var(--color-app-strong));
 	box-shadow: 0 0 0 1px rgb(var(--color-app-strong));
 }
+
+/* Loader text effects: pulsing dots and a light sweeping across the label */
+@keyframes xd-dot {
+	0%,
+	80%,
+	100% {
+		opacity: 0.2;
+	}
+	40% {
+		opacity: 1;
+	}
+}
+
+.xd-dot {
+	animation: xd-dot 1.2s ease-in-out infinite both;
+}
+
+.xd-dot:nth-child(2) {
+	animation-delay: 0.2s;
+}
+
+.xd-dot:nth-child(3) {
+	animation-delay: 0.4s;
+}
+
+/*
+ * Shimmer: a bright band sweeping left to right across the text. The gradient tile is 200% of the text width and holds
+ * two bands, so the pattern repeats every 100% of the width. Sliding the image by exactly that much (background-position
+ * 100% -> 0%, i.e. the image offset goes from -width to 0) makes the last frame identical to the first: no jump when the
+ * loop restarts, and one band is always crossing the text.
+ */
+@keyframes xd-shimmer {
+	from {
+		background-position: 100% 0;
+	}
+	to {
+		background-position: 0% 0;
+	}
+}
+
+.xd-shimmer {
+	color: rgb(var(--color-app-muted));
+}
+
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+	.xd-shimmer {
+		background: linear-gradient(
+				90deg,
+				rgb(var(--color-app-muted)) 0%,
+				rgb(var(--color-app-muted)) 15%,
+				rgb(var(--color-app-text)) 25%,
+				rgb(var(--color-app-muted)) 35%,
+				rgb(var(--color-app-muted)) 65%,
+				rgb(var(--color-app-text)) 75%,
+				rgb(var(--color-app-muted)) 85%,
+				rgb(var(--color-app-muted)) 100%
+			)
+			0 0 / 200% 100% repeat-x;
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+		animation: xd-shimmer 1.6s linear infinite;
+		will-change: background-position;
+	}
+}
