@@ -115,6 +115,23 @@ const props = {
 			rest,
 		],
 	},
+	'button-link': {
+		ButtonLink: [
+			['href', 'string', '', 'Link destination.'],
+			[
+				'variant',
+				"'default' | 'secondary' | 'success' | 'danger' | 'warning'",
+				"'default'",
+				'Visual style (same as Button).',
+			],
+			['disabled', 'boolean', 'false', 'Sets aria-disabled, removes the tab stop and blocks navigation.'],
+			...link,
+			['onClick', '(event) => void', '', 'Click handler.'],
+			className,
+			children,
+			rest,
+		],
+	},
 	field: {
 		Field: [
 			['label', 'string', '', 'Label text.'],
@@ -145,6 +162,77 @@ const props = {
 			['onChange', '(value: string) => void', '', 'Called with the new value.'],
 			['options', '{ value, label, disabled? }[]', '', 'Options to choose from.'],
 			['placeholder', 'string', '', 'Text shown when nothing is selected.'],
+			fieldError,
+			['disabled', 'boolean', 'false', 'Disable the control.'],
+			['name', 'string', '', 'Adds a hidden input so the value is submitted with a form.'],
+			className,
+			rest,
+		],
+	},
+	passwordinput: {
+		PasswordInput: [
+			['label', 'string', '', 'Label text.'],
+			['value', 'string', '', 'Current value.'],
+			['onChange', '(value: string) => void', '', 'Called with the new value.'],
+			fieldError,
+			['placeholder', 'string', '', 'Placeholder text.'],
+			['autoComplete', 'string', "'current-password'", 'Native autocomplete hint.'],
+			['disabled', 'boolean', 'false', 'Disable the input and toggle.'],
+			className,
+			rest,
+		],
+	},
+	textarea: {
+		TextArea: [
+			['label', 'string', '', 'Label text.'],
+			['value', 'string', "''", 'Current value.'],
+			['onChange', '(value: string) => void', '', 'Called with the new value.'],
+			fieldError,
+			['rows', 'number', '4', 'Visible rows.'],
+			['maxLength', 'number', '', 'Maximum length; also shows a character count.'],
+			['resize', 'boolean', 'true', 'Allow vertical resizing.'],
+			className,
+			rest,
+		],
+	},
+	multiselect: {
+		MultiSelect: [
+			['label', 'string', '', 'Label text.'],
+			['value', 'string[]', '[]', 'Selected values.'],
+			['onChange', '(value: string[]) => void', '', 'Called with the new array of values.'],
+			['options', '{ value, label, disabled? }[]', '', 'Options to choose from.'],
+			['placeholder', 'string', '', 'Text shown when nothing is selected.'],
+			['searchable', 'boolean', 'false', 'Let the user type to filter the options.'],
+			['clearable', 'boolean', 'true', 'Show a clear-all button while something is selected.'],
+			['emptyText', 'string', "'No matches'", 'Text shown when a search matches nothing.'],
+			[
+				'filter',
+				'(query, option) => boolean',
+				'',
+				'Custom matching; default is a case-insensitive "contains" on the label.',
+			],
+			fieldError,
+			['disabled', 'boolean', 'false', 'Disable the control.'],
+			['name', 'string', '', 'Adds a hidden input per selected value so they are submitted with a form.'],
+			className,
+			rest,
+		],
+	},
+	searchselect: {
+		SearchSelect: [
+			['label', 'string', '', 'Label text.'],
+			['value', 'string', '', 'Selected value.'],
+			['onChange', '(value: string) => void', '', 'Called with the new value.'],
+			['options', '{ value, label, disabled? }[]', '', 'Options to choose from.'],
+			['placeholder', 'string', "'Search…'", 'Input placeholder.'],
+			['emptyText', 'string', "'No matches'", 'Text shown when nothing matches.'],
+			[
+				'filter',
+				'(query, option) => boolean',
+				'',
+				'Custom matching; default is a case-insensitive "contains" on the label.',
+			],
+			['onSearch', '(query: string) => void', '', 'Called as the user types (and with "" when the list closes).'],
 			fieldError,
 			['disabled', 'boolean', 'false', 'Disable the control.'],
 			['name', 'string', '', 'Adds a hidden input so the value is submitted with a form.'],
@@ -426,6 +514,28 @@ const props = {
 	},
 
 	// Data display
+	accordion: {
+		Accordion: [
+			['items', '{ key, title, content, disabled? }[]', '', 'Sections.'],
+			['value', 'string[]', '', 'Open keys (controlled).'],
+			['defaultValue', 'string[]', '[]', 'Initially open keys (uncontrolled).'],
+			['onChange', '(keys: string[]) => void', '', 'Called with the new array of open keys.'],
+			['multiple', 'boolean', 'false', 'Allow several sections open at once.'],
+			className,
+		],
+	},
+	codedisplay: {
+		CodeDisplay: [
+			['code', 'string', '', 'Code to show.'],
+			['language', 'string', '', 'Caption shown in the header (no highlighting).'],
+			['title', 'string', '', 'Header text; overrides `language` as the caption.'],
+			['lineNumbers', 'boolean', 'false', 'Show line numbers.'],
+			['copyable', 'boolean', 'true', 'Show a copy button.'],
+			['wrap', 'boolean', 'false', 'Wrap long lines instead of scrolling.'],
+			['maxHeight', 'number | string', '', 'Maximum height before the block scrolls.'],
+			className,
+		],
+	},
 	card: {
 		Card: [
 			['title', 'ReactNode', '', 'Header title.'],
