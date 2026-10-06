@@ -30,17 +30,37 @@
 		"dist",
 		"tailwind-preset.js"
 	],
-	"main": "./dist/xedonium.cjs",
-	"module": "./dist/xedonium.js",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
-			"import": "./dist/xedonium.js",
-			"require": "./dist/xedonium.cjs"
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
 		},
 		"./styles.css": "./dist/styles.css",
-		"./tailwind-preset": "./tailwind-preset.js"
+		"./tailwind-preset": "./tailwind-preset.js",
+		"./theme": {
+			"types": "./dist/theme/index.d.ts",
+			"import": "./dist/theme/index.js",
+			"require": "./dist/theme/index.cjs"
+		},
+		"./hooks/*": {
+			"types": "./dist/hooks/*.d.ts",
+			"import": "./dist/hooks/*.js",
+			"require": "./dist/hooks/*.cjs"
+		},
+		"./icons/*": {
+			"types": "./dist/components/icons/*.d.ts",
+			"import": "./dist/components/icons/*.js",
+			"require": "./dist/components/icons/*.cjs"
+		},
+		"./*": {
+			"types": "./dist/components/*.d.ts",
+			"import": "./dist/components/*.js",
+			"require": "./dist/components/*.cjs"
+		}
 	},
 	"scripts": {
 		"docs": "vite --config docs/vite.config.js",
@@ -50,12 +70,13 @@
 		"docs:build": "vite build --config docs/vite.config.js && node scripts/spa-fallback.mjs",
 		"docs:preview": "vite preview --config docs/vite.config.js",
 		"docs:check": "node scripts/check-docs.mjs",
-		"prepublishOnly": "npm run lint && npm run build",
+		"prepublishOnly": "npm run lint && npm run build && npm run check:exports",
 		"format": "prettier --write .",
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"test:coverage": "vitest run --coverage",
-		"prepare": "husky || true"
+		"prepare": "husky || true",
+		"check:exports": "node scripts/check-exports.mjs"
 	},
 	"peerDependencies": {
 		"react": ">=18",

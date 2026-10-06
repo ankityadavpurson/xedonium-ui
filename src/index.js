@@ -113,8 +113,12 @@ export { default as useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 export { default as useLeaveWarning } from './hooks/useLeaveWarning'
 export { default as useTimedToast } from './hooks/useTimedToast'
 
-export { default as ThemeProvider } from './theme/ThemeProvider'
-export { ThemeContext, useTheme } from './theme/ThemeContext'
-export { default as useAppTheme } from './theme/useAppTheme'
-export { buildFaviconHref } from './theme/favicon'
-export { THEME_FAVICON_COLORS, DEFAULT_THEME_STORAGE_KEY } from './theme/constants'
+export {
+	DEFAULT_THEME_STORAGE_KEY,
+	THEME_FAVICON_COLORS,
+	ThemeContext,
+	ThemeProvider,
+	buildFaviconHref,
+	useAppTheme,
+	useTheme,
+} from './theme'

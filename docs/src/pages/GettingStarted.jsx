@@ -26,6 +26,16 @@ const provider = `import { ThemeProvider, AppBar, PageLayout, Button } from 'xed
 	</PageLayout>
 </ThemeProvider>`
 
+const subpaths = `// each component is its own module: import just the ones you use
+import Button from 'xedonium/Button'
+import Select from 'xedonium/Select'
+import CheckIcon from 'xedonium/icons/Check'
+import useTimedToast from 'xedonium/hooks/useTimedToast'
+import { ThemeProvider, useTheme } from 'xedonium/theme'
+
+// the named imports above still work and are tree-shaken too
+import { Button, Select } from 'xedonium'`
+
 // Where to go after setup: [label, description, destination]. Paths starting with / are in-app routes.
 const NEXT = [
 	['Browse components', 'Layout, inputs, navigation, charts and more, each with live examples.', '/components/layout'],
@@ -88,6 +98,13 @@ const GettingStarted = () => {
 					'`AppBar` has no router dependency. For react-router pass `linkComponent={Link} linkProp="to"`.\n\nOverlay z-indexes can be overridden with `--xd-z-modal`, `--xd-z-toast` and `--xd-z-tooltip`.'
 				}
 			</Markdown>
+			<H2>4. Import only what you use</H2>
+			<Markdown>
+				{
+					'The package ships one file per module. `import { Button } from "xedonium"` is tree-shaken by modern bundlers, and subpaths such as `xedonium/Button`, `xedonium/hooks/*`, `xedonium/icons/*` and `xedonium/theme` load only that module (default exports for components and hooks; `require("xedonium/Button").default` in CommonJS).'
+				}
+			</Markdown>
+			<CodeBlock code={subpaths} />
 			<H2>Next steps</H2>
 			<Grid cols={2} gap={4}>
 				{NEXT.map(([title, text, to]) => (
