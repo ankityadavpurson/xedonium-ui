@@ -169,6 +169,18 @@ const EXTRA = [
 	'check-square',
 	'circle-dollar-sign',
 	'indian-rupee',
+	'arrow-down-circle',
+	'arrow-left-circle',
+	'arrow-right-circle',
+	'circle-fading-arrow-left',
+	'circle-fading-arrow-right',
+	'circle-fading-arrow-up',
+	'arrow-up-circle',
+	'file-code2',
+	'hard-drive',
+	'network',
+	'tag',
+	'tags',
 	'banknote',
 	'dollar-sign',
 	'euro',
@@ -310,7 +322,7 @@ describe('icon inventory', () => {
 
 describe('icons', () => {
 	it('exports every icon', () => {
-		expect(icons.length).toBe(177)
+		expect(icons.length).toBe(189)
 	})
 
 	it.each(icons)('%s renders a decorative svg with default and custom classes', (_, Icon) => {
