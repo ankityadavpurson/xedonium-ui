@@ -1,5 +1,10 @@
 # xedonium
 
+<picture>
+	<source media="(prefers-color-scheme: dark)" srcset="docs/public/social-preview-dark.png" />
+	<img src="docs/public/social-preview.png" alt="Xedonium: minimal, theme-aware React UI" width="640" />
+</picture>
+
 Minimal, theme-aware React + Tailwind UI components, extracted from Boot Bridge.
 Square corners, semantic `app-*` color tokens, light/dark via `<html data-theme>`.
 
@@ -92,3 +97,11 @@ yarn docs:build     # static site in docs/dist (+ 404.html for GitHub Pages deep
 yarn docs:preview   # serve the production build
 yarn docs:check     # verify props tables and example files
 ```
+
+## Contributing
+
+Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) first; it covers setup, commit conventions and the 90% test coverage requirement. Please follow the [Code of Conduct](CODE_OF_CONDUCT.md), and report security issues privately as described in [SECURITY.md](SECURITY.md). Release notes are in [CHANGELOG.md](CHANGELOG.md).
+
+## License
+
+[MIT](LICENSE) © Ankit Yadav

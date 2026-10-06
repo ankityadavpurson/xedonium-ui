@@ -57,7 +57,7 @@ const FanFavicon = ({ size = 64, theme: themeOverride, label }) => {
 			focusable="false"
 			{...(label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true })}
 		>
-			<circle cx="32" cy="32" r="30" fill={colors.outer} />
+			<circle cx="32" cy="32" r="29.5" fill={colors.outer} />
 
 			<g ref={fanRef}>
 				<path d="M32 32 C32 18, 42 14, 45 10 C49 5, 52 6, 50 12 C48 18, 38 20, 32 32 Z" fill={colors.bladeA} />
@@ -69,7 +69,7 @@ const FanFavicon = ({ size = 64, theme: themeOverride, label }) => {
 			<circle cx="32" cy="32" r="5" fill={colors.hubOuter} />
 			<circle cx="32" cy="32" r="3" fill={colors.hubInner} />
 
-			<circle cx="32" cy="32" r="30" fill="none" stroke={colors.ring} strokeWidth="5" opacity="0.85" />
+			<circle cx="32" cy="32" r="29.5" fill="none" stroke={colors.ring} strokeWidth="5" opacity="0.85" />
 		</svg>
 	)
 }
