@@ -141,7 +141,7 @@ describe('Avatar (src, children and links)', () => {
 	})
 
 	it('renders a link when href is given', () => {
-		const onClick = vi.fn()
+		const onClick = vi.fn(e => e.preventDefault())
 		render(<Avatar name="Ada" href="/u/ada" target="_blank" className="k" onClick={onClick} />)
 		const link = screen.getByRole('link', { name: 'Ada' })
 		expect(link).toHaveAttribute('href', '/u/ada')

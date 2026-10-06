@@ -1,0 +1,32 @@
+name: CI
+
+# Verifies every push to dev: lint, unit tests, and the 90% coverage gate
+# (thresholds live in vitest.config.js). Release (publish + docs) only runs on main, see release.yml.
+on:
+  push:
+    branches: [dev]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn lint
+      - run: yarn test:coverage # fails if any test fails or coverage is below 90%
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage
+          if-no-files-found: ignore
