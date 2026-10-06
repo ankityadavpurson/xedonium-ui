@@ -8,8 +8,8 @@ const ArrowLeftIcon = ({ className }) => (
 		stroke="currentColor"
 		strokeWidth="2"
 	>
-		<path strokeLinecap="round" strokeLinejoin="round" d="M19 12H5" />
-		<path strokeLinecap="round" strokeLinejoin="round" d="M12 5l-7 7 7 7" />
+		<path strokeLinecap="square" strokeLinejoin="miter" d="M19 12H5" />
+		<path strokeLinecap="square" strokeLinejoin="miter" d="M12 5l-7 7 7 7" />
 	</svg>
 )
 

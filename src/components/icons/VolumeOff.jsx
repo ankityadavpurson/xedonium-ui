@@ -8,9 +8,9 @@ const VolumeOffIcon = ({ className }) => (
 		stroke="currentColor"
 		strokeWidth={2}
 	>
-		<path strokeLinecap="round" strokeLinejoin="round" d="M11 5L6 9H2v6h4l5 4V5z" />
-		<path strokeLinecap="round" strokeLinejoin="round" d="M23 9l-6 6" />
-		<path strokeLinecap="round" strokeLinejoin="round" d="M17 9l6 6" />
+		<path strokeLinecap="square" strokeLinejoin="miter" d="M11 5L6 9H2v6h4l5 4V5z" />
+		<path strokeLinecap="square" strokeLinejoin="miter" d="M23 9l-6 6" />
+		<path strokeLinecap="square" strokeLinejoin="miter" d="M17 9l6 6" />
 	</svg>
 )
 

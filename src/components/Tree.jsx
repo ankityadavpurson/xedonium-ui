@@ -118,7 +118,7 @@ const Tree = ({
 										strokeWidth="2.5"
 										className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-90' : ''}`}
 									>
-										<path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+										<path strokeLinecap="square" strokeLinejoin="miter" d="M9 5l7 7-7 7" />
 									</svg>
 								)}
 							</span>
