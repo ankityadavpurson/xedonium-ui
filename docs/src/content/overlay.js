@@ -74,7 +74,7 @@ export default {
 			name: 'Toast',
 			blocks: [
 				{
-					md: 'Drive it with [`useTimedToast`](/hooks/usetimedtoast); render `<Toast toasts={toasts} onClose={hideToast} />` once. Several toasts stack (newest at the bottom); beyond `max` (default 5) the oldest is dropped. Types: `success`, `danger` (or `error`), `warning`, `info`. Pass `actions: [{ label, onClick }]` for buttons (use `duration: 0` so it stays until the user acts), `link` for a link, and `onClose` for a dismiss button. The live region is always mounted so\nscreen readers announce changes.',
+					md: 'Drive it with [`useTimedToast`](/hooks/usetimedtoast); render `<Toast toasts={toasts} onClose={hideToast} />` once. Several toasts stack (newest at the bottom); beyond `max` (default 5) the oldest is dropped. Types: `success`, `danger` (or `error`), `warning`, `info`. Pass `actions: [{ label, onClick }]` for buttons (use `duration: 0` so it stays until the user acts), `link` for a link, and `onClose` for a dismiss button. `position` places the stack in any of nine spots, from `top-left` to `bottom-right`. The live region is always mounted so\nscreen readers announce changes.',
 				},
 				{ example: 1 },
 			],

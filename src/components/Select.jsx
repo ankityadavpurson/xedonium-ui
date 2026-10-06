@@ -4,6 +4,12 @@ import FloatingPanel from './FloatingPanel'
 import Label from './Label'
 import inputClass from './inputClass'
 
+// Borderless trigger: transparent until hovered, ring only for keyboard focus
+const flatClass = (invalid = false) =>
+	`w-full bg-transparent border px-3 py-2 text-sm text-app-text outline-none transition hover:bg-app-card focus-visible:ring-2 focus-visible:ring-app-strong disabled:cursor-not-allowed disabled:opacity-50 ${
+		invalid ? 'border-red-500' : 'border-transparent'
+	}`
+
 const Chevron = ({ open }) => (
 	<svg
 		aria-hidden="true"
@@ -36,6 +42,8 @@ const CheckMark = () => (
  * Labelled select with a themed listbox (portalled, so it is never clipped). Keyboard: Up / Down / Home / End move,
  * Enter or Space picks, Escape closes, typing jumps to a matching option.
  * options: [{ value, label, disabled? }]. `onChange` receives the value string. `name` adds a hidden input for forms.
+ * `variant="flat"` drops the border and fill (like a flat Button) for use in toolbars and over media; the focus ring
+ * then shows for keyboard focus only.
  */
 const Select = ({
 	label,
@@ -46,6 +54,7 @@ const Select = ({
 	error,
 	disabled = false,
 	name,
+	variant = 'default',
 	className = '',
 	...rest
 }) => {
@@ -150,7 +159,7 @@ const Select = ({
 				aria-describedby={error ? errorId : undefined}
 				onClick={() => (open ? setOpen(false) : openList())}
 				onKeyDown={handleKeyDown}
-				className={`${inputClass(!!error)} flex items-center justify-between gap-2 text-left ${className}`}
+				className={`${variant === 'flat' ? flatClass(!!error) : inputClass(!!error)} flex items-center justify-between gap-2 text-left ${className}`}
 				{...rest}
 			>
 				<span className={`min-w-0 flex-1 truncate ${selected ? '' : 'text-app-muted'}`}>

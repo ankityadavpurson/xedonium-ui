@@ -328,6 +328,86 @@ describe('Slider', () => {
 	})
 })
 
+describe('Slider buffered', () => {
+	it('sets the buffered band, never behind the thumb, and omits it by default', () => {
+		const { rerender } = render(<Slider aria-label="Seek" value={20} buffered={60} />)
+		const input = screen.getByRole('slider', { name: 'Seek' })
+		expect(input.style.getPropertyValue('--xd-fill')).toBe('20%')
+		expect(input.style.getPropertyValue('--xd-buffer')).toBe('60%')
+		rerender(<Slider aria-label="Seek" value={50} buffered={10} />)
+		expect(screen.getByRole('slider', { name: 'Seek' }).style.getPropertyValue('--xd-buffer')).toBe('50%')
+		rerender(<Slider aria-label="Seek" value={50} buffered={500} />)
+		expect(screen.getByRole('slider', { name: 'Seek' }).style.getPropertyValue('--xd-buffer')).toBe('100%')
+		rerender(<Slider aria-label="Seek" value={50} />)
+		expect(screen.getByRole('slider', { name: 'Seek' }).style.getPropertyValue('--xd-buffer')).toBe('')
+	})
+})
+
+describe('Slider vertical', () => {
+	it('is upright, announces its orientation and anchors the popover to the thumb height', () => {
+		render(<Slider aria-label="Level" orientation="vertical" value={50} showValue={false} valueLabel={v => `${v}!`} />)
+		const input = screen.getByRole('slider', { name: 'Level' })
+		expect(input).toHaveAttribute('aria-orientation', 'vertical')
+		expect(input.style.transform).toContain('rotate(-90deg)')
+		expect(input.style.width).toBe('112px')
+		expect(input.parentElement.style.height).toBe('112px')
+		fireEvent.pointerDown(input)
+		expect(document.querySelector('[aria-hidden="true"].pointer-events-none.border')).toHaveTextContent('50!')
+		const anchor = document.querySelector('span.absolute.h-0')
+		expect(anchor.style.bottom).toContain('50%')
+	})
+
+	it('honours a custom length', () => {
+		render(<Slider aria-label="Level" orientation="vertical" length={200} value={0} />)
+		const input = screen.getByRole('slider', { name: 'Level' })
+		expect(input.style.width).toBe('200px')
+		expect(input.parentElement.style.height).toBe('200px')
+	})
+
+	it('stays horizontal by default', () => {
+		render(<Slider aria-label="Level" value={50} />)
+		const input = screen.getByRole('slider', { name: 'Level' })
+		expect(input).not.toHaveAttribute('aria-orientation')
+		expect(input).toHaveClass('w-full')
+	})
+})
+
+describe('Slider valueLabel popover', () => {
+	const popover = () => document.querySelector('[aria-hidden="true"].pointer-events-none.border')
+
+	it('shows the formatted value while dragging and hides it afterwards', () => {
+		render(
+			<Slider aria-label="Seek" value={65} max={300} showValue={false} valueLabel={s => `t=${s}`} onChange={() => {}} />
+		)
+		const input = screen.getByRole('slider', { name: 'Seek' })
+		expect(popover()).toBeNull()
+		fireEvent.pointerDown(input)
+		expect(popover()).toHaveTextContent('t=65')
+		fireEvent.pointerUp(window)
+		expect(popover()).toBeNull()
+		fireEvent.pointerDown(input)
+		fireEvent.pointerCancel(window)
+		expect(popover()).toBeNull()
+	})
+
+	it('shows it for keyboard focus only and never without valueLabel', () => {
+		const { rerender } = render(<Slider aria-label="Seek" value={5} showValue={false} valueLabel={s => `${s}!`} />)
+		const input = screen.getByRole('slider', { name: 'Seek' })
+		input.matches = () => true
+		fireEvent.focus(input)
+		expect(popover()).toHaveTextContent('5!')
+		fireEvent.blur(input)
+		expect(popover()).toBeNull()
+		input.matches = () => false
+		fireEvent.focus(input)
+		expect(popover()).toBeNull()
+		delete input.matches
+		rerender(<Slider aria-label="Seek" value={5} showValue={false} />)
+		fireEvent.pointerDown(screen.getByRole('slider', { name: 'Seek' }))
+		expect(popover()).toBeNull()
+	})
+})
+
 describe('FileUpload', () => {
 	const file = (name = 'a.txt', size = 3) => new File(['x'.repeat(size)], name)
 
@@ -371,6 +451,26 @@ describe('FileUpload', () => {
 		rerender(<FileUpload />)
 		fireEvent.change(document.querySelector('input[type=file]'), { target: { files: [file()] } })
 		expect(screen.getByText('a.txt')).toBeInTheDocument()
+	})
+})
+
+describe('Select flat variant', () => {
+	it('drops the border and fill but keeps behaving like a select', () => {
+		const onChange = vi.fn()
+		const options = [
+			{ value: 'a', label: 'Alpha' },
+			{ value: 'b', label: 'Beta' },
+		]
+		const { rerender } = render(
+			<Select aria-label="Pick" variant="flat" value="a" onChange={onChange} options={options} />
+		)
+		const trigger = screen.getByRole('combobox', { name: 'Pick' })
+		expect(trigger).toHaveClass('bg-transparent', 'border-transparent')
+		fireEvent.click(trigger)
+		fireEvent.click(screen.getByRole('option', { name: 'Beta' }))
+		expect(onChange).toHaveBeenCalledWith('b')
+		rerender(<Select aria-label="Pick" variant="flat" value="a" error="Bad" onChange={onChange} options={options} />)
+		expect(screen.getByRole('combobox', { name: 'Pick' })).toHaveClass('border-red-500')
 	})
 })
 

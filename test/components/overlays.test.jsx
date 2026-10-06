@@ -35,6 +35,23 @@ describe('FloatingPanel', () => {
 		expect(screen.queryByTestId('panel')).toBeNull()
 	})
 
+	it('follows an anchor that moves between renders', () => {
+		let top = 100
+		const anchor = document.createElement('span')
+		anchor.getBoundingClientRect = () => ({ left: 50, top, right: 60, bottom: top + 20, width: 10, height: 20 })
+		const anchorRef = { current: anchor }
+		const Panel = () => (
+			<FloatingPanel open anchorRef={anchorRef} placement="bottom-start" data-testid="moving">
+				x
+			</FloatingPanel>
+		)
+		const { rerender } = render(<Panel />)
+		expect(screen.getByTestId('moving')).toHaveStyle({ top: '124px' })
+		top = 300
+		rerender(<Panel />)
+		expect(screen.getByTestId('moving')).toHaveStyle({ top: '324px' })
+	})
+
 	it('supports matchWidth, custom panelRef and style', () => {
 		const panelRef = { current: null }
 		render(<Harness open matchWidth panelRef={panelRef} style={{ color: 'red' }} className="k" />)

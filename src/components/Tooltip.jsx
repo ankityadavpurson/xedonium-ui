@@ -1,6 +1,7 @@
 import { cloneElement, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { computePosition } from '../utils/position'
+import portalTarget from '../utils/portalTarget'
 
 const GAP = 6 // px between trigger and tooltip
 
@@ -79,7 +80,7 @@ const Tooltip = ({ text, children, placement = 'bottom', className = '' }) => {
 					>
 						{text}
 					</div>,
-					document.body
+					portalTarget()
 				)}
 		</span>
 	)

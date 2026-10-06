@@ -123,6 +123,8 @@ body {
 
 /* Slider: square thumb, filled track. --xd-fill (set by <Slider>) is the filled percentage. */
 .xd-slider {
+	/* block, not inline: an inline input leaves a few px of line-box space below it, which pushes the slider off-centre in a row */
+	display: block;
 	-webkit-appearance: none;
 	appearance: none;
 	height: 18px;
@@ -139,10 +141,13 @@ body {
 .xd-slider::-webkit-slider-runnable-track {
 	height: 4px;
 	border-radius: 0;
+	/* filled part, then the buffered band (--xd-buffer, defaults to no band), then the empty track */
 	background: linear-gradient(
 		to right,
 		rgb(var(--color-app-strong)) var(--xd-fill, 0%),
-		rgb(var(--color-app-border)) var(--xd-fill, 0%)
+		rgb(var(--color-app-soft) / 0.6) var(--xd-fill, 0%),
+		rgb(var(--color-app-soft) / 0.6) var(--xd-buffer, var(--xd-fill, 0%)),
+		rgb(var(--color-app-border)) var(--xd-buffer, var(--xd-fill, 0%))
 	);
 }
 
@@ -161,7 +166,12 @@ body {
 .xd-slider::-moz-range-track {
 	height: 4px;
 	border-radius: 0;
-	background: rgb(var(--color-app-border));
+	/* the progress part is drawn over this, so only the buffered band and the empty track are needed */
+	background: linear-gradient(
+		to right,
+		rgb(var(--color-app-soft) / 0.6) var(--xd-buffer, 0%),
+		rgb(var(--color-app-border)) var(--xd-buffer, 0%)
+	);
 }
 
 .xd-slider::-moz-range-progress {

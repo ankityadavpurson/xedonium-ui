@@ -80,7 +80,7 @@ export default {
 			name: 'Select',
 			blocks: [
 				{
-					md: 'Themed select with a listbox panel that is never clipped by its container. `options: [{ value, label, disabled? }]`, optional `placeholder` and `error`. Keyboard: Up / Down / Home / End move, Enter or Space picks, Escape closes, and typing jumps to a match.',
+					md: 'Themed select with a listbox panel that is never clipped by its container. `options: [{ value, label, disabled? }]`, optional `placeholder` and `error`. Keyboard: Up / Down / Home / End move, Enter or Space picks, Escape closes, and typing jumps to a match. `variant="flat"` gives a borderless trigger for toolbars and for use over images or video.',
 				},
 				{
 					example: 1,
@@ -152,10 +152,16 @@ export default {
 			name: 'Slider',
 			blocks: [
 				{
-					md: '`min`, `max`, `step` and `showValue`; `onChange` receives a number.',
+					md: '`min`, `max`, `step` and `showValue`; `onChange` receives a number. `orientation="vertical"` stands it upright (`length` sets its height in px). `buffered` adds a lighter band up to a second value, like the loaded part of a video. Pass `valueLabel` to show a formatted value in a popover above the thumb while it is dragged or moved with the keyboard.',
 				},
 				{
 					example: 1,
+				},
+				{
+					example: 2,
+				},
+				{
+					example: 3,
 				},
 			],
 		},

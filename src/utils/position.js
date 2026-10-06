@@ -89,7 +89,8 @@ export const computePosition = (anchor, panel, { placement = 'bottom', gap = 6, 
 /**
  * True when most of `element` (more than half of its area) is scrolled out of view: outside the viewport, or
  * outside the visible area of a scroll / overflow-hidden ancestor. Floating panels use it to hide instead of
- * hovering over unrelated content.
+ * hovering over unrelated content. A position: fixed ancestor (a fullscreen player, a dialog) ends the walk: it is laid
+ * out against the viewport, so overflow further up the tree does not clip it.
  */
 export const isClipped = element => {
 	const rect = element.getBoundingClientRect()
@@ -102,15 +103,17 @@ export const isClipped = element => {
 		right: Math.min(rect.right, document.documentElement.clientWidth),
 	}
 	for (let parent = element.parentElement; parent && parent !== document.body; parent = parent.parentElement) {
-		const { overflowX, overflowY } = getComputedStyle(parent)
-		if (overflowX === 'visible' && overflowY === 'visible') continue
-		const box = parent.getBoundingClientRect()
-		visible = {
-			top: Math.max(visible.top, box.top),
-			left: Math.max(visible.left, box.left),
-			bottom: Math.min(visible.bottom, box.bottom),
-			right: Math.min(visible.right, box.right),
+		const { overflowX, overflowY, position } = getComputedStyle(parent)
+		if (overflowX !== 'visible' || overflowY !== 'visible') {
+			const box = parent.getBoundingClientRect()
+			visible = {
+				top: Math.max(visible.top, box.top),
+				left: Math.max(visible.left, box.left),
+				bottom: Math.min(visible.bottom, box.bottom),
+				right: Math.min(visible.right, box.right),
+			}
 		}
+		if (position === 'fixed') break
 	}
 	const width = Math.max(0, visible.right - visible.left)
 	const height = Math.max(0, visible.bottom - visible.top)
