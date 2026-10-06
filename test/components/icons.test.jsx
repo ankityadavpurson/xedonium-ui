@@ -168,6 +168,14 @@ const EXTRA = [
 	'whatsapp',
 	'check-square',
 	'circle-dollar-sign',
+	'indian-rupee',
+	'banknote',
+	'dollar-sign',
+	'euro',
+	'japanese-yen',
+	'pound-sterling',
+	'russian-ruble',
+	'swiss-franc',
 	'circle-fading-arrow-down',
 	'circle-users',
 	'square-check',
@@ -302,7 +310,7 @@ describe('icon inventory', () => {
 
 describe('icons', () => {
 	it('exports every icon', () => {
-		expect(icons.length).toBe(169)
+		expect(icons.length).toBe(177)
 	})
 
 	it.each(icons)('%s renders a decorative svg with default and custom classes', (_, Icon) => {
