@@ -87,6 +87,8 @@ jobs:
           node-version: 22
           cache: yarn
           registry-url: https://registry.npmjs.org
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # .npmrc references it; yarn cache lookup fails if unset
 
       - name: Work out version bump
         id: bump
