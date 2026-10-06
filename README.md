@@ -46,6 +46,17 @@ import { ThemeProvider, AppBar, PageLayout, Button } from 'xedonium'
 </ThemeProvider>
 ```
 
+4. Import only what you use. Every component is its own module, so subpaths load just that module (default exports; in CommonJS use `.default`):
+
+```js
+import Button from 'xedonium/Button'
+import CheckIcon from 'xedonium/icons/Check'
+import useTimedToast from 'xedonium/hooks/useTimedToast'
+import { ThemeProvider, useTheme } from 'xedonium/theme'
+```
+
+`import { Button } from 'xedonium'` keeps working and is tree-shaken.
+
 ## What's included
 
 - Layout: `AppShell`, `AppBar`, `Navbar`, `Sidebar`, `PageLayout`, `PageHeader`, `Container`, `Flex`, `Stack`, `Grid`, `Card`, `Dashboard`, `Divider`, `Tabs`, `Breadcrumb`

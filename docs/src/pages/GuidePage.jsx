@@ -5,18 +5,15 @@ import Example from '../components/Example'
 import Markdown, { Code } from '../components/Markdown'
 import Neighbour from '../components/Neighbour'
 import PropsTable from '../components/PropsTable'
-import { pages, pathOf, propsFor } from '../content'
+import { pages, pathOf } from '../content'
+import { propsFor } from '../content/propsFor'
 import { guidePath } from '../guides/hooks'
 import NotFound from './NotFound'
 
-// Demo components and their source text, keyed by path, e.g. "../examples/hooks/usetimedtoast-1.jsx"
-const demos = import.meta.glob('../examples/**/*.jsx', { eager: true })
-const sources = import.meta.glob('../examples/**/*.jsx', { query: '?raw', import: 'default', eager: true })
-
+// Loader key of an entry's example: a file in examples/hooks, or { from } to reuse another example
 const exampleOf = entry => {
 	if (!entry.example) return null
-	const key = typeof entry.example === 'string' ? `../examples/hooks/${entry.example}` : entry.example.from
-	return { Demo: demos[key]?.default, source: sources[key] }
+	return typeof entry.example === 'string' ? `./examples/hooks/${entry.example}` : entry.example.from
 }
 
 // Docs page of a component, by its name or by a name documented on the page (e.g. ConfirmDialog)
@@ -67,7 +64,7 @@ export const GuideEntry = ({ section }) => {
 			</div>
 			<CodeBlock code={entry.signature} />
 			<Markdown>{entry.md}</Markdown>
-			{example && <Example {...example} />}
+			{example && <Example example={example} />}
 			{!example && entry.code && <CodeBlock code={entry.code} />}
 			{entry.api && (
 				<section className="flex flex-col gap-3">

@@ -27,7 +27,7 @@ const playgroundSections = tabs.flatMap(tab =>
 const categories = []
 for (const file of fs
 	.readdirSync(path.join(docs, 'content'))
-	.filter(f => f.endsWith('.js') && !['index.js', 'props.js'].includes(f))) {
+	.filter(f => f.endsWith('.js') && !['index.js', 'props.js', 'propsFor.js'].includes(f))) {
 	categories.push(await load(`content/${file}`))
 }
 

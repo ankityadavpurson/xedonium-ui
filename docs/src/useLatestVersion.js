@@ -2,32 +2,14 @@ import { useEffect, useState } from 'react'
 import { version as bundled } from './version'
 
 const URL = 'https://registry.npmjs.org/xedonium/latest'
-const KEY = 'xedonium-docs-latest-version'
 const SEMVER = /^\d+\.\d+\.\d+/
 
 let pending // one request shared by every component on the page
 
-const readCache = () => {
-	try {
-		return sessionStorage.getItem(KEY)
-	} catch {
-		return null
-	}
-}
-
 const fetchLatest = () => {
 	pending ??= fetch(URL)
 		.then(res => (res.ok ? res.json() : null))
-		.then(data => {
-			const latest = data?.version
-			if (typeof latest !== 'string' || !SEMVER.test(latest)) return null
-			try {
-				sessionStorage.setItem(KEY, latest)
-			} catch {
-				// storage unavailable; the next page load simply asks again
-			}
-			return latest
-		})
+		.then(data => (typeof data?.version === 'string' && SEMVER.test(data.version) ? data.version : null))
 		.catch(() => null)
 	return pending
 }
@@ -38,7 +20,7 @@ const fetchLatest = () => {
  * npm registry's `latest` once it loads. Offline or blocked requests keep the bundled value.
  */
 export const useLatestVersion = () => {
-	const [version, setVersion] = useState(() => readCache() ?? bundled)
+	const [version, setVersion] = useState(bundled)
 
 	useEffect(() => {
 		let active = true

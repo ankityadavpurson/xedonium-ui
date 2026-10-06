@@ -6,7 +6,9 @@ import Markdown from '../components/Markdown'
 import Neighbour from '../components/Neighbour'
 import PropsTable from '../components/PropsTable'
 import { relatedGuides } from '../guides/hooks'
-import { exampleFor, findPage, pages, pathOf, propsFor } from '../content'
+import { findPage, pages, pathOf } from '../content'
+import { propsFor } from '../content/propsFor'
+import { exampleKey } from '../exampleLoader'
 import { playgroundPath, sectionFor } from '../playground'
 import NotFound from './NotFound'
 
@@ -54,7 +56,7 @@ const ComponentPage = () => {
 					const Custom = CUSTOM_BLOCKS[block.custom]
 					return Custom ? <Custom key={i} /> : null
 				}
-				return <Example key={i} {...exampleFor(category, component, block.example)} />
+				return <Example key={i} example={exampleKey(category, component, block.example)} />
 			})}
 			{props && (
 				<section className="flex flex-col gap-3">

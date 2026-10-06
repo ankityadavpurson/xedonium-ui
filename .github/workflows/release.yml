@@ -29,6 +29,7 @@ jobs:
       - run: yarn lint
       - run: yarn test:coverage # fails below 90% coverage (thresholds in vitest.config.js)
       - run: yarn build
+      - run: yarn check:exports # every exports target exists and xedonium/Button etc. resolve (ESM + CJS)
       - uses: actions/upload-artifact@v7
         with:
           name: dist

@@ -15,17 +15,25 @@ import DocsNav from './components/DocsNav'
 import VersionBadge from './components/VersionBadge'
 import { categories, pages, pathOf } from './content'
 import { guidePath, guideSections } from './guides/hooks'
-import { foundations } from './pages/foundations'
-import CategoryPage from './pages/CategoryPage'
-import ComponentPage from './pages/ComponentPage'
-import GettingStarted from './pages/GettingStarted'
-import Home from './pages/Home'
-import { GuideEntry, GuideIndex } from './pages/GuidePage'
-import LoadingScreenPreview from './pages/LoadingScreenPreview'
+import { foundations } from './foundations'
 import NotFound from './pages/NotFound'
 
-// The Playground compiles JSX in the browser (react-live); load it only when someone opens it
+// Every page is its own chunk, fetched when it is first opened (the Playground alone is large: it compiles JSX in the
+// browser with react-live). The shell, navigation data and NotFound stay in the main chunk.
+const Home = lazy(() => import('./pages/Home'))
+const GettingStarted = lazy(() => import('./pages/GettingStarted'))
+const CategoryPage = lazy(() => import('./pages/CategoryPage'))
+const ComponentPage = lazy(() => import('./pages/ComponentPage'))
+const GuideIndex = lazy(() => import('./pages/GuidePage').then(module => ({ default: module.GuideIndex })))
+const GuideEntry = lazy(() => import('./pages/GuidePage').then(module => ({ default: module.GuideEntry })))
+const LoadingScreenPreview = lazy(() => import('./pages/LoadingScreenPreview'))
 const Playground = lazy(() => import('./pages/Playground'))
+
+const PageFallback = ({ label = 'Loading' }) => (
+	<div className="flex justify-center py-24">
+		<FanFavicon label={label} />
+	</div>
+)
 
 const GitHubIcon = () => (
 	<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
@@ -146,10 +154,12 @@ const App = () => {
 	// Whole-page previews have no docs chrome
 	if (pathname.startsWith('/preview/')) {
 		return (
-			<Routes>
-				<Route path="/preview/loading-screen" element={<LoadingScreenPreview />} />
-				<Route path="*" element={<NotFound />} />
-			</Routes>
+			<Suspense fallback={<PageFallback />}>
+				<Routes>
+					<Route path="/preview/loading-screen" element={<LoadingScreenPreview />} />
+					<Route path="*" element={<NotFound />} />
+				</Routes>
+			</Suspense>
 		)
 	}
 
@@ -178,38 +188,27 @@ const App = () => {
 				)}
 			>
 				<div className="mx-auto w-full max-w-4xl">
-					<Routes>
-						<Route path="/" element={<Home />} />
-						<Route path="/getting-started" element={<GettingStarted />} />
-						{foundations.map(f => (
-							<Route key={f.path} path={f.path} element={<f.Page />} />
-						))}
-						<Route path="/components/:category" element={<CategoryPage />} />
-						<Route path="/components/:category/:slug" element={<ComponentPage />} />
-						{guideSections.map(section => [
-							<Route key={section.slug} path={section.path} element={<GuideIndex section={section} />} />,
-							<Route
-								key={`${section.slug}-entry`}
-								path={`${section.path}/:id`}
-								element={<GuideEntry section={section} />}
-							/>,
-						])}
-						<Route
-							path="/playground"
-							element={
-								<Suspense
-									fallback={
-										<div className="flex justify-center py-24">
-											<FanFavicon label="Loading the playground" />
-										</div>
-									}
-								>
-									<Playground />
-								</Suspense>
-							}
-						/>
-						<Route path="*" element={<NotFound />} />
-					</Routes>
+					<Suspense fallback={<PageFallback />}>
+						<Routes>
+							<Route path="/" element={<Home />} />
+							<Route path="/getting-started" element={<GettingStarted />} />
+							{foundations.map(f => (
+								<Route key={f.path} path={f.path} element={<f.Page />} />
+							))}
+							<Route path="/components/:category" element={<CategoryPage />} />
+							<Route path="/components/:category/:slug" element={<ComponentPage />} />
+							{guideSections.map(section => [
+								<Route key={section.slug} path={section.path} element={<GuideIndex section={section} />} />,
+								<Route
+									key={`${section.slug}-entry`}
+									path={`${section.path}/:id`}
+									element={<GuideEntry section={section} />}
+								/>,
+							])}
+							<Route path="/playground" element={<Playground />} />
+							<Route path="*" element={<NotFound />} />
+						</Routes>
+					</Suspense>
 				</div>
 			</AppShell>
 			<CommandPalette

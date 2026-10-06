@@ -1,4 +1,5 @@
-import { Component, useState } from 'react'
+import { Component, Suspense, useEffect, useState } from 'react'
+import { lazyDemo, loadSource } from '../exampleLoader'
 import CodeBlock, { CopyButton } from './CodeBlock'
 
 // One broken demo should not take down the whole page
@@ -21,13 +22,35 @@ class DemoBoundary extends Component {
 	}
 }
 
-/** Rendered demo on top, with the exact source it was rendered from available below. */
-const Example = ({ Demo, source }) => {
+/**
+ * Rendered demo on top, with the exact source it was rendered from available below. `example` is a key from
+ * exampleLoader (e.g. "./examples/inputs/select-1.jsx"); the demo and its source load on demand.
+ */
+const Example = ({ example }) => {
 	const [open, setOpen] = useState(false)
+	const [source, setSource] = useState('')
+	const Demo = lazyDemo(example)
+
+	useEffect(() => {
+		let current = true
+		loadSource(example)?.then(text => current && setSource(text))
+		return () => {
+			current = false
+		}
+	}, [example])
+
 	return (
 		<div className="border border-app-border">
 			<div data-demo className="overflow-x-auto bg-app-bg p-3 sm:p-6">
-				<DemoBoundary>{Demo ? <Demo /> : <p className="m-0 text-sm">Missing example.</p>}</DemoBoundary>
+				<DemoBoundary>
+					{Demo ? (
+						<Suspense fallback={<p className="m-0 text-xs text-app-muted">Loading example…</p>}>
+							<Demo />
+						</Suspense>
+					) : (
+						<p className="m-0 text-sm">Missing example.</p>
+					)}
+				</DemoBoundary>
 			</div>
 			<div className="flex items-center justify-between gap-2 border-t border-app-border bg-app-card px-3 py-2">
 				<button

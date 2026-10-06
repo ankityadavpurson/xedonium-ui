@@ -1,6 +1,6 @@
 // Content of the "Hooks & theme" page. Each entry is its own page (/hooks/<id> or /theme/<id>).
 //   id, name, summary, signature (code), md (Markdown), api ({ Group: [[name, type, default, description], ...] }),
-//   example (file in examples/hooks, or { from: '../examples/...' } to reuse one), code (shown when there is no live
+//   example (file in examples/hooks, or { from: './examples/...' } to reuse one), code (shown when there is no live
 //   example), usedBy (component names whose docs page should link back here), see ([[label, path]] extra links)
 
 export const hooks = [
@@ -108,7 +108,7 @@ export const hooks = [
 				['enabled', 'boolean', 'true', 'Pause the shortcuts.'],
 			],
 		},
-		example: { from: '../examples/utilities/usekeyboardshortcuts-1.jsx' },
+		example: { from: './examples/utilities/usekeyboardshortcuts-1.jsx' },
 		usedBy: ['CommandPalette'],
 		see: [['useKeyboardShortcuts component page', '/components/utilities/usekeyboardshortcuts']],
 	},
