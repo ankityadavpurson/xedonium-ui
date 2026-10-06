@@ -11,6 +11,18 @@ const link = [
 const gap = ['gap', '0 | 1 | 2 | 3 | 4 | 6 | 8', '', 'Spacing between children (Tailwind spacing steps).']
 const as = ['as', 'ElementType', "'div'", 'Element or component to render.']
 const fieldError = ['error', 'string', '', 'Error message shown below the control; sets the invalid style.']
+const animate = [
+	'animate',
+	'boolean',
+	'true',
+	'Animate the chart in when it appears and glide it to new values when the data changes (skipped for users who prefer reduced motion).',
+]
+const smooth = [
+	'smooth',
+	'boolean',
+	'false',
+	'Draw curves instead of straight segments. They pass through every point and never overshoot it.',
+]
 const chartSeries = [
 	['labels', 'string[]', '', 'Names of the x positions / categories.'],
 	['series', '{ name, values: number[], color? }[]', '', 'One entry per series; `values` has one number per label.'],
@@ -447,6 +459,13 @@ const props = {
 	tooltip: {
 		Tooltip: [
 			['text', 'string', '', 'Tooltip text.'],
+			['as', 'ElementType', "'span'", 'Wrapper element. Use "g" to put a tooltip on SVG shapes.'],
+			[
+				'followPointer',
+				'boolean',
+				'false',
+				'Place the tooltip at the mouse pointer instead of beside the trigger (for large shapes).',
+			],
 			['children', 'ReactElement', '', 'The element that triggers it on hover and focus.'],
 			[
 				'placement',
@@ -727,13 +746,20 @@ const props = {
 
 	// Charts
 	linechart: {
-		LineChart: [...chartSeries.slice(0, 5), ['area', 'boolean', 'false', 'Fill under each line.'], className],
+		LineChart: [
+			...chartSeries.slice(0, 5),
+			['area', 'boolean', 'false', 'Fill under each line.'],
+			smooth,
+			animate,
+			className,
+		],
 	},
-	areachart: { AreaChart: chartSeries },
+	areachart: { AreaChart: [...chartSeries.slice(0, 5), smooth, animate, className] },
 	barchart: {
 		BarChart: [
 			...chartSeries.slice(0, 5),
 			['stacked', 'boolean', 'false', 'Stack series instead of grouping them.'],
+			animate,
 			className,
 		],
 	},
@@ -743,6 +769,7 @@ const props = {
 			['donut', 'boolean', 'false', 'Render a ring.'],
 			['center', 'ReactNode', '', 'Text in the donut hole.'],
 			['label', 'string', "'Pie chart'", 'Accessible name.'],
+			animate,
 			className,
 		],
 	},

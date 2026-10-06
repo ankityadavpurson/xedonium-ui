@@ -12,12 +12,22 @@ const GAP = 6 // px between trigger and tooltip
 // flips to the opposite side when there is no room and always stays inside the viewport.
 // Hover is tracked on the wrapper, so it also works for disabled buttons.
 // `className` styles the wrapper (e.g. to position it where the bare button used to sit).
-const Tooltip = ({ text, children, placement = 'bottom', className = '' }) => {
+// `as` changes the wrapper element: use `as="g"` to put a tooltip on SVG shapes (a span is not valid inside <svg>).
+// `followPointer` places the tooltip at the mouse instead of beside the trigger, for big shapes such as pie slices.
+const Tooltip = ({
+	text,
+	children,
+	placement = 'bottom',
+	as: Wrapper = 'span',
+	followPointer = false,
+	className = '',
+}) => {
 	const id = useId()
 	const triggerRef = useRef(null)
 	const tipRef = useRef(null)
 	const [open, setOpen] = useState(false)
 	const [position, setPosition] = useState(null)
+	const [pointer, setPointer] = useState(null)
 
 	const show = () => setOpen(true)
 	const hide = () => {
@@ -27,11 +37,14 @@ const Tooltip = ({ text, children, placement = 'bottom', className = '' }) => {
 
 	useLayoutEffect(() => {
 		if (!open || !triggerRef.current || !tipRef.current) return
-		const trigger = triggerRef.current.getBoundingClientRect()
+		const trigger =
+			followPointer && pointer
+				? { left: pointer.x, top: pointer.y, right: pointer.x, bottom: pointer.y, width: 0, height: 0 }
+				: triggerRef.current.getBoundingClientRect()
 		const tip = tipRef.current.getBoundingClientRect()
 		const { top, left } = computePosition(trigger, tip, { placement, gap: GAP })
 		setPosition({ top, left })
-	}, [open, text, placement])
+	}, [open, text, placement, followPointer, pointer])
 
 	// Dismissible (Escape) and never left floating after the page moves
 	useEffect(() => {
@@ -50,15 +63,26 @@ const Tooltip = ({ text, children, placement = 'bottom', className = '' }) => {
 	if (!text) return children
 
 	// Icon buttons already carry the same text as aria-label; don't make screen readers say it twice
-	const describe = children.props['aria-label'] !== text
+	// (an SVG wrapper cannot hold the hidden description either, so only the default span does it)
+	const describe = Wrapper === 'span' && children.props['aria-label'] !== text
+
+	const track = event => followPointer && setPointer({ x: event.clientX, y: event.clientY })
 
 	return (
-		<span
+		<Wrapper
 			ref={triggerRef}
 			// A disabled child ignores the pointer so hover always lands on the wrapper (some browsers
 			// don't fire mouse events for disabled elements); the wrapper keeps the not-allowed cursor
-			className={`inline-flex [&>:disabled]:pointer-events-none has-[>:disabled]:cursor-not-allowed ${className}`}
-			onMouseEnter={show}
+			className={
+				Wrapper === 'span'
+					? `inline-flex [&>:disabled]:pointer-events-none has-[>:disabled]:cursor-not-allowed ${className}`
+					: className || undefined
+			}
+			onMouseEnter={event => {
+				track(event)
+				show()
+			}}
+			onMouseMove={followPointer ? track : undefined}
 			onMouseLeave={hide}
 			onFocus={event => event.target.matches(':focus-visible') && show()}
 			onBlur={hide}
@@ -82,7 +106,7 @@ const Tooltip = ({ text, children, placement = 'bottom', className = '' }) => {
 					</div>,
 					portalTarget()
 				)}
-		</span>
+		</Wrapper>
 	)
 }
 

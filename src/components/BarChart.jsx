@@ -1,15 +1,19 @@
-import { AxesFrame, Legend, MARGIN, legendItems, useChartWidth } from './charts/ChartFrame'
+import { AxesFrame, Legend, MARGIN, legendItems, useChartWidth, yScale } from './charts/ChartFrame'
 import { colorFor, niceScale } from './charts/chartUtils'
+import useTween from './charts/useTween'
 
 /**
  * Bar chart. `labels` names the categories; `series: [{ name, values, color? }]` has one value per label.
- * Multiple series are grouped side by side, or stacked with `stacked`.
+ * Multiple series are grouped side by side, or stacked with `stacked`. The bars grow from the baseline, one category
+ * after another; when the data changes later they glide to their new height instead of redrawing (`animate={false}`
+ * turns all of that off; reduced-motion users never see it).
  */
 const BarChart = ({
 	labels,
 	series,
 	height = 300,
 	stacked = false,
+	animate = true,
 	label = 'Bar chart',
 	legend = true,
 	className = '',
@@ -27,6 +31,21 @@ const BarChart = ({
 	const barWidth = stacked ? groupWidth : groupWidth / series.length
 	const xPositions = labels.map((_, i) => plotLeft + band * i + band / 2)
 
+	// Every bar's top and height in pixels, tweened when the data changes (the chart size snaps, never lags)
+	const toY = yScale(height, scale)
+	const zero = toY(Math.max(scale.min, 0))
+	const geometry = labels.flatMap((_, i) => {
+		let stackTop = zero
+		return series.flatMap(s => {
+			const top = toY(s.values[i])
+			const h = Math.abs(zero - top)
+			if (!stacked) return [Math.min(top, zero), h]
+			stackTop -= h
+			return [stackTop, h]
+		})
+	})
+	const tweened = useTween(geometry, { enabled: animate, snapKey: `${width}x${height}` })
+
 	return (
 		<div ref={ref} className={className}>
 			<AxesFrame
@@ -38,31 +57,28 @@ const BarChart = ({
 				label={label}
 				legend={legend && series.length > 1 ? <Legend items={legendItems(series)} /> : null}
 			>
-				{y => {
-					const zero = y(Math.max(scale.min, 0))
-					return labels.map((name, i) => {
+				{() =>
+					labels.map((name, i) => {
 						const start = plotLeft + band * i + (band - groupWidth) / 2
-						let stackTop = zero
 						return (
 							<g key={`${name}-${i}`}>
 								{series.map((s, si) => {
 									const v = s.values[i]
-									const top = y(v)
-									const h = Math.abs(zero - top)
-									let rectY = Math.min(top, zero)
-									const rectX = start + (stacked ? 0 : barWidth * si)
-									if (stacked) {
-										rectY = stackTop - h
-										stackTop = rectY
-									}
+									const at = (i * series.length + si) * 2
 									return (
 										<rect
 											key={s.name}
-											x={rectX + 1}
-											y={rectY}
+											x={start + (stacked ? 0 : barWidth * si) + 1}
+											y={tweened[at]}
 											width={Math.max(barWidth - 2, 1)}
-											height={h}
+											height={tweened[at + 1]}
 											fill={colorFor(s, si)}
+											className={animate ? 'xd-chart-bar' : undefined}
+											style={
+												animate
+													? { transformOrigin: v < 0 ? 'top' : 'bottom', '--xd-delay': `${i * 0.05}s` }
+													: undefined
+											}
 										>
 											<title>{`${s.name}, ${name}: ${v}`}</title>
 										</rect>
@@ -71,7 +87,7 @@ const BarChart = ({
 							</g>
 						)
 					})
-				}}
+				}
 			</AxesFrame>
 		</div>
 	)

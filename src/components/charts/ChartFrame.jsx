@@ -34,11 +34,14 @@ export const Legend = ({ items }) => (
 	</ul>
 )
 
+// Maps a data value to its y pixel for a chart of this height and scale
+export const yScale = (height, scale) => value =>
+	MARGIN.top + (height - MARGIN.bottom - MARGIN.top) * (1 - (value - scale.min) / (scale.max - scale.min))
+
 // Axes + gridlines shared by Line / Area / Bar. `children` receives nothing; draw inside the plot area via the same margins.
 export const AxesFrame = ({ width, height, scale, labels, xPositions, label, children, legend }) => {
 	const plotBottom = height - MARGIN.bottom
-	const plotHeight = plotBottom - MARGIN.top
-	const y = value => MARGIN.top + plotHeight * (1 - (value - scale.min) / (scale.max - scale.min))
+	const y = yScale(height, scale)
 	return (
 		<figure className="m-0">
 			<svg
