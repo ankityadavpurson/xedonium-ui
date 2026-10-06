@@ -92,3 +92,11 @@ yarn docs:build     # static site in docs/dist (+ 404.html for GitHub Pages deep
 yarn docs:preview   # serve the production build
 yarn docs:check     # verify props tables and example files
 ```
+
+## Contributing
+
+Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) first; it covers setup, commit conventions and the 90% test coverage requirement. Please follow the [Code of Conduct](CODE_OF_CONDUCT.md), and report security issues privately as described in [SECURITY.md](SECURITY.md). Release notes are in [CHANGELOG.md](CHANGELOG.md).
+
+## License
+
+[MIT](LICENSE) © Ankit Yadav
