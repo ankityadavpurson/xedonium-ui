@@ -12,6 +12,7 @@ export default function Demo() {
 			<div className="w-56">
 				<Progress label="Working" />
 			</div>
+			<Progress variant="circular" value={62} showValue label="Circular" />
 			<div className="w-56">
 				<Skeleton lines={3} />
 			</div>

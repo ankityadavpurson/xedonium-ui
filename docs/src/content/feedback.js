@@ -20,10 +20,16 @@ export default {
 			name: 'Progress',
 			blocks: [
 				{
-					md: 'Omit `value` for an indeterminate bar.',
+					md: '**Linear.** `variant="linear"` (the default) draws a bar: `value` is 0-100, `showValue` prints the percentage beside the label and `label` goes above. Without a `value` the bar slides back and forth; `size` does not apply.',
 				},
 				{
 					example: 1,
+				},
+				{
+					md: '**Circular.** `variant="circular"` draws a ring instead of a bar: `size` is `sm`, `md` or `lg`, `showValue` prints the percentage in the middle and `label` goes underneath. Without a `value` the ring spins.',
+				},
+				{
+					example: 2,
 				},
 			],
 		},

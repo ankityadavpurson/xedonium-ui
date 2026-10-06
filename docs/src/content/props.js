@@ -272,9 +272,11 @@ const props = {
 	},
 	progress: {
 		Progress: [
-			['value', 'number', '', '0-100. Omit for an indeterminate bar.'],
+			['value', 'number', '', '0-100. Omit for an indeterminate bar or spinning ring.'],
 			['label', 'string', '', 'Label and accessible name.'],
-			['showValue', 'boolean', 'false', 'Show the percentage.'],
+			['showValue', 'boolean', 'false', 'Show the percentage (beside the label, or inside the ring).'],
+			['variant', "'linear' | 'circular'", "'linear'", 'A bar or a ring.'],
+			['size', "'sm' | 'md' | 'lg'", "'md'", 'Ring size (32 / 64 / 96 px). Ignored by the linear bar.'],
 			className,
 		],
 	},
