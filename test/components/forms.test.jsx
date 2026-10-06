@@ -167,9 +167,12 @@ describe('PageLayout / LoadingScreen', () => {
 		expect(screen.getByRole('button')).toBeInTheDocument()
 		expect(screen.getByText('kid')).toHaveClass('items-center', 'max-w-sm')
 	})
-	it('LoadingScreen shows a labelled spinner', () => {
-		render(<LoadingScreen />)
-		expect(screen.getByRole('img', { name: 'Loading' })).toBeInTheDocument()
+	it('LoadingScreen shows the default fan loader and forwards loader props', () => {
+		const { rerender } = render(<LoadingScreen />)
+		expect(screen.getByRole('status')).toHaveTextContent('Loading')
+		rerender(<LoadingScreen variant="card" size="sm" label="Saving" description="Hold on" />)
+		expect(screen.getByRole('status')).toHaveTextContent('Saving')
+		expect(screen.getByText('Hold on')).toBeInTheDocument()
 	})
 })
 
