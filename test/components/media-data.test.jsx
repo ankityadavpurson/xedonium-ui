@@ -410,6 +410,19 @@ describe('Sound', () => {
 		expect(screen.getByRole('button', { name: 'Play' })).toBeInTheDocument()
 	})
 
+	it('shows cover art when given, with a fallback icon if it fails', () => {
+		const { container, rerender } = render(<Sound src="/a.mp3" title="Track" />)
+		expect(container.querySelector('img')).toBeNull()
+		rerender(<Sound src="/a.mp3" title="Track" art="/cover.jpg" artAlt="Cover" />)
+		const img = screen.getByRole('img', { name: 'Cover' })
+		expect(img).toHaveAttribute('src', '/cover.jpg')
+		fireEvent.error(img)
+		const fallback = screen.getByRole('img', { name: 'Cover' })
+		expect(fallback.querySelector('svg')).toBeInTheDocument()
+		rerender(<Sound src="/a.mp3" title="Track" art="/cover.jpg" />)
+		expect(container.querySelector('[alt=""]') ?? container.querySelector('[role="img"]')).toBeTruthy()
+	})
+
 	it('works without an artist and swallows a blocked play()', async () => {
 		const { audio } = setup({ artist: undefined })
 		expect(screen.queryByText('Band')).toBeNull()

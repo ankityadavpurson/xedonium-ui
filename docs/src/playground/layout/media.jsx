@@ -27,6 +27,7 @@ export default function Demo() {
 				<Sound
 					title="Moonlight Sonata"
 					artist="Beethoven"
+					art="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Beethoven.jpg/250px-Beethoven.jpg"
 					src="https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c8/Example.ogg/Example.ogg.mp3"
 				/>
 			</div>

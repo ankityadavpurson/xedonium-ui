@@ -825,6 +825,13 @@ const props = {
 			['src', 'string', '', 'Audio URL.'],
 			['title', 'string', "'Audio'", 'Track title, also the accessible name of the player.'],
 			['artist', 'string', '', 'Second line under the title.'],
+			[
+				'art',
+				'string',
+				'',
+				'Cover art image URL, shown as a square beside the controls (with an icon if it fails to load).',
+			],
+			['artAlt', 'string', "''", 'Alt text of the cover art; leave empty when the title already describes it.'],
 			['speeds', 'number[]', '[0.5, 0.75, 1, 1.25, 1.5, 2]', 'Playback rates offered in the speed menu (1 is normal).'],
 			className,
 			['children', 'ReactNode', '', 'e.g. <source> elements for several formats.'],

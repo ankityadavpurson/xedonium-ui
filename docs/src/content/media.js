@@ -38,7 +38,7 @@ export default {
 			name: 'Sound',
 			blocks: [
 				{
-					md: "Audio player built from the library's own `Button`, `Slider` and `Select`: play / pause, a seek bar with a time popover and a loaded (buffered) band, a spinner while it waits for data, mute with a volume slider whose speaker icon follows the level, and playback speed. `title` and `artist` label the track and `speeds` sets the rates offered. Extra props go to the `<audio>` element, and `<source>` children offer several formats.",
+					md: "Audio player built from the library's own `Button`, `Slider` and `Select`: play / pause, a seek bar with a time popover and a loaded (buffered) band, a spinner while it waits for data, mute with a volume slider whose speaker icon follows the level, and playback speed. `title` and `artist` label the track, `art` shows cover art beside it, and `speeds` sets the rates offered. Extra props go to the `<audio>` element, and `<source>` children offer several formats.",
 				},
 				{
 					example: 1,

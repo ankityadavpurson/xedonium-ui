@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Button from './Button'
+import Image from './Image'
 import Loader from './Loader'
 import Select from './Select'
 import Slider from './Slider'
@@ -23,10 +24,21 @@ const format = seconds => {
 /**
  * Audio player built from the library's own Button, Slider and Select: play / pause, a seek bar with a time popover and
  * a loaded (buffered) band, a spinner while it waits for data, mute with a volume slider (the speaker icon follows the
- * level) and playback speed. `title` and `artist` label the track. `speeds` lists the playback rates offered
+ * level) and playback speed. `title` and `artist` label the track, and `art` (an image URL) shows cover art beside it
+ * (`artAlt` describes it; leave it empty when the title already says what it is). `speeds` lists the playback rates offered
  * (1 is normal speed). Extra props go to the <audio> element; pass <source> children for several formats.
  */
-const Sound = ({ src, title = 'Audio', artist, speeds = DEFAULT_SPEEDS, className = '', children, ...rest }) => {
+const Sound = ({
+	src,
+	title = 'Audio',
+	artist,
+	art,
+	artAlt = '',
+	speeds = DEFAULT_SPEEDS,
+	className = '',
+	children,
+	...rest
+}) => {
 	const audioRef = useRef(null)
 	const bufferTimer = useRef(null)
 	const [playing, setPlaying] = useState(false)
@@ -121,8 +133,17 @@ const Sound = ({ src, title = 'Audio', artist, speeds = DEFAULT_SPEEDS, classNam
 			>
 				{children}
 			</audio>
-			<div role="group" aria-label={`${title} player`} className="flex flex-col gap-2">
+			<div role="group" aria-label={`${title} player`} className="flex flex-col gap-3">
 				<div className="flex items-center gap-3">
+					{art && (
+						<Image
+							src={art}
+							alt={artAlt}
+							ratio="square"
+							fallback={<VolumeIcon className="h-6 w-6" />}
+							className="!w-16 shrink-0 !p-0"
+						/>
+					)}
 					<Button variant="secondary" aria-label={playing ? 'Pause' : 'Play'} onClick={toggle}>
 						{playing ? <PauseIcon /> : <PlayIcon />}
 					</Button>
@@ -133,7 +154,7 @@ const Sound = ({ src, title = 'Audio', artist, speeds = DEFAULT_SPEEDS, classNam
 					{buffering && <Loader variant="spinner" size="sm" label="Buffering" />}
 				</div>
 				<div className="flex items-center gap-2">
-					<span className="w-10 shrink-0 text-center text-xs tabular-nums text-app-muted">{format(time)}</span>
+					<span className="min-w-10 shrink-0 text-left text-xs tabular-nums text-app-muted">{format(time)}</span>
 					<Slider
 						aria-label="Seek"
 						min={0}
@@ -149,10 +170,16 @@ const Sound = ({ src, title = 'Audio', artist, speeds = DEFAULT_SPEEDS, classNam
 						}}
 						className="min-w-0 flex-1"
 					/>
-					<span className="w-10 shrink-0 text-center text-xs tabular-nums text-app-muted">{format(duration)}</span>
+					<span className="min-w-10 shrink-0 text-right text-xs tabular-nums text-app-muted">{format(duration)}</span>
 				</div>
 				<div className="flex flex-wrap items-center gap-x-1">
-					<Button variant="flat" aria-label={muted ? 'Unmute' : 'Mute'} aria-pressed={muted} onClick={toggleMute}>
+					<Button
+						variant="flat"
+						aria-label={muted ? 'Unmute' : 'Mute'}
+						aria-pressed={muted}
+						onClick={toggleMute}
+						className="-ml-3 !py-1"
+					>
 						{muted || volume === 0 ? <VolumeOffIcon /> : volume < 0.5 ? <VolumeLowIcon /> : <VolumeIcon />}
 					</Button>
 					<Slider
@@ -163,10 +190,10 @@ const Sound = ({ src, title = 'Audio', artist, speeds = DEFAULT_SPEEDS, classNam
 						value={shownVolume}
 						showValue={false}
 						onChange={changeVolume}
-						className="w-24"
+						className="ml-3.5 w-24"
 					/>
 					<span className="flex-1" />
-					<div className="w-24">
+					<div className="-mr-3 w-24">
 						<Select
 							aria-label="Playback speed"
 							value={String(speed)}

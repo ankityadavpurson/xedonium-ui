@@ -123,6 +123,8 @@ body {
 
 /* Slider: square thumb, filled track. --xd-fill (set by <Slider>) is the filled percentage. */
 .xd-slider {
+	/* block, not inline: an inline input leaves a few px of line-box space below it, which pushes the slider off-centre in a row */
+	display: block;
 	-webkit-appearance: none;
 	appearance: none;
 	height: 18px;
