@@ -8,7 +8,7 @@ export default {
 			name: 'Tooltip',
 			blocks: [
 				{
-					md: 'Shows on hover and keyboard focus. `placement` is `top`, `bottom`, `left`, `right` or `auto` (best fit), optionally with `-start` / `-end`; it flips when there is no room. On a `Button`, use `tooltip` and `tooltipPlacement`.',
+					md: 'Shows on hover and keyboard focus. `placement` is `top`, `bottom`, `left`, `right` or `auto` (best fit), optionally with `-start` / `-end`; it flips when there is no room. On a `Button`, use `tooltip` and `tooltipPlacement`. For SVG shapes wrap them with `as="g"`, and add `followPointer` to place the tooltip at the mouse (the pie chart does this).',
 				},
 				{
 					example: 1,

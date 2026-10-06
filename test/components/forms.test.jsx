@@ -46,6 +46,41 @@ describe('Button', () => {
 	})
 })
 
+describe('Tooltip on SVG shapes', () => {
+	it('wraps in the given element, follows the pointer and skips the span-only description', () => {
+		render(
+			<svg>
+				<Tooltip as="g" text="Detail" followPointer placement="top">
+					<circle r="5" />
+				</Tooltip>
+			</svg>
+		)
+		const group = document.querySelector('svg > g')
+		expect(group).toBeInTheDocument()
+		expect(document.querySelector('svg span')).toBeNull()
+		fireEvent.mouseEnter(group, { clientX: 50, clientY: 60 })
+		expect(document.body.querySelector('.pointer-events-none.fixed')).toHaveTextContent('Detail')
+		fireEvent.mouseMove(group, { clientX: 70, clientY: 80 })
+		expect(document.body.querySelector('.pointer-events-none.fixed')).toBeInTheDocument()
+		fireEvent.mouseLeave(group)
+		expect(document.body.querySelector('.pointer-events-none.fixed')).toBeNull()
+	})
+
+	it('ignores pointer movement unless followPointer is set', () => {
+		render(
+			<svg>
+				<Tooltip as="g" text="Detail">
+					<circle r="5" />
+				</Tooltip>
+			</svg>
+		)
+		const group = document.querySelector('svg > g')
+		fireEvent.mouseEnter(group)
+		fireEvent.mouseMove(group, { clientX: 5, clientY: 5 })
+		expect(document.body.querySelector('.pointer-events-none.fixed')).toHaveTextContent('Detail')
+	})
+})
+
 describe('Tooltip', () => {
 	it('returns children untouched without text', () => {
 		render(

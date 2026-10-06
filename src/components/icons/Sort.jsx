@@ -13,8 +13,8 @@ const SortIcon = ({ direction, className }) => {
 			fill="none"
 			stroke="currentColor"
 			strokeWidth={2.5}
-			strokeLinecap="round"
-			strokeLinejoin="round"
+			strokeLinecap="square"
+			strokeLinejoin="miter"
 		>
 			<path className={direction === 'desc' ? dim : direction ? '' : dim} d="M7 10l5-5 5 5" />
 			<path className={direction === 'asc' ? dim : direction ? '' : dim} d="M7 14l5 5 5-5" />

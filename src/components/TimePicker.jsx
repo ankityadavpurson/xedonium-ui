@@ -27,7 +27,7 @@ const ClockIcon = () => (
 		className="h-4 w-4 shrink-0 text-app-muted"
 	>
 		<circle cx="12" cy="12" r="9" />
-		<path strokeLinecap="round" strokeLinejoin="round" d="M12 7v5l3 2" />
+		<path strokeLinecap="square" strokeLinejoin="miter" d="M12 7v5l3 2" />
 	</svg>
 )
 

@@ -74,7 +74,7 @@ const Chip = ({
 						strokeWidth="2.5"
 						className="h-3 w-3"
 					>
-						<path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
+						<path strokeLinecap="square" strokeLinejoin="miter" d="M6 6l12 12M18 6L6 18" />
 					</svg>
 				</button>
 			)}

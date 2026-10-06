@@ -47,6 +47,13 @@ const expectations = [
 	['xedonium/Select', 'default'],
 	['xedonium/hooks/useTimedToast', 'default'],
 	['xedonium/icons/Check', 'default'],
+	['xedonium/icons/Search', 'default'],
+	['xedonium/icons/LogOut', 'default'],
+	['xedonium/icons/Trash2', 'default'],
+	['xedonium/icons/Ticket', 'default'],
+	['xedonium', 'WhatsappIcon'],
+	['xedonium', 'SearchIcon'],
+	['xedonium', 'LogOutIcon'],
 	['xedonium/theme', 'ThemeProvider'],
 	['xedonium/theme', 'useTheme'],
 ]

@@ -61,6 +61,21 @@ export default {
 			],
 		},
 		{
+			slug: 'notfoundpage',
+			name: '404 Page',
+			blocks: [
+				{
+					md: '`NotFoundPage` is a ready-made "page not found" screen: a large status code, a title, a short explanation and the way out, a link home and (with `onBack`) a "go back" button. It is not tied to 404: pass `code`, `title` and `description` for a 403, a 500 or a "coming soon" page. `children` render under the buttons (a search box, a list of suggestions). Use `homeHref={null}` to drop the home link, `linkComponent` / `linkProp` for a router link, and `fullScreen` to center it in the whole viewport.',
+				},
+				{
+					example: 1,
+				},
+				{
+					example: 2,
+				},
+			],
+		},
+		{
 			slug: 'notificationcenter',
 			name: 'NotificationCenter',
 			blocks: [

@@ -20,7 +20,7 @@ const Chevron = ({ open }) => (
 		strokeWidth="2"
 		className={`h-4 w-4 shrink-0 text-app-muted transition-transform ${open ? 'rotate-180' : ''}`}
 	>
-		<path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+		<path strokeLinecap="square" strokeLinejoin="miter" d="M6 9l6 6 6-6" />
 	</svg>
 )
 
@@ -34,7 +34,7 @@ const CheckMark = () => (
 		strokeWidth="2.5"
 		className="h-4 w-4 shrink-0"
 	>
-		<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+		<path strokeLinecap="square" strokeLinejoin="miter" d="M5 13l4 4L19 7" />
 	</svg>
 )
 

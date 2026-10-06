@@ -1,15 +1,21 @@
-import { AxesFrame, Legend, MARGIN, legendItems, useChartWidth } from './charts/ChartFrame'
-import { colorFor, niceScale } from './charts/chartUtils'
+import { AxesFrame, Legend, MARGIN, legendItems, useChartWidth, yScale } from './charts/ChartFrame'
+import { colorFor, niceScale, smoothPath } from './charts/chartUtils'
+import useTween from './charts/useTween'
 
 /**
  * Line chart. `labels` names the x positions; `series: [{ name, values, color? }]` has one value per label.
- * `area` fills under each line (see AreaChart). Hover a point for its value.
+ * `area` fills under each line (see AreaChart). `smooth` draws curves instead of straight segments (they still pass
+ * through every point and never overshoot it). The lines draw in, the area fades in and the points pop in; when the
+ * data changes later the lines glide to their new positions instead of redrawing (`animate={false}` turns all of
+ * that off; reduced-motion users never see it). Hover a point for its value.
  */
 const LineChart = ({
 	labels,
 	series,
 	height = 300,
 	area = false,
+	smooth = false,
+	animate = true,
 	label = 'Line chart',
 	legend = true,
 	className = '',
@@ -23,6 +29,17 @@ const LineChart = ({
 		labels.length === 1 ? (plotLeft + plotRight) / 2 : plotLeft + ((plotRight - plotLeft) * i) / (labels.length - 1)
 	const xPositions = labels.map((_, i) => x(i))
 
+	// Pixel heights of the baseline and every point, tweened when the data changes (the chart size snaps, never lags)
+	const toY = yScale(height, scale)
+	const rows = [toY(Math.max(scale.min, 0)), ...series.flatMap(s => s.values.map(toY))]
+	const tweened = useTween(rows, { enabled: animate, snapKey: `${width}x${height}` })
+	let offset = 1
+	const seriesY = series.map(s => {
+		const ys = tweened.slice(offset, offset + s.values.length)
+		offset += s.values.length
+		return ys
+	})
+
 	return (
 		<div ref={ref} className={className}>
 			<AxesFrame
@@ -34,23 +51,66 @@ const LineChart = ({
 				label={label}
 				legend={legend && series.length > 1 ? <Legend items={legendItems(series)} /> : null}
 			>
-				{y => {
-					const baseline = y(Math.max(scale.min, 0))
+				{() => {
+					const baseline = tweened[0]
 					return series.map((s, si) => {
 						const color = colorFor(s, si)
-						const points = s.values.map((v, i) => `${x(i)},${y(v)}`)
+						const coords = seriesY[si].map((py, i) => [x(i), py])
+						const points = coords.map(point => point.join(',')).join(' ')
+						const first = x(0)
+						const last = x(s.values.length - 1)
+						// straight segments keep the plain polyline / polygon; `smooth` swaps in a curved path
+						const curve = smooth ? smoothPath(coords) : null
+						const lineProps = animate ? { pathLength: 1, className: 'xd-chart-line' } : {}
+						const fillClass = animate ? 'xd-chart-fill' : undefined
 						return (
 							<g key={s.name}>
-								{area && (
-									<polygon
-										points={`${x(0)},${baseline} ${points.join(' ')} ${x(s.values.length - 1)},${baseline}`}
-										fill={color}
-										opacity="0.18"
+								{area &&
+									(smooth ? (
+										<path
+											d={`${curve} L${last},${baseline} L${first},${baseline} Z`}
+											fill={color}
+											opacity="0.18"
+											className={fillClass}
+										/>
+									) : (
+										<polygon
+											points={`${first},${baseline} ${points} ${last},${baseline}`}
+											fill={color}
+											opacity="0.18"
+											className={fillClass}
+										/>
+									))}
+								{smooth ? (
+									<path
+										d={curve}
+										fill="none"
+										stroke={color}
+										strokeWidth="2"
+										strokeLinejoin="round"
+										strokeLinecap="round"
+										{...lineProps}
+									/>
+								) : (
+									<polyline
+										points={points}
+										fill="none"
+										stroke={color}
+										strokeWidth="2"
+										strokeLinejoin="round"
+										{...lineProps}
 									/>
 								)}
-								<polyline points={points.join(' ')} fill="none" stroke={color} strokeWidth="2" strokeLinejoin="round" />
 								{s.values.map((v, i) => (
-									<circle key={i} cx={x(i)} cy={y(v)} r="3.5" fill={color}>
+									<circle
+										key={i}
+										cx={x(i)}
+										cy={seriesY[si][i]}
+										r="3.5"
+										fill={color}
+										className={animate ? 'xd-chart-point' : undefined}
+										style={animate ? { '--xd-delay': `${(0.9 * i) / Math.max(s.values.length - 1, 1)}s` } : undefined}
+									>
 										<title>{`${s.name}, ${labels[i]}: ${v}`}</title>
 									</circle>
 								))}

@@ -190,6 +190,77 @@ body {
 	box-shadow: 0 0 0 1px rgb(var(--color-app-strong));
 }
 
+/*
+ * Chart entrance animations. The keyframes only define the starting look: the end state is the element's own style,
+ * so with reduced motion (animation off) or animate={false} the chart is simply drawn as is.
+ */
+@keyframes xd-chart-grow {
+	from {
+		transform: scaleY(0);
+	}
+}
+
+@keyframes xd-chart-draw {
+	from {
+		stroke-dashoffset: 1;
+	}
+}
+
+@keyframes xd-chart-fade {
+	from {
+		opacity: 0;
+	}
+}
+
+@keyframes xd-chart-pop {
+	from {
+		opacity: 0;
+		transform: scale(0.55);
+	}
+}
+
+.xd-chart-bar {
+	transform-box: fill-box;
+	animation: xd-chart-grow 0.6s cubic-bezier(0.22, 1, 0.36, 1) var(--xd-delay, 0s) backwards;
+}
+
+.xd-chart-line {
+	/* pathLength="1" is set on the shape, so one dash is exactly the whole line */
+	stroke-dasharray: 1;
+	animation: xd-chart-draw 0.9s ease-out backwards;
+}
+
+.xd-chart-fill {
+	animation: xd-chart-fade 0.8s ease-out 0.25s backwards;
+}
+
+.xd-chart-point {
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: xd-chart-pop 0.3s ease-out var(--xd-delay, 0s) backwards;
+}
+
+.xd-chart-slice {
+	transform-box: view-box;
+	transform-origin: 50% 50%;
+	animation: xd-chart-pop 0.55s cubic-bezier(0.22, 1, 0.36, 1) var(--xd-delay, 0s) backwards;
+}
+
+.xd-chart-label {
+	animation: xd-chart-fade 0.5s ease-out 0.5s backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.xd-chart-bar,
+	.xd-chart-line,
+	.xd-chart-fill,
+	.xd-chart-point,
+	.xd-chart-slice,
+	.xd-chart-label {
+		animation: none;
+	}
+}
+
 /* Loader text effects: pulsing dots and a light sweeping across the label */
 @keyframes xd-dot {
 	0%,
