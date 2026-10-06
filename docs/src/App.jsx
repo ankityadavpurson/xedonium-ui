@@ -12,6 +12,7 @@ import {
 	useKeyboardShortcuts,
 	useTheme,
 } from 'xedonium'
+import VersionBadge from './components/VersionBadge'
 import { categories, pages, pathOf } from './content'
 import { foundations } from './pages/foundations'
 import CategoryPage from './pages/CategoryPage'
@@ -105,6 +106,7 @@ const App = () => {
 				<Logo />
 				<span className="hidden min-[360px]:inline">Xedonium</span>
 			</Link>
+			<VersionBadge className="hidden sm:inline-block" />
 			<span className="flex-1" />
 			<Button
 				variant="secondary"
@@ -152,6 +154,12 @@ const App = () => {
 						linkProp="to"
 						onSelect={close}
 						className="w-64"
+						footer={
+							<div className="flex items-center justify-between gap-2">
+								<span className="text-[10px] font-semibold uppercase tracking-widest text-app-muted">xedonium</span>
+								<VersionBadge />
+							</div>
+						}
 					/>
 				)}
 			>

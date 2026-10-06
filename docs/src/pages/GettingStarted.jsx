@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import { Card, Grid } from 'xedonium'
 import CodeBlock from '../components/CodeBlock'
 import InstallTabs from '../components/InstallTabs'
+import VersionBadge from '../components/VersionBadge'
+import { version } from '../version'
 import Markdown from '../components/Markdown'
 import Page, { H2 } from './Page'
 
@@ -59,6 +61,12 @@ const GettingStarted = () => (
 	<Page title="Getting started" subtitle="Install and set up">
 		<H2>Install</H2>
 		<InstallTabs />
+		<div className="flex flex-wrap items-center gap-2 text-sm text-app-text">
+			Current version <VersionBadge />
+			<span className="text-xs text-app-muted">
+				pin it with <code>xedonium@{version}</code>
+			</span>
+		</div>
 		<Markdown>
 			{
 				'Peer dependencies: `react`, `react-dom` (18 or newer) and `tailwindcss` (^3.4). npm 7+ installs peers for you; with yarn or pnpm add them yourself if your project does not already have them.'
