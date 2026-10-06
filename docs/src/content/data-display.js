@@ -20,7 +20,34 @@ export default {
 			name: 'CodeDisplay',
 			blocks: [
 				{
-					md: 'Read-only code block with a copy button. Optional `title`, `language` caption, `lineNumbers`, `wrap` and `maxHeight`. No syntax highlighting is applied.',
+					md: 'Read-only code block with a copy button. Optional `title`, `language` caption, `lineNumbers`, `wrap` and `maxHeight`. Code is colored by `language` (`js`, `jsx`, `ts`, `tsx`, `json`, `bash`, `sh`) with a palette that follows the light / dark theme; turn it off with `highlight={false}` or override any color with `colors`.',
+				},
+				{
+					example: 1,
+				},
+				{
+					example: 2,
+				},
+			],
+		},
+		{
+			slug: 'badge',
+			name: 'Badge',
+			blocks: [
+				{
+					md: 'Overlays a small indicator on the corner of its children, like MUI\'s Badge. `badgeContent` is a number or text; numbers above `max` show as "99+" and zero is hidden unless `showZero`. `variant="dot"` shows a plain dot, `anchorOrigin` picks the corner, `overlap="circular"` fits round children, and `invisible` hides it. Colors: `default`, `secondary`, `success`, `danger`, `warning`, `info`.',
+				},
+				{
+					example: 1,
+				},
+			],
+		},
+		{
+			slug: 'chip',
+			name: 'Chip',
+			blocks: [
+				{
+					md: 'Compact tag for filters and selections. `onClick` makes it a toggle button (with `selected` for the pressed state); `onRemove` adds a remove button; `leading` shows an icon or avatar first.',
 				},
 				{
 					example: 1,

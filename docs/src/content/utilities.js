@@ -57,7 +57,7 @@ export default {
 					example: 1,
 				},
 				{
-					md: '`mod` is Cmd on macOS and Ctrl elsewhere. Shortcuts without a modifier are ignored while typing in a field.',
+					md: '`mod` is Cmd on macOS and Ctrl elsewhere. Shortcuts without a modifier are ignored while typing in a field. More in [useKeyboardShortcuts](/hooks/usekeyboardshortcuts).',
 				},
 			],
 		},

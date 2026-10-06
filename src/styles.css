@@ -19,6 +19,13 @@
 }
 
 :root {
+	--xd-tok-comment: #6b7280;
+	--xd-tok-string: #0b7a4b;
+	--xd-tok-keyword: #9b2fae;
+	--xd-tok-tag: #1d4ed8;
+	--xd-tok-attr: #b45309;
+	--xd-tok-number: #b91c1c;
+	--xd-tok-fn: #0e7490;
 	--color-app-bg: 239 239 240;
 	--color-app-card: 255 255 255;
 	--color-app-border: 181 181 181;
@@ -29,6 +36,13 @@
 }
 
 html[data-theme='dark'] {
+	--xd-tok-comment: #8d8d96;
+	--xd-tok-string: #86d9a0;
+	--xd-tok-keyword: #d6a0ff;
+	--xd-tok-tag: #7cb7ff;
+	--xd-tok-attr: #f0b866;
+	--xd-tok-number: #ff9e9e;
+	--xd-tok-fn: #67d4e8;
 	--color-app-bg: 37 37 41;
 	--color-app-card: 31 31 31;
 	--color-app-border: 94 94 94;

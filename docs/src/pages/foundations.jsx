@@ -20,7 +20,7 @@ const ThemePage = () => (
 		/>
 		<Markdown>
 			{
-				"- `useTheme()` returns `{ activeTheme, toggleTheme }`.\n- `ThemeToggle` is a ready-made button for `toggleTheme`.\n- `buildFaviconHref(theme)` builds a theme-colored favicon data URL.\n\nTailwind's `dark:` variant is wired to the same attribute by the preset (`darkMode: ['selector', '[data-theme=\"dark\"]']`)."
+				"- [`ThemeProvider`](/theme/themeprovider) takes `storageKey`, `favicon` and `faviconTitle`.\n- [`useTheme()`](/theme/usetheme) returns `{ activeTheme, toggleTheme }`.\n- [`ThemeToggle`](/theme/themetoggle) is a ready-made button for `toggleTheme`.\n- [`useAppTheme`](/theme/useapptheme) is the hook behind the provider, for use without a context.\n- [`buildFaviconHref(theme)`](/theme/buildfaviconhref) builds a theme-colored favicon data URL.\n\nAll of them are documented, with examples, in the [Theme](/theme) section.\n\nTailwind's `dark:` variant is wired to the same attribute by the preset (`darkMode: ['selector', '[data-theme=\"dark\"]']`)."
 			}
 		</Markdown>
 	</Page>

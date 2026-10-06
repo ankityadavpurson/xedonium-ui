@@ -24,7 +24,7 @@ describe('Button', () => {
 		expect(screen.getByRole('button')).toHaveAttribute('type', 'button')
 		fireEvent.click(screen.getByRole('button'))
 		expect(onClick).toHaveBeenCalledTimes(1)
-		for (const variant of ['secondary', 'danger', 'success', 'warning']) {
+		for (const variant of ['secondary', 'flat', 'danger', 'success', 'warning']) {
 			rerender(<Button variant={variant}>Go</Button>)
 			expect(screen.getByRole('button')).toBeInTheDocument()
 		}

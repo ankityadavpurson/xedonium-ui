@@ -12,6 +12,7 @@ const flatten = (nodes, expanded, depth = 0, parent = null, out = []) => {
 /**
  * Expandable tree. nodes: [{ key, label, children? }]. `selected` / `onSelect` (key) for selection;
  * expansion is uncontrolled via `defaultExpanded` (array of keys) unless `expanded` + `onExpandedChange` are given.
+ * `renderLabel(node, depth)` customizes what a row shows (e.g. a link, or different styling per level).
  * Keys: Up / Down move, Right expands or enters, Left collapses or goes to the parent, Enter / Space selects.
  */
 const Tree = ({
@@ -22,6 +23,7 @@ const Tree = ({
 	expanded,
 	onExpandedChange,
 	label = 'Tree',
+	renderLabel,
 	className = '',
 }) => {
 	const [innerExpanded, setInnerExpanded] = useState(defaultExpanded)
@@ -120,7 +122,7 @@ const Tree = ({
 									</svg>
 								)}
 							</span>
-							{node.label}
+							{renderLabel ? renderLabel(node, depth) : node.label}
 						</div>
 					</li>
 				)

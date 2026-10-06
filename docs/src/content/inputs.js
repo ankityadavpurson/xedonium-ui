@@ -8,7 +8,7 @@ export default {
 			name: 'Button',
 			blocks: [
 				{
-					md: 'Variants: `default`, `secondary`, `success`, `danger`, `warning`. Pass `tooltip` for a styled tooltip instead of the native `title`.',
+					md: 'Variants: `default`, `secondary`, `flat`, `success`, `danger`, `warning`. Pass `tooltip` for a styled tooltip instead of the native `title`.',
 				},
 				{
 					example: 1,

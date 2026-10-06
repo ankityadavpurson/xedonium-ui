@@ -5,6 +5,7 @@ export default function Demo() {
 		<div className="flex flex-wrap items-center gap-3">
 			<Button>Default</Button>
 			<Button variant="secondary">Secondary</Button>
+			<Button variant="flat">Flat</Button>
 			<Button variant="success">Success</Button>
 			<Button variant="danger">Danger</Button>
 			<Button variant="warning">Warning</Button>

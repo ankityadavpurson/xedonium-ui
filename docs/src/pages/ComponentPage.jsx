@@ -3,26 +3,15 @@ import { Breadcrumb, Label, PageHeader, useDocumentTitle } from 'xedonium'
 import Example from '../components/Example'
 import FullPagePreview from '../components/FullPagePreview'
 import Markdown from '../components/Markdown'
+import Neighbour from '../components/Neighbour'
 import PropsTable from '../components/PropsTable'
+import { relatedGuides } from '../guides/hooks'
 import { exampleFor, findPage, pages, pathOf, propsFor } from '../content'
 import { playgroundPath, sectionFor } from '../playground'
 import NotFound from './NotFound'
 
 // Docs-only blocks that are components instead of Markdown or an example file
 const CUSTOM_BLOCKS = { 'full-page-preview': FullPagePreview }
-
-const Neighbour = ({ page, label, align }) =>
-	page ? (
-		<Link
-			to={pathOf(page.category, page.component)}
-			className={`flex min-w-0 flex-1 flex-col gap-1 break-words border border-app-border bg-app-card p-4 transition hover:border-app-strong ${align}`}
-		>
-			<span className="text-[10px] font-semibold uppercase tracking-widest text-app-muted">{label}</span>
-			<span className="text-sm font-semibold text-app-text">{page.component.name}</span>
-		</Link>
-	) : (
-		<span className="flex-1" />
-	)
 
 const ComponentPage = () => {
 	const { category: categorySlug, slug } = useParams()
@@ -34,6 +23,7 @@ const ComponentPage = () => {
 	const index = pages.indexOf(page)
 	const props = propsFor(component)
 	const playground = sectionFor(Object.keys(props ?? {}))
+	const related = relatedGuides([component.name, ...Object.keys(props ?? {})])
 
 	return (
 		<article className="flex flex-col gap-8">
@@ -72,9 +62,30 @@ const ComponentPage = () => {
 					<PropsTable groups={props} />
 				</section>
 			)}
+			{related.length > 0 && (
+				<p className="m-0 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-app-muted">
+					<span>Related hooks and theme:</span>
+					{related.map(({ id, name, path }) => (
+						<Link key={id} to={path} className="underline underline-offset-2 hover:text-app-text">
+							{name}
+						</Link>
+					))}
+				</p>
+			)}
 			<nav aria-label="Previous and next" className="flex gap-3 border-t border-app-border pt-6">
-				<Neighbour page={pages[index - 1]} label="Previous" align="text-left" />
-				<Neighbour page={pages[index + 1]} label="Next" align="text-right" />
+				<Neighbour
+					to={pages[index - 1] && pathOf(pages[index - 1].category, pages[index - 1].component)}
+					name={pages[index - 1]?.component.name}
+					label="Previous"
+					align="text-left"
+				/>
+				<Neighbour
+					to={pages[index + 1] && pathOf(pages[index + 1].category, pages[index + 1].component)}
+					name={pages[index + 1]?.component.name}
+					label="Next"
+					align="text-right"
+					next
+				/>
 			</nav>
 		</article>
 	)

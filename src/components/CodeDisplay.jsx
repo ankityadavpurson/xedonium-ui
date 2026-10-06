@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
+import highlight, { TOKEN_KINDS } from '../utils/highlight'
 
 /**
- * Read-only code block with an optional title, line numbers and a copy button. `code` is a string; `language` is shown
- * as a caption (no syntax highlighting is applied).
+ * Read-only code block with an optional title, line numbers and a copy button. `code` is a string; `language` is
+ * shown as a caption and picks the syntax colors: js / jsx / ts / tsx / json and bash / sh are colored, other values
+ * stay plain (`highlight={false}` turns the colors off). The default palette follows the light / dark theme
+ * (`--xd-tok-*` in styles.css); pass `colors` to override: { comment, string, keyword, tag, attr, number, fn, text,
+ * background } with any CSS color.
  */
 const CodeDisplay = ({
 	code,
@@ -12,6 +16,8 @@ const CodeDisplay = ({
 	copyable = true,
 	wrap = false,
 	maxHeight,
+	highlight: colorize = true,
+	colors,
 	className = '',
 }) => {
 	const [copied, setCopied] = useState(false)
@@ -19,7 +25,7 @@ const CodeDisplay = ({
 	useEffect(() => () => clearTimeout(timer.current), [])
 
 	const text = String(code ?? '')
-	const lines = text.replace(/\n$/, '').split('\n')
+	const lines = highlight(text.replace(/\n$/, ''), colorize ? language : undefined)
 
 	const copy = async () => {
 		try {
@@ -32,8 +38,20 @@ const CodeDisplay = ({
 		timer.current = setTimeout(() => setCopied(false), 1500)
 	}
 
+	// Overrides become CSS variables on the block, so the same spans pick them up
+	const style = { ...(maxHeight ? { maxHeight } : {}) }
+	if (colors) {
+		TOKEN_KINDS.forEach(kind => {
+			if (colors[kind]) style[`--xd-tok-${kind}`] = colors[kind]
+		})
+		if (colors.text) style.color = colors.text
+	}
+
 	return (
-		<figure className={`m-0 border border-app-border bg-app-card ${className}`}>
+		<figure
+			className={`m-0 border border-app-border bg-app-card ${className}`}
+			style={colors?.background ? { background: colors.background } : undefined}
+		>
 			{(title || language || copyable) && (
 				<figcaption className="flex items-center justify-between gap-2 border-b border-app-border px-3 py-1.5">
 					<span className="min-w-0 truncate text-xs font-semibold uppercase tracking-widest text-app-muted">
@@ -53,13 +71,13 @@ const CodeDisplay = ({
 			<pre
 				tabIndex={0}
 				data-language={language}
-				style={maxHeight ? { maxHeight } : undefined}
+				style={style}
 				className={`m-0 overflow-auto p-3 font-mono text-xs leading-relaxed text-app-text outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-app-strong ${
 					wrap ? 'whitespace-pre-wrap break-words' : ''
 				}`}
 			>
 				<code>
-					{lines.map((line, index) => (
+					{lines.map((segments, index) => (
 						<span key={index} className="flex">
 							{lineNumbers && (
 								<span
@@ -69,7 +87,23 @@ const CodeDisplay = ({
 									{index + 1}
 								</span>
 							)}
-							<span className="min-w-0 flex-1">{line || ' '}</span>
+							<span className="min-w-0 flex-1">
+								{segments.length === 0
+									? ' '
+									: segments.map((segment, i) =>
+											segment.kind ? (
+												<span
+													key={i}
+													style={{ color: `var(--xd-tok-${segment.kind})` }}
+													className={segment.kind === 'comment' ? 'italic' : undefined}
+												>
+													{segment.text}
+												</span>
+											) : (
+												segment.text
+											)
+										)}
+							</span>
 						</span>
 					))}
 				</code>

@@ -60,16 +60,63 @@ describe('useTimedToast', () => {
 		expect(result.current.toast).toBeNull()
 	})
 
-	it('supports type, link, custom duration, and restarts the timer', () => {
+	it('supports type, link and custom duration', () => {
 		const { result } = renderHook(() => useTimedToast())
 		const link = { href: '/x', label: 'x' }
 		act(() => result.current.showToast('A', 'error', { link, duration: 500 }))
-		expect(result.current.toast).toEqual({ msg: 'A', type: 'error', link })
+		expect(result.current.toast).toEqual({ id: expect.any(Number), msg: 'A', type: 'error', link })
 		act(() => vi.advanceTimersByTime(400))
 		act(() => result.current.showToast('B'))
 		act(() => vi.advanceTimersByTime(400))
 		expect(result.current.toast.msg).toBe('B')
 		act(() => vi.advanceTimersByTime(3000))
+		expect(result.current.toast).toBeNull()
+	})
+
+	it('stacks several toasts, each with its own timer', () => {
+		const { result } = renderHook(() => useTimedToast(1000))
+		let first, second
+		act(() => {
+			first = result.current.showToast('A')
+		})
+		act(() => vi.advanceTimersByTime(600))
+		act(() => {
+			second = result.current.showToast('B', 'info')
+		})
+		expect(first).not.toBe(second)
+		expect(result.current.toasts.map(t => t.msg)).toEqual(['A', 'B'])
+		expect(result.current.toast.msg).toBe('B')
+		act(() => vi.advanceTimersByTime(400))
+		expect(result.current.toasts.map(t => t.msg)).toEqual(['B'])
+		act(() => vi.advanceTimersByTime(600))
+		expect(result.current.toasts).toEqual([])
+		expect(result.current.toast).toBeNull()
+	})
+
+	it('drops the oldest beyond max and hides one or all', () => {
+		const { result } = renderHook(() => useTimedToast(1000, { max: 2 }))
+		act(() => {
+			result.current.showToast('A')
+			result.current.showToast('B')
+			result.current.showToast('C')
+		})
+		expect(result.current.toasts.map(t => t.msg)).toEqual(['B', 'C'])
+		act(() => result.current.hideToast(result.current.toasts[0].id))
+		expect(result.current.toasts.map(t => t.msg)).toEqual(['C'])
+		act(() => result.current.showToast('D', 'success', { duration: 0 }))
+		act(() => result.current.hideToast())
+		expect(result.current.toasts).toEqual([])
+		act(() => vi.advanceTimersByTime(5000))
+		expect(result.current.toasts).toEqual([])
+	})
+
+	it('supports actions, persistent toasts and hideToast', () => {
+		const { result } = renderHook(() => useTimedToast(100))
+		const actions = [{ label: 'Undo' }]
+		act(() => result.current.showToast('A', 'info', { actions, duration: 0 }))
+		act(() => vi.advanceTimersByTime(10000))
+		expect(result.current.toast).toMatchObject({ msg: 'A', type: 'info', actions })
+		act(() => result.current.hideToast())
 		expect(result.current.toast).toBeNull()
 	})
 

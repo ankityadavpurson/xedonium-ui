@@ -376,6 +376,28 @@ describe('DataGrid', () => {
 			.slice(1)
 			.map(r => within(r).getAllByRole('cell')[0].textContent)
 
+	it('lets the user change the page size and returns to page 1', () => {
+		const onPageSizeChange = vi.fn()
+		render(
+			<DataGrid
+				columns={columns}
+				rows={rows}
+				pageSize={2}
+				pageSizeOptions={[2, 10]}
+				onPageSizeChange={onPageSizeChange}
+			/>
+		)
+		expect(names()).toEqual(['Cara', 'Abe'])
+		fireEvent.click(screen.getByRole('button', { name: 'Page 2' }))
+		expect(names()).toEqual(['Bea', 'Dan'])
+		fireEvent.click(screen.getByRole('combobox', { name: /per page/i }))
+		fireEvent.click(screen.getByRole('option', { name: '10' }))
+		expect(onPageSizeChange).toHaveBeenCalledWith(10)
+		expect(names()).toHaveLength(5)
+		// the selector stays available even though everything now fits on one page
+		expect(screen.getByRole('combobox', { name: /per page/i })).toHaveTextContent('10')
+	})
+
 	it('renders rows and a count', () => {
 		render(<DataGrid columns={columns} rows={rows} caption="People" />)
 		expect(names()).toEqual(['Cara', 'Abe', 'Bea', 'Dan', 'Eve'])

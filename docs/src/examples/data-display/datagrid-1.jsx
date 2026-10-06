@@ -12,6 +12,7 @@ export default function Demo() {
 			searchable
 			selectable
 			pageSize={5}
+			pageSizeOptions={[5, 10, 25]}
 			rows={rows}
 			columns={[
 				{ key: 'name', header: 'Name', sortable: true },

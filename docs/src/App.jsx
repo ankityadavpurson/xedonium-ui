@@ -1,24 +1,26 @@
 import { Suspense, lazy, useEffect, useMemo, useState } from 'react'
-import { Link, NavLink, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import {
 	AppShell,
 	Button,
 	CommandPalette,
 	FanFavicon,
-	Sidebar,
 	ThemeToggle,
 	Tooltip,
 	buildFaviconHref,
 	useKeyboardShortcuts,
 	useTheme,
 } from 'xedonium'
+import DocsNav from './components/DocsNav'
+import VersionBadge from './components/VersionBadge'
 import { categories, pages, pathOf } from './content'
+import { guidePath, guideSections } from './guides/hooks'
 import { foundations } from './pages/foundations'
 import CategoryPage from './pages/CategoryPage'
 import ComponentPage from './pages/ComponentPage'
 import GettingStarted from './pages/GettingStarted'
 import Home from './pages/Home'
-import Hooks from './pages/Hooks'
+import { GuideEntry, GuideIndex } from './pages/GuidePage'
 import LoadingScreenPreview from './pages/LoadingScreenPreview'
 import NotFound from './pages/NotFound'
 
@@ -36,40 +38,45 @@ const Logo = () => {
 	return <img src={buildFaviconHref(activeTheme)} alt="" width={22} height={22} />
 }
 
-// Router links for the library's Sidebar (it spreads `to` onto whatever linkComponent renders)
-const RouterLink = ({ to, ...rest }) => <NavLink to={to} end {...rest} />
-
-const useNavItems = navigate =>
+// Top-level entries are groups (key = their page) or plain links; `target` is where a group opens
+const useNavItems = () =>
 	useMemo(
 		() => [
 			{ key: '/getting-started', label: 'Getting started', href: '/getting-started' },
 			{
-				key: 'foundations',
+				key: '/foundations',
 				label: 'Foundations',
-				onClick: () => navigate(foundations[0].path),
+				target: foundations[0].path,
 				children: foundations.map(f => ({ key: f.path, label: f.title, href: f.path })),
 			},
 			...categories.map(category => ({
 				key: `/components/${category.slug}`,
 				label: category.label,
-				onClick: () => navigate(`/components/${category.slug}`),
 				children: category.components.map(component => ({
 					key: pathOf(category, component),
 					label: component.name,
 					href: pathOf(category, component),
 				})),
 			})),
-			{ key: '/hooks', label: 'Hooks & theme', href: '/hooks' },
+			...guideSections.map(section => ({
+				key: section.path,
+				label: section.label,
+				children: section.items.map(entry => ({
+					key: guidePath(section, entry),
+					label: entry.name,
+					href: guidePath(section, entry),
+				})),
+			})),
 			{ key: '/playground', label: 'Playground', href: '/playground' },
 		],
-		[navigate]
+		[]
 	)
 
 const App = () => {
 	const { pathname } = useLocation()
 	const navigate = useNavigate()
 	const [searchOpen, setSearchOpen] = useState(false)
-	const items = useNavItems(navigate)
+	const items = useNavItems()
 
 	useKeyboardShortcuts({ 'mod+k': () => setSearchOpen(true), '/': () => setSearchOpen(true) })
 
@@ -93,7 +100,14 @@ const App = () => {
 				group: category.label,
 				onSelect: () => navigate(pathOf(category, component)),
 			})),
-			{ key: 'hooks', label: 'Hooks & theme', group: 'Guides', onSelect: () => navigate('/hooks') },
+			...guideSections.flatMap(section =>
+				section.items.map(entry => ({
+					key: guidePath(section, entry),
+					label: entry.name,
+					group: section.label,
+					onSelect: () => navigate(guidePath(section, entry)),
+				}))
+			),
 			{ key: 'playground', label: 'Playground', group: 'Guides', onSelect: () => navigate('/playground') },
 		],
 		[navigate]
@@ -105,6 +119,7 @@ const App = () => {
 				<Logo />
 				<span className="hidden min-[360px]:inline">Xedonium</span>
 			</Link>
+			<VersionBadge className="hidden sm:inline-block" />
 			<span className="flex-1" />
 			<Button
 				variant="secondary"
@@ -144,14 +159,21 @@ const App = () => {
 				header={header}
 				sidebarTitle="Docs"
 				sidebar={close => (
-					<Sidebar
-						label="Documentation"
+					<DocsNav
 						items={items}
-						activeKey={pathname}
-						linkComponent={RouterLink}
-						linkProp="to"
+						activePath={pathname}
+						onNavigate={(target, node) => {
+							navigate(target)
+							if (!node.children) close()
+						}}
 						onSelect={close}
 						className="w-64"
+						footer={
+							<div className="flex items-center justify-between gap-2">
+								<span className="text-[10px] font-semibold uppercase tracking-widest text-app-muted">xedonium</span>
+								<VersionBadge />
+							</div>
+						}
 					/>
 				)}
 			>
@@ -164,7 +186,14 @@ const App = () => {
 						))}
 						<Route path="/components/:category" element={<CategoryPage />} />
 						<Route path="/components/:category/:slug" element={<ComponentPage />} />
-						<Route path="/hooks" element={<Hooks />} />
+						{guideSections.map(section => [
+							<Route key={section.slug} path={section.path} element={<GuideIndex section={section} />} />,
+							<Route
+								key={`${section.slug}-entry`}
+								path={`${section.path}/:id`}
+								element={<GuideEntry section={section} />}
+							/>,
+						])}
 						<Route
 							path="/playground"
 							element={
