@@ -1,5 +1,10 @@
 # xedonium
 
+<picture>
+	<source media="(prefers-color-scheme: dark)" srcset="docs/public/social-preview-dark.png" />
+	<img src="docs/public/social-preview.png" alt="Xedonium: minimal, theme-aware React UI" width="640" />
+</picture>
+
 Minimal, theme-aware React + Tailwind UI components, extracted from Boot Bridge.
 Square corners, semantic `app-*` color tokens, light/dark via `<html data-theme>`.
 
