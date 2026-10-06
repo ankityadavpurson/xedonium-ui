@@ -1,9 +1,10 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { computePosition, isClipped } from '../utils/position'
+import portalTarget from '../utils/portalTarget'
 
 /**
- * A panel positioned next to `anchorRef`'s element, rendered into <body> with fixed positioning so no
+ * A panel positioned next to `anchorRef`'s element, rendered into <body> (or the fullscreen element, so it shows in fullscreen) with fixed positioning so no
  * ancestor (overflow: hidden, transforms, dialogs) can clip it. It flips to the opposite side when there is
  * no room, stays inside the viewport and follows the anchor on scroll and resize.
  *
@@ -25,9 +26,12 @@ const FloatingPanel = ({
 	const ownRef = useRef(null)
 	const ref = panelRef ?? ownRef
 	const [position, setPosition] = useState(null)
+	const updateRef = useRef(null)
+	const lastPosition = useRef(null)
 
 	useLayoutEffect(() => {
 		if (!open) {
+			lastPosition.current = null
 			setPosition(null)
 			return undefined
 		}
@@ -41,27 +45,38 @@ const FloatingPanel = ({
 				// the anchor was scrolled out of view: hide rather than hover over unrelated content
 				hidden: isClipped(anchorRef.current),
 			}
-			setPosition(prev =>
+			// Compare against the last value we set (not via a setState updater): this also runs after every render,
+			// and an updater function would schedule another render each time even when nothing changed
+			const prev = lastPosition.current
+			if (
 				prev &&
-				prev.top === next.top &&
-				prev.left === next.left &&
-				prev.width === next.width &&
+				Object.is(prev.top, next.top) &&
+				Object.is(prev.left, next.left) &&
+				Object.is(prev.width, next.width) &&
 				prev.hidden === next.hidden
-					? prev
-					: next
 			)
+				return
+			lastPosition.current = next
+			setPosition(next)
 		}
+		updateRef.current = update
 		update()
 		window.addEventListener('scroll', update, true)
 		window.addEventListener('resize', update)
 		const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(update)
 		if (observer && ref.current) observer.observe(ref.current)
 		return () => {
+			updateRef.current = null
 			window.removeEventListener('scroll', update, true)
 			window.removeEventListener('resize', update)
 			observer?.disconnect()
 		}
 	}, [open, anchorRef, ref, placement, gap, matchWidth])
+
+	// The anchor can move without a scroll or resize (e.g. a slider thumb), so re-measure after every render
+	useLayoutEffect(() => {
+		updateRef.current?.()
+	})
 
 	if (!open) return null
 
@@ -83,7 +98,7 @@ const FloatingPanel = ({
 		>
 			{children}
 		</div>,
-		document.body
+		portalTarget()
 	)
 }
 

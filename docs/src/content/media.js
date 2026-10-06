@@ -26,7 +26,7 @@ export default {
 			name: 'Video',
 			blocks: [
 				{
-					md: 'Player with themed controls: play, seek, time, mute and fullscreen. Extra props go to the `<video>` element; pass\n`<track>` children for captions.',
+					md: 'Player with themed controls: play, seek, time, mute with a volume slider, playback speed and fullscreen, using the play, pause, volume and fullscreen icons with tooltips. The controls wrap onto a second row on narrow screens, so fullscreen is never cut off, and iPhone Safari (which can only fullscreen the video itself) is handled too. Pass `speeds` to change the rates offered. For several resolutions pass `sources` (`[{ label: "1080p", src }, { label: "4K", src }]`) instead of `src`: a quality menu appears and switching keeps your position and whether it was playing; `defaultQuality` picks the starting one. The controls float over the bottom of the video and fade out after `hideDelay` ms (default 2.5 s) without mouse, touch or keyboard activity while it plays, like YouTube; they stay while paused, hovered or focused, and `autoHide={false}` keeps them always visible. A spinner shows over the video when playback stalls to load more data (after a short delay, so brief hiccups do not flash it), and the seek bar shows how much is loaded. Extra props go to the `<video>` element; pass\n`<track>` children for captions.',
 				},
 				{
 					example: 1,

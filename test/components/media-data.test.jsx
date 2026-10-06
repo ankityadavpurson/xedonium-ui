@@ -21,6 +21,72 @@ describe('Video', () => {
 		return { video, ...utils }
 	}
 
+	it('floats the controls, hides them after inactivity while playing and wakes them on activity', () => {
+		vi.useFakeTimers()
+		const { video, container } = setup({ hideDelay: 1000 })
+		const wrap = container.firstChild
+		expect(wrap).toHaveAttribute('data-controls', 'visible')
+		// paused: stays visible however long we wait
+		act(() => vi.advanceTimersByTime(5000))
+		expect(wrap).toHaveAttribute('data-controls', 'visible')
+		fireEvent.play(video)
+		act(() => vi.advanceTimersByTime(999))
+		expect(wrap).toHaveAttribute('data-controls', 'visible')
+		act(() => vi.advanceTimersByTime(2))
+		expect(wrap).toHaveAttribute('data-controls', 'hidden')
+		expect(screen.getByRole('group', { name: 'Clip controls' })).toHaveClass('opacity-0', 'pointer-events-none')
+		fireEvent.pointerMove(wrap)
+		expect(wrap).toHaveAttribute('data-controls', 'visible')
+		act(() => vi.advanceTimersByTime(1001))
+		expect(wrap).toHaveAttribute('data-controls', 'hidden')
+		fireEvent.pointerDown(wrap)
+		expect(wrap).toHaveAttribute('data-controls', 'visible')
+		act(() => vi.advanceTimersByTime(1001))
+		fireEvent.keyDown(wrap, { key: 'a' })
+		expect(wrap).toHaveAttribute('data-controls', 'visible')
+		// pausing brings them back
+		act(() => vi.advanceTimersByTime(1001))
+		expect(wrap).toHaveAttribute('data-controls', 'hidden')
+		fireEvent.pause(video)
+		expect(wrap).toHaveAttribute('data-controls', 'visible')
+		vi.useRealTimers()
+	})
+
+	it('keeps the controls while the pointer is over them or focus is inside, and when autoHide is off', () => {
+		vi.useFakeTimers()
+		const { video, container, rerender } = setup({ hideDelay: 1000 })
+		const wrap = container.firstChild
+		const group = screen.getByRole('group', { name: 'Clip controls' })
+		fireEvent.play(video)
+		fireEvent.pointerEnter(group)
+		act(() => vi.advanceTimersByTime(3000))
+		expect(wrap).toHaveAttribute('data-controls', 'visible')
+		fireEvent.pointerLeave(group)
+		act(() => vi.advanceTimersByTime(1001))
+		expect(wrap).toHaveAttribute('data-controls', 'hidden')
+		const full = screen.getByRole('button', { name: 'Fullscreen' })
+		act(() => full.focus())
+		act(() => vi.advanceTimersByTime(3000))
+		expect(wrap).toHaveAttribute('data-controls', 'visible')
+		act(() => full.blur())
+		rerender(<Video src="/v.mp4" title="Clip" autoHide={false} />)
+		fireEvent.play(video)
+		act(() => vi.advanceTimersByTime(10000))
+		expect(wrap).toHaveAttribute('data-controls', 'visible')
+		vi.useRealTimers()
+	})
+
+	it('shows the controls again when playback ends', () => {
+		vi.useFakeTimers()
+		const { video, container } = setup({ hideDelay: 500 })
+		fireEvent.play(video)
+		act(() => vi.advanceTimersByTime(600))
+		expect(container.firstChild).toHaveAttribute('data-controls', 'hidden')
+		fireEvent.ended(video)
+		expect(container.firstChild).toHaveAttribute('data-controls', 'visible')
+		vi.useRealTimers()
+	})
+
 	it('plays and pauses via button and clicking the video', async () => {
 		const { video } = setup()
 		fireEvent.click(screen.getByRole('button', { name: 'Play' }))
@@ -61,6 +127,205 @@ describe('Video', () => {
 		expect(screen.getAllByText('0:00')).toHaveLength(2)
 	})
 
+	it('sets the volume, unmutes with the slider and restores volume after muting at zero', () => {
+		const { video } = setup()
+		const slider = screen.getByLabelText('Volume')
+		fireEvent.change(slider, { target: { value: '0.4' } })
+		expect(video.volume).toBeCloseTo(0.4)
+		fireEvent.click(screen.getByRole('button', { name: 'Mute' }))
+		expect(slider).toHaveValue('0')
+		fireEvent.change(slider, { target: { value: '0.6' } })
+		expect(screen.getByRole('button', { name: 'Mute' })).toBeInTheDocument()
+		fireEvent.change(slider, { target: { value: '0' } })
+		expect(screen.getByRole('button', { name: 'Unmute' })).toBeInTheDocument()
+		fireEvent.click(screen.getByRole('button', { name: 'Unmute' }))
+		expect(video.volume).toBe(1)
+		expect(screen.getByRole('button', { name: 'Mute' })).toBeInTheDocument()
+	})
+
+	it('has a vertical volume slider and a speaker icon that follows the level', () => {
+		setup()
+		const slider = screen.getByLabelText('Volume')
+		expect(slider).toHaveAttribute('aria-orientation', 'vertical')
+		expect(screen.queryByText(/%$/)).toBeNull()
+		const mute = () => screen.getByRole('button', { name: /mute/i })
+		const paths = () => mute().querySelectorAll('path').length
+		expect(paths()).toBe(3) // high: speaker + two waves
+		fireEvent.change(slider, { target: { value: '0.3' } })
+		expect(paths()).toBe(2) // low: speaker + one wave
+		fireEvent.change(slider, { target: { value: '0.5' } })
+		expect(paths()).toBe(3)
+		fireEvent.click(mute())
+		expect(mute().querySelector('path[d="M23 9l-6 6"]')).toBeTruthy() // muted: speaker with a cross
+		expect(screen.getByRole('button', { name: 'Unmute' })).toBeInTheDocument()
+		expect(slider).toHaveValue('0')
+	})
+
+	describe('quality', () => {
+		const sources = [
+			{ label: '1080p', src: '/hd.mp4' },
+			{ label: '4K', src: '/uhd.mp4' },
+		]
+
+		it('has no quality menu for a single source', () => {
+			setup()
+			expect(screen.queryByRole('combobox', { name: 'Quality' })).toBeNull()
+			setup({ src: undefined, sources: [sources[0]] })
+			expect(screen.queryAllByRole('combobox', { name: 'Quality' })).toHaveLength(0)
+		})
+
+		it('starts at the default quality, falling back to the first source', () => {
+			const { video, rerender } = setup({ src: undefined, sources })
+			expect(video.getAttribute('src')).toBe('/hd.mp4')
+			expect(screen.getByRole('combobox', { name: 'Quality' })).toHaveTextContent('1080p')
+			rerender(<Video sources={sources} defaultQuality="4K" title="Clip" />)
+		})
+
+		it('honours defaultQuality', () => {
+			const { video } = setup({ src: undefined, sources, defaultQuality: '4K' })
+			expect(video.getAttribute('src')).toBe('/uhd.mp4')
+		})
+
+		it('switches source, then resumes the position and playback once the new one loads', () => {
+			const { video } = setup({ src: undefined, sources })
+			Object.defineProperty(video, 'currentTime', { value: 42, writable: true, configurable: true })
+			fireEvent.play(video)
+			video.paused = false
+			fireEvent.click(screen.getByRole('combobox', { name: 'Quality' }))
+			expect(screen.getAllByRole('option').map(o => o.textContent)).toEqual(['1080p', '4K'])
+			fireEvent.click(screen.getByRole('option', { name: '4K' }))
+			expect(video.getAttribute('src')).toBe('/uhd.mp4')
+			expect(screen.getByRole('button', { name: 'Play' })).toBeInTheDocument()
+			video.currentTime = 0
+			video.paused = true
+			video.play.mockClear()
+			fireEvent.loadedMetadata(video)
+			expect(video.currentTime).toBe(42)
+			expect(video.play).toHaveBeenCalledTimes(1)
+			// later loads do not jump or play again
+			video.currentTime = 7
+			fireEvent.loadedMetadata(video)
+			expect(video.currentTime).toBe(7)
+			expect(video.play).toHaveBeenCalledTimes(1)
+		})
+
+		it('keeps a paused video paused after switching', () => {
+			const { video } = setup({ src: undefined, sources })
+			Object.defineProperty(video, 'currentTime', { value: 5, writable: true, configurable: true })
+			fireEvent.click(screen.getByRole('combobox', { name: 'Quality' }))
+			fireEvent.click(screen.getByRole('option', { name: '4K' }))
+			video.play.mockClear()
+			fireEvent.loadedMetadata(video)
+			expect(video.currentTime).toBe(5)
+			expect(video.play).not.toHaveBeenCalled()
+		})
+
+		it('swallows a blocked resume', async () => {
+			const { video } = setup({ src: undefined, sources })
+			video.paused = false
+			fireEvent.click(screen.getByRole('combobox', { name: 'Quality' }))
+			fireEvent.click(screen.getByRole('option', { name: '4K' }))
+			video.play = vi.fn().mockRejectedValue(new Error('blocked'))
+			fireEvent.loadedMetadata(video)
+			await Promise.resolve()
+			expect(video.play).toHaveBeenCalled()
+		})
+	})
+
+	it('shows a spinner when playback stalls and hides it when it resumes, pauses or fails', () => {
+		vi.useFakeTimers()
+		const { video } = setup()
+		const spinner = () => screen.queryByRole('status')
+		expect(spinner()).toBeNull()
+		fireEvent.waiting(video)
+		act(() => vi.advanceTimersByTime(299))
+		expect(spinner()).toBeNull() // short stalls never flash the spinner
+		act(() => vi.advanceTimersByTime(2))
+		expect(spinner()).toHaveTextContent('Buffering')
+		fireEvent.playing(video)
+		expect(spinner()).toBeNull()
+		for (const hide of [fireEvent.canPlay, fireEvent.pause, fireEvent.ended, fireEvent.error]) {
+			fireEvent.waiting(video)
+			act(() => vi.advanceTimersByTime(400))
+			expect(spinner()).not.toBeNull()
+			hide(video)
+			expect(spinner()).toBeNull()
+		}
+		// a stall that ends before the delay never shows
+		fireEvent.waiting(video)
+		act(() => vi.advanceTimersByTime(100))
+		fireEvent.playing(video)
+		act(() => vi.advanceTimersByTime(1000))
+		expect(spinner()).toBeNull()
+		vi.useRealTimers()
+	})
+
+	it('shows how much is loaded on the seek bar', () => {
+		const { video } = setup()
+		Object.defineProperty(video, 'duration', { value: 100, configurable: true })
+		Object.defineProperty(video, 'currentTime', { value: 10, writable: true, configurable: true })
+		const ranges = [
+			[0, 40],
+			[70, 90],
+		]
+		Object.defineProperty(video, 'buffered', {
+			value: { length: ranges.length, start: i => ranges[i][0], end: i => ranges[i][1] },
+			configurable: true,
+		})
+		fireEvent.loadedMetadata(video)
+		const seek = screen.getByLabelText('Seek')
+		expect(seek.style.getPropertyValue('--xd-buffer')).toBe('40%')
+		// the playhead moves into the second range, then nothing around it is loaded
+		video.currentTime = 80
+		fireEvent.progress(video)
+		expect(seek.style.getPropertyValue('--xd-buffer')).toBe('90%')
+		video.currentTime = 50
+		fireEvent.seeked(video)
+		fireEvent.timeUpdate(video)
+		expect(seek.style.getPropertyValue('--xd-fill')).toBe('50%')
+		expect(seek.style.getPropertyValue('--xd-buffer')).toBe('50%')
+		video.currentTime = 20
+		fireEvent.timeUpdate(video)
+		expect(seek.style.getPropertyValue('--xd-buffer')).toBe('40%')
+	})
+
+	it('shows the time in a popover while scrubbing', () => {
+		const { video } = setup()
+		Object.defineProperty(video, 'duration', { value: 125, configurable: true })
+		Object.defineProperty(video, 'currentTime', { value: 65, writable: true, configurable: true })
+		fireEvent.loadedMetadata(video)
+		fireEvent.timeUpdate(video)
+		const seek = screen.getByLabelText('Seek')
+		fireEvent.pointerDown(seek)
+		expect(document.querySelector('.pointer-events-none.border')).toHaveTextContent('1:05')
+		fireEvent.change(seek, { target: { value: '90' } })
+		expect(document.querySelector('.pointer-events-none.border')).toHaveTextContent('1:30')
+		fireEvent.pointerUp(window)
+	})
+
+	it('changes the playback speed and keeps it when new media loads', () => {
+		const { video, rerender } = setup()
+		const speed = screen.getByRole('combobox', { name: 'Playback speed' })
+		expect(speed).toHaveTextContent('1x')
+		fireEvent.click(speed)
+		expect(screen.getAllByRole('option').map(o => o.textContent)).toEqual([
+			'0.5x',
+			'0.75x',
+			'1x',
+			'1.25x',
+			'1.5x',
+			'2x',
+		])
+		fireEvent.click(screen.getByRole('option', { name: '1.5x' }))
+		expect(video.playbackRate).toBe(1.5)
+		video.playbackRate = 1
+		fireEvent.loadedMetadata(video)
+		expect(video.playbackRate).toBe(1.5)
+		rerender(<Video src="/v.mp4" speeds={[1, 3]} />)
+		fireEvent.click(screen.getByRole('combobox', { name: 'Playback speed' }))
+		expect(screen.getAllByRole('option').map(o => o.textContent)).toEqual(['1x', '3x'])
+	})
+
 	it('toggles mute', () => {
 		setup()
 		fireEvent.click(screen.getByRole('button', { name: 'Mute' }))
@@ -74,20 +339,39 @@ describe('Video', () => {
 		const wrap = container.firstChild
 		wrap.requestFullscreen = vi.fn()
 		document.exitFullscreen = vi.fn()
-		fireEvent.click(screen.getByRole('button', { name: 'Full' }))
+		fireEvent.click(screen.getByRole('button', { name: 'Fullscreen' }))
 		expect(wrap.requestFullscreen).toHaveBeenCalled()
 		Object.defineProperty(document, 'fullscreenElement', { value: wrap, configurable: true })
 		fireEvent(document, new Event('fullscreenchange'))
-		expect(screen.getByRole('button', { name: 'Exit' })).toBeInTheDocument()
-		fireEvent.click(screen.getByRole('button', { name: 'Exit' }))
+		expect(screen.getByRole('button', { name: 'Exit fullscreen' })).toBeInTheDocument()
+		fireEvent.click(screen.getByRole('button', { name: 'Exit fullscreen' }))
 		expect(document.exitFullscreen).toHaveBeenCalled()
 		Object.defineProperty(document, 'fullscreenElement', { value: null, configurable: true })
 		fireEvent(document, new Event('fullscreenchange'))
-		expect(screen.getByRole('button', { name: 'Full' })).toBeInTheDocument()
+		expect(screen.getByRole('button', { name: 'Fullscreen' })).toBeInTheDocument()
 		wrap.requestFullscreen = undefined
-		fireEvent.click(screen.getByRole('button', { name: 'Full' }))
+		fireEvent.click(screen.getByRole('button', { name: 'Fullscreen' }))
 		delete document.fullscreenElement
 		delete document.exitFullscreen
+	})
+
+	it('uses vendor-prefixed and iOS fullscreen fallbacks', () => {
+		const { container, video } = setup()
+		const wrap = container.firstChild
+		wrap.webkitRequestFullscreen = vi.fn()
+		fireEvent.click(screen.getByRole('button', { name: 'Fullscreen' }))
+		expect(wrap.webkitRequestFullscreen).toHaveBeenCalled()
+		wrap.webkitRequestFullscreen = undefined
+		video.webkitEnterFullscreen = vi.fn()
+		fireEvent.click(screen.getByRole('button', { name: 'Fullscreen' }))
+		expect(video.webkitEnterFullscreen).toHaveBeenCalled()
+		Object.defineProperty(document, 'webkitFullscreenElement', { value: wrap, configurable: true })
+		document.webkitExitFullscreen = vi.fn()
+		fireEvent(document, new Event('webkitfullscreenchange'))
+		fireEvent.click(screen.getByRole('button', { name: 'Exit fullscreen' }))
+		expect(document.webkitExitFullscreen).toHaveBeenCalled()
+		delete document.webkitFullscreenElement
+		delete document.webkitExitFullscreen
 	})
 
 	it('forwards extra props and children', () => {

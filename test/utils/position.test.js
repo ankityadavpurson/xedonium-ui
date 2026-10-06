@@ -131,6 +131,27 @@ describe('isClipped', () => {
 		expect(isClipped(el)).toBe(false)
 	})
 
+	it('stops at a fixed ancestor, which is not clipped by overflow further up (fullscreen player)', () => {
+		const scroller = document.createElement('div')
+		scroller.style.overflowX = 'auto'
+		scroller.style.overflowY = 'auto'
+		const fixed = document.createElement('div')
+		fixed.style.position = 'fixed'
+		fixed.style.overflowX = 'hidden'
+		fixed.style.overflowY = 'hidden'
+		const el = document.createElement('div')
+		fixed.append(el)
+		scroller.append(fixed)
+		document.body.append(scroller)
+		rectOf(scroller, [0, 0, 100, 50]) // far from where the fixed player is
+		rectOf(fixed, [0, 0, 1000, 700])
+		rectOf(el, [500, 600, 100, 30])
+		expect(isClipped(el)).toBe(false)
+		// the fixed ancestor's own overflow still clips
+		rectOf(fixed, [0, 0, 300, 300])
+		expect(isClipped(el)).toBe(true)
+	})
+
 	it('accounts for scroll/overflow ancestors', () => {
 		const wrapper = document.createElement('div')
 		wrapper.style.overflowX = 'hidden'
