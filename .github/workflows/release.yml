@@ -144,3 +144,15 @@ jobs:
       - name: Push version commit and tag
         if: steps.bump.outputs.level != 'none'
         run: git push origin HEAD:main --follow-tags
+
+      - name: Create GitHub release
+        if: steps.bump.outputs.level != 'none'
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          zip -rq "xedonium-dist-v$VERSION.zip" dist
+          npm pack --ignore-scripts
+          gh release create "v$VERSION" \
+            "xedonium-dist-v$VERSION.zip" "xedonium-$VERSION.tgz" \
+            --title "v$VERSION" --generate-notes --verify-tag
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
