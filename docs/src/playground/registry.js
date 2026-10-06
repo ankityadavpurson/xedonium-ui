@@ -12,6 +12,7 @@ export const tabs = [
 			['breadcrumb-stepper-timeline', 'Breadcrumb / Stepper / Timeline'],
 			['typography', 'Typography'],
 			['loaders', 'Loaders'],
+			['loading-screen', 'LoadingScreen'],
 		],
 	},
 	{

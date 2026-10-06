@@ -19,6 +19,7 @@ import ComponentPage from './pages/ComponentPage'
 import GettingStarted from './pages/GettingStarted'
 import Home from './pages/Home'
 import Hooks from './pages/Hooks'
+import LoadingScreenPreview from './pages/LoadingScreenPreview'
 import NotFound from './pages/NotFound'
 
 // The Playground compiles JSX in the browser (react-live); load it only when someone opens it
@@ -126,6 +127,16 @@ const App = () => {
 			<ThemeToggle />
 		</div>
 	)
+
+	// Whole-page previews have no docs chrome
+	if (pathname.startsWith('/preview/')) {
+		return (
+			<Routes>
+				<Route path="/preview/loading-screen" element={<LoadingScreenPreview />} />
+				<Route path="*" element={<NotFound />} />
+			</Routes>
+		)
+	}
 
 	return (
 		<>
