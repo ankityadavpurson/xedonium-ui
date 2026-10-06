@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Avatar, List, SortableList, Tree, VirtualList } from 'xedonium'
+import { Accordion, Avatar, CodeDisplay, List, SortableList, Tree, VirtualList } from 'xedonium'
 
 export default function Demo() {
 	const [order, setOrder] = useState([1, 2, 3, 4].map(n => ({ key: n, label: `Item ${n}` })))
@@ -54,6 +54,18 @@ export default function Demo() {
 						{ key: 'pkg', label: 'package.json' },
 					]}
 				/>
+			</div>
+			<div className="w-72">
+				<Accordion
+					defaultValue={['a']}
+					items={[
+						{ key: 'a', title: 'First', content: 'First panel' },
+						{ key: 'b', title: 'Second', content: 'Second panel' },
+					]}
+				/>
+			</div>
+			<div className="w-72">
+				<CodeDisplay code={'const answer = 42\nconsole.log(answer)'} language="js" lineNumbers />
 			</div>
 		</div>
 	)

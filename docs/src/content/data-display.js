@@ -4,6 +4,30 @@ export default {
 	description: 'Cards, tables, lists, trees and timelines.',
 	components: [
 		{
+			slug: 'accordion',
+			name: 'Accordion',
+			blocks: [
+				{
+					md: '`items: [{ key, title, content, disabled? }]`. One section is open at a time unless `multiple` is set. Control it with `value` (array of open keys) and `onChange`, or use `defaultValue`.',
+				},
+				{
+					example: 1,
+				},
+			],
+		},
+		{
+			slug: 'codedisplay',
+			name: 'CodeDisplay',
+			blocks: [
+				{
+					md: 'Read-only code block with a copy button. Optional `title`, `language` caption, `lineNumbers`, `wrap` and `maxHeight`. No syntax highlighting is applied.',
+				},
+				{
+					example: 1,
+				},
+			],
+		},
+		{
 			slug: 'card',
 			name: 'Card',
 			blocks: [

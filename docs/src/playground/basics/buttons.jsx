@@ -1,4 +1,4 @@
-import { ActionMenu, Button, Toast, Tooltip, useTimedToast } from 'xedonium'
+import { ActionMenu, Button, ButtonLink, Toast, Tooltip, useTimedToast } from 'xedonium'
 
 export default function Demo() {
 	const { toast, showToast } = useTimedToast()
@@ -6,6 +6,9 @@ export default function Demo() {
 	return (
 		<div className="flex flex-wrap items-center gap-3">
 			<Button>Default</Button>
+			<ButtonLink href="#link" variant="secondary">
+				Link
+			</ButtonLink>
 			<Button variant="secondary">Secondary</Button>
 			<Button variant="success">Success</Button>
 			<Button variant="danger">Danger</Button>

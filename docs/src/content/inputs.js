@@ -16,6 +16,18 @@ export default {
 			],
 		},
 		{
+			slug: 'button-link',
+			name: 'ButtonLink',
+			blocks: [
+				{
+					md: 'A link styled like `Button`, with the same variants. `disabled` sets `aria-disabled` and blocks navigation. `linkComponent` / `linkProp` swap in a router link.',
+				},
+				{
+					example: 1,
+				},
+			],
+		},
+		{
 			slug: 'field',
 			name: 'Field',
 			blocks: [
@@ -40,11 +52,59 @@ export default {
 			],
 		},
 		{
+			slug: 'passwordinput',
+			name: 'PasswordInput',
+			blocks: [
+				{
+					md: 'Labelled password field with a show / hide toggle. `onChange` receives the value string. `autoComplete` defaults to `current-password`; use `new-password` on sign-up forms.',
+				},
+				{
+					example: 1,
+				},
+			],
+		},
+		{
+			slug: 'textarea',
+			name: 'TextArea',
+			blocks: [
+				{
+					md: 'Labelled multi-line input. `onChange` receives the value string. Set `maxLength` for a live character count, `error` for the invalid style and message.',
+				},
+				{
+					example: 1,
+				},
+			],
+		},
+		{
 			slug: 'select',
 			name: 'Select',
 			blocks: [
 				{
 					md: 'Themed select with a listbox panel that is never clipped by its container. `options: [{ value, label, disabled? }]`, optional `placeholder` and `error`. Keyboard: Up / Down / Home / End move, Enter or Space picks, Escape closes, and typing jumps to a match.',
+				},
+				{
+					example: 1,
+				},
+			],
+		},
+		{
+			slug: 'multiselect',
+			name: 'MultiSelect',
+			blocks: [
+				{
+					md: 'Select for several values. `value` is an array and `onChange` receives the new array; chosen options show as chips that can be removed one by one, and `clearable` (on by default) adds a clear-all button. Add `searchable` to filter the options by typing; Backspace in the empty input removes the last chip. The list stays open while picking. Same `options` shape as `Select`.',
+				},
+				{
+					example: 1,
+				},
+			],
+		},
+		{
+			slug: 'searchselect',
+			name: 'SearchSelect',
+			blocks: [
+				{
+					md: 'Select with a search box that filters the options as you type. Pass `filter` to customise matching, or `onSearch` plus `filter={() => true}` to load options from a server.',
 				},
 				{
 					example: 1,
