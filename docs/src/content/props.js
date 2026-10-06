@@ -514,6 +514,51 @@ const props = {
 	},
 
 	// Data display
+	badge: {
+		Badge: [
+			['badgeContent', 'ReactNode', '', 'Number or text shown in the badge.'],
+			['color', "'default' | 'secondary' | 'success' | 'danger' | 'warning' | 'info'", "'default'", 'Badge color.'],
+			['size', "'sm' | 'md'", "'md'", 'Size of a content badge.'],
+			['variant', "'standard' | 'dot'", "'standard'", 'A content badge or a plain dot.'],
+			['max', 'number', '99', 'Numbers above this show as "<max>+".'],
+			['showZero', 'boolean', 'false', 'Show the badge when `badgeContent` is 0.'],
+			[
+				'invisible',
+				'boolean',
+				'',
+				'Force the badge hidden (or shown); by default it hides when there is nothing to show.',
+			],
+			[
+				'overlap',
+				"'rectangular' | 'circular'",
+				"'rectangular'",
+				'Use `circular` so the badge sits on the edge of a round child.',
+			],
+			[
+				'anchorOrigin',
+				"{ vertical: 'top' | 'bottom', horizontal: 'left' | 'right' }",
+				"{ vertical: 'top', horizontal: 'right' }",
+				'Which corner the badge sits on.',
+			],
+			className,
+			children,
+			rest,
+		],
+	},
+	chip: {
+		Chip: [
+			['selected', 'boolean', '', 'Filled style; also sets aria-pressed when `onClick` is given.'],
+			['onClick', '(event) => void', '', 'Makes the chip a toggle button.'],
+			['onRemove', '(event) => void', '', 'Adds a remove button.'],
+			['removeLabel', 'string', '', 'Accessible name of the remove button (default "Remove <text>").'],
+			['leading', 'ReactNode', '', 'Icon or avatar shown before the text.'],
+			['size', "'sm' | 'md'", "'md'", 'Chip size.'],
+			['disabled', 'boolean', 'false', 'Disable the chip and its buttons.'],
+			className,
+			children,
+			rest,
+		],
+	},
 	accordion: {
 		Accordion: [
 			['items', '{ key, title, content, disabled? }[]', '', 'Sections.'],

@@ -1,5 +1,6 @@
 import { useId, useRef, useState } from 'react'
 import useDismissable from '../hooks/useDismissable'
+import Badge from './Badge'
 import Button from './Button'
 import FloatingPanel from './FloatingPanel'
 
@@ -7,7 +8,7 @@ const BellIcon = () => (
 	<svg
 		aria-hidden="true"
 		focusable="false"
-		className="h-4 w-4"
+		className="h-5 w-5"
 		viewBox="0 0 24 24"
 		fill="none"
 		stroke="currentColor"
@@ -56,17 +57,9 @@ const NotificationCenter = ({
 				aria-controls={open ? panelId : undefined}
 				onClick={() => setOpen(o => !o)}
 			>
-				<span className="relative inline-flex">
+				<Badge badgeContent={unread} max={9} color="danger" size="sm">
 					<BellIcon />
-					{unread > 0 && (
-						<span
-							aria-hidden="true"
-							className="absolute -right-2 -top-2 min-w-[1rem] bg-red-500 px-1 text-center text-[10px] font-bold leading-4 text-white"
-						>
-							{unread > 9 ? '9+' : unread}
-						</span>
-					)}
-				</span>
+				</Badge>
 			</Button>
 			<FloatingPanel
 				open={open}

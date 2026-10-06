@@ -1,8 +1,10 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { useState } from 'react'
 import Accordion from '../../src/components/Accordion'
+import Badge from '../../src/components/Badge'
 import Button from '../../src/components/Button'
 import ButtonLink from '../../src/components/ButtonLink'
+import Chip from '../../src/components/Chip'
 import CodeDisplay from '../../src/components/CodeDisplay'
 import MultiSelect from '../../src/components/MultiSelect'
 import PasswordInput from '../../src/components/PasswordInput'
@@ -433,5 +435,174 @@ describe('PasswordInput', () => {
 		expect(screen.getByRole('button')).toBeDisabled()
 		rerender(<PasswordInput aria-label="pw" value="" />)
 		fireEvent.change(screen.getByLabelText('pw'), { target: { value: 'z' } })
+	})
+})
+
+describe('Badge', () => {
+	const indicator = container => container.querySelector('[data-hidden]')
+
+	it('shows content over children and caps large numbers', () => {
+		const { container, rerender } = render(
+			<Badge badgeContent={4}>
+				<i>icon</i>
+			</Badge>
+		)
+		expect(screen.getByText('4')).toBeInTheDocument()
+		expect(indicator(container)).toHaveAttribute('data-hidden', 'false')
+		rerender(
+			<Badge badgeContent={120}>
+				<i>icon</i>
+			</Badge>
+		)
+		expect(screen.getByText('99+')).toBeInTheDocument()
+		rerender(
+			<Badge badgeContent={120} max={999}>
+				<i>icon</i>
+			</Badge>
+		)
+		expect(screen.getByText('120')).toBeInTheDocument()
+		rerender(
+			<Badge badgeContent="new">
+				<i>icon</i>
+			</Badge>
+		)
+		expect(screen.getByText('new')).toBeInTheDocument()
+	})
+
+	it('hides when empty or zero unless showZero, and honours invisible', () => {
+		const { container, rerender } = render(
+			<Badge badgeContent={0}>
+				<i>icon</i>
+			</Badge>
+		)
+		expect(indicator(container)).toHaveAttribute('data-hidden', 'true')
+		rerender(
+			<Badge badgeContent={0} showZero>
+				<i>icon</i>
+			</Badge>
+		)
+		expect(indicator(container)).toHaveAttribute('data-hidden', 'false')
+		rerender(
+			<Badge>
+				<i>icon</i>
+			</Badge>
+		)
+		expect(indicator(container)).toHaveAttribute('data-hidden', 'true')
+		rerender(
+			<Badge badgeContent={3} invisible>
+				<i>icon</i>
+			</Badge>
+		)
+		expect(indicator(container)).toHaveAttribute('data-hidden', 'true')
+		rerender(
+			<Badge variant="dot" invisible={false}>
+				<i>icon</i>
+			</Badge>
+		)
+		expect(indicator(container)).toHaveAttribute('data-hidden', 'false')
+	})
+
+	it('supports colors, dots, corners and circular overlap', () => {
+		const { container, rerender } = render(
+			<Badge variant="dot">
+				<i>icon</i>
+			</Badge>
+		)
+		expect(indicator(container)).toHaveClass('h-2')
+		rerender(
+			<Badge badgeContent={1} size="sm">
+				<i>icon</i>
+			</Badge>
+		)
+		expect(indicator(container)).toHaveClass('h-4')
+		for (const color of ['secondary', 'success', 'danger', 'warning', 'info']) {
+			rerender(
+				<Badge badgeContent={1} color={color}>
+					<i>icon</i>
+				</Badge>
+			)
+		}
+		rerender(
+			<Badge
+				badgeContent={1}
+				anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+				overlap="circular"
+				className="x"
+			>
+				<i>icon</i>
+			</Badge>
+		)
+		expect(indicator(container).style.left).toBe('14%')
+		expect(indicator(container).style.bottom).toBe('14%')
+	})
+
+	it('renders on its own without children', () => {
+		const { container, rerender } = render(<Badge badgeContent={2} />)
+		expect(screen.getByText('2')).toBeInTheDocument()
+		expect(indicator(container)).not.toHaveClass('absolute')
+		rerender(<Badge badgeContent={0} />)
+		expect(indicator(container)).toHaveClass('hidden')
+	})
+})
+
+describe('Chip', () => {
+	it('renders static text with a leading element', () => {
+		render(
+			<Chip leading={<i data-testid="lead" />} size="sm" className="x">
+				Tag
+			</Chip>
+		)
+		expect(screen.getByText('Tag')).toBeInTheDocument()
+		expect(screen.getByTestId('lead')).toBeInTheDocument()
+		expect(screen.queryByRole('button')).toBeNull()
+	})
+
+	it('toggles as a button with pressed state', () => {
+		const onClick = vi.fn()
+		const { rerender } = render(<Chip onClick={onClick}>Open</Chip>)
+		const button = screen.getByRole('button', { name: 'Open' })
+		expect(button).not.toHaveAttribute('aria-pressed')
+		fireEvent.click(button)
+		expect(onClick).toHaveBeenCalledTimes(1)
+		rerender(
+			<Chip onClick={onClick} selected>
+				Open
+			</Chip>
+		)
+		expect(screen.getByRole('button', { name: 'Open' })).toHaveAttribute('aria-pressed', 'true')
+		rerender(
+			<Chip onClick={onClick} selected={false}>
+				Open
+			</Chip>
+		)
+		expect(screen.getByRole('button', { name: 'Open' })).toHaveAttribute('aria-pressed', 'false')
+	})
+
+	it('removes with a labelled button', () => {
+		const onRemove = vi.fn()
+		const { rerender } = render(<Chip onRemove={onRemove}>react</Chip>)
+		fireEvent.click(screen.getByRole('button', { name: 'Remove react' }))
+		expect(onRemove).toHaveBeenCalledTimes(1)
+		rerender(
+			<Chip onRemove={onRemove}>
+				<b>node</b>
+			</Chip>
+		)
+		expect(screen.getByRole('button', { name: 'Remove' })).toBeInTheDocument()
+		rerender(
+			<Chip onRemove={onRemove} removeLabel="Delete tag">
+				x
+			</Chip>
+		)
+		expect(screen.getByRole('button', { name: 'Delete tag' })).toBeInTheDocument()
+	})
+
+	it('disables its buttons', () => {
+		render(
+			<Chip onClick={() => {}} onRemove={() => {}} disabled>
+				Off
+			</Chip>
+		)
+		for (const button of screen.getAllByRole('button')) expect(button).toBeDisabled()
 	})
 })

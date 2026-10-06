@@ -10,7 +10,7 @@ const Home = () => {
 			<section className="flex flex-col items-center gap-4 py-6 text-center">
 				<RackServer />
 				<h1 className="m-0 text-3xl font-bold tracking-tight text-app-text sm:text-4xl">Xedonium</h1>
-				<VersionBadge className="text-lg"/>
+				<VersionBadge className="text-lg" />
 				<p className="m-0 max-w-xl text-base text-app-text">
 					Minimal, theme-aware React and Tailwind components. Square corners, semantic <code>app-*</code> color tokens,
 					light and dark through <code>&lt;html data-theme&gt;</code>, and no runtime dependencies.

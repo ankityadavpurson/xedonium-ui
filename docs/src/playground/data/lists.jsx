@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Accordion, Avatar, CodeDisplay, List, SortableList, Tree, VirtualList } from 'xedonium'
+import { Accordion, Avatar, Badge, Chip, CodeDisplay, List, SortableList, Tree, VirtualList } from 'xedonium'
 
 export default function Demo() {
 	const [order, setOrder] = useState([1, 2, 3, 4].map(n => ({ key: n, label: `Item ${n}` })))
@@ -54,6 +54,18 @@ export default function Demo() {
 						{ key: 'pkg', label: 'package.json' },
 					]}
 				/>
+			</div>
+			<div className="flex w-72 flex-wrap items-start gap-2">
+				<Badge badgeContent={4}>
+					<Chip>Inbox</Chip>
+				</Badge>
+				<Badge variant="dot" color="success">
+					<Chip>Online</Chip>
+				</Badge>
+				<Chip selected onClick={() => {}}>
+					Selected
+				</Chip>
+				<Chip onRemove={() => {}}>Removable</Chip>
 			</div>
 			<div className="w-72">
 				<Accordion
