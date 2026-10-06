@@ -585,10 +585,16 @@ const props = {
 	// Media
 	avatar: {
 		Avatar: [
-			['src', 'string', '', 'Image URL; initials are shown if it is missing or fails.'],
-			['name', 'string', '', 'Person’s name (initials and accessible name).'],
+			['src', 'string', '', 'Image URL; shown if it loads, otherwise children or initials are.'],
+			['alt', 'string', "''", 'Alt text of the image. Leave empty when name already says who it is.'],
+			['name', 'string', '', 'Person’s name (initials and accessible name, also for the link).'],
 			['size', "'sm' | 'md' | 'lg'", "'md'", 'Size.'],
+			['href', 'string', '', 'Makes the avatar a link to this URL.'],
+			['linkComponent', 'ElementType', "'a'", 'Component used for the link, e.g. a router Link.'],
+			['linkProp', 'string', "'href'", 'Name of the destination prop on linkComponent (e.g. "to" for react-router).'],
+			['children', 'ReactNode', '', 'Custom content (icon, <img>) shown instead of the initials.'],
 			className,
+			rest,
 		],
 	},
 	carousel: {

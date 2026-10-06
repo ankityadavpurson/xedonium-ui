@@ -8,10 +8,16 @@ export default {
 			name: 'Avatar',
 			blocks: [
 				{
-					md: 'Shows the image if it loads, otherwise initials. `size`: `sm`, `md`, `lg`.',
+					md: 'Shows the image at `src` (any image URL) if it loads, otherwise initials from `name`. `size`: `sm`, `md`, `lg`.',
 				},
 				{
 					example: 1,
+				},
+				{
+					md: '**Images, custom content and links.** Pass `children` (an icon or your own `<img>`) to show it instead of the initials, and `href` to make the avatar a link to a profile or page. `target`, `rel` and `onClick` go to the link, and `linkComponent` / `linkProp` swap in a router link like `AppBar`. The order is: image, then `children`, then initials. `name` is the accessible name, for the link too.',
+				},
+				{
+					example: 2,
 				},
 			],
 		},
