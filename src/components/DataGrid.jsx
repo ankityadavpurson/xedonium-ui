@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import Checkbox from './Checkbox'
 import Input from './Input'
 import Pagination from './Pagination'
+import SortIcon from './icons/Sort'
 
 const ALIGN = { left: 'text-left', center: 'text-center', right: 'text-right' }
 
@@ -15,6 +16,8 @@ const compare = (a, b) => {
 /**
  * Table with client-side sorting, search, pagination and row selection.
  * columns: [{ key, header, sortable?, render?(row), align?, accessor?(row) }] (`accessor` supplies the sort / search value).
+ * `pageSize` is the rows per page; add `pageSizeOptions` (e.g. [10, 25, 50]) to let the user change it, starting from
+ * `pageSize` (`onPageSizeChange(size)` is called on each change).
  * Selection is controlled with `selected` (array of row keys) + `onSelectionChange`, or uncontrolled with `selectable`.
  */
 const DataGrid = ({
@@ -22,6 +25,8 @@ const DataGrid = ({
 	rows,
 	rowKey = 'id',
 	pageSize = 10,
+	pageSizeOptions,
+	onPageSizeChange,
 	searchable = false,
 	selectable = false,
 	selected,
@@ -33,6 +38,8 @@ const DataGrid = ({
 	const [sort, setSort] = useState(null) // { key, dir }
 	const [query, setQuery] = useState('')
 	const [page, setPage] = useState(1)
+	const [chosenSize, setChosenSize] = useState(null)
+	const size = pageSizeOptions ? (chosenSize ?? pageSize) : pageSize
 	const [innerSelected, setInnerSelected] = useState([])
 	const selection = selected ?? innerSelected
 
@@ -58,9 +65,9 @@ const DataGrid = ({
 		return result
 	}, [rows, columns, query, sort])
 
-	const pageCount = Math.max(1, Math.ceil(processed.length / pageSize))
+	const pageCount = Math.max(1, Math.ceil(processed.length / size))
 	const currentPage = Math.min(page, pageCount)
-	const visible = processed.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+	const visible = processed.slice((currentPage - 1) * size, currentPage * size)
 
 	const setSelection = next => {
 		if (selected === undefined) setInnerSelected(next)
@@ -136,7 +143,7 @@ const DataGrid = ({
 												className="-my-2 inline-flex min-h-8 items-center gap-1 uppercase tracking-widest transition hover:text-app-text"
 											>
 												{column.header}
-												<span aria-hidden="true">{active ? (sort.dir === 'asc' ? '↑' : '↓') : '↕'}</span>
+												<SortIcon direction={active ? sort.dir : undefined} />
 											</button>
 										) : (
 											column.header
@@ -189,7 +196,20 @@ const DataGrid = ({
 					{processed.length} {processed.length === 1 ? 'row' : 'rows'}
 					{selectable && selection.length > 0 ? `, ${selection.length} selected` : ''}
 				</span>
-				{pageCount > 1 && <Pagination page={currentPage} pageCount={pageCount} onChange={setPage} />}
+				{(pageCount > 1 || pageSizeOptions) && (
+					<Pagination
+						page={currentPage}
+						pageCount={pageCount}
+						onChange={setPage}
+						pageSize={size}
+						pageSizeOptions={pageSizeOptions}
+						onPageSizeChange={next => {
+							setChosenSize(next)
+							setPage(1)
+							onPageSizeChange?.(next)
+						}}
+					/>
+				)}
 			</div>
 		</div>
 	)

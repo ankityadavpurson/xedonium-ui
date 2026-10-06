@@ -30,7 +30,8 @@ const provider = `import { ThemeProvider, AppBar, PageLayout, Button } from 'xed
 const NEXT = [
 	['Browse components', 'Layout, inputs, navigation, charts and more, each with live examples.', '/components/layout'],
 	['Theme and tokens', 'Light and dark mode, the app-* colors and overlay z-index tokens.', '/foundations/theme'],
-	['Hooks', 'Toasts, shortcuts, focus handling and theme helpers.', '/hooks'],
+	['Hooks', 'Toasts, shortcuts, focus handling and dismissing.', '/hooks'],
+	['Theme', 'ThemeProvider, useTheme, ThemeToggle and favicon helpers.', '/theme'],
 	['Playground', 'Every component on one screen, to check light and dark.', '/playground'],
 	[
 		'Source on GitHub',

@@ -44,7 +44,7 @@ export default {
 			name: 'Pagination',
 			blocks: [
 				{
-					md: '`page` is 1-based; `onChange` receives the new page.',
+					md: '`page` is 1-based; `onChange` receives the new page. Add `pageSizeOptions`, `pageSize` and `onPageSizeChange` for a "Per page" select. Changing the size is up to you: usually go back to page 1 and recompute `pageCount`.',
 				},
 				{
 					example: 1,

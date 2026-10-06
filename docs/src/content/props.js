@@ -104,7 +104,7 @@ const props = {
 	// Inputs
 	button: {
 		Button: [
-			['variant', "'default' | 'secondary' | 'success' | 'danger' | 'warning'", "'default'", 'Visual style.'],
+			['variant', "'default' | 'secondary' | 'flat' | 'success' | 'danger' | 'warning'", "'default'", 'Visual style.'],
 			['tooltip', 'string', '', 'Shows a styled Tooltip (use instead of the native `title`).'],
 			['tooltipPlacement', 'string', "'bottom'", 'Tooltip placement (see Tooltip).'],
 			['onClick', '(event) => void', '', 'Click handler.'],
@@ -120,7 +120,7 @@ const props = {
 			['href', 'string', '', 'Link destination.'],
 			[
 				'variant',
-				"'default' | 'secondary' | 'success' | 'danger' | 'warning'",
+				"'default' | 'secondary' | 'flat' | 'success' | 'danger' | 'warning'",
 				"'default'",
 				'Visual style (same as Button).',
 			],
@@ -336,6 +336,15 @@ const props = {
 			['pageCount', 'number', '', 'Total number of pages.'],
 			['onChange', '(page: number) => void', '', 'Called with the new page.'],
 			['siblings', 'number', '1', 'Page numbers shown each side of the current page.'],
+			['pageSize', 'number', '', 'Current items per page (shown in the per-page select).'],
+			[
+				'pageSizeOptions',
+				'number[]',
+				'',
+				'Choices for the per-page select; the select shows only with `onPageSizeChange` too.',
+			],
+			['onPageSizeChange', '(size: number) => void', '', 'Called with the chosen page size.'],
+			['pageSizeLabel', 'string', "'Per page'", 'Label of the per-page select.'],
 			className,
 		],
 	},
@@ -505,10 +514,17 @@ const props = {
 	toast: {
 		Toast: [
 			[
-				'toast',
-				'{ msg, type?, link? } | null',
+				'toasts',
+				'{ id, msg, type?, link?, actions?, icon? }[]',
 				'',
-				'The current toast from `useTimedToast`; `type` is "error" for red.',
+				'Toasts to stack, from `useTimedToast`. `type` is "success" (default), "danger" (or "error"), "warning" or "info"; `actions` is `{ label, onClick }[]`.',
+			],
+			['toast', '{ msg, type?, ... } | null', '', 'A single toast, when you do not need a stack.'],
+			[
+				'onClose',
+				'(id) => void',
+				'',
+				'Adds a dismiss button to each toast, and dismisses it after an action is used (pass `hideToast`).',
 			],
 		],
 	},
@@ -517,7 +533,12 @@ const props = {
 	badge: {
 		Badge: [
 			['badgeContent', 'ReactNode', '', 'Number or text shown in the badge.'],
-			['color', "'default' | 'secondary' | 'success' | 'danger' | 'warning' | 'info'", "'default'", 'Badge color.'],
+			[
+				'color',
+				"'default' | 'secondary' | 'flat' | 'success' | 'danger' | 'warning' | 'info'",
+				"'default'",
+				'Badge color.',
+			],
 			['size', "'sm' | 'md'", "'md'", 'Size of a content badge.'],
 			['variant', "'standard' | 'dot'", "'standard'", 'A content badge or a plain dot.'],
 			['max', 'number', '99', 'Numbers above this show as "<max>+".'],
@@ -578,6 +599,18 @@ const props = {
 			['copyable', 'boolean', 'true', 'Show a copy button.'],
 			['wrap', 'boolean', 'false', 'Wrap long lines instead of scrolling.'],
 			['maxHeight', 'number | string', '', 'Maximum height before the block scrolls.'],
+			[
+				'highlight',
+				'boolean',
+				'true',
+				'Color the code by syntax. Colors apply for js, jsx, ts, tsx, json, bash and sh.',
+			],
+			[
+				'colors',
+				'{ comment?, string?, keyword?, tag?, attr?, number?, fn?, text?, background? }',
+				'',
+				'Override the theme-aware default colors with any CSS colors.',
+			],
 			className,
 		],
 	},
@@ -612,7 +645,9 @@ const props = {
 			],
 			['rows', 'object[]', '', 'Row data.'],
 			['rowKey', 'string', "'id'", 'Field holding each row’s unique key.'],
-			['pageSize', 'number', '10', 'Rows per page.'],
+			['pageSize', 'number', '10', 'Rows per page (the starting size when `pageSizeOptions` is set).'],
+			['pageSizeOptions', 'number[]', '', 'Adds a "Per page" select with these sizes.'],
+			['onPageSizeChange', '(size: number) => void', '', 'Called when the user picks a page size.'],
 			['searchable', 'boolean', 'false', 'Show a search box.'],
 			['selectable', 'boolean', 'false', 'Show row checkboxes.'],
 			['selected', 'Array', '', 'Selected row keys (controlled).'],
@@ -631,6 +666,12 @@ const props = {
 			['expanded', 'string[]', '', 'Expanded keys (controlled).'],
 			['onExpandedChange', '(keys) => void', '', 'Called when expansion changes.'],
 			['label', 'string', "'Tree'", 'Accessible name.'],
+			[
+				'renderLabel',
+				'(node, depth) => ReactNode',
+				'',
+				'Custom row content, e.g. a link or different styling per level.',
+			],
 			className,
 		],
 	},
@@ -744,6 +785,7 @@ const props = {
 			['alt', 'string', "''", 'Alt text of the image. Leave empty when name already says who it is.'],
 			['name', 'string', '', 'Person’s name (initials and accessible name, also for the link).'],
 			['size', "'sm' | 'md' | 'lg'", "'md'", 'Size.'],
+			['shape', "'circle' | 'rounded' | 'square'", "'circle'", 'Outline of the avatar.'],
 			['href', 'string', '', 'Makes the avatar a link to this URL.'],
 			['linkComponent', 'ElementType', "'a'", 'Component used for the link, e.g. a router Link.'],
 			['linkProp', 'string', "'href'", 'Name of the destination prop on linkComponent (e.g. "to" for react-router).'],

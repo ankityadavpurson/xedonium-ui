@@ -8,7 +8,7 @@ export default {
 			name: 'Avatar',
 			blocks: [
 				{
-					md: 'Shows the image at `src` (any image URL) if it loads, otherwise initials from `name`. `size`: `sm`, `md`, `lg`.',
+					md: 'Shows the image at `src` (any image URL) if it loads, otherwise initials from `name`. `size`: `sm`, `md`, `lg`. `shape`: `circle` (default), `rounded`, `square`.',
 				},
 				{
 					example: 1,

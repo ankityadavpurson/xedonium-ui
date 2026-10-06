@@ -232,6 +232,19 @@ describe('Alert', () => {
 	})
 })
 
+describe('Avatar shape', () => {
+	it('applies the shape to the avatar and its link', () => {
+		const { container, rerender } = render(<Avatar name="Ada" />)
+		expect(container.firstChild).toHaveClass('rounded-full')
+		rerender(<Avatar name="Ada" shape="rounded" />)
+		expect(container.firstChild).toHaveClass('rounded-lg')
+		rerender(<Avatar name="Ada" shape="square" />)
+		expect(container.firstChild).not.toHaveClass('rounded-full', 'rounded-lg')
+		rerender(<Avatar name="Ada" shape="rounded" href="/a" />)
+		expect(screen.getByRole('link')).toHaveClass('rounded-lg')
+	})
+})
+
 describe('Avatar', () => {
 	it('shows initials, falls back on image error, and handles missing names', () => {
 		const { rerender, container } = render(<Avatar name="ada lovelace byron" />)
@@ -469,8 +482,67 @@ describe('Toast', () => {
 		const { rerender } = render(<Toast toast={{ msg: 'Saved', type: 'success' }} />)
 		expect(screen.getByText('Saved')).toBeInTheDocument()
 		rerender(<Toast toast={{ msg: 'Bad', type: 'error', link: { href: '/log', label: 'View' } }} />)
-		expect(screen.getByText('Bad')).toHaveClass('bg-red-700')
+		expect(screen.getByText('Bad').closest('.bg-red-700')).toBeInTheDocument()
 		expect(screen.getByText('View')).toHaveAttribute('href', '/log')
+	})
+})
+
+describe('Toast stacking', () => {
+	it('renders every toast and closes one by id', () => {
+		const onClose = vi.fn()
+		render(
+			<Toast
+				toasts={[
+					{ id: 1, msg: 'First' },
+					{ id: 2, msg: 'Second', type: 'info' },
+				]}
+				onClose={onClose}
+			/>
+		)
+		expect(screen.getByText('First')).toBeInTheDocument()
+		expect(screen.getByText('Second')).toBeInTheDocument()
+		fireEvent.click(screen.getAllByRole('button', { name: 'Dismiss' })[1])
+		expect(onClose).toHaveBeenCalledWith(2)
+	})
+
+	it('renders no toast for an empty array', () => {
+		render(<Toast toasts={[]} />)
+		expect(screen.getByRole('status')).toBeEmptyDOMElement()
+	})
+})
+
+describe('Toast variants and actions', () => {
+	it('styles each type and falls back to success', () => {
+		const { rerender, container } = render(<Toast toast={{ msg: 'x', type: 'warning' }} />)
+		expect(container.querySelector('.bg-amber-400')).toBeInTheDocument()
+		rerender(<Toast toast={{ msg: 'x', type: 'info' }} />)
+		expect(container.querySelector('.bg-sky-700')).toBeInTheDocument()
+		rerender(<Toast toast={{ msg: 'x', type: 'danger' }} />)
+		expect(container.querySelector('.bg-red-700')).toBeInTheDocument()
+		rerender(<Toast toast={{ msg: 'x', type: 'nope' }} />)
+		expect(container.querySelector('.bg-emerald-700')).toBeInTheDocument()
+		rerender(<Toast toast={{ msg: 'x', icon: <i data-testid="custom" /> }} />)
+		expect(screen.getByTestId('custom')).toBeInTheDocument()
+	})
+
+	it('runs actions, then closes, and has a dismiss button', () => {
+		const onClose = vi.fn()
+		const undo = vi.fn()
+		const { rerender } = render(
+			<Toast
+				toast={{ msg: 'Deleted', actions: [{ label: 'Undo', onClick: undo }, { label: 'Skip' }] }}
+				onClose={onClose}
+			/>
+		)
+		fireEvent.click(screen.getByRole('button', { name: 'Undo' }))
+		expect(undo).toHaveBeenCalledTimes(1)
+		expect(onClose).toHaveBeenCalledTimes(1)
+		fireEvent.click(screen.getByRole('button', { name: 'Skip' }))
+		fireEvent.click(screen.getByRole('button', { name: 'Dismiss' }))
+		expect(onClose).toHaveBeenCalledTimes(3)
+		rerender(<Toast toast={{ msg: 'Deleted', actions: [{ label: 'Undo' }] }} />)
+		fireEvent.click(screen.getByRole('button', { name: 'Undo' }))
+		expect(screen.queryByRole('button', { name: 'Dismiss' })).toBeNull()
 	})
 })
 

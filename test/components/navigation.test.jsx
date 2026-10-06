@@ -60,6 +60,32 @@ describe('Tabs', () => {
 	})
 })
 
+describe('Pagination per page', () => {
+	it('renders a per-page select and reports the chosen size as a number', () => {
+		const onPageSizeChange = vi.fn()
+		render(
+			<Pagination
+				page={1}
+				pageCount={5}
+				onChange={() => {}}
+				pageSize={10}
+				pageSizeOptions={[10, 25]}
+				onPageSizeChange={onPageSizeChange}
+			/>
+		)
+		const select = screen.getByRole('combobox', { name: /per page/i })
+		expect(select).toHaveTextContent('10')
+		fireEvent.click(select)
+		fireEvent.click(screen.getByRole('option', { name: '25' }))
+		expect(onPageSizeChange).toHaveBeenCalledWith(25)
+	})
+
+	it('hides the select without a handler', () => {
+		render(<Pagination page={1} pageCount={5} onChange={() => {}} pageSize={10} pageSizeOptions={[10, 25]} />)
+		expect(screen.queryByRole('combobox')).toBeNull()
+	})
+})
+
 describe('Pagination', () => {
 	it('shows gaps and disables the edge buttons', () => {
 		const onChange = vi.fn()
@@ -132,6 +158,17 @@ describe('Sidebar', () => {
 		render(<Sidebar items={[{ key: 'x', label: 'X', href: '/x' }]} linkComponent={Custom} linkProp="to" />)
 		fireEvent.click(screen.getByText('X'))
 		expect(screen.getByText('X').closest('a')).toHaveAttribute('data-custom')
+	})
+})
+
+describe('Tree renderLabel', () => {
+	it('renders custom labels with the depth of each node', () => {
+		const nodes = [{ key: 'a', label: 'Alpha', children: [{ key: 'a1', label: 'Child' }] }]
+		render(
+			<Tree nodes={nodes} defaultExpanded={['a']} renderLabel={(node, depth) => <b>{`${depth}:${node.label}`}</b>} />
+		)
+		expect(screen.getByText('0:Alpha')).toBeInTheDocument()
+		expect(screen.getByText('1:Child')).toBeInTheDocument()
 	})
 })
 

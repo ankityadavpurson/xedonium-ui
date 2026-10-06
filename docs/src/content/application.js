@@ -53,7 +53,7 @@ export default {
 			name: 'CommandPalette',
 			blocks: [
 				{
-					md: 'Open it from a shortcut with [`useKeyboardShortcuts`](/hooks). Arrow keys move, Enter runs, Escape closes.',
+					md: 'Open it from a shortcut with [`useKeyboardShortcuts`](/hooks/usekeyboardshortcuts). Arrow keys move, Enter runs, Escape closes.',
 				},
 				{
 					example: 1,

@@ -94,6 +94,7 @@ export { default as PencilIcon } from './components/icons/Pencil'
 export { default as RefreshIcon } from './components/icons/Refresh'
 export { default as SettingsIcon } from './components/icons/Settings'
 export { default as ShieldIcon } from './components/icons/Shield'
+export { default as SortIcon } from './components/icons/Sort'
 
 export { default as useDialogFocus } from './hooks/useDialogFocus'
 export { default as useDocumentTitle } from './hooks/useDocumentTitle'

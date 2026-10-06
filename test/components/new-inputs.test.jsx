@@ -132,6 +132,45 @@ describe('CodeDisplay', () => {
 		expect(document.querySelector('figcaption')).toBeNull()
 	})
 
+	it('colors code by language and leaves other languages plain', () => {
+		const { container, rerender } = render(<CodeDisplay code={"const a = 'x' // hi\n<Button />"} language="jsx" />)
+		const tokens = [...container.querySelectorAll('code span[style]')].map(s => s.getAttribute('style'))
+		expect(tokens).toEqual(
+			expect.arrayContaining([
+				'color: var(--xd-tok-keyword);',
+				'color: var(--xd-tok-string);',
+				'color: var(--xd-tok-comment);',
+				'color: var(--xd-tok-tag);',
+			])
+		)
+		expect(container.querySelector('.italic')).toHaveTextContent('// hi')
+		rerender(<CodeDisplay code="const a = 1" language="plain" />)
+		expect(container.querySelectorAll('code span[style]')).toHaveLength(0)
+		rerender(<CodeDisplay code="const a = 1" language="js" highlight={false} />)
+		expect(container.querySelectorAll('code span[style]')).toHaveLength(0)
+	})
+
+	it('highlights shell commands and multi-line comments across lines', () => {
+		const { container, rerender } = render(<CodeDisplay code="yarn add xedonium # now" language="bash" />)
+		expect(container.querySelectorAll('code span[style]').length).toBeGreaterThan(1)
+		rerender(<CodeDisplay code={'/* a\nb */\nlet x'} language="js" />)
+		expect(container.querySelectorAll('.italic')).toHaveLength(2)
+	})
+
+	it('lets colors override the palette, text and background', () => {
+		const { container } = render(
+			<CodeDisplay
+				code="const a = 1"
+				language="js"
+				colors={{ keyword: 'hotpink', text: 'white', background: 'black' }}
+			/>
+		)
+		const pre = container.querySelector('pre')
+		expect(pre.style.getPropertyValue('--xd-tok-keyword')).toBe('hotpink')
+		expect(pre.style.color).toBe('white')
+		expect(container.querySelector('figure').style.background).toBe('black')
+	})
+
 	it('copies to the clipboard and resets the label', async () => {
 		vi.useFakeTimers()
 		const writeText = vi.fn().mockResolvedValue()

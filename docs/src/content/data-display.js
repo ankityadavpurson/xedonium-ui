@@ -20,10 +20,13 @@ export default {
 			name: 'CodeDisplay',
 			blocks: [
 				{
-					md: 'Read-only code block with a copy button. Optional `title`, `language` caption, `lineNumbers`, `wrap` and `maxHeight`. No syntax highlighting is applied.',
+					md: 'Read-only code block with a copy button. Optional `title`, `language` caption, `lineNumbers`, `wrap` and `maxHeight`. Code is colored by `language` (`js`, `jsx`, `ts`, `tsx`, `json`, `bash`, `sh`) with a palette that follows the light / dark theme; turn it off with `highlight={false}` or override any color with `colors`.',
 				},
 				{
 					example: 1,
+				},
+				{
+					example: 2,
 				},
 			],
 		},
