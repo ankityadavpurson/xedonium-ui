@@ -1,9 +1,17 @@
-# xedonium
+<div style="text-align: center;">
 
-<picture>
-	<source media="(prefers-color-scheme: dark)" srcset="docs/public/social-preview-dark.png" />
-	<img src="docs/public/social-preview.png" alt="Xedonium: minimal, theme-aware React UI" width="640" />
-</picture>
+<div style="display: flex; align-items: center; justify-content: center; width: 100%;">
+	<img src="docs/public/favicon.svg" alt="xedonium" width="54" />
+	<span style="margin-left:12px; font-size: 44px; font-weight: 700;">Xedonium</span>
+</div>
+<h3>Minimal, theme-aware React UI</h3>
+
+Forms, charts, overlays and 160+ icons with light and dark themes,</br>
+each one a separate module you can import on its own.
+
+[Live docs](https://ankityadavpurson.github.io/xedonium-ui/)
+
+</div>
 
 Minimal, theme-aware React + Tailwind UI components, extracted from Boot Bridge.
 Square corners, semantic `app-*` color tokens, light/dark via `<html data-theme>`.
@@ -69,7 +77,7 @@ import { ThemeProvider, useTheme } from 'xedonium/theme'
 - Forms: `Button`, `ButtonLink`, `Field`, `Input`, `PasswordInput`, `TextArea`, `Select`, `MultiSelect`, `SearchSelect`, `Checkbox`, `Radio`, `RadioGroup`, `Switch`, `Slider`, `DatePicker`, `DateRangePicker`, `TimePicker`, `FileUpload`
 - Data: `Accordion`, `Badge`, `Chip`, `CodeDisplay`, `Table`, `DataGrid`, `List`, `SortableList`, `VirtualList`, `Tree`, `Pagination`, `Calendar`, `Carousel`, `Timeline`, `Stepper`, `StatCard`, and charts (`LineChart`, `AreaChart`, `BarChart`, `PieChart`)
 - Feedback and overlays: `Alert`, `Toast`, `Tooltip`, `Modal`, `ConfirmDialog`, `Drawer`, `Popover`, `ActionMenu`, `CommandPalette`, `NotificationCenter`, `Progress`, `Skeleton`, `Loader`, `FanFavicon`, `LoadingScreen`, `RackServer`
-- Media and utilities: `Avatar`, `Image`, `Video`, `Sound`, `Portal`, `FocusTrap`, `ThemeToggle`, plus 150 icons (see the Icons page; each is also importable as `xedonium/icons/<Name>`)
+- Media and utilities: `Avatar`, `Image`, `Video`, `Sound`, `Portal`, `FocusTrap`, `ThemeToggle`, plus 170 outline icons (see the Icons page; each is also importable as `xedonium/icons/<Name>`)
 - Hooks: `useTimedToast`, `useEscapeKey`, `useDialogFocus`, `useDismissable`, `useFlipAlign`, `useKeyboardShortcuts`, `useLeaveWarning`, `useDocumentTitle(title, suffix)`.
 - Theme: `ThemeProvider`, `useTheme`, `useAppTheme`, `buildFaviconHref`.
 
