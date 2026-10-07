@@ -26,6 +26,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `Chip` accepts `tone` (`default` | `success` | `warning` | `danger` | `info`) and `filled`, so it works as a coloured
+  status pill (#35).
 - `AppBar` accepts `embedded`, which drops its own sticky `<header>` frame so it can sit inside `AppShell`'s `header`
   without a double border or nested banners (#28).
 - `AppShell` accepts `menuButtonVariant` and `menuButtonProps` (`className`, `aria-label`, ...) to customise the mobile

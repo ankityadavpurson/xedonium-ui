@@ -613,6 +613,25 @@ describe('Badge', () => {
 })
 
 describe('Chip', () => {
+	it('colours by tone, optionally filled, and selection wins over tone', () => {
+		const { rerender } = render(<Chip tone="success">Active</Chip>)
+		const chip = () => screen.getByText('Active').closest('span[class*="border"]')
+		expect(chip()).toHaveClass('text-emerald-800')
+		rerender(
+			<Chip tone="danger" filled>
+				Active
+			</Chip>
+		)
+		expect(chip()).toHaveClass('bg-red-600', 'text-white')
+		rerender(
+			<Chip tone="info" onClick={() => {}} selected>
+				Active
+			</Chip>
+		)
+		expect(chip()).toHaveClass('bg-app-strong')
+		expect(chip()).not.toHaveClass('bg-sky-500/10')
+	})
+
 	it('renders static text with a leading element', () => {
 		render(
 			<Chip leading={<i data-testid="lead" />} size="sm" className="x">
