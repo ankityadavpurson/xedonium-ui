@@ -14,12 +14,15 @@ const Chevron = ({ open }) => (
 	</svg>
 )
 
+// Space between items; with any gap each item gets its own border instead of sharing one
+const GAPS = { none: '', sm: 'gap-2', md: 'gap-4', lg: 'gap-6' }
+
 /**
  * Stacked, collapsible sections. items: [{ key, title, content, disabled? }]. `multiple` lets several stay open
  * (default: opening one closes the others). Controlled via `value` (array of open keys) + `onChange`, or uncontrolled
- * via `defaultValue`. Keyboard: Up / Down / Home / End move between headers.
+ * via `defaultValue`. `gap` (`none` default, `sm`, `md`, `lg`) separates the items into individual bordered cards. Keyboard: Up / Down / Home / End move between headers.
  */
-const Accordion = ({ items, value, defaultValue = [], onChange, multiple = false, className = '' }) => {
+const Accordion = ({ items, value, defaultValue = [], onChange, multiple = false, gap = 'none', className = '' }) => {
 	const baseId = useId()
 	const [inner, setInner] = useState(defaultValue)
 	const openKeys = value ?? inner
@@ -47,12 +50,15 @@ const Accordion = ({ items, value, defaultValue = [], onChange, multiple = false
 		headers.current[next.key]?.focus()
 	}
 
+	const spaced = gap !== 'none' && GAPS[gap] !== undefined
+	const frame = spaced ? `flex flex-col ${GAPS[gap]}` : 'divide-y divide-app-border border border-app-border'
+
 	return (
-		<div className={`divide-y divide-app-border border border-app-border ${className}`}>
+		<div className={`${frame} ${className}`}>
 			{items.map(item => {
 				const isOpen = openKeys.includes(item.key)
 				return (
-					<div key={item.key}>
+					<div key={item.key} className={spaced ? 'border border-app-border' : undefined}>
 						<h3 className="m-0">
 							<button
 								ref={el => (headers.current[item.key] = el)}

@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import Avatar from '../../src/components/Avatar'
 import Loader from '../../src/components/Loader'
+import LoadingScreen from '../../src/components/LoadingScreen'
 import Progress from '../../src/components/Progress'
 
 describe('Loader', () => {
@@ -55,6 +56,56 @@ describe('Loader', () => {
 	it('applies a custom className', () => {
 		render(<Loader className="custom" />)
 		expect(screen.getByRole('status')).toHaveClass('custom')
+	})
+
+	describe('custom icon', () => {
+		it('renders an emoji as text in place of the built-in mark', () => {
+			const { container } = render(<Loader variant="spinner" icon="🚀" />)
+			expect(container).toHaveTextContent('🚀')
+			expect(container.querySelector('svg')).toBeNull()
+			expect(container.querySelector('.animate-spin')).toBeInTheDocument()
+		})
+
+		it.each(['https://x.test/a.png', '/logo.webp', './a.svg', 'data:image/svg+xml,%3Csvg%3E', 'pic.JPG?v=2'])(
+			'treats %s as an image',
+			src => {
+				const { container } = render(<Loader variant="stacked" icon={src} />)
+				const img = container.querySelector('img')
+				expect(img).toHaveAttribute('src', src)
+				expect(img).toHaveAttribute('alt', '')
+			}
+		)
+
+		it('renders an element and sizes it to the loader', () => {
+			const { container } = render(<Loader variant="card" size="lg" icon={<svg data-testid="mine" />} />)
+			expect(screen.getByTestId('mine')).toBeInTheDocument()
+			expect(container.querySelector('span[style]')).toHaveStyle({ width: '48px', height: '48px' })
+		})
+
+		it('uses the fan sizes for the default variant and honours iconMotion', () => {
+			const { container } = render(<Loader icon="⭐" iconMotion="pulse" />)
+			expect(container.querySelector('.animate-pulse')).toHaveStyle({ width: '64px' })
+			expect(container.querySelector('.animate-spin')).toBeNull()
+		})
+
+		it.each(['none', 'bounce'])('supports iconMotion=%s', motion => {
+			const { container } = render(<Loader variant="inline" icon="⭐" iconMotion={motion} />)
+			expect(container.querySelector('.animate-spin')).toBeNull()
+		})
+
+		it('falls back to spin for an unknown motion and ignores an empty icon', () => {
+			const { container, rerender } = render(<Loader variant="spinner" icon="⭐" iconMotion="wobble" />)
+			expect(container.querySelector('.animate-spin')).toBeInTheDocument()
+			rerender(<Loader variant="spinner" icon="" />)
+			expect(container.querySelector('svg circle')).toBeInTheDocument()
+		})
+
+		it('is ignored by dots and passed through by LoadingScreen', () => {
+			const { container } = render(<Loader variant="dots" icon="🚀" />)
+			expect(container).not.toHaveTextContent('🚀')
+			render(<LoadingScreen variant="spinner" icon="🔥" />)
+			expect(screen.getByText('🔥')).toBeInTheDocument()
+		})
 	})
 })
 

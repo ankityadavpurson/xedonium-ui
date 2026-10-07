@@ -6,8 +6,8 @@ import Button from './Button'
 import CloseIcon from './icons/Close'
 
 const TONES = {
-	default: { dot: 'bg-app-soft', title: 'text-app-soft' },
-	danger: { dot: 'bg-red-500', title: 'text-red-700 dark:text-red-400' },
+	default: 'text-app-soft',
+	danger: 'text-red-700 dark:text-red-400',
 }
 
 /**
@@ -49,7 +49,7 @@ const Modal = ({
 
 	if (!open) return null
 
-	const { dot, title: titleClass } = TONES[tone]
+	const titleClass = TONES[tone]
 
 	// Portalled to <body> so no ancestor (e.g. the app bar's backdrop-blur, which creates a
 	// containing block for fixed elements) can trap the full-screen overlay
@@ -69,7 +69,6 @@ const Modal = ({
 			>
 				<div className="flex shrink-0 items-center justify-between border-b border-app-border px-6 pb-5 pt-6">
 					<div className="flex items-center gap-2">
-						<span aria-hidden="true" className={`inline-block h-2 w-2 rounded-full ${dot}`} />
 						<h2 id={titleId} className={`text-sm font-semibold uppercase tracking-widest ${titleClass}`}>
 							{title}
 						</h2>
