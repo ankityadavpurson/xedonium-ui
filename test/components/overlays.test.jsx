@@ -155,6 +155,19 @@ describe('ActionMenu', () => {
 		{ key: 'c', label: 'Gamma', disabled: true, onClick },
 	]
 
+	it('shows an item icon before the label without changing its accessible name', () => {
+		render(
+			<ActionMenu
+				label="Actions"
+				trigger="Menu"
+				items={[{ key: 'a', label: 'Alpha', icon: <svg data-testid="icon" />, onClick: () => {} }]}
+			/>
+		)
+		fireEvent.click(screen.getByRole('button', { name: 'Actions' }))
+		expect(screen.getByTestId('icon').parentElement).toHaveAttribute('aria-hidden', 'true')
+		expect(screen.getByRole('menuitem', { name: 'Alpha' })).toBeInTheDocument()
+	})
+
 	it('opens, runs an item and closes', () => {
 		const onClick = vi.fn()
 		render(<ActionMenu label="Actions" trigger="Menu" items={makeItems(onClick)} />)

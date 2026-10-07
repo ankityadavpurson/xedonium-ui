@@ -26,6 +26,7 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `ActionMenu` items accept `icon`, shown before the label (#44).
 - `CommandPalette` accepts `onQueryChange`, `loading` and `filter` for async results (with grouped `commands`), and
   `highlight` to mark matched text with `<mark>` (#43).
 - `StatCard` accepts `icon`, `status` / `statusTone` (a Chip), `href` (with `linkComponent` / `linkProp`) or `onClick` to

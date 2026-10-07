@@ -8,6 +8,8 @@ import type { ButtonVariant } from './buttonClass'
 export interface ActionMenuItem {
 	key: string
 	label: ReactNode
+	/** A decorative icon before the label (hidden from screen readers). */
+	icon?: ReactNode
 	description?: ReactNode
 	badge?: ReactNode
 	tone?: 'default' | 'warning'
@@ -36,7 +38,7 @@ const TONES: Record<'default' | 'warning', string> = {
 /**
  * Dropdown of page actions. Closes on outside click and Escape (focus returns to the trigger).
  * The menu is portalled to <body>, so scroll containers and overflow: hidden ancestors can't clip it.
- * items: [{ key, label, description?, badge?, tone?, disabled?, hasDialog?, onClick }]
+ * items: [{ key, label, icon?, description?, badge?, tone?, disabled?, hasDialog?, onClick }]
  * `trigger` is the button content; `variant` styles the trigger (e.g. 'warning' to flag pending work).
  * `placement` is where the menu opens (default "bottom-start"; e.g. "bottom-end", "top-start"). It flips above or to the other edge when there is no room, and re-adjusts on scroll and resize.
  */
@@ -96,6 +98,11 @@ const ActionMenu = ({
 						onClick={() => run(item)}
 						className={`flex w-full items-center gap-2 border-b border-app-border bg-app-card px-3 py-2.5 text-left transition last:border-b-0 disabled:cursor-not-allowed disabled:opacity-50 ${TONES[item.tone || 'default']}`}
 					>
+						{item.icon && (
+							<span aria-hidden="true" className="shrink-0 [&>svg]:h-4 [&>svg]:w-4">
+								{item.icon}
+							</span>
+						)}
 						<span className="min-w-0 flex-1">
 							<span className="block text-xs font-medium uppercase tracking-widest">{item.label}</span>
 							{item.description && (
