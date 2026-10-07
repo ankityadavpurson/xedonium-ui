@@ -12,6 +12,6 @@ const variantClasses: Record<ButtonVariant, string> = {
 }
 
 const buttonClass = (variant: ButtonVariant = 'default', className = '') =>
-	`text-xs font-semibold uppercase tracking-widest ${variantClasses[variant]} px-3 py-2 transition disabled:cursor-not-allowed disabled:opacity-50 ${className}`
+	`inline-flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-widest ${variantClasses[variant]} px-3 py-2 transition disabled:cursor-not-allowed disabled:opacity-50 ${className}`
 
 export default buttonClass

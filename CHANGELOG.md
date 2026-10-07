@@ -16,6 +16,11 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
   `xedonium` (`import type { AccordionProps } from 'xedonium'`). TypeScript apps that relied on the old, looser types
   may see new errors where a prop was misused.
 
+### Fixed
+
+- `Button` / `ButtonLink` lay out as `inline-flex` with a gap, so an icon next to a label sits beside it instead of
+  stacking above it (#23).
+
 ### Added
 
 - `yarn typecheck` (also run in CI, on pre-push and before publishing) and compile-time type tests.

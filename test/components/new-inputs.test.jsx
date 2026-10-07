@@ -90,6 +90,16 @@ describe('Accordion', () => {
 })
 
 describe('ButtonLink', () => {
+	it('lays out an icon beside the label (inline-flex with a gap)', () => {
+		render(
+			<ButtonLink href="/new">
+				<svg data-testid="icon" />
+				New role
+			</ButtonLink>
+		)
+		expect(screen.getByRole('link', { name: 'New role' })).toHaveClass('inline-flex', 'items-center', 'gap-2')
+	})
+
 	it('renders a link with a variant', () => {
 		const onClick = vi.fn()
 		render(
