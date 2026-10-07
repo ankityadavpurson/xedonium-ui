@@ -146,6 +146,12 @@ const props = {
 	},
 	field: {
 		Field: [
+			[
+				'helperText',
+				'ReactNode',
+				'',
+				'Hint under the field while there is no `error`; linked with `aria-describedby`.',
+			],
 			['label', 'string', '', 'Label text.'],
 			['value', 'string', '', 'Current value.'],
 			['onChange', '(value: string) => void', '', 'Called with the new value.'],
@@ -169,6 +175,12 @@ const props = {
 	},
 	select: {
 		Select: [
+			[
+				'helperText',
+				'ReactNode',
+				'',
+				'Hint under the field while there is no `error`; linked with `aria-describedby`.',
+			],
 			['label', 'string', '', 'Label text.'],
 			['value', 'string', '', 'Selected value.'],
 			['onChange', '(value: string) => void', '', 'Called with the new value.'],
@@ -260,6 +272,7 @@ const props = {
 	},
 	checkbox: {
 		Checkbox: [
+			['description', 'ReactNode', '', 'Secondary line under the label, linked with `aria-describedby`.'],
 			['label', 'ReactNode', '', 'Label text.'],
 			['checked', 'boolean', '', 'Checked state.'],
 			['onChange', '(checked: boolean) => void', '', 'Called with the new state.'],
@@ -335,6 +348,12 @@ const props = {
 	// Navigation
 	appbar: {
 		AppBar: [
+			[
+				'embedded',
+				'boolean',
+				'false',
+				'Render just the row with no outer `<header>` frame, for use inside the `header` of `AppShell`.',
+			],
 			['brand', 'ReactNode', '', 'Brand name or element.'],
 			['logo', 'ReactNode', '', 'Logo shown before the brand.'],
 			['brandHref', 'string', "'/'", 'Where the brand links to.'],
@@ -467,6 +486,7 @@ const props = {
 	// Overlay
 	tooltip: {
 		Tooltip: [
+			['onlyIfTruncated', 'boolean', 'false', 'Show only when text inside the trigger is cut off (ellipsis).'],
 			['text', 'string', '', 'Tooltip text.'],
 			['as', 'ElementType', "'span'", 'Wrapper element. Use "g" to put a tooltip on SVG shapes.'],
 			[
@@ -502,6 +522,8 @@ const props = {
 	},
 	drawer: {
 		Drawer: [
+			['busy', 'boolean', 'false', 'Ignore Escape, backdrop and close while an action runs.'],
+			['busyOverlay', 'boolean', 'false', 'With `busy`, cover the body with a dimmed overlay and a spinner.'],
 			['open', 'boolean', '', 'Whether the drawer is shown.'],
 			['onClose', '() => void', '', 'Called on Escape, backdrop click or the close button.'],
 			['title', 'ReactNode', '', 'Header title.'],
@@ -536,6 +558,7 @@ const props = {
 	},
 	dialog: {
 		Modal: [
+			['fullScreenBelow', "'sm' | 'md'", '', 'Fill the screen below this breakpoint.'],
 			['open', 'boolean', '', 'Whether the dialog is shown.'],
 			['onClose', '() => void', '', 'Called on Escape, backdrop click or the close button.'],
 			['title', 'ReactNode', '', 'Header title.'],
@@ -952,6 +975,10 @@ const props = {
 	},
 	sidebar: {
 		Sidebar: [
+			['bordered', 'boolean', 'true', 'Draw the right edge and the lines under the header and over the footer.'],
+			['density', "'dense' | 'default' | 'comfortable'", 'default', 'Vertical size of the items.'],
+			['headerClassName', 'string', 'px-3 py-3', 'Replaces the default header padding.'],
+			['listClassName', 'string', 'py-2', 'Replaces the default list padding.'],
 			[
 				'items',
 				'{ key, label, icon?, href?, onClick?, badge?, children? }[]',
@@ -970,6 +997,19 @@ const props = {
 	},
 	appshell: {
 		AppShell: [
+			[
+				'sidebarCollapsedBelow',
+				"'lg'",
+				'',
+				'Show the inline sidebar as an icon rail between `md` and this breakpoint; a `sidebar` function receives `collapsed`.',
+			],
+			['menuButtonVariant', 'ButtonVariant', 'secondary', 'Variant of the mobile menu button.'],
+			[
+				'menuButtonProps',
+				'ButtonProps',
+				'',
+				'Extra props for the mobile menu button (`className`, `aria-label`, ...).',
+			],
 			['header', 'ReactNode', '', 'Header content.'],
 			[
 				'sidebar',
@@ -992,6 +1032,15 @@ const props = {
 			['children', 'ReactNode', '', 'Panels.'],
 		],
 		StatCard: [
+			['icon', 'ReactNode', '', 'Icon shown at the top right.'],
+			['status', 'ReactNode', '', 'Small status Chip under the value.'],
+			['statusTone', "'default' | Tone", 'default', 'Colour of the status Chip.'],
+			['href', 'string', '', 'Makes the whole tile a link.'],
+			['linkComponent', 'ElementType', 'a', 'Component used for the link, e.g. a router Link.'],
+			['linkProp', 'string', 'href', 'Name of the destination prop on `linkComponent`.'],
+			['onClick', 'MouseEventHandler', '', 'Makes the tile a button (also runs on a link).'],
+			['disabled', 'boolean', 'false', 'Unavailable tile: dimmed, not clickable, `aria-disabled`.'],
+			['loading', 'boolean', 'false', 'Shows a placeholder instead of the value and sets `aria-busy`.'],
 			['label', 'string', '', 'Metric name.'],
 			['value', 'ReactNode', '', 'Metric value.'],
 			['delta', 'string', '', 'Change shown beside the value.'],
@@ -1002,6 +1051,20 @@ const props = {
 	},
 	commandpalette: {
 		CommandPalette: [
+			[
+				'onQueryChange',
+				'(query: string) => void',
+				'',
+				'Called with the search text on every change, and with an empty string on open; use it to fetch results.',
+			],
+			[
+				'filter',
+				'boolean',
+				'true',
+				'Filter `commands` by the search text here. Defaults to false when `onQueryChange` is set.',
+			],
+			['loading', 'boolean', 'false', 'Shows a "Searching…" row and `aria-busy` while results load.'],
+			['highlight', 'boolean', 'false', 'Wrap the matched text of each label and description in `<mark>`.'],
 			['open', 'boolean', '', 'Whether the palette is shown.'],
 			['onClose', '() => void', '', 'Called on Escape, backdrop click, and after a command runs.'],
 			['commands', '{ key, label, description?, group?, shortcut?, onSelect }[]', '', 'Commands to search.'],
