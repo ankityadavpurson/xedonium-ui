@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { useState } from 'react'
-import Accordion from '../../src/components/Accordion'
+import Accordion, { AccordionSection } from '../../src/components/Accordion'
 import Badge from '../../src/components/Badge'
 import Button from '../../src/components/Button'
 import ButtonLink from '../../src/components/ButtonLink'
@@ -17,6 +17,41 @@ const options = [
 	{ value: 'c', label: 'Cherry', disabled: true },
 	{ value: 'd', label: 'Date' },
 ]
+
+describe('AccordionSection', () => {
+	it('toggles on its own, or is controlled', () => {
+		const onChange = vi.fn()
+		const { rerender } = render(
+			<AccordionSection title="Details" onChange={onChange}>
+				Body
+			</AccordionSection>
+		)
+		const header = screen.getByRole('button', { name: 'Details' })
+		expect(header).toHaveAttribute('aria-expanded', 'false')
+		fireEvent.click(header)
+		expect(header).toHaveAttribute('aria-expanded', 'true')
+		expect(onChange).toHaveBeenLastCalledWith(true)
+		expect(screen.getByRole('region', { name: 'Details' })).toBeVisible()
+		rerender(
+			<AccordionSection title="Details" open={false} onChange={onChange}>
+				Body
+			</AccordionSection>
+		)
+		fireEvent.click(header)
+		expect(header).toHaveAttribute('aria-expanded', 'false')
+		expect(onChange).toHaveBeenLastCalledWith(true)
+	})
+
+	it('can start open and be disabled', () => {
+		render(
+			<AccordionSection title="T" defaultOpen disabled>
+				Body
+			</AccordionSection>
+		)
+		expect(screen.getByRole('button', { name: 'T' })).toBeDisabled()
+		expect(screen.getByText('Body')).toBeVisible()
+	})
+})
 
 describe('Accordion', () => {
 	it.each([
@@ -90,6 +125,16 @@ describe('Accordion', () => {
 })
 
 describe('ButtonLink', () => {
+	it('lays out an icon beside the label (inline-flex with a gap)', () => {
+		render(
+			<ButtonLink href="/new">
+				<svg data-testid="icon" />
+				New role
+			</ButtonLink>
+		)
+		expect(screen.getByRole('link', { name: 'New role' })).toHaveClass('inline-flex', 'items-center', 'gap-2')
+	})
+
 	it('renders a link with a variant', () => {
 		const onClick = vi.fn()
 		render(
@@ -603,6 +648,25 @@ describe('Badge', () => {
 })
 
 describe('Chip', () => {
+	it('colours by tone, optionally filled, and selection wins over tone', () => {
+		const { rerender } = render(<Chip tone="success">Active</Chip>)
+		const chip = () => screen.getByText('Active').closest('span[class*="border"]')
+		expect(chip()).toHaveClass('text-emerald-800')
+		rerender(
+			<Chip tone="danger" filled>
+				Active
+			</Chip>
+		)
+		expect(chip()).toHaveClass('bg-red-600', 'text-white')
+		rerender(
+			<Chip tone="info" onClick={() => {}} selected>
+				Active
+			</Chip>
+		)
+		expect(chip()).toHaveClass('bg-app-strong')
+		expect(chip()).not.toHaveClass('bg-sky-500/10')
+	})
+
 	it('renders static text with a leading element', () => {
 		render(
 			<Chip leading={<i data-testid="lead" />} size="sm" className="x">

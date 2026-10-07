@@ -38,6 +38,61 @@ const Chevron = ({ open }: { open: boolean }) => (
 	</svg>
 )
 
+interface SectionViewProps {
+	baseId: string
+	itemKey: string
+	title: ReactNode
+	open: boolean
+	disabled?: boolean
+	onToggle: () => void
+	onKeyDown?: (event: KeyboardEvent) => void
+	buttonRef?: (el: HTMLButtonElement | null) => void
+	className?: string
+	children?: ReactNode
+}
+
+// One header button + collapsible region, shared by Accordion and AccordionSection
+const SectionView = ({
+	baseId,
+	itemKey,
+	title,
+	open,
+	disabled,
+	onToggle,
+	onKeyDown,
+	buttonRef,
+	className,
+	children,
+}: SectionViewProps) => (
+	<div className={className}>
+		<h3 className="m-0">
+			<button
+				ref={buttonRef}
+				id={`${baseId}-header-${itemKey}`}
+				type="button"
+				aria-expanded={open}
+				aria-controls={`${baseId}-panel-${itemKey}`}
+				disabled={disabled}
+				onClick={onToggle}
+				onKeyDown={onKeyDown}
+				className="flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm font-semibold text-app-text outline-none transition hover:bg-app-card focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-app-strong disabled:cursor-not-allowed disabled:opacity-50"
+			>
+				<span className="min-w-0">{title}</span>
+				<Chevron open={open} />
+			</button>
+		</h3>
+		<div
+			id={`${baseId}-panel-${itemKey}`}
+			role="region"
+			aria-labelledby={`${baseId}-header-${itemKey}`}
+			hidden={!open}
+			className="px-4 pb-4 pt-1 text-sm text-app-text"
+		>
+			{children}
+		</div>
+	</div>
+)
+
 // Space between items; with any gap each item gets its own border instead of sharing one
 const GAPS: Record<AccordionGap, string> = { none: '', sm: 'gap-2', md: 'gap-4', lg: 'gap-6' }
 
@@ -90,38 +145,74 @@ const Accordion = ({
 			{items.map(item => {
 				const isOpen = openKeys.includes(item.key)
 				return (
-					<div key={item.key} className={spaced ? 'border border-app-border' : undefined}>
-						<h3 className="m-0">
-							<button
-								ref={el => {
-									headers.current[item.key] = el
-								}}
-								id={`${baseId}-header-${item.key}`}
-								type="button"
-								aria-expanded={isOpen}
-								aria-controls={`${baseId}-panel-${item.key}`}
-								disabled={item.disabled}
-								onClick={() => toggle(item.key)}
-								onKeyDown={event => handleKeyDown(event, item.key)}
-								className="flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm font-semibold text-app-text outline-none transition hover:bg-app-card focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-app-strong disabled:cursor-not-allowed disabled:opacity-50"
-							>
-								<span className="min-w-0">{item.title}</span>
-								<Chevron open={isOpen} />
-							</button>
-						</h3>
-						<div
-							id={`${baseId}-panel-${item.key}`}
-							role="region"
-							aria-labelledby={`${baseId}-header-${item.key}`}
-							hidden={!isOpen}
-							className="px-4 pb-4 pt-1 text-sm text-app-text"
-						>
-							{item.content}
-						</div>
-					</div>
+					<SectionView
+						key={item.key}
+						baseId={baseId}
+						itemKey={item.key}
+						title={item.title}
+						open={isOpen}
+						disabled={item.disabled}
+						onToggle={() => toggle(item.key)}
+						onKeyDown={event => handleKeyDown(event, item.key)}
+						buttonRef={el => {
+							headers.current[item.key] = el
+						}}
+						className={spaced ? 'border border-app-border' : undefined}
+					>
+						{item.content}
+					</SectionView>
 				)
 			})}
 		</div>
+	)
+}
+
+export interface AccordionSectionProps {
+	title: ReactNode
+	/** Open state (controlled). */
+	open?: boolean
+	/** Initially open (uncontrolled). */
+	defaultOpen?: boolean
+	/** Called with the new open state. */
+	onChange?: (open: boolean) => void
+	disabled?: boolean
+	/** Classes for the section's frame; it has a border by default. */
+	className?: string
+	children?: ReactNode
+}
+
+/**
+ * A single collapsible section, for pages that mix separate sections with other content between them (use
+ * `Accordion` for a connected group). Controlled with `open` + `onChange`, or uncontrolled with `defaultOpen`.
+ */
+export const AccordionSection = ({
+	title,
+	open,
+	defaultOpen = false,
+	onChange,
+	disabled,
+	className = 'border border-app-border',
+	children,
+}: AccordionSectionProps) => {
+	const id = useId()
+	const [inner, setInner] = useState(defaultOpen)
+	const isOpen = open ?? inner
+
+	return (
+		<SectionView
+			baseId={id}
+			itemKey="section"
+			title={title}
+			open={isOpen}
+			disabled={disabled}
+			onToggle={() => {
+				if (open === undefined) setInner(!isOpen)
+				onChange?.(!isOpen)
+			}}
+			className={className}
+		>
+			{children}
+		</SectionView>
 	)
 }
 

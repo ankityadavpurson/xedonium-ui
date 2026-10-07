@@ -87,6 +87,13 @@ describe('Pagination per page', () => {
 })
 
 describe('Pagination', () => {
+	it('sizes buttons to match the per-page Select and gives Prev / Next the same width', () => {
+		render(<Pagination page={2} pageCount={5} onChange={() => {}} />)
+		expect(screen.getByLabelText('Page 2')).toHaveClass('min-h-[38px]', 'min-w-[38px]')
+		expect(screen.getByText('Prev')).toHaveClass('min-h-[38px]', 'min-w-16')
+		expect(screen.getByText('Next')).toHaveClass('min-w-16')
+	})
+
 	it('shows gaps and disables the edge buttons', () => {
 		const onChange = vi.fn()
 		const { rerender } = render(<Pagination page={1} pageCount={10} onChange={onChange} />)
@@ -109,6 +116,63 @@ describe('Pagination', () => {
 		expect(screen.queryByText('…')).toBeNull()
 		rerender(<Pagination page={1} pageCount={1} onChange={() => {}} />)
 		expect(screen.getByText('Next')).toBeDisabled()
+	})
+})
+
+describe('Sidebar sections and tooltips', () => {
+	const items = [
+		{ key: 's', label: 'Main Menu', section: true },
+		{ key: 'a', label: 'Alpha', href: '/a', icon: <i /> },
+	]
+
+	it('renders a section as a caption, or a divider when collapsed', () => {
+		const { rerender } = render(<Sidebar items={items} />)
+		expect(screen.getByText('Main Menu')).toHaveClass('uppercase')
+		expect(screen.queryByRole('separator')).toBeNull()
+		expect(screen.getAllByRole('link')).toHaveLength(1)
+		rerender(<Sidebar items={items} collapsed />)
+		expect(screen.queryByText('Main Menu')).toBeNull()
+		expect(screen.getByRole('separator')).toBeInTheDocument()
+	})
+
+	it('shows a tooltip on hover only when the label is truncated', () => {
+		render(<Sidebar items={items} />)
+		const link = screen.getByRole('link', { name: 'Alpha' })
+		fireEvent.mouseEnter(link.parentElement)
+		expect(screen.queryByText('Alpha', { selector: 'div' })).toBeNull()
+		fireEvent.mouseLeave(link.parentElement)
+		const spy = vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(200)
+		vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(100)
+		fireEvent.mouseEnter(link.parentElement)
+		expect(screen.getByText('Alpha', { selector: 'div' })).toBeInTheDocument()
+		spy.mockRestore()
+	})
+})
+
+describe('Sidebar options', () => {
+	const items = [{ key: 'a', label: 'Alpha', href: '/a' }]
+
+	it('draws separators by default and removes them with bordered={false}', () => {
+		const { rerender } = render(<Sidebar items={items} header="H" footer="F" />)
+		const nav = screen.getByRole('navigation')
+		expect(nav).toHaveClass('border-r')
+		expect(screen.getByText('H')).toHaveClass('border-b', 'px-3', 'py-3')
+		expect(screen.getByText('F')).toHaveClass('border-t')
+		rerender(<Sidebar items={items} header="H" footer="F" bordered={false} />)
+		expect(nav).not.toHaveClass('border-r')
+		expect(screen.getByText('H')).not.toHaveClass('border-b')
+		expect(screen.getByText('F')).not.toHaveClass('border-t')
+	})
+
+	it('sets item density and replaces header and list padding', () => {
+		const { rerender } = render(<Sidebar items={items} density="dense" />)
+		expect(screen.getByRole('link', { name: 'Alpha' })).toHaveClass('py-1.5')
+		rerender(<Sidebar items={items} density="comfortable" header="H" headerClassName="p-1" listClassName="p-3" />)
+		expect(screen.getByRole('link', { name: 'Alpha' })).toHaveClass('py-3')
+		expect(screen.getByText('H')).toHaveClass('p-1')
+		expect(screen.getByText('H')).not.toHaveClass('py-3')
+		expect(screen.getByRole('list')).toHaveClass('p-3')
+		expect(screen.getByRole('list')).not.toHaveClass('py-2')
 	})
 })
 

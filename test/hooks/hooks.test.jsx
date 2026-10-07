@@ -242,6 +242,23 @@ describe('useDialogFocus', () => {
 		expect(ev.defaultPrevented).toBe(true)
 	})
 
+	it('focuses initialFocusRef first, ahead of data-autofocus', () => {
+		const Custom = () => {
+			const ref = useRef(null)
+			const target = useRef(null)
+			useDialogFocus(true, ref, target)
+			return (
+				<div ref={ref} tabIndex={-1}>
+					<button>first</button>
+					<input data-autofocus aria-label="auto" />
+					<input ref={target} aria-label="target" />
+				</div>
+			)
+		}
+		render(<Custom />)
+		expect(screen.getByLabelText('target')).toHaveFocus()
+	})
+
 	it('does nothing without a container', () => {
 		const { result } = renderHook(() => useDialogFocus(true, { current: null }))
 		expect(result.current).toBeUndefined()

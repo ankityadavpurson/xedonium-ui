@@ -52,12 +52,16 @@ import 'xedonium/styles.css'
 import { ThemeProvider, AppBar, PageLayout, Button } from 'xedonium'
 
 ;<ThemeProvider storageKey="my-app-theme">
-	<AppBar brand="My App" />
-	<PageLayout>
-		<Button>Hello</Button>
-	</PageLayout>
+	<div className="flex min-h-screen flex-col">
+		<AppBar brand="My App" />
+		<PageLayout>
+			<Button>Hello</Button>
+		</PageLayout>
+	</div>
 </ThemeProvider>
 ```
+
+`PageLayout` fills the space left in its parent (`flex-1`), so give the parent a full-height flex column (`min-h-screen flex flex-col`), as above. Without it the page sits at the top and content, such as the theme toggle, can overlap.
 
 4. Import only what you use. Every component is its own module, so subpaths load just that module (default exports; in CommonJS use `.default`):
 
@@ -88,7 +92,7 @@ import { Accordion, type AccordionProps, type SelectOption } from 'xedonium'
 - Forms: `Button`, `ButtonLink`, `Field`, `Input`, `PasswordInput`, `TextArea`, `Select`, `MultiSelect`, `SearchSelect`, `Checkbox`, `Radio`, `RadioGroup`, `Switch`, `Slider`, `DatePicker`, `DateRangePicker`, `TimePicker`, `FileUpload`
 - Data: `Accordion`, `Badge`, `Chip`, `CodeDisplay`, `Table`, `DataGrid`, `List`, `SortableList`, `VirtualList`, `Tree`, `Pagination`, `Calendar`, `Carousel`, `Timeline`, `Stepper`, `StatCard`, and charts (`LineChart`, `AreaChart`, `BarChart`, `PieChart`)
 - Feedback and overlays: `Alert`, `Toast`, `Tooltip`, `Modal`, `ConfirmDialog`, `Drawer`, `Popover`, `ActionMenu`, `CommandPalette`, `NotificationCenter`, `Progress`, `Skeleton`, `Loader`, `FanFavicon`, `LoadingScreen`, `RackServer`
-- Media and utilities: `Avatar`, `Image`, `Video`, `Sound`, `Portal`, `FocusTrap`, `ThemeToggle`, plus 189 outline icons (see the Icons page; each is also importable as `xedonium/icons/<Name>`)
+- Media and utilities: `Avatar`, `Image`, `Video`, `Sound`, `Portal`, `FocusTrap`, `ThemeToggle`, plus 195 outline icons (see the Icons page; each is also importable as `xedonium/icons/<Name>`)
 - Hooks: `useTimedToast`, `useEscapeKey`, `useDialogFocus`, `useDismissable`, `useFlipAlign`, `useKeyboardShortcuts`, `useLeaveWarning`, `useDocumentTitle(title, suffix)`.
 - Theme: `ThemeProvider`, `useTheme`, `useAppTheme`, `buildFaviconHref`.
 

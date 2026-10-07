@@ -10,6 +10,7 @@ import {
 import type { SelectOption } from '../types'
 import useDismissable from '../hooks/useDismissable'
 import FloatingPanel from './FloatingPanel'
+import HelperText from './HelperText'
 import Label from './Label'
 import inputClass from './inputClass'
 
@@ -21,6 +22,8 @@ export interface SelectProps extends Omit<ComponentPropsWithoutRef<'button'>, 'o
 	options: SelectOption[]
 	placeholder?: string
 	error?: ReactNode
+	/** Hint shown under the field while there is no `error`; linked with `aria-describedby`. */
+	helperText?: ReactNode
 	/** Adds a hidden input so the value is part of a form. */
 	name?: string
 	/** `flat` drops the border and fill, for toolbars and over media. */
@@ -75,6 +78,7 @@ const Select = ({
 	options,
 	placeholder,
 	error,
+	helperText,
 	disabled = false,
 	name,
 	variant = 'default',
@@ -85,6 +89,7 @@ const Select = ({
 	const labelId = `${id}-label`
 	const listId = `${id}-list`
 	const errorId = `${id}-error`
+	const helperId = `${id}-helper`
 	const rootRef = useRef<HTMLDivElement>(null)
 	const buttonRef = useRef<HTMLButtonElement>(null)
 	const panelRef = useRef<HTMLDivElement>(null)
@@ -182,7 +187,7 @@ const Select = ({
 				aria-activedescendant={open && active >= 0 ? `${id}-opt-${active}` : undefined}
 				aria-labelledby={label ? `${labelId} ${id}` : undefined}
 				aria-invalid={!!error}
-				aria-describedby={error ? errorId : undefined}
+				aria-describedby={error ? errorId : helperText ? helperId : undefined}
 				onClick={() => (open ? setOpen(false) : openList())}
 				onKeyDown={handleKeyDown}
 				className={`${variant === 'flat' ? flatClass(!!error) : inputClass(!!error)} flex items-center justify-between gap-2 text-left ${className}`}
@@ -238,6 +243,7 @@ const Select = ({
 					{error}
 				</span>
 			)}
+			{!error && helperText && <HelperText id={helperId}>{helperText}</HelperText>}
 		</div>
 	)
 }

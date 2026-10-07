@@ -41,7 +41,7 @@ export default {
 			name: 'Badge',
 			blocks: [
 				{
-					md: 'Overlays a small indicator on the corner of its children, like MUI\'s Badge. `badgeContent` is a number or text; numbers above `max` show as "99+" and zero is hidden unless `showZero`. `variant="dot"` shows a plain dot, `anchorOrigin` picks the corner, `overlap="circular"` fits round children, and `invisible` hides it. Colors: `default`, `secondary`, `success`, `danger`, `warning`, `info`.',
+					md: 'Overlays a small indicator on the corner of its children, like MUI\'s Badge. `badgeContent` is a number or text; numbers above `max` show as "99+" and zero is hidden unless `showZero`. `variant="dot"` shows a plain dot, `anchorOrigin` picks the corner, `overlap="circular"` fits round children, and `invisible` hides it. Colors: `default`, `secondary`, `success`, `danger`, `warning`, `info`. A Badge is an indicator that sits on top of another element (a count on an icon); it is not a status label. For a standalone status pill such as "Active" or "Failed", use [`Chip`](/components/data-display/chip) with a `tone`.',
 				},
 				{
 					example: 1,
@@ -53,7 +53,7 @@ export default {
 			name: 'Chip',
 			blocks: [
 				{
-					md: 'Compact tag for filters and selections. `onClick` makes it a toggle button (with `selected` for the pressed state); `onRemove` adds a remove button; `leading` shows an icon or avatar first.',
+					md: 'Compact tag for filters and selections. `onClick` makes it a toggle button (with `selected` for the pressed state); `onRemove` adds a remove button; `leading` shows an icon or avatar first. `tone` (`default`, `success`, `warning`, `danger`, `info`) colours it, and `filled` makes the colour solid, so a Chip is also the component for a status label; use [`Badge`](/components/data-display/badge) only to overlay a count or dot on another element.',
 				},
 				{
 					example: 1,

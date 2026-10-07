@@ -20,10 +20,12 @@ const styles = `import 'xedonium/styles.css'`
 const provider = `import { ThemeProvider, AppBar, PageLayout, Button } from 'xedonium'
 
 <ThemeProvider storageKey="my-app-theme">
-	<AppBar brand="My App" />
-	<PageLayout>
-		<Button>Hello</Button>
-	</PageLayout>
+	<div className="flex min-h-screen flex-col">
+		<AppBar brand="My App" />
+		<PageLayout>
+			<Button>Hello</Button>
+		</PageLayout>
+	</div>
 </ThemeProvider>`
 
 const subpaths = `// each component is its own module: import just the ones you use

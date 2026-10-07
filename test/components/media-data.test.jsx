@@ -698,6 +698,31 @@ describe('CommandPalette', () => {
 		{ key: 'about', label: 'About' },
 	]
 
+	it('supports async results: reports the query, shows loading and skips local filtering', () => {
+		const onQueryChange = vi.fn()
+		const { rerender } = render(
+			<CommandPalette open onClose={() => {}} commands={makeCommands()} onQueryChange={onQueryChange} loading />
+		)
+		expect(onQueryChange).toHaveBeenCalledWith('')
+		expect(screen.getByText('Searching…')).toBeInTheDocument()
+		expect(screen.getByRole('listbox')).toHaveAttribute('aria-busy', 'true')
+		fireEvent.change(screen.getByLabelText('Search commands'), { target: { value: 'zzz' } })
+		expect(onQueryChange).toHaveBeenLastCalledWith('zzz')
+		expect(screen.getAllByRole('option')).toHaveLength(4)
+		rerender(<CommandPalette open onClose={() => {}} commands={[]} onQueryChange={onQueryChange} />)
+		expect(screen.getByText('No matching commands')).toBeInTheDocument()
+		expect(screen.queryByText('Searching…')).toBeNull()
+	})
+
+	it('highlights matches with <mark>, escaping regex characters', () => {
+		render(<CommandPalette open onClose={() => {}} commands={makeCommands()} highlight />)
+		const input = screen.getByLabelText('Search commands')
+		fireEvent.change(input, { target: { value: 'FIL' } })
+		expect([...document.querySelectorAll('mark')].map(m => m.textContent)).toEqual(['fil', 'fil'])
+		fireEvent.change(input, { target: { value: '(' } })
+		expect(document.querySelectorAll('mark')).toHaveLength(0)
+	})
+
 	it('renders nothing while closed', () => {
 		render(<CommandPalette open={false} onClose={() => {}} commands={makeCommands()} />)
 		expect(screen.queryByRole('dialog')).toBeNull()
@@ -793,6 +818,37 @@ describe('DataGrid', () => {
 		{ id: 4, name: 'Dan', age: 41, city: 'Lima' },
 		{ id: 5, name: 'Eve', age: 41, city: 'Cairo' },
 	]
+
+	it('applies per-column classes, width and responsive hiding', () => {
+		const cols = [
+			{ key: 'name', header: 'Name', className: 'cell-x', headerClassName: 'head-x', width: 120, minWidth: 90 },
+			{ key: 'city', header: 'City', hideBelow: 'md' },
+		]
+		render(<DataGrid columns={cols} rows={rows} />)
+		const head = screen.getByRole('columnheader', { name: 'Name' })
+		expect(head).toHaveClass('head-x')
+		expect(head).toHaveStyle({ width: '120px', 'min-width': '90px' })
+		expect(screen.getByText('Cara')).toHaveClass('cell-x')
+		expect(screen.getByRole('columnheader', { name: 'City' })).toHaveClass('hidden', 'md:table-cell')
+		expect(screen.getByText('Paris')).toHaveClass('hidden', 'md:table-cell')
+	})
+
+	it('hides the footer when everything fits on one page, if asked', () => {
+		const { rerender } = render(<DataGrid columns={columns} rows={rows} pageSize={10} />)
+		expect(screen.getByText(`${rows.length} rows`)).toBeInTheDocument()
+		rerender(<DataGrid columns={columns} rows={rows} pageSize={10} hideFooterWhenSinglePage />)
+		expect(screen.queryByText(`${rows.length} rows`)).toBeNull()
+		rerender(<DataGrid columns={columns} rows={rows} pageSize={2} hideFooterWhenSinglePage />)
+		expect(screen.getByText(`${rows.length} rows`)).toBeInTheDocument()
+	})
+
+	it('shows skeleton rows and aria-busy while loading', () => {
+		render(<DataGrid columns={columns} rows={rows} pageSize={3} loading />)
+		expect(screen.getByRole('table')).toHaveAttribute('aria-busy', 'true')
+		expect(screen.queryByText('Cara')).toBeNull()
+		expect(screen.getByText('Loading…')).toBeInTheDocument()
+		expect(screen.getAllByRole('row')).toHaveLength(1 + 3)
+	})
 	const names = () =>
 		screen
 			.getAllByRole('row')

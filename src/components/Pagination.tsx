@@ -29,8 +29,9 @@ const buildPages = (page: number, pageCount: number, siblings: number) => {
 	return result
 }
 
-const itemClass = (active = false) =>
-	`min-h-9 min-w-9 border px-2 py-1.5 text-xs font-semibold tracking-widest transition disabled:cursor-not-allowed disabled:opacity-50 ${
+// 38px tall, to line up with the per-page Select; Prev / Next share one wider minimum width
+const itemClass = (active = false, wide = false) =>
+	`inline-flex min-h-[38px] items-center justify-center ${wide ? 'min-w-16' : 'min-w-[38px]'} border px-2 py-1.5 text-xs font-semibold tracking-widest transition disabled:cursor-not-allowed disabled:opacity-50 ${
 		active
 			? 'border-app-strong bg-app-strong text-app-bg'
 			: 'border-app-border bg-app-bg text-app-text hover:border-app-strong'
@@ -55,7 +56,12 @@ const Pagination = ({
 	const pages = (
 		<ul className="m-0 flex list-none flex-wrap items-center gap-1 p-0">
 			<li>
-				<button type="button" className={itemClass()} disabled={page <= 1} onClick={() => onChange(page - 1)}>
+				<button
+					type="button"
+					className={itemClass(false, true)}
+					disabled={page <= 1}
+					onClick={() => onChange(page - 1)}
+				>
 					Prev
 				</button>
 			</li>
@@ -79,7 +85,12 @@ const Pagination = ({
 				)
 			)}
 			<li>
-				<button type="button" className={itemClass()} disabled={page >= pageCount} onClick={() => onChange(page + 1)}>
+				<button
+					type="button"
+					className={itemClass(false, true)}
+					disabled={page >= pageCount}
+					onClick={() => onChange(page + 1)}
+				>
 					Next
 				</button>
 			</li>
