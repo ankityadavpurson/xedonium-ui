@@ -26,6 +26,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `DateTimePicker`: a date and a time picker side by side with one `Date` value, replacing `<input type="datetime-local">`
+  (#47).
 - `Sidebar` items accept `section: true` for a group caption (a divider when collapsed), and labels that are cut off
   by the width show a tooltip. `Tooltip` gains `onlyIfTruncated` (#33).
 - `Sidebar` accepts `bordered` (turn the separators off), `density` (`dense` | `default` | `comfortable`),

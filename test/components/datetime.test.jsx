@@ -2,6 +2,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react'
 import { useState } from 'react'
 import Calendar from '../../src/components/Calendar'
 import DatePicker from '../../src/components/DatePicker'
+import DateTimePicker from '../../src/components/DateTimePicker'
 import DateRangePicker from '../../src/components/DateRangePicker'
 import TimePicker from '../../src/components/TimePicker'
 
@@ -406,5 +407,41 @@ describe('TimePicker', () => {
 		render(<Stateful initial="09:15" />)
 		fireEvent.click(trigger())
 		expect(column('Hours').scrollTop).toBeDefined()
+	})
+})
+
+describe('DateTimePicker', () => {
+	it('shows the group label and error, with date and time fields', () => {
+		render(<DateTimePicker label="Starts" error="Required" />)
+		const group = screen.getByRole('group', { name: 'Starts' })
+		expect(group).toHaveAccessibleDescription('Required')
+		expect(within(group).getByLabelText('Date')).toBeInTheDocument()
+		expect(within(group).getByLabelText('Time')).toBeInTheDocument()
+	})
+
+	it('combines a picked date and time into one Date, keeping the other part', () => {
+		const onChange = vi.fn()
+		const { rerender } = render(<DateTimePicker label="Starts" onChange={onChange} />)
+		fireEvent.click(screen.getByLabelText('Time'))
+		fireEvent.click(within(screen.getByRole('listbox', { name: 'Hours' })).getByRole('option', { name: '09' }))
+		const picked = onChange.mock.calls[0][0]
+		expect([picked.getHours(), picked.getMinutes()]).toEqual([9, 0])
+		expect(picked.toDateString()).toBe(new Date().toDateString())
+
+		rerender(<DateTimePicker label="Starts" value={new Date(2024, 4, 3, 14, 30)} onChange={onChange} locale="en-US" />)
+		expect(screen.getByLabelText('Date')).toHaveTextContent('May 3, 2024')
+		expect(screen.getByLabelText('Time')).toHaveTextContent('14:30')
+		fireEvent.click(screen.getByLabelText('Date'))
+		fireEvent.click(day(2024, 4, 10))
+		expect(onChange).toHaveBeenLastCalledWith(new Date(2024, 4, 10, 14, 30))
+	})
+
+	it('limits the time on the min day only', () => {
+		const min = new Date(2024, 4, 3, 10, 0)
+		const { rerender } = render(<DateTimePicker value={new Date(2024, 4, 3, 11, 0)} min={min} />)
+		fireEvent.click(screen.getByLabelText('Time'))
+		expect(within(screen.getByRole('listbox', { name: 'Hours' })).getByRole('option', { name: '09' })).toBeDisabled()
+		rerender(<DateTimePicker value={new Date(2024, 4, 4, 11, 0)} min={min} />)
+		expect(within(screen.getByRole('listbox', { name: 'Hours' })).getByRole('option', { name: '09' })).toBeEnabled()
 	})
 })
