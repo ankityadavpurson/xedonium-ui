@@ -26,6 +26,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `Checkbox` accepts `description`, a muted line under the label that is linked to the input with `aria-describedby`
+  (#38).
 - `Chip` accepts `tone` (`default` | `success` | `warning` | `danger` | `info`) and `filled`, so it works as a coloured
   status pill (#35).
 - `AppBar` accepts `embedded`, which drops its own sticky `<header>` frame so it can sit inside `AppShell`'s `header`

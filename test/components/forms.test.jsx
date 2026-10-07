@@ -253,6 +253,18 @@ describe('FanFavicon', () => {
 })
 
 describe('Checkbox', () => {
+	it('shows a description linked by aria-describedby, outside the label name', () => {
+		const { container, rerender } = render(
+			<Checkbox label="Admin" description="Can manage users" aria-describedby="x" />
+		)
+		const box = screen.getByLabelText('Admin')
+		const description = screen.getByText('Can manage users')
+		expect(box.getAttribute('aria-describedby')).toBe(`x ${description.id}`)
+		expect(screen.getByRole('checkbox', { name: 'Admin' })).toBeInTheDocument()
+		rerender(<Checkbox label="Admin" />)
+		expect(screen.getByLabelText('Admin')).not.toHaveAttribute('aria-describedby')
+		expect(container.firstChild.tagName).toBe('LABEL')
+	})
 	it('toggles and reports the boolean', () => {
 		const onChange = vi.fn()
 		const { rerender } = render(<Checkbox label="Agree" checked={false} onChange={onChange} />)
