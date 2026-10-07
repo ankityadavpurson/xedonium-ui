@@ -18,6 +18,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Fixed
 
+- Docs: `PageLayout` needs a full-height flex column as its parent (`min-h-screen flex flex-col`); the README, the Getting
+  Started page and the component docs now say so and show it (#45).
 - `Card` header wraps on narrow screens, so `actions` drop below a long title / subtitle instead of squeezing the text
   into a narrow column (#37).
 - `Button` / `ButtonLink` lay out as `inline-flex` with a gap, so an icon next to a label sits beside it instead of

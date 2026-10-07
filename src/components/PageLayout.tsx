@@ -13,7 +13,8 @@ export interface PageLayoutProps {
 	innerClassName?: string
 }
 
-// Fills the space under the AppBar. Full-screen pages without the bar (Loader) pass `themeToggle`
+// Fills the space under the AppBar (`flex-1`), so its parent must be a full-height flex column, e.g.
+// `min-h-screen flex flex-col`; it does not set a height itself, which would overflow below an AppBar. Full-screen pages without the bar (Loader) pass `themeToggle`
 // to get the toggle in the top-right corner.
 const PageLayout = ({
 	children,

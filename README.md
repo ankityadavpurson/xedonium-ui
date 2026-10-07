@@ -52,12 +52,16 @@ import 'xedonium/styles.css'
 import { ThemeProvider, AppBar, PageLayout, Button } from 'xedonium'
 
 ;<ThemeProvider storageKey="my-app-theme">
-	<AppBar brand="My App" />
-	<PageLayout>
-		<Button>Hello</Button>
-	</PageLayout>
+	<div className="flex min-h-screen flex-col">
+		<AppBar brand="My App" />
+		<PageLayout>
+			<Button>Hello</Button>
+		</PageLayout>
+	</div>
 </ThemeProvider>
 ```
+
+`PageLayout` fills the space left in its parent (`flex-1`), so give the parent a full-height flex column (`min-h-screen flex flex-col`), as above. Without it the page sits at the top and content, such as the theme toggle, can overlap.
 
 4. Import only what you use. Every component is its own module, so subpaths load just that module (default exports; in CommonJS use `.default`):
 
