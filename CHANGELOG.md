@@ -26,6 +26,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `Drawer` accepts `busy` (ignores Escape, backdrop and close while an action is in flight, like `Modal`) and
+  `busyOverlay` (covers the body with a spinner) (#40).
 - `AccordionSection`: a standalone single collapsible section (controlled with `open`, or `defaultOpen`), for pages that
   put other content between sections instead of one `Accordion` per section (#39).
 - `Checkbox` accepts `description`, a muted line under the label that is linked to the input with `aria-describedby`

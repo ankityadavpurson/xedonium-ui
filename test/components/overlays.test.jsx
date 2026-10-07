@@ -314,6 +314,35 @@ describe('ConfirmDialog', () => {
 })
 
 describe('Drawer', () => {
+	it('ignores Escape, backdrop and close while busy, with an optional overlay', () => {
+		const onClose = vi.fn()
+		const { rerender } = render(
+			<Drawer open onClose={onClose} title="Panel" busy>
+				body
+			</Drawer>
+		)
+		expect(screen.getByRole('dialog')).toHaveAttribute('aria-busy', 'true')
+		expect(screen.getByLabelText('Close')).toBeDisabled()
+		fireEvent.keyDown(window, { key: 'Escape' })
+		fireEvent.click(document.querySelector('[aria-hidden="true"].absolute'))
+		expect(onClose).not.toHaveBeenCalled()
+		expect(screen.queryByText('Loading')).toBeNull()
+		rerender(
+			<Drawer open onClose={onClose} title="Panel" busy busyOverlay>
+				body
+			</Drawer>
+		)
+		expect(screen.getByText('Loading')).toBeInTheDocument()
+		rerender(
+			<Drawer open onClose={onClose} title="Panel" busyOverlay>
+				body
+			</Drawer>
+		)
+		fireEvent.keyDown(window, { key: 'Escape' })
+		expect(onClose).toHaveBeenCalledTimes(1)
+		expect(screen.queryByText('Loading')).toBeNull()
+	})
+
 	it('opens in a portal, locks scroll, and restores it on close', () => {
 		document.body.style.overflow = 'auto'
 		const onClose = vi.fn()
