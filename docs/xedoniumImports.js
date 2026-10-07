@@ -3,13 +3,21 @@ import path from 'node:path'
 
 const SRC = path.join(import.meta.dirname, '../src')
 
-// name -> { file, named }: where each public export of src/index.js really lives
+// name -> { file, named }: where each public export of src/index.ts really lives
 const readExportMap = () => {
-	const index = fs.readFileSync(path.join(SRC, 'index.js'), 'utf8')
+	const index = fs.readFileSync(
+		path.join(
+			SRC,
+			['index.ts', 'index.js'].find(f => fs.existsSync(path.join(SRC, f)))
+		),
+		'utf8'
+	)
 	const map = new Map()
 	const resolveFile = specifier => {
 		const base = path.join(SRC, specifier)
-		const found = ['.jsx', '.js', '/index.js'].map(ext => base + ext).find(candidate => fs.existsSync(candidate))
+		const found = ['.tsx', '.ts', '.jsx', '.js', '/index.ts', '/index.js']
+			.map(ext => base + ext)
+			.find(candidate => fs.existsSync(candidate))
 		return found ? path.relative(SRC, found).split(path.sep).join('/') : null
 	}
 	// export { default as Button } from './components/Button'
@@ -34,7 +42,7 @@ const readExportMap = () => {
 /**
  * Docs only: rewrites the real `import { Button, Select } from 'xedonium'` statements of the docs app into one import
  * per module (`import Button from '@xedonium-src/components/Button.jsx'`), so a page loads just the components it uses,
- * in the dev server as well as in the build, instead of evaluating the whole src/index.js barrel.
+ * in the dev server as well as in the build, instead of evaluating the whole src/index.ts barrel.
  * It runs after JSX is compiled and finds imports with a real parser, so snippets that merely look like imports inside
  * strings (the code samples in the docs) are left alone, and `?raw` imports are untouched (visitors still read
  * `from 'xedonium'`).

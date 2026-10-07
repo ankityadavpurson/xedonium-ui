@@ -69,6 +69,17 @@ import { ThemeProvider, useTheme } from 'xedonium/theme'
 
 `import { Button } from 'xedonium'` keeps working and is tree-shaken.
 
+## TypeScript
+
+The library is written in TypeScript and ships its own types, so props autocomplete and are checked (for example
+`<Accordion gap="" />` suggests `none | sm | md | lg`). Prop types are exported next to the components:
+
+```tsx
+import { Accordion, type AccordionProps, type SelectOption } from 'xedonium'
+```
+
+`yarn typecheck` checks the source and `test/types.check.tsx`, which asserts that valid props compile and invalid ones do not.
+
 ## What's included
 
 - Layout: `AppShell`, `AppBar`, `Navbar`, `Sidebar`, `PageLayout`, `PageHeader`, `NotFoundPage`, `Container`, `Flex`, `Stack`, `Grid`, `Card`, `Dashboard`, `Divider`, `Tabs`, `Breadcrumb`

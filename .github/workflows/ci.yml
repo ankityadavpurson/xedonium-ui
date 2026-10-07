@@ -23,6 +23,7 @@ jobs:
           cache: yarn
       - run: yarn install --frozen-lockfile
       - run: yarn lint
+      - run: yarn typecheck
       - run: yarn test:coverage # fails if any test fails or coverage is below 90%
       - uses: actions/upload-artifact@v7
         if: always()

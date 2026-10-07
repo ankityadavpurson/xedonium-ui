@@ -1,0 +1,20 @@
+import type { IconProps } from '../../types'
+
+const BarChartIcon = ({ className }: IconProps) => (
+	<svg
+		aria-hidden="true"
+		focusable="false"
+		className={className ?? 'h-4 w-4'}
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		strokeWidth={2}
+		strokeLinecap="square"
+		strokeLinejoin="miter"
+		strokeMiterlimit={10}
+	>
+		<path d="M12 20V10M18 20V4M6 20v-4" />
+	</svg>
+)
+
+export default BarChartIcon

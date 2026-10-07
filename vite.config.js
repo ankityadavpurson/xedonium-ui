@@ -8,7 +8,7 @@ export default defineConfig({
 	build: {
 		lib: {
 			// theme/index is a pure re-export barrel, which Rollup would otherwise drop from the output
-			entry: { index: 'src/index.js', 'theme/index': 'src/theme/index.js' },
+			entry: { index: 'src/index.ts', 'theme/index': 'src/theme/index.ts' },
 			formats: ['es', 'cjs'],
 			fileName: (format, name) => `${name}.${format === 'es' ? 'js' : 'cjs'}`,
 		},

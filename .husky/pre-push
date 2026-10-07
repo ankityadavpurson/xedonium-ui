@@ -1,2 +1,3 @@
 # Block the push when tests fail or coverage drops below 90% (thresholds live in vitest.config.js)
+yarn typecheck
 yarn test:coverage

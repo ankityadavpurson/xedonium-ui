@@ -8,8 +8,17 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+### Changed
+
+- The library source is now TypeScript (`.ts` / `.tsx`). The published `.d.ts` files describe every prop precisely:
+  fixed choices are literal unions (`gap`, `variant`, `size`, `placement`, ...), optional props are optional, and
+  callbacks, item shapes and the generic `Table` / `DataGrid` / `RadioGroup` are typed. Prop types are exported from
+  `xedonium` (`import type { AccordionProps } from 'xedonium'`). TypeScript apps that relied on the old, looser types
+  may see new errors where a prop was misused.
+
 ### Added
 
+- `yarn typecheck` (also run in CI, on pre-push and before publishing) and compile-time type tests.
 - Unit test suite (Vitest + Testing Library) with a 90% coverage gate enforced by a pre-push hook and CI.
 - CI workflow that lints and tests every push to `dev`.
 - Community files: contributing guide, code of conduct, security policy, and issue and pull request templates.
