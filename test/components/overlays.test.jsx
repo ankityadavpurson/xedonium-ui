@@ -155,6 +155,19 @@ describe('ActionMenu', () => {
 		{ key: 'c', label: 'Gamma', disabled: true, onClick },
 	]
 
+	it('shows an item icon before the label without changing its accessible name', () => {
+		render(
+			<ActionMenu
+				label="Actions"
+				trigger="Menu"
+				items={[{ key: 'a', label: 'Alpha', icon: <svg data-testid="icon" />, onClick: () => {} }]}
+			/>
+		)
+		fireEvent.click(screen.getByRole('button', { name: 'Actions' }))
+		expect(screen.getByTestId('icon').parentElement).toHaveAttribute('aria-hidden', 'true')
+		expect(screen.getByRole('menuitem', { name: 'Alpha' })).toBeInTheDocument()
+	})
+
 	it('opens, runs an item and closes', () => {
 		const onClick = vi.fn()
 		render(<ActionMenu label="Actions" trigger="Menu" items={makeItems(onClick)} />)
@@ -195,6 +208,32 @@ describe('ActionMenu', () => {
 })
 
 describe('Modal', () => {
+	it('fills the screen below a breakpoint and passes form props through', () => {
+		const { rerender } = render(
+			<Modal open onClose={() => {}} title="T" as="form" noValidate method="post" fullScreenBelow="sm">
+				<input aria-label="name" />
+			</Modal>
+		)
+		const dialog = screen.getByRole('dialog')
+		expect(dialog.tagName).toBe('FORM')
+		expect(dialog).toHaveAttribute('novalidate')
+		expect(dialog).toHaveAttribute('method', 'post')
+		expect(dialog).toHaveClass('max-sm:h-[100dvh]', 'max-sm:max-w-none')
+		expect(dialog.parentElement).toHaveClass('max-sm:px-0')
+		rerender(
+			<Modal open onClose={() => {}} title="T" fullScreenBelow="md">
+				x
+			</Modal>
+		)
+		expect(screen.getByRole('dialog')).toHaveClass('max-md:h-[100dvh]')
+		rerender(
+			<Modal open onClose={() => {}} title="T">
+				x
+			</Modal>
+		)
+		expect(screen.getByRole('dialog').className).not.toContain('max-sm:')
+	})
+
 	const Controlled = props => {
 		const [open, setOpen] = useState(true)
 		return (
@@ -313,7 +352,56 @@ describe('ConfirmDialog', () => {
 	})
 })
 
+describe('initialFocusRef', () => {
+	const Harness = ({ Dialog }) => {
+		const ref = useRef(null)
+		return (
+			<Dialog open onClose={() => {}} title="T" initialFocusRef={ref}>
+				<input aria-label="first" />
+				<input ref={ref} aria-label="chosen" />
+			</Dialog>
+		)
+	}
+
+	it.each([
+		['Modal', Modal],
+		['Drawer', Drawer],
+	])('%s focuses the chosen element on open', (_, Dialog) => {
+		render(<Harness Dialog={Dialog} />)
+		expect(screen.getByLabelText('chosen')).toHaveFocus()
+	})
+})
+
 describe('Drawer', () => {
+	it('ignores Escape, backdrop and close while busy, with an optional overlay', () => {
+		const onClose = vi.fn()
+		const { rerender } = render(
+			<Drawer open onClose={onClose} title="Panel" busy>
+				body
+			</Drawer>
+		)
+		expect(screen.getByRole('dialog')).toHaveAttribute('aria-busy', 'true')
+		expect(screen.getByLabelText('Close')).toBeDisabled()
+		fireEvent.keyDown(window, { key: 'Escape' })
+		fireEvent.click(document.querySelector('[aria-hidden="true"].absolute'))
+		expect(onClose).not.toHaveBeenCalled()
+		expect(screen.queryByText('Loading')).toBeNull()
+		rerender(
+			<Drawer open onClose={onClose} title="Panel" busy busyOverlay>
+				body
+			</Drawer>
+		)
+		expect(screen.getByText('Loading')).toBeInTheDocument()
+		rerender(
+			<Drawer open onClose={onClose} title="Panel" busyOverlay>
+				body
+			</Drawer>
+		)
+		fireEvent.keyDown(window, { key: 'Escape' })
+		expect(onClose).toHaveBeenCalledTimes(1)
+		expect(screen.queryByText('Loading')).toBeNull()
+	})
+
 	it('opens in a portal, locks scroll, and restores it on close', () => {
 		document.body.style.overflow = 'auto'
 		const onClose = vi.fn()
@@ -418,9 +506,74 @@ describe('AppBar', () => {
 		expect(screen.queryByRole('navigation')).toBeNull()
 		expect(screen.queryByRole('button')).toBeNull()
 	})
+
+	it('renders no outer header frame when embedded (e.g. inside AppShell)', () => {
+		const { container } = renderBar({ embedded: true })
+		expect(container.querySelector('header')).toBeNull()
+		expect(container.firstChild).not.toHaveClass('sticky')
+		expect(screen.getByText('Xed')).toBeInTheDocument()
+	})
+
+	it('has a single banner when embedded in AppShell', () => {
+		render(
+			<ThemeContext.Provider value={{ activeTheme: 'dark', toggleTheme: () => {} }}>
+				<AppShell header={<AppBar brand="Xed" embedded />}>Main</AppShell>
+			</ThemeContext.Provider>
+		)
+		expect(screen.getAllByRole('banner')).toHaveLength(1)
+	})
 })
 
 describe('AppShell', () => {
+	it('tells a sidebar render function whether it is in the drawer or an icon rail', () => {
+		const seen = []
+		const listeners = []
+		const original = window.matchMedia
+		window.matchMedia = query => ({
+			matches: false,
+			media: query,
+			addEventListener: (_, cb) => listeners.push(cb),
+			removeEventListener: () => {},
+		})
+		render(
+			<AppShell
+				header="h"
+				sidebarCollapsedBelow="lg"
+				sidebar={(close, ctx) => {
+					seen.push(ctx)
+					return <nav>side</nav>
+				}}
+			>
+				Main
+			</AppShell>
+		)
+		expect(seen).toContainEqual({ inDrawer: false, collapsed: true })
+		fireEvent.click(screen.getByRole('button', { name: 'Open menu' }))
+		expect(seen).toContainEqual({ inDrawer: true, collapsed: false })
+		act(() => listeners.forEach(cb => cb({ matches: true })))
+		expect(seen).toContainEqual({ inDrawer: false, collapsed: false })
+		window.matchMedia = original
+	})
+
+	it('customises the mobile menu button', () => {
+		const onClick = vi.fn()
+		render(
+			<AppShell
+				header="h"
+				sidebar={<nav>side</nav>}
+				menuButtonVariant="flat"
+				menuButtonProps={{ className: 'extra', 'aria-label': 'Navigation', onClick }}
+			>
+				Main
+			</AppShell>
+		)
+		const button = screen.getByRole('button', { name: 'Navigation' })
+		expect(button).toHaveClass('extra', 'bg-transparent')
+		fireEvent.click(button)
+		expect(onClick).toHaveBeenCalledTimes(1)
+		expect(screen.getByRole('dialog')).toBeInTheDocument()
+	})
+
 	let mediaListener
 	beforeEach(() => {
 		mediaListener = undefined

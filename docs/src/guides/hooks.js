@@ -65,8 +65,8 @@ export const hooks = [
 		id: 'usedialogfocus',
 		summary: 'Move, trap and restore focus for a dialog.',
 		name: 'useDialogFocus',
-		signature: 'useDialogFocus(open, containerRef)',
-		md: 'Focus management for dialogs. When `open` becomes true it moves focus into the container (to the element marked `data-autofocus`, otherwise the first focusable one), keeps Tab and Shift+Tab inside it, and returns focus to the element that opened it when it closes. `Modal`, `Drawer` and `CommandPalette` use it; for a ready-made wrapper see [`FocusTrap`](/components/utilities/focustrap).',
+		signature: 'useDialogFocus(open, containerRef, initialFocusRef?)',
+		md: 'Focus management for dialogs. When `open` becomes true it moves focus into the container (to `initialFocusRef` if given, else the element marked `data-autofocus`, otherwise the first focusable one - which in a `Modal` or `Drawer` is the Close button), keeps Tab and Shift+Tab inside it, and returns focus to the element that opened it when it closes. `Modal`, `Drawer` and `CommandPalette` use it; for a ready-made wrapper see [`FocusTrap`](/components/utilities/focustrap).',
 		api: {
 			Parameters: [
 				['open', 'boolean', '', 'Whether the dialog is open.'],

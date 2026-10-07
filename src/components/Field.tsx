@@ -1,4 +1,5 @@
 import { useId, type ComponentPropsWithoutRef, type ReactNode } from 'react'
+import HelperText from './HelperText'
 import Label from './Label'
 
 export interface FieldProps extends Omit<ComponentPropsWithoutRef<'input'>, 'onChange' | 'value'> {
@@ -7,6 +8,8 @@ export interface FieldProps extends Omit<ComponentPropsWithoutRef<'input'>, 'onC
 	/** Receives the value string. */
 	onChange: (value: string) => void
 	error?: ReactNode
+	/** Hint shown under the field while there is no `error`; linked with `aria-describedby`. */
+	helperText?: ReactNode
 	/** Sets `aria-required` (default true). */
 	required?: boolean
 }
@@ -17,6 +20,7 @@ const Field = ({
 	onChange,
 	placeholder,
 	error,
+	helperText,
 	type = 'text',
 	autoComplete = 'off',
 	required = true,
@@ -24,6 +28,7 @@ const Field = ({
 }: FieldProps) => {
 	const id = useId()
 	const errorId = `${id}-error`
+	const helperId = `${id}-helper`
 
 	return (
 		<div className="flex flex-col gap-1">
@@ -34,7 +39,7 @@ const Field = ({
 				autoComplete={autoComplete}
 				aria-required={required}
 				aria-invalid={!!error}
-				aria-describedby={error ? errorId : undefined}
+				aria-describedby={error ? errorId : helperText ? helperId : undefined}
 				className={`bg-app-bg border px-3 py-2 text-sm text-app-text placeholder:text-app-muted outline-none transition focus:ring-2 focus:ring-app-strong focus:border-app-strong ${
 					error ? 'border-red-500' : 'border-app-border'
 				}`}
@@ -48,6 +53,7 @@ const Field = ({
 					{error}
 				</span>
 			)}
+			{!error && helperText && <HelperText id={helperId}>{helperText}</HelperText>}
 		</div>
 	)
 }

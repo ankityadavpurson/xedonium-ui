@@ -1,4 +1,5 @@
 import { forwardRef, useId, useState, type ComponentPropsWithoutRef, type ReactNode } from 'react'
+import HelperText from './HelperText'
 import Label from './Label'
 import EyeIcon from './icons/Eye'
 import EyeOffIcon from './icons/EyeOff'
@@ -10,6 +11,8 @@ export interface PasswordInputProps extends Omit<ComponentPropsWithoutRef<'input
 	/** Receives the value string. */
 	onChange?: (value: string) => void
 	error?: ReactNode
+	/** Hint shown under the field while there is no `error`; linked with `aria-describedby`. */
+	helperText?: ReactNode
 }
 
 /**
@@ -23,6 +26,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
 			value,
 			onChange,
 			error,
+			helperText,
 			placeholder,
 			autoComplete = 'current-password',
 			disabled = false,
@@ -33,6 +37,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
 	) => {
 		const id = useId()
 		const errorId = `${id}-error`
+		const helperId = `${id}-helper`
 		const [visible, setVisible] = useState(false)
 
 		return (
@@ -47,7 +52,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
 						disabled={disabled}
 						placeholder={placeholder}
 						aria-invalid={!!error}
-						aria-describedby={error ? errorId : undefined}
+						aria-describedby={error ? errorId : helperText ? helperId : undefined}
 						className={`${inputClass(!!error)} pr-10 ${className}`}
 						value={value}
 						onChange={e => onChange?.(e.target.value)}
@@ -69,6 +74,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
 						{error}
 					</span>
 				)}
+				{!error && helperText && <HelperText id={helperId}>{helperText}</HelperText>}
 			</div>
 		)
 	}

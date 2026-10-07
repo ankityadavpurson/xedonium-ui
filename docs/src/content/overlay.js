@@ -62,7 +62,7 @@ export default {
 			name: 'Dialog (Modal)',
 			blocks: [
 				{
-					md: '`Modal` is the dialog shell and `ConfirmDialog` is built on it. `ActionMenu` doubles as the dropdown / menu\ncomponent.\n\n`ConfirmDialog` shows a spinner on the confirm button while `busy`; Escape, backdrop and close are ignored then. Use\n`tone="danger"` for destructive actions.',
+					md: '`Modal` is the dialog shell and `ConfirmDialog` is built on it. `ActionMenu` doubles as the dropdown / menu\ncomponent.\n\n`ConfirmDialog` shows a spinner on the confirm button while `busy`; Escape, backdrop and close are ignored then. Use\n`tone="danger"` for destructive actions.\n\nWhen a `Modal` or `Drawer` opens, focus goes to the first control, which is the Close button. To focus something else\n(the first field of a form, say), put the `data-autofocus` attribute on it or pass a ref as `initialFocusRef`.',
 				},
 				{
 					example: 1,

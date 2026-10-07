@@ -1,7 +1,8 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useMemo, useState, type CSSProperties, type ReactNode } from 'react'
 import Checkbox from './Checkbox'
 import Input from './Input'
 import Pagination from './Pagination'
+import Skeleton from './Skeleton'
 import SortIcon from './icons/Sort'
 
 export interface DataGridColumn<Row extends object = Record<string, unknown>> {
@@ -13,6 +14,15 @@ export interface DataGridColumn<Row extends object = Record<string, unknown>> {
 	align?: 'left' | 'center' | 'right'
 	/** Supplies the value used for sorting and search. */
 	accessor?: (row: Row) => unknown
+	/** Extra classes for this column's body cells. */
+	className?: string
+	/** Extra classes for this column's header cell. */
+	headerClassName?: string
+	/** Column width: a number (px) or any CSS length. */
+	width?: number | string
+	minWidth?: number | string
+	/** Hide the column below this breakpoint (so wide tables fit on phones). */
+	hideBelow?: 'sm' | 'md' | 'lg'
 }
 
 export interface DataGridProps<Row extends object = Record<string, unknown>> {
@@ -31,6 +41,10 @@ export interface DataGridProps<Row extends object = Record<string, unknown>> {
 	/** Selected row keys (controlled). */
 	selected?: (string | number)[]
 	onSelectionChange?: (keys: (string | number)[]) => void
+	/** Shows skeleton rows instead of the data and sets `aria-busy`. */
+	loading?: boolean
+	/** Hide the footer (row count, page size select, pager) when all `rows` fit on one page. */
+	hideFooterWhenSinglePage?: boolean
 	empty?: ReactNode
 	caption?: string
 	className?: string
@@ -47,6 +61,20 @@ const ALIGN: Record<'left' | 'center' | 'right', string> = {
 	right: 'text-right',
 }
 
+const HIDE_BELOW: Record<'sm' | 'md' | 'lg', string> = {
+	sm: 'hidden sm:table-cell',
+	md: 'hidden md:table-cell',
+	lg: 'hidden lg:table-cell',
+}
+
+const columnClass = <Row extends object>(column: DataGridColumn<Row>, extra?: string) =>
+	`${ALIGN[column.align ?? 'left']} ${column.hideBelow ? HIDE_BELOW[column.hideBelow] : ''} ${extra ?? ''}`
+
+const columnStyle = <Row extends object>(column: DataGridColumn<Row>): CSSProperties | undefined =>
+	column.width === undefined && column.minWidth === undefined
+		? undefined
+		: { width: column.width, minWidth: column.minWidth }
+
 const compare = (a: unknown, b: unknown) => {
 	if (a == null) return b == null ? 0 : 1
 	if (b == null) return -1
@@ -56,9 +84,13 @@ const compare = (a: unknown, b: unknown) => {
 
 /**
  * Table with client-side sorting, search, pagination and row selection.
- * columns: [{ key, header, sortable?, render?(row), align?, accessor?(row) }] (`accessor` supplies the sort / search value).
+ * columns: [{ key, header, sortable?, render?(row), align?, accessor?(row), className?, headerClassName?, width?,
+ * minWidth?, hideBelow? }] (`accessor` supplies the sort / search value; `hideBelow: 'sm' | 'md' | 'lg'` hides the column
+ * on smaller screens).
  * `pageSize` is the rows per page; add `pageSizeOptions` (e.g. [10, 25, 50]) to let the user change it, starting from
  * `pageSize` (`onPageSizeChange(size)` is called on each change).
+ * `hideFooterWhenSinglePage` hides the footer while `rows.length <= pageSize` (the current page size).
+ * `loading` replaces the rows with skeleton placeholders (up to 5) and marks the table busy.
  * Selection is controlled with `selected` (array of row keys) + `onSelectionChange`, or uncontrolled with `selectable`.
  */
 const DataGrid = <Row extends object = Record<string, unknown>>({
@@ -72,6 +104,8 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 	selectable = false,
 	selected,
 	onSelectionChange,
+	loading = false,
+	hideFooterWhenSinglePage = false,
 	empty = 'No results',
 	caption,
 	className = '',
@@ -146,7 +180,7 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 				</div>
 			)}
 			<div className="overflow-x-auto border border-app-border">
-				<table className="w-full border-collapse bg-app-card text-sm text-app-text">
+				<table aria-busy={loading || undefined} className="w-full border-collapse bg-app-card text-sm text-app-text">
 					{caption && <caption className="sr-only">{caption}</caption>}
 					<thead>
 						<tr className="border-b border-app-border bg-app-bg">
@@ -175,7 +209,8 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 										aria-sort={
 											active ? (sort?.dir === 'asc' ? 'ascending' : 'descending') : column.sortable ? 'none' : undefined
 										}
-										className={`px-4 py-2.5 text-xs font-semibold uppercase tracking-widest text-app-muted ${ALIGN[column.align ?? 'left']}`}
+										style={columnStyle(column)}
+										className={`px-4 py-2.5 text-xs font-semibold uppercase tracking-widest text-app-muted ${columnClass(column, column.headerClassName)}`}
 									>
 										{column.sortable ? (
 											<button
@@ -195,7 +230,17 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 						</tr>
 					</thead>
 					<tbody>
-						{visible.length === 0 ? (
+						{loading ? (
+							Array.from({ length: Math.min(size, 5) }, (_, index) => (
+								<tr key={index} className="border-b border-app-border last:border-b-0">
+									{Array.from({ length: columns.length + (selectable ? 1 : 0) }, (_, cell) => (
+										<td key={cell} className="px-4 py-3">
+											<Skeleton className="h-4 w-full" />
+										</td>
+									))}
+								</tr>
+							))
+						) : visible.length === 0 ? (
 							<tr>
 								<td colSpan={columns.length + (selectable ? 1 : 0)} className="px-4 py-6 text-center text-app-muted">
 									{empty}
@@ -221,7 +266,11 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 											</td>
 										)}
 										{columns.map(column => (
-											<td key={column.key} className={`px-4 py-2.5 ${ALIGN[column.align ?? 'left']}`}>
+											<td
+												key={column.key}
+												style={columnStyle(column)}
+												className={`px-4 py-2.5 ${columnClass(column, column.className)}`}
+											>
 												{column.render ? column.render(row) : (row[column.key as keyof Row] as ReactNode)}
 											</td>
 										))}
@@ -232,26 +281,34 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 					</tbody>
 				</table>
 			</div>
-			<div className="flex flex-wrap items-center justify-between gap-3 text-xs text-app-muted">
-				<span aria-live="polite">
-					{processed.length} {processed.length === 1 ? 'row' : 'rows'}
-					{selectable && selection.length > 0 ? `, ${selection.length} selected` : ''}
-				</span>
-				{(pageCount > 1 || pageSizeOptions) && (
-					<Pagination
-						page={currentPage}
-						pageCount={pageCount}
-						onChange={setPage}
-						pageSize={size}
-						pageSizeOptions={pageSizeOptions}
-						onPageSizeChange={next => {
-							setChosenSize(next)
-							setPage(1)
-							onPageSizeChange?.(next)
-						}}
-					/>
-				)}
-			</div>
+			{!(hideFooterWhenSinglePage && rows.length <= size) && (
+				<div className="flex flex-wrap items-center justify-between gap-3 text-xs text-app-muted">
+					<span aria-live="polite">
+						{loading ? (
+							'Loading…'
+						) : (
+							<>
+								{processed.length} {processed.length === 1 ? 'row' : 'rows'}
+								{selectable && selection.length > 0 ? `, ${selection.length} selected` : ''}
+							</>
+						)}
+					</span>
+					{(pageCount > 1 || pageSizeOptions) && (
+						<Pagination
+							page={currentPage}
+							pageCount={pageCount}
+							onChange={setPage}
+							pageSize={size}
+							pageSizeOptions={pageSizeOptions}
+							onPageSizeChange={next => {
+								setChosenSize(next)
+								setPage(1)
+								onPageSizeChange?.(next)
+							}}
+						/>
+					)}
+				</div>
+			)}
 		</div>
 	)
 }

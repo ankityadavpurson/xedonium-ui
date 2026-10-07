@@ -7,12 +7,14 @@ import Field from '../../src/components/Field'
 import FileUpload from '../../src/components/FileUpload'
 import Input from '../../src/components/Input'
 import LoadingScreen from '../../src/components/LoadingScreen'
+import PasswordInput from '../../src/components/PasswordInput'
 import PageLayout from '../../src/components/PageLayout'
 import Radio from '../../src/components/Radio'
 import RadioGroup from '../../src/components/RadioGroup'
 import Select from '../../src/components/Select'
 import Slider from '../../src/components/Slider'
 import Switch from '../../src/components/Switch'
+import TextArea from '../../src/components/TextArea'
 import ThemeToggle from '../../src/components/ThemeToggle'
 import Tooltip from '../../src/components/Tooltip'
 import { ThemeContext } from '../../src/theme/ThemeContext'
@@ -251,6 +253,18 @@ describe('FanFavicon', () => {
 })
 
 describe('Checkbox', () => {
+	it('shows a description linked by aria-describedby, outside the label name', () => {
+		const { container, rerender } = render(
+			<Checkbox label="Admin" description="Can manage users" aria-describedby="x" />
+		)
+		const box = screen.getByLabelText('Admin')
+		const description = screen.getByText('Can manage users')
+		expect(box.getAttribute('aria-describedby')).toBe(`x ${description.id}`)
+		expect(screen.getByRole('checkbox', { name: 'Admin' })).toBeInTheDocument()
+		rerender(<Checkbox label="Admin" />)
+		expect(screen.getByLabelText('Admin')).not.toHaveAttribute('aria-describedby')
+		expect(container.firstChild.tagName).toBe('LABEL')
+	})
 	it('toggles and reports the boolean', () => {
 		const onChange = vi.fn()
 		const { rerender } = render(<Checkbox label="Agree" checked={false} onChange={onChange} />)
@@ -326,6 +340,29 @@ describe('Input', () => {
 		expect(screen.getByPlaceholderText('p')).toHaveAttribute('aria-invalid', 'true')
 		expect(screen.getByPlaceholderText('p')).toHaveAttribute('type', 'email')
 		fireEvent.change(screen.getByPlaceholderText('p'), { target: { value: 'z' } })
+	})
+})
+
+describe('Input adornments', () => {
+	it('renders start and end adornments and pads the input', () => {
+		const onClear = vi.fn()
+		render(
+			<Input
+				placeholder="p"
+				startAdornment={<i data-testid="start" />}
+				endAdornment={<button onClick={onClear}>clear</button>}
+			/>
+		)
+		expect(screen.getByPlaceholderText('p')).toHaveClass('pl-9', 'pr-9')
+		expect(screen.getByTestId('start').parentElement).toHaveClass('pointer-events-none')
+		fireEvent.click(screen.getByRole('button', { name: 'clear' }))
+		expect(onClear).toHaveBeenCalledTimes(1)
+	})
+
+	it('renders a bare input when there are no adornments', () => {
+		render(<Input placeholder="p" />)
+		expect(screen.getByPlaceholderText('p').parentElement).toBe(document.body.firstChild)
+		expect(screen.getByPlaceholderText('p')).not.toHaveClass('pl-9')
 	})
 })
 
@@ -667,5 +704,26 @@ describe('Select', () => {
 		fireEvent.click(combo)
 		expect(spy).toHaveBeenCalled()
 		delete Element.prototype.scrollIntoView
+	})
+})
+
+describe('helperText', () => {
+	const cases = [
+		['Field', props => <Field label="L" onChange={() => {}} {...props} />, 'textbox'],
+		['Select', props => <Select label="L" options={[]} {...props} />, 'combobox'],
+		['TextArea', props => <TextArea label="L" {...props} />, 'textbox'],
+		['PasswordInput', props => <PasswordInput label="L" {...props} />, null],
+	]
+
+	it.each(cases)('%s links helper text with aria-describedby and yields to the error', (_, make, role) => {
+		const control = () => (role ? screen.getByRole(role) : screen.getByLabelText('L'))
+		const { rerender } = render(make({ helperText: 'A hint' }))
+		const hint = screen.getByText('A hint')
+		expect(control().getAttribute('aria-describedby')).toBe(hint.id)
+		rerender(make({ helperText: 'A hint', error: 'Bad' }))
+		expect(screen.queryByText('A hint')).toBeNull()
+		expect(control().getAttribute('aria-describedby')).toBe(screen.getByText('Bad').id)
+		rerender(make({}))
+		expect(control()).not.toHaveAttribute('aria-describedby')
 	})
 })

@@ -33,7 +33,7 @@ const ButtonLink = ({
 			if (disabled) event.preventDefault()
 			else onClick?.(event)
 		}}
-		className={`inline-block text-center ${buttonClass(variant, disabled ? `pointer-events-none opacity-50 ${className}` : className)}`}
+		className={buttonClass(variant, disabled ? `pointer-events-none opacity-50 ${className}` : className)}
 		{...rest}
 	>
 		{children}

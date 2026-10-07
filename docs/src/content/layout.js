@@ -53,7 +53,7 @@ export default {
 			name: 'PageLayout and PageHeader',
 			blocks: [
 				{
-					md: '`PageLayout` accepts `maxWidth`, `centerContent`, `themeToggle`, `outerClassName` and `innerClassName`. `PageHeader`\ntakes `title`, `subtitle` and action children.',
+					md: '`PageLayout` fills the space left in its parent (it is `flex-1`), so the parent must be a full-height flex column, for\nexample `<div className="flex min-h-screen flex-col">` around the `AppBar` and the `PageLayout`. Without that, the page\nsits at the top of the window and, with `themeToggle`, the toggle can overlap the content. `PageLayout` does not set\n`min-h-screen` itself, because that would push it past the viewport when an `AppBar` sits above it.\n\n`PageLayout` accepts `maxWidth`, `centerContent`, `themeToggle`, `outerClassName` and `innerClassName`. `PageHeader`\ntakes `title`, `subtitle` and action children.',
 				},
 				{
 					example: 1,
