@@ -17,7 +17,7 @@ export default defineConfig(({ command }) => ({
 	resolve: {
 		alias: {
 			'xedonium/styles.css': path.join(root, '../src/styles.css'),
-			xedonium: path.join(root, '../src/index.js'),
+			xedonium: path.join(root, '../src/index.ts'),
 			'@xedonium-src': path.join(root, '../src'),
 		},
 	},

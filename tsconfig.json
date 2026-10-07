@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": false,
+		"jsx": "react-jsx",
+		"strict": true,
+		"noEmit": true,
+		"skipLibCheck": true,
+		"moduleResolution": "bundler",
+		"module": "esnext",
+		"target": "es2020",
+		"lib": ["es2022", "dom", "dom.iterable"],
+		"isolatedModules": true
+	},
+	"include": ["src", "test/types.check.tsx"]
+}

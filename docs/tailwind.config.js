@@ -4,5 +4,5 @@ const root = import.meta.dirname
 
 export default {
 	presets: [preset],
-	content: [`${root}/index.html`, `${root}/src/**/*.{js,jsx}`, `${root}/../src/**/*.{js,jsx}`],
+	content: [`${root}/index.html`, `${root}/src/**/*.{js,jsx,ts,tsx}`, `${root}/../src/**/*.{js,jsx,ts,tsx}`],
 }

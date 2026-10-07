@@ -33,10 +33,12 @@ for (const file of fs
 
 // Prop names destructured in a component's first parameter list (best effort)
 const sourceProps = name => {
-	const file = path.join(root, 'src/components', `${name}.jsx`)
-	if (!fs.existsSync(file)) return null
+	const file = ['tsx', 'jsx'].map(ext => path.join(root, 'src/components', `${name}.${ext}`)).find(fs.existsSync)
+	if (!file) return null
 	const text = fs.readFileSync(file, 'utf8')
-	const match = text.match(new RegExp(String.raw`const ${name} =\s*(?:forwardRef\()?\(\{([\s\S]*?)\}\)\s*=>`))
+	const match = text.match(
+		new RegExp(String.raw`const ${name} =\s*(?:forwardRef\()?\(\{([\s\S]*?)\}(?::[^)]*)?\)\s*=>`)
+	)
 	if (!match) return null
 	return match[1]
 		.split(/,(?![^{[(]*[}\])])/)

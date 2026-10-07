@@ -27,6 +27,7 @@ jobs:
           cache: yarn
       - run: yarn install --frozen-lockfile
       - run: yarn lint
+      - run: yarn typecheck
       - run: yarn test:coverage # fails below 90% coverage (thresholds in vitest.config.js)
       - run: yarn build
       - run: yarn check:exports # every exports target exists and xedonium/Button etc. resolve (ESM + CJS)

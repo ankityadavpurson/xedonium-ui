@@ -2,12 +2,14 @@ import js from '@eslint/js'
 import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import globals from 'globals'
+import tseslint from 'typescript-eslint'
 
 export default [
 	{ ignores: ['dist', 'docs/dist', 'coverage'] },
 	js.configs.recommended,
+	...tseslint.configs.recommended.map(config => ({ ...config, files: ['src/**/*.{ts,tsx}'] })),
 	{
-		files: ['src/**/*.{js,jsx}', 'docs/src/**/*.{js,jsx}', 'test/**/*.{js,jsx}'],
+		files: ['src/**/*.{js,jsx,ts,tsx}', 'docs/src/**/*.{js,jsx}', 'test/**/*.{js,jsx}'],
 		languageOptions: {
 			globals: { ...globals.browser, ...globals.vitest },
 			parserOptions: { ecmaFeatures: { jsx: true } },
