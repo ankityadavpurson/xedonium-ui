@@ -418,6 +418,22 @@ describe('AppBar', () => {
 		expect(screen.queryByRole('navigation')).toBeNull()
 		expect(screen.queryByRole('button')).toBeNull()
 	})
+
+	it('renders no outer header frame when embedded (e.g. inside AppShell)', () => {
+		const { container } = renderBar({ embedded: true })
+		expect(container.querySelector('header')).toBeNull()
+		expect(container.firstChild).not.toHaveClass('sticky')
+		expect(screen.getByText('Xed')).toBeInTheDocument()
+	})
+
+	it('has a single banner when embedded in AppShell', () => {
+		render(
+			<ThemeContext.Provider value={{ activeTheme: 'dark', toggleTheme: () => {} }}>
+				<AppShell header={<AppBar brand="Xed" embedded />}>Main</AppShell>
+			</ThemeContext.Provider>
+		)
+		expect(screen.getAllByRole('banner')).toHaveLength(1)
+	})
 })
 
 describe('AppShell', () => {
