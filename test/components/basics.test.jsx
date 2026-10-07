@@ -202,6 +202,8 @@ describe('Card', () => {
 		expect(screen.getByText('go')).toBeInTheDocument()
 		expect(screen.getByText('foot')).toBeInTheDocument()
 		expect(screen.getByText('body')).not.toHaveClass('p-5')
+		expect(container.querySelector('header')).toHaveClass('flex-wrap')
+		expect(screen.getByText('go').parentElement).toHaveClass('ml-auto')
 		rerender(<Card actions={<b>only actions</b>}>body</Card>)
 		expect(screen.queryByRole('heading')).toBeNull()
 		rerender(<Card title="Only title">b</Card>)

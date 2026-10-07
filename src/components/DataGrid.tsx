@@ -285,7 +285,7 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 				<div className="flex flex-wrap items-center justify-between gap-3 text-xs text-app-muted">
 					<span aria-live="polite">
 						{loading ? (
-							'Loading�'
+							'Loading…'
 						) : (
 							<>
 								{processed.length} {processed.length === 1 ? 'row' : 'rows'}

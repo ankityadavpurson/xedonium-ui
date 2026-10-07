@@ -821,7 +821,7 @@ describe('DataGrid', () => {
 		render(<DataGrid columns={columns} rows={rows} pageSize={3} loading />)
 		expect(screen.getByRole('table')).toHaveAttribute('aria-busy', 'true')
 		expect(screen.queryByText('Cara')).toBeNull()
-		expect(screen.getByText('Loading…')).toBeInTheDocument()
+		expect(screen.getByText('Loadingâ€¦')).toBeInTheDocument()
 		expect(screen.getAllByRole('row')).toHaveLength(1 + 3)
 	})
 	const names = () =>
