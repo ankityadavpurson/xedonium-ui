@@ -331,6 +331,29 @@ describe('Input', () => {
 	})
 })
 
+describe('Input adornments', () => {
+	it('renders start and end adornments and pads the input', () => {
+		const onClear = vi.fn()
+		render(
+			<Input
+				placeholder="p"
+				startAdornment={<i data-testid="start" />}
+				endAdornment={<button onClick={onClear}>clear</button>}
+			/>
+		)
+		expect(screen.getByPlaceholderText('p')).toHaveClass('pl-9', 'pr-9')
+		expect(screen.getByTestId('start').parentElement).toHaveClass('pointer-events-none')
+		fireEvent.click(screen.getByRole('button', { name: 'clear' }))
+		expect(onClear).toHaveBeenCalledTimes(1)
+	})
+
+	it('renders a bare input when there are no adornments', () => {
+		render(<Input placeholder="p" />)
+		expect(screen.getByPlaceholderText('p').parentElement).toBe(document.body.firstChild)
+		expect(screen.getByPlaceholderText('p')).not.toHaveClass('pl-9')
+	})
+})
+
 describe('Field', () => {
 	it('labels the input and reports values', () => {
 		const onChange = vi.fn()

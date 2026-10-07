@@ -34,6 +34,7 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
   one page (#26).
 - `Field`, `Select`, `TextArea` and `PasswordInput` accept `helperText`, shown under the field while there is no `error`
   and linked to the control with `aria-describedby` (#30).
+- `Input` accepts `startAdornment` and `endAdornment` (an icon or a clear button) and pads the text to clear them (#31).
 
 ### Added
 
