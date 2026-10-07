@@ -32,6 +32,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
   (hides the column on smaller screens) (#25).
 - `DataGrid` `hideFooterWhenSinglePage` hides the footer (row count, page size select, pager) when every row fits on
   one page (#26).
+- `Field`, `Select`, `TextArea` and `PasswordInput` accept `helperText`, shown under the field while there is no `error`
+  and linked to the control with `aria-describedby` (#30).
 
 ### Added
 
