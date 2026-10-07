@@ -119,6 +119,33 @@ describe('Pagination', () => {
 	})
 })
 
+describe('Sidebar options', () => {
+	const items = [{ key: 'a', label: 'Alpha', href: '/a' }]
+
+	it('draws separators by default and removes them with bordered={false}', () => {
+		const { rerender } = render(<Sidebar items={items} header="H" footer="F" />)
+		const nav = screen.getByRole('navigation')
+		expect(nav).toHaveClass('border-r')
+		expect(screen.getByText('H')).toHaveClass('border-b', 'px-3', 'py-3')
+		expect(screen.getByText('F')).toHaveClass('border-t')
+		rerender(<Sidebar items={items} header="H" footer="F" bordered={false} />)
+		expect(nav).not.toHaveClass('border-r')
+		expect(screen.getByText('H')).not.toHaveClass('border-b')
+		expect(screen.getByText('F')).not.toHaveClass('border-t')
+	})
+
+	it('sets item density and replaces header and list padding', () => {
+		const { rerender } = render(<Sidebar items={items} density="dense" />)
+		expect(screen.getByRole('link', { name: 'Alpha' })).toHaveClass('py-1.5')
+		rerender(<Sidebar items={items} density="comfortable" header="H" headerClassName="p-1" listClassName="p-3" />)
+		expect(screen.getByRole('link', { name: 'Alpha' })).toHaveClass('py-3')
+		expect(screen.getByText('H')).toHaveClass('p-1')
+		expect(screen.getByText('H')).not.toHaveClass('py-3')
+		expect(screen.getByRole('list')).toHaveClass('p-3')
+		expect(screen.getByRole('list')).not.toHaveClass('py-2')
+	})
+})
+
 describe('Sidebar', () => {
 	const items = [
 		{ key: 'home', label: 'Home', href: '/', icon: <svg data-testid="ic" />, badge: 4 },

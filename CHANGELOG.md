@@ -26,6 +26,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `Sidebar` accepts `bordered` (turn the separators off), `density` (`dense` | `default` | `comfortable`),
+  `headerClassName` and `listClassName` (#32).
 - `ActionMenu` items accept `icon`, shown before the label (#44).
 - `CommandPalette` accepts `onQueryChange`, `loading` and `filter` for async results (with grouped `commands`), and
   `highlight` to mark matched text with `<mark>` (#43).
