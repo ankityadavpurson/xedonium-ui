@@ -25,6 +25,8 @@ export interface TooltipProps {
 	followPointer?: boolean
 	/** Styles the wrapper. */
 	className?: string
+	/** Show only when some text inside the trigger is cut off (ellipsis), e.g. a truncated label. */
+	onlyIfTruncated?: boolean
 }
 
 const GAP = 6 // px between trigger and tooltip
@@ -37,6 +39,7 @@ const GAP = 6 // px between trigger and tooltip
 // Hover is tracked on the wrapper, so it also works for disabled buttons.
 // `className` styles the wrapper (e.g. to position it where the bare button used to sit).
 // `as` changes the wrapper element: use `as="g"` to put a tooltip on SVG shapes (a span is not valid inside <svg>).
+// `onlyIfTruncated` shows the tip only when the text inside is cut off (the visible label is already the name).
 // `followPointer` places the tooltip at the mouse instead of beside the trigger, for big shapes such as pie slices.
 const Tooltip = ({
 	text,
@@ -45,6 +48,7 @@ const Tooltip = ({
 	as: Wrapper = 'span',
 	followPointer = false,
 	className = '',
+	onlyIfTruncated = false,
 }: TooltipProps) => {
 	const id = useId()
 	const triggerRef = useRef<Element>(null)
@@ -53,7 +57,15 @@ const Tooltip = ({
 	const [position, setPosition] = useState<{ top: number; left: number } | null>(null)
 	const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null)
 
-	const show = () => setOpen(true)
+	// `onlyIfTruncated`: skip unless something inside the trigger overflows its box
+	const isTruncated = () =>
+		[triggerRef.current, ...(triggerRef.current?.querySelectorAll('*') ?? [])].some(
+			el => !!el && el.scrollWidth > el.clientWidth
+		)
+	const show = () => {
+		if (onlyIfTruncated && !isTruncated()) return
+		setOpen(true)
+	}
 	const hide = () => {
 		setOpen(false)
 		setPosition(null)
@@ -95,7 +107,7 @@ const Tooltip = ({
 
 	// Icon buttons already carry the same text as aria-label; don't make screen readers say it twice
 	// (an SVG wrapper cannot hold the hidden description either, so only the default span does it)
-	const describe = Wrapper === 'span' && children.props['aria-label'] !== text
+	const describe = Wrapper === 'span' && !onlyIfTruncated && children.props['aria-label'] !== text
 
 	const track = (event: MouseEvent) => followPointer && setPointer({ x: event.clientX, y: event.clientY })
 

@@ -26,6 +26,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `Sidebar` items accept `section: true` for a group caption (a divider when collapsed), and labels that are cut off
+  by the width show a tooltip. `Tooltip` gains `onlyIfTruncated` (#33).
 - `Sidebar` accepts `bordered` (turn the separators off), `density` (`dense` | `default` | `comfortable`),
   `headerClassName` and `listClassName` (#32).
 - `ActionMenu` items accept `icon`, shown before the label (#44).

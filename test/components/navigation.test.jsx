@@ -119,6 +119,36 @@ describe('Pagination', () => {
 	})
 })
 
+describe('Sidebar sections and tooltips', () => {
+	const items = [
+		{ key: 's', label: 'Main Menu', section: true },
+		{ key: 'a', label: 'Alpha', href: '/a', icon: <i /> },
+	]
+
+	it('renders a section as a caption, or a divider when collapsed', () => {
+		const { rerender } = render(<Sidebar items={items} />)
+		expect(screen.getByText('Main Menu')).toHaveClass('uppercase')
+		expect(screen.queryByRole('separator')).toBeNull()
+		expect(screen.getAllByRole('link')).toHaveLength(1)
+		rerender(<Sidebar items={items} collapsed />)
+		expect(screen.queryByText('Main Menu')).toBeNull()
+		expect(screen.getByRole('separator')).toBeInTheDocument()
+	})
+
+	it('shows a tooltip on hover only when the label is truncated', () => {
+		render(<Sidebar items={items} />)
+		const link = screen.getByRole('link', { name: 'Alpha' })
+		fireEvent.mouseEnter(link.parentElement)
+		expect(screen.queryByText('Alpha', { selector: 'div' })).toBeNull()
+		fireEvent.mouseLeave(link.parentElement)
+		const spy = vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(200)
+		vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(100)
+		fireEvent.mouseEnter(link.parentElement)
+		expect(screen.getByText('Alpha', { selector: 'div' })).toBeInTheDocument()
+		spy.mockRestore()
+	})
+})
+
 describe('Sidebar options', () => {
 	const items = [{ key: 'a', label: 'Alpha', href: '/a' }]
 

@@ -1,4 +1,5 @@
-import type { ElementType, ReactNode } from 'react'
+import type { ElementType, ReactElement, ReactNode } from 'react'
+import Tooltip from './Tooltip'
 
 export interface SidebarItem {
 	key: string
@@ -7,6 +8,8 @@ export interface SidebarItem {
 	href?: string
 	onClick?: () => void
 	badge?: ReactNode
+	/** A non-interactive caption that groups the items after it (e.g. "Main Menu"); only `key` and `label` are used. */
+	section?: boolean
 	/** Makes the item a group with an indented sub-list. */
 	children?: SidebarItem[]
 }
@@ -41,6 +44,7 @@ export interface SidebarProps {
  * Vertical navigation. items: [{ key, label, icon?, href?, onClick?, badge?, children? }]; `children` makes a group
  * with an indented sub-list. `activeKey` marks the current item; `onSelect(key)` fires on any item click.
  * `collapsed` shows icons only (give every item an `icon`). `linkComponent` / `linkProp` swap in a router link.
+ * `section: true` makes an item a caption (a thin divider when collapsed). Labels cut off by the width get a tooltip.
  * `bordered={false}` removes the separators; `density` sets the item height; `headerClassName` / `listClassName` replace
  * the header and list padding.
  */
@@ -67,6 +71,18 @@ const Sidebar = ({
 	className = '',
 }: SidebarProps) => {
 	const renderItem = (item: SidebarItem, depth = 0): ReactNode => {
+		if (item.section)
+			return collapsed ? (
+				<li key={item.key} role="separator" className="mx-2 my-2 border-t border-app-border" />
+			) : (
+				<li
+					key={item.key}
+					role="presentation"
+					className="truncate px-3 pb-1 pt-3 text-[10px] font-semibold uppercase tracking-widest text-app-muted"
+				>
+					{item.label}
+				</li>
+			)
 		const active = item.key === activeKey
 		const content = (
 			<>
@@ -86,34 +102,45 @@ const Sidebar = ({
 			onSelect?.(item.key)
 		}
 		const hasChildren = !!item.children?.length
+		// Collapsed items already carry the label as `title`; expanded ones get a tooltip if the label is truncated
+		const withTip = (node: ReactElement<{ 'aria-label'?: string }>) =>
+			collapsed ? (
+				node
+			) : (
+				<Tooltip text={item.label} placement="right" onlyIfTruncated className="flex w-full">
+					{node}
+				</Tooltip>
+			)
 
 		return (
 			<li key={item.key}>
-				{item.href && !hasChildren ? (
-					<Link
-						{...{ [linkProp]: item.href }}
-						aria-current={active ? 'page' : undefined}
-						aria-label={collapsed ? item.label : undefined}
-						title={collapsed ? item.label : undefined}
-						onClick={handle}
-						className={classes}
-						style={style}
-					>
-						{content}
-					</Link>
-				) : (
-					<button
-						type="button"
-						aria-current={active ? 'page' : undefined}
-						aria-label={collapsed ? item.label : undefined}
-						title={collapsed ? item.label : undefined}
-						onClick={handle}
-						className={classes}
-						style={style}
-					>
-						{content}
-					</button>
-				)}
+				{item.href && !hasChildren
+					? withTip(
+							<Link
+								{...{ [linkProp]: item.href }}
+								aria-current={active ? 'page' : undefined}
+								aria-label={collapsed ? item.label : undefined}
+								title={collapsed ? item.label : undefined}
+								onClick={handle}
+								className={classes}
+								style={style}
+							>
+								{content}
+							</Link>
+						)
+					: withTip(
+							<button
+								type="button"
+								aria-current={active ? 'page' : undefined}
+								aria-label={collapsed ? item.label : undefined}
+								title={collapsed ? item.label : undefined}
+								onClick={handle}
+								className={classes}
+								style={style}
+							>
+								{content}
+							</button>
+						)}
 				{hasChildren && !collapsed && (
 					<ul className="m-0 list-none p-0">{item.children?.map(child => renderItem(child, depth + 1))}</ul>
 				)}
