@@ -193,6 +193,12 @@ const EXTRA = [
 	'square-check',
 	'thumbs-down',
 	'thumbs-up',
+	'ban',
+	'arrow-up-right',
+	'devices',
+	'layout-grid',
+	'book-open',
+	'user-badge',
 ]
 
 const ROUNDED = ['whatsapp', 'eye', 'eye-off', 'map-pin', 'rocket', 'shield', 'shield-check', 'shield-alert', 'github']
@@ -311,6 +317,14 @@ describe('icon inventory', () => {
 		expect(shape(svgs[4])).toBe(shape(svgs[5]))
 	})
 
+	it('LayoutGrid is the same drawing as Grid', () => {
+		const { container } = render(
+			createElement('div', null, createElement(api.LayoutGridIcon), createElement(api.GridIcon))
+		)
+		const [a, b] = [...container.querySelectorAll('svg')]
+		expect(a.innerHTML).toBe(b.innerHTML)
+	})
+
 	it('CheckSquare is the same drawing as SquareCheck', () => {
 		const { container } = render(
 			createElement('div', null, createElement(api.CheckSquareIcon), createElement(api.SquareCheckIcon))
@@ -322,7 +336,7 @@ describe('icon inventory', () => {
 
 describe('icons', () => {
 	it('exports every icon', () => {
-		expect(icons.length).toBe(189)
+		expect(icons.length).toBe(195)
 	})
 
 	it.each(icons)('%s renders a decorative svg with default and custom classes', (_, Icon) => {

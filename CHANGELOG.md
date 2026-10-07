@@ -26,6 +26,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- Icons `BanIcon`, `ArrowUpRightIcon`, `DevicesIcon`, `LayoutGridIcon` (same drawing as `GridIcon`), `BookOpenIcon` and
+  `UserBadgeIcon` (#48).
 - `DateTimePicker`: a date and a time picker side by side with one `Date` value, replacing `<input type="datetime-local">`
   (#47).
 - `Sidebar` items accept `section: true` for a group caption (a divider when collapsed), and labels that are cut off
