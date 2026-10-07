@@ -6,6 +6,8 @@ export default defineConfig({
 	test: {
 		environment: 'happy-dom',
 		globals: true,
+		// Node 25 warns once per worker that --localstorage-file has no path (happy-dom supplies its own localStorage)
+		poolOptions: { forks: { execArgv: ['--no-warnings'] } },
 		setupFiles: ['./test/setup.js'],
 		include: ['test/**/*.test.{js,jsx}'],
 		coverage: {

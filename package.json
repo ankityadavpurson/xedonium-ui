@@ -64,7 +64,7 @@
 	},
 	"scripts": {
 		"docs": "vite --config docs/vite.config.js",
-		"build": "vite build && npm run build:types && node scripts/copy-css.js",
+		"build": "vite build && tsc -p tsconfig.build.json && node scripts/copy-css.js",
 		"build:types": "tsc -p tsconfig.build.json",
 		"lint": "eslint .",
 		"typecheck": "tsc --noEmit",
