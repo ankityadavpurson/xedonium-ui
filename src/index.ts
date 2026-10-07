@@ -278,6 +278,7 @@ export { default as useFlipAlign } from './hooks/useFlipAlign'
 export { default as useEscapeKey } from './hooks/useEscapeKey'
 export { default as useDismissable } from './hooks/useDismissable'
 export { default as useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
+export { default as useMediaQuery } from './hooks/useMediaQuery'
 export { default as useLeaveWarning } from './hooks/useLeaveWarning'
 export { default as useTimedToast } from './hooks/useTimedToast'
 

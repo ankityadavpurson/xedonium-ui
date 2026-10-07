@@ -24,6 +24,14 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
   without a double border or nested banners (#28).
 - `AppShell` accepts `menuButtonVariant` and `menuButtonProps` (`className`, `aria-label`, ...) to customise the mobile
   menu button (#27).
+- `AppShell` `sidebarCollapsedBelow="lg"` shows the inline sidebar as an icon rail between `md` and `lg`, and a
+  `sidebar` render function now receives `(close, { inDrawer, collapsed })`. New `useMediaQuery` hook (#29).
+- `DataGrid` `loading` shows skeleton rows in place of the data, sets `aria-busy` on the table and announces "Loading…"
+  in the footer (#24).
+- `DataGrid` columns accept `className`, `headerClassName`, `width`, `minWidth` and `hideBelow: 'sm' | 'md' | 'lg'`
+  (hides the column on smaller screens) (#25).
+- `DataGrid` `hideFooterWhenSinglePage` hides the footer (row count, page size select, pager) when every row fits on
+  one page (#26).
 
 ### Added
 

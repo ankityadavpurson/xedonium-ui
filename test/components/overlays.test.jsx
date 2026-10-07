@@ -437,6 +437,36 @@ describe('AppBar', () => {
 })
 
 describe('AppShell', () => {
+	it('tells a sidebar render function whether it is in the drawer or an icon rail', () => {
+		const seen = []
+		const listeners = []
+		const original = window.matchMedia
+		window.matchMedia = query => ({
+			matches: false,
+			media: query,
+			addEventListener: (_, cb) => listeners.push(cb),
+			removeEventListener: () => {},
+		})
+		render(
+			<AppShell
+				header="h"
+				sidebarCollapsedBelow="lg"
+				sidebar={(close, ctx) => {
+					seen.push(ctx)
+					return <nav>side</nav>
+				}}
+			>
+				Main
+			</AppShell>
+		)
+		expect(seen).toContainEqual({ inDrawer: false, collapsed: true })
+		fireEvent.click(screen.getByRole('button', { name: 'Open menu' }))
+		expect(seen).toContainEqual({ inDrawer: true, collapsed: false })
+		act(() => listeners.forEach(cb => cb({ matches: true })))
+		expect(seen).toContainEqual({ inDrawer: false, collapsed: false })
+		window.matchMedia = original
+	})
+
 	it('customises the mobile menu button', () => {
 		const onClick = vi.fn()
 		render(

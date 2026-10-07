@@ -793,6 +793,37 @@ describe('DataGrid', () => {
 		{ id: 4, name: 'Dan', age: 41, city: 'Lima' },
 		{ id: 5, name: 'Eve', age: 41, city: 'Cairo' },
 	]
+
+	it('applies per-column classes, width and responsive hiding', () => {
+		const cols = [
+			{ key: 'name', header: 'Name', className: 'cell-x', headerClassName: 'head-x', width: 120, minWidth: 90 },
+			{ key: 'city', header: 'City', hideBelow: 'md' },
+		]
+		render(<DataGrid columns={cols} rows={rows} />)
+		const head = screen.getByRole('columnheader', { name: 'Name' })
+		expect(head).toHaveClass('head-x')
+		expect(head).toHaveStyle({ width: '120px', 'min-width': '90px' })
+		expect(screen.getByText('Cara')).toHaveClass('cell-x')
+		expect(screen.getByRole('columnheader', { name: 'City' })).toHaveClass('hidden', 'md:table-cell')
+		expect(screen.getByText('Paris')).toHaveClass('hidden', 'md:table-cell')
+	})
+
+	it('hides the footer when everything fits on one page, if asked', () => {
+		const { rerender } = render(<DataGrid columns={columns} rows={rows} pageSize={10} />)
+		expect(screen.getByText(`${rows.length} rows`)).toBeInTheDocument()
+		rerender(<DataGrid columns={columns} rows={rows} pageSize={10} hideFooterWhenSinglePage />)
+		expect(screen.queryByText(`${rows.length} rows`)).toBeNull()
+		rerender(<DataGrid columns={columns} rows={rows} pageSize={2} hideFooterWhenSinglePage />)
+		expect(screen.getByText(`${rows.length} rows`)).toBeInTheDocument()
+	})
+
+	it('shows skeleton rows and aria-busy while loading', () => {
+		render(<DataGrid columns={columns} rows={rows} pageSize={3} loading />)
+		expect(screen.getByRole('table')).toHaveAttribute('aria-busy', 'true')
+		expect(screen.queryByText('Cara')).toBeNull()
+		expect(screen.getByText('Loading…')).toBeInTheDocument()
+		expect(screen.getAllByRole('row')).toHaveLength(1 + 3)
+	})
 	const names = () =>
 		screen
 			.getAllByRole('row')
