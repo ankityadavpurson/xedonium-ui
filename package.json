@@ -1,7 +1,7 @@
 {
 	"name": "xedonium",
 	"version": "0.10.0",
-	"description": "Minimal, theme-aware React + Tailwind UI components extracted from Boot Bridge",
+	"description": "Minimal, theme-aware React UI components styled with Tailwind CSS. Light/dark themes, TypeScript types included.",
 	"type": "module",
 	"license": "MIT",
 	"author": "Ankit Yadav",

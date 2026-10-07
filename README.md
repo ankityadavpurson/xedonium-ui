@@ -6,13 +6,14 @@
 
 ### Minimal, theme-aware React UI
 
-Forms, charts, overlays and 160+ icons with light and dark themes, each one a separate module you can import on its own.
+Forms, charts, overlays and 160+ icons with light and dark themes,</br>
+each one a separate module you can import on its own.
 
 [Live docs](https://ankityadavpurson.github.io/xedonium-ui/)
 
 </div>
 
-Minimal, theme-aware React + Tailwind UI components, extracted from Boot Bridge.
+Minimal, theme-aware React UI components styled with Tailwind CSS. Light/dark themes, TypeScript types included.
 Square corners, semantic `app-*` color tokens, light/dark via `<html data-theme>`.
 
 ## Install
