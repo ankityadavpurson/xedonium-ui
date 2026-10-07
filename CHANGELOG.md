@@ -26,6 +26,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `StatCard` accepts `icon`, `status` / `statusTone` (a Chip), `href` (with `linkComponent` / `linkProp`) or `onClick` to
+  make the tile clickable, `disabled`, and `loading` (value placeholder with `aria-busy`) (#42).
 - `Modal` accepts `fullScreenBelow` (`'sm'` | `'md'`) to fill the screen on small viewports, and its props now include
   `noValidate`, `autoComplete`, `action`, `method`, `encType`, `target` and `acceptCharset` for `as="form"` (#41).
 - `Drawer` accepts `busy` (ignores Escape, backdrop and close while an action is in flight, like `Modal`) and

@@ -392,6 +392,48 @@ describe('StatCard', () => {
 	})
 })
 
+describe('StatCard interaction', () => {
+	it('is a link with href, a button with onClick, and plain otherwise', () => {
+		const onClick = vi.fn()
+		const { rerender } = render(<StatCard label="Users" value="10" href="/users" icon={<i data-testid="ic" />} />)
+		expect(screen.getByRole('link')).toHaveAttribute('href', '/users')
+		expect(screen.getByTestId('ic')).toBeInTheDocument()
+		rerender(<StatCard label="Users" value="10" onClick={onClick} />)
+		fireEvent.click(screen.getByRole('button'))
+		expect(onClick).toHaveBeenCalledTimes(1)
+		rerender(<StatCard label="Users" value="10" />)
+		expect(screen.queryByRole('button')).toBeNull()
+		expect(screen.queryByRole('link')).toBeNull()
+	})
+
+	it('supports router links', () => {
+		const Router = ({ to, children, ...p }) => (
+			<a data-router href={to} {...p}>
+				{children}
+			</a>
+		)
+		render(<StatCard label="L" value="1" href="/x" linkComponent={Router} linkProp="to" />)
+		expect(screen.getByRole('link')).toHaveAttribute('data-router')
+	})
+
+	it('is not interactive when disabled, and shows a status chip', () => {
+		const onClick = vi.fn()
+		const { container } = render(
+			<StatCard label="L" value="1" href="/x" onClick={onClick} disabled status="Restricted" statusTone="warning" />
+		)
+		expect(screen.queryByRole('link')).toBeNull()
+		expect(container.firstChild).toHaveAttribute('aria-disabled', 'true')
+		expect(screen.getByText('Restricted')).toBeInTheDocument()
+	})
+
+	it('shows a placeholder and aria-busy while loading', () => {
+		const { container } = render(<StatCard label="L" value="42" delta="+1%" loading />)
+		expect(container.firstChild).toHaveAttribute('aria-busy', 'true')
+		expect(screen.queryByText('42')).toBeNull()
+		expect(screen.queryByText('+1%')).toBeNull()
+	})
+})
+
 describe('Dashboard', () => {
 	it('renders header, stats and panels', () => {
 		const { rerender, container } = render(
