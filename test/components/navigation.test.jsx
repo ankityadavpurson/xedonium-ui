@@ -87,6 +87,13 @@ describe('Pagination per page', () => {
 })
 
 describe('Pagination', () => {
+	it('sizes buttons to match the per-page Select and gives Prev / Next the same width', () => {
+		render(<Pagination page={2} pageCount={5} onChange={() => {}} />)
+		expect(screen.getByLabelText('Page 2')).toHaveClass('min-h-[38px]', 'min-w-[38px]')
+		expect(screen.getByText('Prev')).toHaveClass('min-h-[38px]', 'min-w-16')
+		expect(screen.getByText('Next')).toHaveClass('min-w-16')
+	})
+
 	it('shows gaps and disables the edge buttons', () => {
 		const onChange = vi.fn()
 		const { rerender } = render(<Pagination page={1} pageCount={10} onChange={onChange} />)

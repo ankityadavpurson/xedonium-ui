@@ -22,6 +22,7 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
   into a narrow column (#37).
 - `Button` / `ButtonLink` lay out as `inline-flex` with a gap, so an icon next to a label sits beside it instead of
   stacking above it (#23).
+- `Pagination` buttons are 38px tall, matching the per-page `Select`, and Prev / Next share one minimum width (#34).
 
 ### Added
 
