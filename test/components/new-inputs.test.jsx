@@ -19,6 +19,24 @@ const options = [
 ]
 
 describe('Accordion', () => {
+	it.each([
+		['sm', 'gap-2'],
+		['md', 'gap-4'],
+		['lg', 'gap-6'],
+	])('gap=%s separates the items into their own bordered cards', (gap, cls) => {
+		const { container } = render(<Accordion items={items} gap={gap} />)
+		expect(container.firstChild).toHaveClass('flex', 'flex-col', cls)
+		expect(container.firstChild).not.toHaveClass('border', 'divide-y')
+		expect(container.firstChild.firstChild).toHaveClass('border')
+	})
+
+	it('shares one border with no gap, including for an unknown gap', () => {
+		const { container, rerender } = render(<Accordion items={items} />)
+		expect(container.firstChild).toHaveClass('divide-y', 'border')
+		rerender(<Accordion items={items} gap="huge" />)
+		expect(container.firstChild).toHaveClass('divide-y', 'border')
+	})
+
 	const items = [
 		{ key: 'one', title: 'One', content: 'First body' },
 		{ key: 'two', title: 'Two', content: 'Second body' },

@@ -13,6 +13,12 @@ export default {
 				{
 					example: 1,
 				},
+				{
+					md: 'By default the items share one border. Set `gap` to `sm`, `md` or `lg` to space them apart as separate bordered items.',
+				},
+				{
+					example: 2,
+				},
 			],
 		},
 		{

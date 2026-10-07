@@ -22,6 +22,36 @@ const Spinner = ({ size }) => (
 	</svg>
 )
 
+const MOTION = { spin: 'animate-spin', pulse: 'animate-pulse', bounce: 'animate-bounce', none: '' }
+
+// A string is an image when it is a URL or path (http(s), data:, /, ./, ../) or ends in an image extension;
+// anything else is shown as text, which is what makes an emoji work
+const IMAGE_SRC = /^(https?:|data:image\/|blob:|\/|\.{1,2}\/)|\.(png|jpe?g|gif|webp|avif|svg)(\?.*)?$/i
+
+// Custom mark: an emoji, an image URL, or an element such as an inline <svg>, sized to the loader and animated
+const CustomMark = ({ icon, size, motion }) => {
+	const box = `inline-flex shrink-0 items-center justify-center ${MOTION[motion] ?? MOTION.spin}`
+	if (typeof icon === 'string' && IMAGE_SRC.test(icon)) {
+		return <img src={icon} alt="" width={size} height={size} className={`${box} object-contain`} />
+	}
+	if (typeof icon === 'string') {
+		return (
+			<span
+				aria-hidden="true"
+				className={box}
+				style={{ width: size, height: size, fontSize: size * 0.8, lineHeight: 1 }}
+			>
+				{icon}
+			</span>
+		)
+	}
+	return (
+		<span aria-hidden="true" className={`${box} [&>svg]:h-full [&>svg]:w-full`} style={{ width: size, height: size }}>
+			{icon}
+		</span>
+	)
+}
+
 const Dots = () => (
 	<span aria-hidden="true" className="inline-flex">
 		<span className="xd-dot">.</span>
@@ -39,19 +69,33 @@ const Dots = () => (
  * - `inline`: spinner beside the label.
  * - `stacked`: spinner above a centered label.
  * - `card`: bordered panel with spinner, label as the title and an optional `description` line.
+ * `icon` swaps the built-in spinner or fan for your own mark: an emoji (`"🚀"`), an image URL or path
+ * (`"/logo.png"`, `"data:image/svg+xml,..."`) or an element such as an inline `<svg>`. `iconMotion` animates it
+ * (`spin` default, `pulse`, `bounce`, `none`). `dots` and `shimmer` have no mark, so they ignore `icon`.
  * `size` is sm | md | lg. The loader is a polite live region (`role="status"`); only `spinner` has no visible text,
  * so its `label` is read to screen readers only.
  */
-const Loader = ({ variant = 'fan', size = 'md', label = 'Loading', description, className = '' }) => {
+const Loader = ({
+	variant = 'fan',
+	size = 'md',
+	label = 'Loading',
+	description,
+	icon,
+	iconMotion = 'spin',
+	className = '',
+}) => {
 	const text = TEXT[size]
 	const ring = RING[size]
+	const hasIcon = icon !== undefined && icon !== null && icon !== ''
+	// The mark of every variant that has one: your icon when given, the built-in ring otherwise
+	const mark = hasIcon ? <CustomMark icon={icon} size={ring} motion={iconMotion} /> : <Spinner size={ring} />
 
 	let content
 	switch (variant) {
 		case 'spinner':
 			content = (
 				<>
-					<Spinner size={ring} />
+					{mark}
 					<span className="sr-only">{label}</span>
 				</>
 			)
@@ -70,7 +114,7 @@ const Loader = ({ variant = 'fan', size = 'md', label = 'Loading', description, 
 		case 'inline':
 			content = (
 				<span className="inline-flex items-center gap-2">
-					<Spinner size={ring} />
+					{mark}
 					<span className={`${text} text-app-text`}>{label}</span>
 				</span>
 			)
@@ -78,7 +122,7 @@ const Loader = ({ variant = 'fan', size = 'md', label = 'Loading', description, 
 		case 'stacked':
 			content = (
 				<span className="flex flex-col items-center gap-3 text-center">
-					<Spinner size={ring} />
+					{mark}
 					<span className={`${text} text-app-text`}>{label}</span>
 				</span>
 			)
@@ -86,7 +130,7 @@ const Loader = ({ variant = 'fan', size = 'md', label = 'Loading', description, 
 		case 'card':
 			content = (
 				<span className="flex w-full max-w-xs items-center gap-4 border border-app-border bg-app-card p-4">
-					<Spinner size={ring} />
+					{mark}
 					<span className="flex min-w-0 flex-col gap-0.5">
 						<span className={`${text} font-semibold text-app-text`}>{label}</span>
 						{description && <HelperText as="span">{description}</HelperText>}
@@ -97,7 +141,7 @@ const Loader = ({ variant = 'fan', size = 'md', label = 'Loading', description, 
 		default:
 			content = (
 				<span className="flex flex-col items-center gap-3 text-center">
-					<FanFavicon size={FAN[size]} />
+					{hasIcon ? <CustomMark icon={icon} size={FAN[size]} motion={iconMotion} /> : <FanFavicon size={FAN[size]} />}
 					<span className={`${text} text-app-text`}>{label}</span>
 				</span>
 			)

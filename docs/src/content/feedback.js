@@ -58,6 +58,12 @@ export default {
 				{
 					example: 2,
 				},
+				{
+					md: 'Pass `icon` to use your own mark instead of the built-in fan or ring: an emoji, an image URL or path (including an `.svg` file or a `data:` URI), or an element such as an inline `<svg>`. It is sized to the loader and animated by `iconMotion` (`spin`, `pulse`, `bounce` or `none`). `dots` and `shimmer` have no mark, so they ignore it.',
+				},
+				{
+					example: 3,
+				},
 			],
 		},
 		{

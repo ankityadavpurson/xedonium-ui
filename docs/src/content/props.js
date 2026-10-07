@@ -437,6 +437,13 @@ const props = {
 				'Loading text shown by every variant except spinner (which keeps it for screen readers only).',
 			],
 			['description', 'string', '', 'Helper line under the label (card variant only).'],
+			[
+				'icon',
+				'string | ReactNode',
+				'',
+				'Custom mark instead of the built-in fan or ring: an emoji, an image URL or path (png, svg, data:…) or an element such as an inline <svg>. Ignored by dots and shimmer.',
+			],
+			['iconMotion', "'spin' | 'pulse' | 'bounce' | 'none'", "'spin'", 'How the custom icon animates.'],
 			className,
 		],
 		FanFavicon: [
@@ -452,6 +459,8 @@ const props = {
 			['size', "'sm' | 'md' | 'lg'", "'md'", 'Same as Loader.'],
 			['label', 'string', "'Loading'", 'Same as Loader.'],
 			['description', 'string', '', 'Same as Loader (card variant).'],
+			['icon', 'string | ReactNode', '', 'Same as Loader.'],
+			['iconMotion', "'spin' | 'pulse' | 'bounce' | 'none'", "'spin'", 'Same as Loader.'],
 		],
 	},
 
@@ -632,6 +641,12 @@ const props = {
 			['defaultValue', 'string[]', '[]', 'Initially open keys (uncontrolled).'],
 			['onChange', '(keys: string[]) => void', '', 'Called with the new array of open keys.'],
 			['multiple', 'boolean', 'false', 'Allow several sections open at once.'],
+			[
+				'gap',
+				"'none' | 'sm' | 'md' | 'lg'",
+				"'none'",
+				'Space between items (0.5 / 1 / 1.5rem). Any gap gives each item its own border.',
+			],
 			className,
 		],
 	},
