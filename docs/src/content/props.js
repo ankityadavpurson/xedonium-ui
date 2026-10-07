@@ -640,6 +640,8 @@ const props = {
 			['removeLabel', 'string', '', 'Accessible name of the remove button (default "Remove <text>").'],
 			['leading', 'ReactNode', '', 'Icon or avatar shown before the text.'],
 			['size', "'sm' | 'md'", "'md'", 'Chip size.'],
+			['tone', "'default' | 'success' | 'warning' | 'danger' | 'info'", "'default'", 'Colour, for status labels.'],
+			['filled', 'boolean', 'false', 'Solid fill in the tone colour instead of the tinted outline.'],
 			['disabled', 'boolean', 'false', 'Disable the chip and its buttons.'],
 			className,
 			children,

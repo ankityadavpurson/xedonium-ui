@@ -18,6 +18,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Fixed
 
+- Docs: the Badge page points to `Chip` (with `tone`) for status labels, and the Chip page says when to use `Badge`
+  instead (#36).
 - Docs: `PageLayout` needs a full-height flex column as its parent (`min-h-screen flex flex-col`); the README, the Getting
   Started page and the component docs now say so and show it (#45).
 - `Card` header wraps on narrow screens, so `actions` drop below a long title / subtitle instead of squeezing the text
