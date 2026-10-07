@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { useState } from 'react'
-import Accordion from '../../src/components/Accordion'
+import Accordion, { AccordionSection } from '../../src/components/Accordion'
 import Badge from '../../src/components/Badge'
 import Button from '../../src/components/Button'
 import ButtonLink from '../../src/components/ButtonLink'
@@ -17,6 +17,41 @@ const options = [
 	{ value: 'c', label: 'Cherry', disabled: true },
 	{ value: 'd', label: 'Date' },
 ]
+
+describe('AccordionSection', () => {
+	it('toggles on its own, or is controlled', () => {
+		const onChange = vi.fn()
+		const { rerender } = render(
+			<AccordionSection title="Details" onChange={onChange}>
+				Body
+			</AccordionSection>
+		)
+		const header = screen.getByRole('button', { name: 'Details' })
+		expect(header).toHaveAttribute('aria-expanded', 'false')
+		fireEvent.click(header)
+		expect(header).toHaveAttribute('aria-expanded', 'true')
+		expect(onChange).toHaveBeenLastCalledWith(true)
+		expect(screen.getByRole('region', { name: 'Details' })).toBeVisible()
+		rerender(
+			<AccordionSection title="Details" open={false} onChange={onChange}>
+				Body
+			</AccordionSection>
+		)
+		fireEvent.click(header)
+		expect(header).toHaveAttribute('aria-expanded', 'false')
+		expect(onChange).toHaveBeenLastCalledWith(true)
+	})
+
+	it('can start open and be disabled', () => {
+		render(
+			<AccordionSection title="T" defaultOpen disabled>
+				Body
+			</AccordionSection>
+		)
+		expect(screen.getByRole('button', { name: 'T' })).toBeDisabled()
+		expect(screen.getByText('Body')).toBeVisible()
+	})
+})
 
 describe('Accordion', () => {
 	it.each([

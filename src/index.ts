@@ -1,4 +1,4 @@
-export { default as Accordion } from './components/Accordion'
+export { default as Accordion, AccordionSection } from './components/Accordion'
 export { default as ActionMenu } from './components/ActionMenu'
 export { default as Alert } from './components/Alert'
 export { default as AppBar } from './components/AppBar'
@@ -293,7 +293,7 @@ export {
 } from './theme'
 
 // Prop and data types
-export type { AccordionItem, AccordionGap, AccordionProps } from './components/Accordion'
+export type { AccordionItem, AccordionGap, AccordionProps, AccordionSectionProps } from './components/Accordion'
 export type { ActionMenuItem, ActionMenuProps } from './components/ActionMenu'
 export type { AlertProps } from './components/Alert'
 export type { AppBarLink, AppBarProps } from './components/AppBar'
