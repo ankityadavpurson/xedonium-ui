@@ -6,6 +6,7 @@ import {
 	type ComponentPropsWithoutRef,
 	type ElementType,
 	type ReactNode,
+	type RefObject,
 } from 'react'
 import { createPortal } from 'react-dom'
 import useDialogFocus from '../hooks/useDialogFocus'
@@ -33,6 +34,8 @@ export interface ModalProps extends Omit<ComponentPropsWithoutRef<'div'>, 'title
 	describedBy?: string
 	/** A Tailwind `max-w-*` class. */
 	maxWidth?: string
+	/** Element to focus when the dialog opens (default: the one marked `data-autofocus`, else the first control). */
+	initialFocusRef?: RefObject<HTMLElement | null>
 	/** Fill the screen (no margin, border or max width) below this breakpoint, e.g. for long forms on phones. */
 	fullScreenBelow?: 'sm' | 'md'
 	/** Element to render; `form` with `onSubmit` makes the dialog a form. */
@@ -54,7 +57,8 @@ const TONES: Record<'default' | 'danger', string> = {
  * Shared dialog shell: backdrop, focus trap, Escape to close, header with close button.
  * While `busy`, Escape / backdrop / close are ignored so an in-flight action can't lose its result.
  * `dismissible={false}` only ignores Escape / backdrop (e.g. while a nested confirm dialog is open).
- * Pass `as="form"` with `onSubmit` to make the dialog a form; `noValidate`, `autoComplete`, `action`, `method` and the
+ * On open, focus goes to `initialFocusRef`, else an element with `data-autofocus`, else the first control (the Close
+ * button). Pass `as="form"` with `onSubmit` to make the dialog a form; `noValidate`, `autoComplete`, `action`, `method` and the
  * like are passed through to it. `fullScreenBelow="sm"` fills the screen on phones.
  */
 const Modal = ({
@@ -68,6 +72,7 @@ const Modal = ({
 	describedBy,
 	maxWidth = 'max-w-lg',
 	fullScreenBelow,
+	initialFocusRef,
 	className = '',
 	as: Container = 'div',
 	footer,
@@ -87,7 +92,7 @@ const Modal = ({
 	}, [busy, dismissible])
 
 	useEscapeKey(open, requestClose)
-	useDialogFocus(open, dialogRef)
+	useDialogFocus(open, dialogRef, initialFocusRef)
 
 	if (!open) return null
 

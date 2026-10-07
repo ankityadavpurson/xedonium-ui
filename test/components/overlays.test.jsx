@@ -352,6 +352,26 @@ describe('ConfirmDialog', () => {
 	})
 })
 
+describe('initialFocusRef', () => {
+	const Harness = ({ Dialog }) => {
+		const ref = useRef(null)
+		return (
+			<Dialog open onClose={() => {}} title="T" initialFocusRef={ref}>
+				<input aria-label="first" />
+				<input ref={ref} aria-label="chosen" />
+			</Dialog>
+		)
+	}
+
+	it.each([
+		['Modal', Modal],
+		['Drawer', Drawer],
+	])('%s focuses the chosen element on open', (_, Dialog) => {
+		render(<Harness Dialog={Dialog} />)
+		expect(screen.getByLabelText('chosen')).toHaveFocus()
+	})
+})
+
 describe('Drawer', () => {
 	it('ignores Escape, backdrop and close while busy, with an optional overlay', () => {
 		const onClose = vi.fn()

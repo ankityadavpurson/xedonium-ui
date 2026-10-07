@@ -26,6 +26,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `Modal`, `Drawer` and `useDialogFocus` accept `initialFocusRef` to choose the element focused on open; the
+  `data-autofocus` attribute is now documented (#46).
 - Icons `BanIcon`, `ArrowUpRightIcon`, `DevicesIcon`, `LayoutGridIcon` (same drawing as `GridIcon`), `BookOpenIcon` and
   `UserBadgeIcon` (#48).
 - `DateTimePicker`: a date and a time picker side by side with one `Date` value, replacing `<input type="datetime-local">`

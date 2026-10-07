@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useRef, type ReactNode } from 'react'
+import { useCallback, useEffect, useId, useRef, type ReactNode, type RefObject } from 'react'
 import { createPortal } from 'react-dom'
 import useDialogFocus from '../hooks/useDialogFocus'
 import useEscapeKey from '../hooks/useEscapeKey'
@@ -16,6 +16,8 @@ export interface DrawerProps {
 	/** `false` removes the body padding so the content fills and scrolls itself. */
 	padded?: boolean
 	footer?: ReactNode
+	/** Element to focus when the drawer opens (default: the one marked `data-autofocus`, else the first control). */
+	initialFocusRef?: RefObject<HTMLElement | null>
 	/** Ignore Escape, backdrop and close while an action is in flight (like `Modal`). */
 	busy?: boolean
 	/** With `busy`, also cover the body with a dimmed overlay and a spinner. */
@@ -27,6 +29,8 @@ const SIDES: Record<'right' | 'left', string> = { right: 'right-0 border-l', lef
 
 /**
  * Side panel dialog: backdrop, focus trap, Escape / backdrop to close. side: right | left.
+ * On open, focus goes to `initialFocusRef`, else an element with `data-autofocus`, else the first control (the Close
+ * button).
  * While `busy`, Escape / backdrop / close are ignored; `busyOverlay` also covers the body with a spinner.
  * `padded={false}` removes the body padding and lets the content fill (and scroll) itself, e.g. a Sidebar.
  */
@@ -38,6 +42,7 @@ const Drawer = ({
 	width = 'max-w-md',
 	padded = true,
 	footer,
+	initialFocusRef,
 	busy = false,
 	busyOverlay = false,
 	children,
@@ -54,7 +59,7 @@ const Drawer = ({
 	}, [busy])
 
 	useEscapeKey(open, requestClose)
-	useDialogFocus(open, ref)
+	useDialogFocus(open, ref, initialFocusRef)
 
 	// Lock page scroll while open
 	useEffect(() => {
