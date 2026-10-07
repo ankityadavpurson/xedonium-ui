@@ -26,6 +26,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `CommandPalette` accepts `onQueryChange`, `loading` and `filter` for async results (with grouped `commands`), and
+  `highlight` to mark matched text with `<mark>` (#43).
 - `StatCard` accepts `icon`, `status` / `statusTone` (a Chip), `href` (with `linkComponent` / `linkProp`) or `onClick` to
   make the tile clickable, `disabled`, and `loading` (value placeholder with `aria-busy`) (#42).
 - `Modal` accepts `fullScreenBelow` (`'sm'` | `'md'`) to fill the screen on small viewports, and its props now include

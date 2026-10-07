@@ -698,6 +698,31 @@ describe('CommandPalette', () => {
 		{ key: 'about', label: 'About' },
 	]
 
+	it('supports async results: reports the query, shows loading and skips local filtering', () => {
+		const onQueryChange = vi.fn()
+		const { rerender } = render(
+			<CommandPalette open onClose={() => {}} commands={makeCommands()} onQueryChange={onQueryChange} loading />
+		)
+		expect(onQueryChange).toHaveBeenCalledWith('')
+		expect(screen.getByText('Searching…')).toBeInTheDocument()
+		expect(screen.getByRole('listbox')).toHaveAttribute('aria-busy', 'true')
+		fireEvent.change(screen.getByLabelText('Search commands'), { target: { value: 'zzz' } })
+		expect(onQueryChange).toHaveBeenLastCalledWith('zzz')
+		expect(screen.getAllByRole('option')).toHaveLength(4)
+		rerender(<CommandPalette open onClose={() => {}} commands={[]} onQueryChange={onQueryChange} />)
+		expect(screen.getByText('No matching commands')).toBeInTheDocument()
+		expect(screen.queryByText('Searching…')).toBeNull()
+	})
+
+	it('highlights matches with <mark>, escaping regex characters', () => {
+		render(<CommandPalette open onClose={() => {}} commands={makeCommands()} highlight />)
+		const input = screen.getByLabelText('Search commands')
+		fireEvent.change(input, { target: { value: 'FIL' } })
+		expect([...document.querySelectorAll('mark')].map(m => m.textContent)).toEqual(['fil', 'fil'])
+		fireEvent.change(input, { target: { value: '(' } })
+		expect(document.querySelectorAll('mark')).toHaveLength(0)
+	})
+
 	it('renders nothing while closed', () => {
 		render(<CommandPalette open={false} onClose={() => {}} commands={makeCommands()} />)
 		expect(screen.queryByRole('dialog')).toBeNull()
