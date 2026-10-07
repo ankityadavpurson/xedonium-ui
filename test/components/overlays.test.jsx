@@ -195,6 +195,32 @@ describe('ActionMenu', () => {
 })
 
 describe('Modal', () => {
+	it('fills the screen below a breakpoint and passes form props through', () => {
+		const { rerender } = render(
+			<Modal open onClose={() => {}} title="T" as="form" noValidate method="post" fullScreenBelow="sm">
+				<input aria-label="name" />
+			</Modal>
+		)
+		const dialog = screen.getByRole('dialog')
+		expect(dialog.tagName).toBe('FORM')
+		expect(dialog).toHaveAttribute('novalidate')
+		expect(dialog).toHaveAttribute('method', 'post')
+		expect(dialog).toHaveClass('max-sm:h-[100dvh]', 'max-sm:max-w-none')
+		expect(dialog.parentElement).toHaveClass('max-sm:px-0')
+		rerender(
+			<Modal open onClose={() => {}} title="T" fullScreenBelow="md">
+				x
+			</Modal>
+		)
+		expect(screen.getByRole('dialog')).toHaveClass('max-md:h-[100dvh]')
+		rerender(
+			<Modal open onClose={() => {}} title="T">
+				x
+			</Modal>
+		)
+		expect(screen.getByRole('dialog').className).not.toContain('max-sm:')
+	})
+
 	const Controlled = props => {
 		const [open, setOpen] = useState(true)
 		return (

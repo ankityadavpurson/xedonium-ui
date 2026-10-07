@@ -26,6 +26,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `Modal` accepts `fullScreenBelow` (`'sm'` | `'md'`) to fill the screen on small viewports, and its props now include
+  `noValidate`, `autoComplete`, `action`, `method`, `encType`, `target` and `acceptCharset` for `as="form"` (#41).
 - `Drawer` accepts `busy` (ignores Escape, backdrop and close while an action is in flight, like `Modal`) and
   `busyOverlay` (covers the body with a spinner) (#40).
 - `AccordionSection`: a standalone single collapsible section (controlled with `open`, or `defaultOpen`), for pages that
