@@ -437,6 +437,25 @@ describe('AppBar', () => {
 })
 
 describe('AppShell', () => {
+	it('customises the mobile menu button', () => {
+		const onClick = vi.fn()
+		render(
+			<AppShell
+				header="h"
+				sidebar={<nav>side</nav>}
+				menuButtonVariant="flat"
+				menuButtonProps={{ className: 'extra', 'aria-label': 'Navigation', onClick }}
+			>
+				Main
+			</AppShell>
+		)
+		const button = screen.getByRole('button', { name: 'Navigation' })
+		expect(button).toHaveClass('extra', 'bg-transparent')
+		fireEvent.click(button)
+		expect(onClick).toHaveBeenCalledTimes(1)
+		expect(screen.getByRole('dialog')).toBeInTheDocument()
+	})
+
 	let mediaListener
 	beforeEach(() => {
 		mediaListener = undefined

@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import Button from './Button'
+import Button, { type ButtonProps } from './Button'
+import type { ButtonVariant } from './buttonClass'
 import Drawer from './Drawer'
 import MenuIcon from './icons/Menu'
 
@@ -9,6 +10,10 @@ export interface AppShellProps {
 	sidebar?: ReactNode | ((close: () => void) => ReactNode)
 	/** Title of the drawer shown on small screens. */
 	sidebarTitle?: string
+	/** Variant of the mobile menu button (default `secondary`). */
+	menuButtonVariant?: ButtonVariant
+	/** Extra props for the mobile menu button, e.g. `className` or `aria-label` (default "Open menu"). */
+	menuButtonProps?: Omit<ButtonProps, 'variant' | 'children'>
 	children?: ReactNode
 	className?: string
 }
@@ -18,8 +23,17 @@ export interface AppShellProps {
  * Below the `md` breakpoint the sidebar moves into a Drawer opened from a menu button in the header.
  * The drawer closes by itself when the window grows to the `md` breakpoint, where the sidebar is shown inline.
  * `sidebar` may be a node, or a function `(close) => node` if it should close the drawer on selection.
+ * `menuButtonVariant` / `menuButtonProps` customise the menu button so it can match the header's other buttons.
  */
-const AppShell = ({ header, sidebar, sidebarTitle = 'Menu', children, className = '' }: AppShellProps) => {
+const AppShell = ({
+	header,
+	sidebar,
+	sidebarTitle = 'Menu',
+	menuButtonVariant = 'secondary',
+	menuButtonProps,
+	children,
+	className = '',
+}: AppShellProps) => {
 	const [open, setOpen] = useState(false)
 	const close = () => setOpen(false)
 
@@ -38,7 +52,15 @@ const AppShell = ({ header, sidebar, sidebarTitle = 'Menu', children, className 
 			<header className="flex shrink-0 items-center gap-3 border-b border-app-border bg-app-card px-4 py-2">
 				{sidebar && (
 					<span className="md:hidden">
-						<Button variant="secondary" aria-label="Open menu" onClick={() => setOpen(true)}>
+						<Button
+							variant={menuButtonVariant}
+							aria-label="Open menu"
+							{...menuButtonProps}
+							onClick={event => {
+								menuButtonProps?.onClick?.(event)
+								setOpen(true)
+							}}
+						>
 							<MenuIcon />
 						</Button>
 					</span>
