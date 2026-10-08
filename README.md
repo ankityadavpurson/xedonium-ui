@@ -88,7 +88,7 @@ import { Accordion, type AccordionProps, type SelectOption } from 'xedonium'
 ## What's included
 
 - Layout: `AppShell`, `AppBar`, `Navbar`, `Sidebar`, `PageLayout`, `PageHeader`, `NotFoundPage`, `Container`, `Flex`, `Stack`, `Grid`, `Card`, `Dashboard`, `Divider`, `Tabs`, `Breadcrumb`
-- Typography: `PageTitle`, `BodyText`, `HelperText`, `Label`, `TextLink`
+- Typography: `PageTitle`, `BodyText`, `HelperText`, `Label`, `TextLink`, `Markdown`
 - Forms: `Button`, `ButtonGroup`, `ButtonLink`, `FloatingActionButton`, `ToggleButton`, `ToggleButtonGroup`, `Field`, `Input`, `NumberField`, `PasswordInput`, `TextArea`, `Select`, `MultiSelect`, `SearchSelect`, `Checkbox`, `Radio`, `RadioGroup`, `Switch`, `Slider`, `Rating`, `TransferList`, `DatePicker`, `DateRangePicker`, `TimePicker`, `FileUpload`
 - Data: `Accordion`, `Badge`, `Chip`, `CodeDisplay`, `Table`, `DataGrid`, `List`, `SortableList`, `VirtualList`, `Tree`, `Pagination`, `Calendar`, `Carousel`, `Timeline`, `Stepper`, `StatCard`, and charts (`LineChart`, `AreaChart`, `BarChart`, `PieChart`)
 - Feedback and overlays: `Alert`, `Toast`, `Tooltip`, `Modal`, `ConfirmDialog`, `Drawer`, `Popover`, `Menu`, `ActionMenu`, `SpeedDial`, `Backdrop`, `CommandPalette`, `NotificationCenter`, `Progress`, `Skeleton`, `Loader`, `FanFavicon`, `LoadingScreen`, `RackServer`
