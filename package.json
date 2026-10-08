@@ -1,6 +1,6 @@
 {
 	"name": "xedonium",
-	"version": "1.8.0",
+	"version": "1.9.0",
 	"description": "Minimal, theme-aware React UI components styled with Tailwind CSS. Light/dark themes, TypeScript types included.",
 	"type": "module",
 	"license": "MIT",
