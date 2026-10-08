@@ -580,6 +580,12 @@ const props = {
 			['value', 'string', '', 'Active key (controlled).'],
 			['defaultValue', 'string', 'first key', 'Initially active key (uncontrolled).'],
 			['onChange', '(key: string) => void', '', 'Called when the active tab changes.'],
+			[
+				'scrollButtons',
+				"'auto' | 'never'",
+				"'auto'",
+				'Show scroll buttons at both ends when the tabs do not fit; never hides them.',
+			],
 			className,
 		],
 	},

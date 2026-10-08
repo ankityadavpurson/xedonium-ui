@@ -4,10 +4,17 @@ import { Tree } from 'xedonium'
 
 /**
  * The docs sidebar: a Tree whose top level is shown in caps and whose pages are plain sentence-case links.
- * `items`: [{ key (a path), label, href?, target?, children? }]. Pages have an `href`; selecting a group opens it and
+ * `items`: [{ key (a path), label, href?, target?, icon?, children? }]. A top-level page with an `icon` shows it in the
+ * slot where groups have their chevron, so the labels stay aligned. Pages have an `href`; selecting a group opens it and
  * calls `onNavigate(target ?? key, node)`. `onSelect` fires when a page link is clicked.
  */
-const DocsNav = ({ items, activePath, onNavigate, onSelect, footer, className = '' }) => {
+const DocsNav = ({ items, activePath: currentPath, onNavigate, onSelect, footer, className = '' }) => {
+	// A page below an item's path (/playground/charts under /playground) highlights that item; exact matches win
+	const keys = items.flatMap(item => [item.key, ...(item.children?.map(child => child.key) ?? [])])
+	const activePath =
+		keys.find(key => key === currentPath) ??
+		keys.filter(key => currentPath.startsWith(`${key}/`)).sort((a, b) => b.length - a.length)[0] ??
+		currentPath
 	const parentOf = path => items.find(item => item.children?.some(child => child.key === path))?.key
 	const [expanded, setExpanded] = useState(() => [parentOf(activePath)].filter(Boolean))
 
@@ -28,7 +35,7 @@ const DocsNav = ({ items, activePath, onNavigate, onSelect, footer, className = 
 	visit(items)
 
 	const renderLabel = (node, depth) => {
-		const { href } = byKey.get(node.key)
+		const { href, icon } = byKey.get(node.key)
 		const text =
 			depth === 0 ? (
 				<span className="text-xs font-semibold uppercase tracking-widest text-app-muted">{node.label}</span>
@@ -43,8 +50,13 @@ const DocsNav = ({ items, activePath, onNavigate, onSelect, footer, className = 
 					event.stopPropagation()
 					onSelect?.(node.key)
 				}}
-				className={`block min-w-0 flex-1 truncate ${depth > 0 ? '-ml-2' : ''}`}
+				className={`flex min-w-0 flex-1 items-center truncate ${depth > 0 ? '-ml-2' : ''} ${icon && depth === 0 ? '-ml-6 gap-1' : ''}`}
 			>
+				{icon && depth === 0 && (
+					<span aria-hidden="true" className="flex h-5 w-5 shrink-0 items-center justify-center text-app-muted">
+						{icon}
+					</span>
+				)}
 				{text}
 			</Link>
 		) : (

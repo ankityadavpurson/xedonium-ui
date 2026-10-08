@@ -1,7 +1,7 @@
 // Verifies the docs stay in sync with the library:
 //  - every component page has an entry in docs/src/content/props.js, and every documented prop still exists
 //  - every example file referenced by a page exists
-//  - every component page is shown by some Playground section (that is where its "Open in Playground" link goes)
+//  - every component page has at least one example (the Playground shows a page's examples live, one section per component)
 // Run with `yarn docs:check`.
 import fs from 'node:fs'
 import path from 'node:path'
@@ -15,15 +15,6 @@ const load = async file => (await import(pathToFileURL(path.join(docs, file)).hr
 
 const props = await load('content/props.js')
 
-const { tabs } = await import(pathToFileURL(path.join(docs, 'playground/registry.js')).href)
-const { pickSection } = await import(pathToFileURL(path.join(docs, 'playground/match.js')).href)
-const playgroundSections = tabs.flatMap(tab =>
-	tab.sections.map(([slug, title]) => {
-		const file = path.join(docs, 'playground', tab.key, `${slug}.jsx`)
-		if (!fs.existsSync(file)) problems.push(`playground: missing file ${tab.key}/${slug}.jsx`)
-		return { tab: tab.key, slug, title, source: fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '' }
-	})
-)
 const categories = []
 for (const file of fs
 	.readdirSync(path.join(docs, 'content'))
@@ -84,10 +75,8 @@ for (const category of categories) {
 				}
 			}
 		}
-		if (!pickSection(Object.keys(groups), playgroundSections)) {
-			problems.push(
-				`${category.slug}/${component.slug}: no Playground section uses it (add one in docs/src/playground)`
-			)
+		if (!component.blocks.some(block => block.example)) {
+			problems.push(`${category.slug}/${component.slug}: no example (the Playground section would be empty)`)
 		}
 		for (const block of component.blocks) {
 			if (

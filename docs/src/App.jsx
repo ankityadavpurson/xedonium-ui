@@ -3,8 +3,10 @@ import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import {
 	AppShell,
 	Button,
+	CodeIcon,
 	CommandPalette,
 	FanFavicon,
+	RocketIcon,
 	ThemeToggle,
 	Tooltip,
 	buildFaviconHref,
@@ -51,7 +53,7 @@ const Logo = () => {
 const useNavItems = () =>
 	useMemo(
 		() => [
-			{ key: '/getting-started', label: 'Getting started', href: '/getting-started' },
+			{ key: '/getting-started', label: 'Getting started', href: '/getting-started', icon: <RocketIcon /> },
 			{
 				key: '/foundations',
 				label: 'Foundations',
@@ -76,7 +78,7 @@ const useNavItems = () =>
 					href: guidePath(section, entry),
 				})),
 			})),
-			{ key: '/playground', label: 'Playground', href: '/playground' },
+			{ key: '/playground', label: 'Playground', href: '/playground', icon: <CodeIcon /> },
 		],
 		[]
 	)
@@ -210,6 +212,7 @@ const App = () => {
 									/>,
 								])}
 								<Route path="/playground" element={<Playground />} />
+								<Route path="/playground/:category" element={<Playground />} />
 								<Route path="*" element={<NotFound />} />
 							</Routes>
 						</Suspense>

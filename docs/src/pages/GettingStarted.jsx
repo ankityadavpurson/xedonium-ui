@@ -44,7 +44,7 @@ const NEXT = [
 	['Theme and tokens', 'Light and dark mode, the app-* colors and overlay z-index tokens.', '/foundations/theme'],
 	['Hooks', 'Toasts, shortcuts, focus handling and dismissing.', '/hooks'],
 	['Theme', 'ThemeProvider, useTheme, ThemeToggle and favicon helpers.', '/theme'],
-	['Playground', 'Every component on one screen, to check light and dark.', '/playground'],
+	['Playground', 'Every component by category: open one, edit its examples live, check light and dark.', '/playground'],
 	[
 		'Source on GitHub',
 		'Read the code, star the repo or open an issue.',
