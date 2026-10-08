@@ -1,7 +1,11 @@
 name: Release
 
-# One run per push to main: verify (lint, tests with 90% coverage, build) first,
-# then docs deploy and npm publish run in parallel.
+# One run per push to main. `changes` looks at which files the push touched:
+#   lib  (src/, package.json, yarn.lock, tailwind-preset.js, build config/scripts) -> npm publish
+#   docs (docs/, src/, scripts/, package.json, yarn.lock)                  -> GitHub Pages deploy
+# (the docs render the library straight from src/, so a lib change redeploys the docs too).
+# verify (lint, types, tests with 90% coverage, build) runs first when either changed,
+# then docs deploy and npm publish run in parallel. Manual runs do everything.
 #
 # npm version is bumped automatically from conventional-commit prefixes since
 # the last v* tag:
@@ -15,7 +19,42 @@ on:
   workflow_dispatch:
 
 jobs:
+  changes:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    outputs:
+      lib: ${{ steps.filter.outputs.lib }}
+      docs: ${{ steps.filter.outputs.docs }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - id: filter
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          LIB='^(src/|package\.json$|yarn\.lock$|tailwind-preset\.js$|tsconfig\.build\.json$|tsconfig\.json$|vite\.config\.js$|scripts/(copy-css|check-exports))'
+          DOCS='^(docs/|src/|package\.json$|yarn\.lock$|scripts/(check-docs|spa-fallback))'
+
+          # Manual run, first push, or a force-push whose old commit is gone: assume everything changed
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] \
+            || [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ] \
+            || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            echo "lib=true" >> "$GITHUB_OUTPUT"
+            echo "docs=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          FILES=$(git diff --name-only "$BEFORE" "$AFTER")
+          echo "Changed files:"; echo "$FILES"
+          echo "lib=$(echo "$FILES" | grep -qE "$LIB" && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "docs=$(echo "$FILES" | grep -qE "$DOCS" && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
   verify:
+    needs: changes
+    if: needs.changes.outputs.lib == 'true' || needs.changes.outputs.docs == 'true'
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -38,7 +77,8 @@ jobs:
           if-no-files-found: error
 
   docs-build:
-    needs: verify
+    needs: [changes, verify]
+    if: needs.changes.outputs.docs == 'true'
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -72,7 +112,8 @@ jobs:
         uses: actions/deploy-pages@v5
 
   publish:
-    needs: verify
+    needs: [changes, verify]
+    if: needs.changes.outputs.lib == 'true'
     runs-on: ubuntu-24.04
     permissions:
       contents: write # push version commit + tag
