@@ -109,6 +109,27 @@ const props = {
 			rest,
 		],
 	},
+	markdown: {
+		Markdown: [
+			['children', 'string', "''", 'The Markdown source.'],
+			['linkComponent', 'ElementType', "'a'", 'Component used for internal links (a router link).'],
+			['linkProp', 'string', "'href'", 'Name of its destination prop (`to` for react-router).'],
+			[
+				'isInternalLink',
+				'(href: string) => boolean',
+				'starts with /',
+				'Which links go through `linkComponent`. By default paths starting with `/` (not `//`).',
+			],
+			[
+				'openLinksInNewTab',
+				'boolean',
+				'false',
+				'Open external links in a new tab (they always get rel="noopener noreferrer").',
+			],
+			['headingIds', 'boolean', 'true', 'Give headings an id made from their text, for #anchor links.'],
+			className,
+		],
+	},
 	'text-link': {
 		TextLink: [['href', 'string', '', 'Link destination.'], ...link, className, children, rest],
 	},
@@ -580,6 +601,12 @@ const props = {
 			['value', 'string', '', 'Active key (controlled).'],
 			['defaultValue', 'string', 'first key', 'Initially active key (uncontrolled).'],
 			['onChange', '(key: string) => void', '', 'Called when the active tab changes.'],
+			[
+				'scrollButtons',
+				"'auto' | 'never'",
+				"'auto'",
+				'Show scroll buttons at both ends when the tabs do not fit; never hides them.',
+			],
 			className,
 		],
 	},

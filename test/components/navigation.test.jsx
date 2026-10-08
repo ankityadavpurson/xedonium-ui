@@ -6,6 +6,86 @@ import Tabs from '../../src/components/Tabs'
 import Tree from '../../src/components/Tree'
 import VirtualList from '../../src/components/VirtualList'
 
+describe('Tabs scroll buttons', () => {
+	const many = Array.from({ length: 12 }, (_, i) => ({ key: `t${i}`, label: `Tab ${i}` }))
+	let sizes
+	let saved
+	beforeEach(() => {
+		sizes = { scrollWidth: 900, clientWidth: 300 }
+		saved = ['scrollWidth', 'clientWidth'].map(name => [
+			name,
+			Object.getOwnPropertyDescriptor(HTMLElement.prototype, name),
+		])
+		Object.defineProperty(HTMLElement.prototype, 'scrollWidth', { configurable: true, get: () => sizes.scrollWidth })
+		Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, get: () => sizes.clientWidth })
+	})
+	afterEach(() => {
+		for (const [name, descriptor] of saved) {
+			if (descriptor) Object.defineProperty(HTMLElement.prototype, name, descriptor)
+			else delete HTMLElement.prototype[name]
+		}
+	})
+
+	it('shows buttons at both ends when the tabs overflow, with the start one disabled at first', () => {
+		render(<Tabs items={many} />)
+		const left = screen.getByRole('button', { name: 'Scroll tabs left' })
+		const right = screen.getByRole('button', { name: 'Scroll tabs right' })
+		expect(left).toBeDisabled()
+		expect(right).toBeEnabled()
+		expect(screen.getAllByRole('tab')).toHaveLength(12)
+	})
+
+	it('scrolls the tab list when a button is clicked, and enables both buttons in the middle', () => {
+		render(<Tabs items={many} />)
+		const list = screen.getByRole('tablist')
+		list.scrollBy = vi.fn()
+		fireEvent.click(screen.getByRole('button', { name: 'Scroll tabs right' }))
+		expect(list.scrollBy).toHaveBeenCalledWith({ left: 225, behavior: 'smooth' })
+		list.scrollLeft = 200
+		fireEvent.scroll(list)
+		expect(screen.getByRole('button', { name: 'Scroll tabs left' })).toBeEnabled()
+		fireEvent.click(screen.getByRole('button', { name: 'Scroll tabs left' }))
+		expect(list.scrollBy).toHaveBeenLastCalledWith({ left: -225, behavior: 'smooth' })
+		list.scrollLeft = 600
+		fireEvent.scroll(list)
+		expect(screen.getByRole('button', { name: 'Scroll tabs right' })).toBeDisabled()
+	})
+
+	it('falls back to scrollLeft when scrollBy is missing', () => {
+		render(<Tabs items={many} />)
+		const list = screen.getByRole('tablist')
+		list.scrollBy = undefined
+		list.scrollLeft = 0
+		fireEvent.click(screen.getByRole('button', { name: 'Scroll tabs right' }))
+		expect(list.scrollLeft).toBe(225)
+	})
+
+	it('has no buttons when everything fits, or with scrollButtons="never"', () => {
+		sizes.scrollWidth = 300
+		const { unmount } = render(<Tabs items={many} />)
+		expect(screen.queryByRole('button', { name: /Scroll tabs/ })).toBeNull()
+		unmount()
+		sizes.scrollWidth = 900
+		render(<Tabs items={many} scrollButtons="never" />)
+		expect(screen.queryByRole('button', { name: /Scroll tabs/ })).toBeNull()
+	})
+
+	it('scrolls the active tab into view when it changes', () => {
+		const { rerender } = render(<Tabs items={many} value="t0" />)
+		const list = screen.getByRole('tablist')
+		const tab = screen.getByRole('tab', { name: 'Tab 9' })
+		Object.defineProperty(tab, 'offsetLeft', { configurable: true, value: 800 })
+		Object.defineProperty(tab, 'offsetWidth', { configurable: true, value: 100 })
+		rerender(<Tabs items={many} value="t9" />)
+		expect(list.scrollLeft).toBe(600)
+		Object.defineProperty(tab, 'offsetLeft', { configurable: true, value: 50 })
+		rerender(<Tabs items={many} value="t1" />)
+		list.scrollLeft = 400
+		rerender(<Tabs items={many} value="t9" />)
+		expect(list.scrollLeft).toBe(50)
+	})
+})
+
 describe('Tabs', () => {
 	const items = [
 		{ key: 'a', label: 'A', content: 'Panel A' },

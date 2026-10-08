@@ -8,6 +8,10 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+### Added
+
+- `Markdown` component: GitHub-style Markdown (tables, task lists, nested lists, fenced code with highlighting, images, router-aware links) with no dependencies. HTML in the source stays text and unsafe URLs are not rendered as links or images.
+
 ### Changed
 
 - The library source is now TypeScript (`.ts` / `.tsx`). The published `.d.ts` files describe every prop precisely:

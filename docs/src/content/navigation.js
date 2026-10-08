@@ -20,7 +20,7 @@ export default {
 			name: 'Tabs',
 			blocks: [
 				{
-					md: '`items: [{ key, label, content?, disabled? }]`. Controlled with `value` / `onChange`, or uncontrolled with\n`defaultValue`. Arrow, Home and End keys move between tabs.',
+					md: '`items: [{ key, label, content?, disabled? }]`. Controlled with `value` / `onChange`, or uncontrolled with\n`defaultValue`. Arrow, Home and End keys move between tabs. When there are more tabs than fit, scroll buttons appear at both ends (disabled at the ends) and the active tab is kept in view; `scrollButtons="never"` turns them off.',
 				},
 				{
 					example: 1,

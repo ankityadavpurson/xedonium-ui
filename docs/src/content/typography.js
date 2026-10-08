@@ -44,5 +44,23 @@ export default {
 				{ example: 1 },
 			],
 		},
+		{
+			slug: 'markdown',
+			name: 'Markdown',
+			blocks: [
+				{
+					md: 'Renders GitHub-style Markdown with the library own components and no Markdown dependency: headings, paragraphs, `**bold**`, `*italic*`, `~~strikethrough~~`, links, images, ordered, unordered and nested lists, task lists (`- [x]`), quotes, tables with alignment, rules and fenced code (shown with `CodeDisplay`, so it is colored by language and can be copied). Pass the source as `children`.\n\n**Safe for text you do not control.** HTML in the source stays literal text (`<script>` is just text), and links and images whose URL is unsafe (`javascript:`, `data:` and other schemes) are shown as plain text; only `http`, `https`, `mailto`, `tel`, relative paths and `#anchors` pass. Nothing is ever injected as HTML.',
+				},
+				{
+					example: 1,
+				},
+				{
+					md: '**Links.** Links starting with `/` go through `linkComponent` / `linkProp` (for react-router: `linkComponent={Link} linkProp="to"`), the rest are plain `<a>`. Change which links count as internal with `isInternalLink`, and open external ones in a new tab with `openLinksInNewTab` (they always get `rel="noopener noreferrer"`). Headings get an `id` from their text so `#anchor` links work; turn it off with `headingIds={false}`.\n\nTry it below: edit the Markdown on the left and the result updates.',
+				},
+				{
+					example: 2,
+				},
+			],
+		},
 	],
 }

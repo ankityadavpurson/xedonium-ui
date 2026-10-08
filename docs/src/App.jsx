@@ -3,8 +3,10 @@ import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import {
 	AppShell,
 	Button,
+	CodeIcon,
 	CommandPalette,
 	FanFavicon,
+	RocketIcon,
 	ThemeToggle,
 	Tooltip,
 	buildFaviconHref,
@@ -29,6 +31,7 @@ const GuideIndex = lazy(() => import('./pages/GuidePage').then(module => ({ defa
 const GuideEntry = lazy(() => import('./pages/GuidePage').then(module => ({ default: module.GuideEntry })))
 const LoadingScreenPreview = lazy(() => import('./pages/LoadingScreenPreview'))
 const Playground = lazy(() => import('./pages/Playground'))
+const PlaygroundHome = lazy(() => import('./pages/PlaygroundHome'))
 
 const PageFallback = ({ label = 'Loading' }) => (
 	<div className="flex justify-center py-24">
@@ -51,7 +54,7 @@ const Logo = () => {
 const useNavItems = () =>
 	useMemo(
 		() => [
-			{ key: '/getting-started', label: 'Getting started', href: '/getting-started' },
+			{ key: '/getting-started', label: 'Getting started', href: '/getting-started', icon: <RocketIcon /> },
 			{
 				key: '/foundations',
 				label: 'Foundations',
@@ -76,7 +79,7 @@ const useNavItems = () =>
 					href: guidePath(section, entry),
 				})),
 			})),
-			{ key: '/playground', label: 'Playground', href: '/playground' },
+			{ key: '/playground', label: 'Playground', href: '/playground', icon: <CodeIcon /> },
 		],
 		[]
 	)
@@ -209,7 +212,8 @@ const App = () => {
 										element={<GuideEntry section={section} />}
 									/>,
 								])}
-								<Route path="/playground" element={<Playground />} />
+								<Route path="/playground" element={<PlaygroundHome />} />
+								<Route path="/playground/:category" element={<Playground />} />
 								<Route path="*" element={<NotFound />} />
 							</Routes>
 						</Suspense>

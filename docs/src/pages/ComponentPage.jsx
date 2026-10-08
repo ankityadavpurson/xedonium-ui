@@ -9,7 +9,7 @@ import { relatedGuides } from '../guides/hooks'
 import { findPage, pages, pathOf } from '../content'
 import { propsFor } from '../content/propsFor'
 import { exampleKey } from '../exampleLoader'
-import { playgroundPath, sectionFor } from '../playground'
+import { playgroundPath } from '../playground'
 import NotFound from './NotFound'
 
 // Docs-only blocks that are components instead of Markdown or an example file
@@ -24,7 +24,6 @@ const ComponentPage = () => {
 	const { category, component } = page
 	const index = pages.indexOf(page)
 	const props = propsFor(component)
-	const playground = sectionFor(Object.keys(props ?? {}))
 	const related = relatedGuides([component.name, ...Object.keys(props ?? {})])
 
 	return (
@@ -40,14 +39,12 @@ const ComponentPage = () => {
 					]}
 				/>
 				<PageHeader title={component.name}>
-					{playground && (
-						<Link
-							to={playgroundPath(playground)}
-							className="border border-app-border bg-app-bg px-3 py-2 text-xs font-semibold uppercase tracking-widest text-app-text transition hover:border-app-strong"
-						>
-							Open in Playground
-						</Link>
-					)}
+					<Link
+						to={playgroundPath(category, component)}
+						className="border border-app-border bg-app-bg px-3 py-2 text-xs font-semibold uppercase tracking-widest text-app-text transition hover:border-app-strong"
+					>
+						Open in Playground
+					</Link>
 				</PageHeader>
 			</div>
 			{component.blocks.map((block, i) => {
