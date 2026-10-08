@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import type { Theme } from '../types'
+import { flushSync } from 'react-dom'
+import type { Theme, ThemeMode } from '../types'
 import { DEFAULT_THEME_STORAGE_KEY } from './constants'
 import { buildFaviconHref } from './favicon'
 import { getStoredThemeOverride, getSystemTheme } from './systemTheme'
@@ -10,16 +11,27 @@ export interface UseAppThemeOptions {
 	storageKey?: string
 	favicon?: boolean
 	faviconTitle?: string
+	/**
+	 * Offer a `system` mode that follows the device theme, and make it the default. `toggleTheme` then cycles
+	 * system -> light -> dark -> system. Without it, the device theme is followed until the user toggles (the default).
+	 */
+	allowSystem?: boolean
 }
+
+type ViewTransitionDocument = Document & { startViewTransition?: (update: () => void) => { finished: Promise<void> } }
+
+const prefersReducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
 const useAppTheme = ({
 	storageKey = DEFAULT_THEME_STORAGE_KEY,
 	favicon = true,
 	faviconTitle = '',
+	allowSystem = false,
 }: UseAppThemeOptions = {}) => {
 	const [systemTheme, setSystemTheme] = useState<Theme>(getSystemTheme)
 	const [themeOverride, setThemeOverride] = useState<Theme | null>(() => getStoredThemeOverride(storageKey))
 	const activeTheme = themeOverride || systemTheme
+	const themeMode: ThemeMode = themeOverride ?? 'system'
 
 	useEffect(() => {
 		if (typeof window === 'undefined') return undefined
@@ -57,9 +69,35 @@ const useAppTheme = ({
 		link.setAttribute('href', buildFaviconHref(activeTheme, faviconTitle))
 	}, [activeTheme, favicon, faviconTitle])
 
-	const toggleTheme = () => setThemeOverride(current => ((current || systemTheme) === 'dark' ? 'light' : 'dark'))
+	// Crossfades the whole page with the View Transitions API (the colour transitions are paused meanwhile so the
+	// new snapshot is not captured half-faded). Browsers without it, and users who prefer reduced motion, just
+	// get the per-element colour transitions from styles.css.
+	const setThemeMode = (mode: ThemeMode) => {
+		const override = mode === 'system' ? null : mode
+		const next: Theme = override ?? systemTheme
+		const root = document.documentElement
+		const doc = document as ViewTransitionDocument
+		if (next === activeTheme || !doc.startViewTransition || prefersReducedMotion()) {
+			setThemeOverride(override)
+			return
+		}
+		root.setAttribute('data-theme-switching', '')
+		const transition = doc.startViewTransition(() =>
+			flushSync(() => {
+				root.setAttribute('data-theme', next)
+				setThemeOverride(override)
+			})
+		)
+		const done = () => root.removeAttribute('data-theme-switching')
+		transition.finished.then(done, done)
+	}
 
-	return { activeTheme, toggleTheme }
+	const toggleTheme = () => {
+		if (!allowSystem) return setThemeMode(activeTheme === 'dark' ? 'light' : 'dark')
+		setThemeMode(themeMode === 'system' ? 'light' : themeMode === 'light' ? 'dark' : 'system')
+	}
+
+	return { activeTheme, themeMode, setThemeMode, allowSystem, toggleTheme }
 }
 
 export default useAppTheme

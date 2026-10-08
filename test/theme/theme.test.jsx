@@ -60,6 +60,9 @@ describe('ThemeContext', () => {
 	it('has defaults', () => {
 		const { result } = renderHook(() => useTheme())
 		expect(result.current.activeTheme).toBe('dark')
+		expect(result.current.themeMode).toBe('dark')
+		expect(result.current.allowSystem).toBe(false)
+		expect(() => result.current.setThemeMode('system')).not.toThrow()
 		expect(() => result.current.toggleTheme()).not.toThrow()
 		expect(ThemeContext).toBeDefined()
 	})
@@ -89,6 +92,83 @@ describe('useAppTheme', () => {
 		expect(result.current.activeTheme).toBe('light')
 		const again = renderHook(() => useAppTheme({ favicon: false, storageKey: 'k' }))
 		expect(again.result.current.activeTheme).toBe('light')
+	})
+
+	describe('system mode (allowSystem)', () => {
+		it('defaults to following the device, and keeps following it live', () => {
+			const media = mockMedia(true)
+			const { result } = renderHook(() => useAppTheme({ favicon: false, allowSystem: true }))
+			expect(result.current.themeMode).toBe('system')
+			expect(result.current.activeTheme).toBe('dark')
+			act(() => media.emit(false))
+			expect(result.current.activeTheme).toBe('light')
+			expect(result.current.themeMode).toBe('system')
+		})
+
+		it('cycles system -> light -> dark -> system and only stores a fixed choice', () => {
+			mockMedia(true)
+			const { result } = renderHook(() => useAppTheme({ favicon: false, allowSystem: true, storageKey: 's' }))
+			act(() => result.current.toggleTheme())
+			expect([result.current.themeMode, result.current.activeTheme]).toEqual(['light', 'light'])
+			expect(window.localStorage.getItem('s')).toBe('light')
+			act(() => result.current.toggleTheme())
+			expect([result.current.themeMode, result.current.activeTheme]).toEqual(['dark', 'dark'])
+			act(() => result.current.toggleTheme())
+			expect([result.current.themeMode, result.current.activeTheme]).toEqual(['system', 'dark'])
+			expect(window.localStorage.getItem('s')).toBeNull()
+		})
+
+		it('setThemeMode picks a mode directly, and without allowSystem the toggle stays two-way', () => {
+			mockMedia(false)
+			const { result } = renderHook(() => useAppTheme({ favicon: false, storageKey: 'p' }))
+			expect(result.current.allowSystem).toBe(false)
+			act(() => result.current.setThemeMode('dark'))
+			expect(result.current.activeTheme).toBe('dark')
+			act(() => result.current.setThemeMode('system'))
+			expect(result.current.activeTheme).toBe('light')
+			expect(window.localStorage.getItem('p')).toBeNull()
+			act(() => result.current.toggleTheme())
+			act(() => result.current.toggleTheme())
+			expect(result.current.themeMode).toBe('light')
+		})
+	})
+
+	describe('smooth switching', () => {
+		afterEach(() => {
+			delete document.startViewTransition
+			document.documentElement.removeAttribute('data-theme-switching')
+		})
+
+		it('runs the change inside a view transition and pauses element transitions meanwhile', async () => {
+			mockMedia(false)
+			let finish
+			const finished = new Promise(resolve => (finish = resolve))
+			document.startViewTransition = vi.fn(update => {
+				update()
+				return { finished }
+			})
+			const { result } = renderHook(() => useAppTheme({ favicon: false, storageKey: 'k' }))
+			act(() => result.current.toggleTheme())
+			expect(document.startViewTransition).toHaveBeenCalledTimes(1)
+			expect(result.current.activeTheme).toBe('dark')
+			expect(document.documentElement).toHaveAttribute('data-theme', 'dark')
+			expect(document.documentElement).toHaveAttribute('data-theme-switching')
+			await act(async () => finish())
+			expect(document.documentElement).not.toHaveAttribute('data-theme-switching')
+		})
+
+		it('skips the view transition when the user prefers reduced motion', () => {
+			window.matchMedia = vi.fn(query => ({
+				matches: query.includes('reduce'),
+				addEventListener: () => {},
+				removeEventListener: () => {},
+			}))
+			document.startViewTransition = vi.fn()
+			const { result } = renderHook(() => useAppTheme({ favicon: false }))
+			act(() => result.current.toggleTheme())
+			expect(document.startViewTransition).not.toHaveBeenCalled()
+			expect(result.current.activeTheme).toBe('dark')
+		})
 	})
 
 	it('toggles from a dark system theme to light', () => {

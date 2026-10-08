@@ -30,6 +30,12 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `ThemeProvider` / `useAppTheme` accept `allowSystem`: a third `system` mode that follows the device theme and is the
+  default. `useTheme()` now also returns `themeMode`, `setThemeMode` and `allowSystem`; `toggleTheme` and `ThemeToggle`
+  cycle system, light, dark (a monitor icon shows while following the device). New `ThemeMode` type. Without the option
+  nothing changes.
+- Switching the theme now crossfades the whole page (View Transitions API) instead of fading elements one by one;
+  browsers without it, and users who prefer reduced motion, keep the plain colour transitions.
 - `Modal`, `Drawer` and `useDialogFocus` accept `initialFocusRef` to choose the element focused on open; the
   `data-autofocus` attribute is now documented (#46).
 - Icons `BanIcon`, `ArrowUpRightIcon`, `DevicesIcon`, `LayoutGridIcon` (same drawing as `GridIcon`), `BookOpenIcon` and

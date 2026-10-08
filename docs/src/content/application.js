@@ -20,10 +20,13 @@ export default {
 			name: 'Sidebar',
 			blocks: [
 				{
-					md: '`items: [{ key, label, icon?, href?, onClick?, badge?, children? }]`. `collapsed` shows icons only.',
+					md: '`items: [{ key, label, icon?, href?, onClick?, badge?, children? }]`. `collapsed` shows icons only.\n\nAn item with `section: true` is a caption such as "Main Menu" (a divider when collapsed). Labels cut off by the width show a tooltip. `bordered={false}` removes the separators, `density` is `dense`, `default` or `comfortable`, and `headerClassName` / `listClassName` replace the header and list padding.',
 				},
 				{
 					example: 1,
+				},
+				{
+					example: 2,
 				},
 			],
 		},
@@ -32,10 +35,13 @@ export default {
 			name: 'AppShell',
 			blocks: [
 				{
-					md: 'Header on top, `sidebar` on the left, scrolling main area. Below the `md` breakpoint the sidebar moves into a drawer\nbehind a menu button. `sidebar` can be a function `(close) => node` to close the drawer on selection. The shell fills\nthe viewport height; size it with `className` when embedding.',
+					md: 'Header on top, `sidebar` on the left, scrolling main area. Below the `md` breakpoint the sidebar moves into a drawer\nbehind a menu button. `sidebar` can be a function `(close) => node` to close the drawer on selection. The shell fills\nthe viewport height; size it with `className` when embedding.\n\n`sidebarCollapsedBelow="lg"` shows the sidebar as an icon rail between `md` and `lg`: use the function form, `(close, { inDrawer, collapsed })`, and pass `collapsed` to `Sidebar`. `menuButtonVariant` and `menuButtonProps` customise the mobile menu button. Put an `AppBar` with `embedded` in `header` to avoid a double frame.',
 				},
 				{
 					example: 1,
+				},
+				{
+					example: 2,
 				},
 			],
 		},
@@ -44,7 +50,13 @@ export default {
 			name: 'Dashboard and StatCard',
 			blocks: [
 				{
+					md: '`StatCard` can also be a link or a button: `href` (with `linkComponent` / `linkProp` for a router) or `onClick` makes the whole tile clickable. `icon` sits top right, `status` adds a small chip coloured by `statusTone`, `disabled` marks a restricted tile, and `loading` shows a placeholder for the value.',
+				},
+				{
 					example: 1,
+				},
+				{
+					example: 2,
 				},
 			],
 		},
@@ -53,10 +65,13 @@ export default {
 			name: 'CommandPalette',
 			blocks: [
 				{
-					md: 'Open it from a shortcut with [`useKeyboardShortcuts`](/hooks/usekeyboardshortcuts). Arrow keys move, Enter runs, Escape closes.',
+					md: 'Open it from a shortcut with [`useKeyboardShortcuts`](/hooks/usekeyboardshortcuts). Arrow keys move, Enter runs, Escape closes.\n\nFor server-side search pass `onQueryChange`, `loading` and the fetched `commands` (each can have a `group`); the palette then does not filter them again unless you set `filter`. `highlight` marks the matched text.',
 				},
 				{
 					example: 1,
+				},
+				{
+					example: 2,
 				},
 			],
 		},

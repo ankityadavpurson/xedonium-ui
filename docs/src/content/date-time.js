@@ -20,7 +20,13 @@ export default {
 			name: 'DatePicker',
 			blocks: [
 				{
+					md: '`DateTimePicker` puts a date and a time picker side by side with one `Date` value, as a replacement for `<input type="datetime-local">`. Picking a date keeps the time and the other way round; `min` and `max` limit the time on the boundary day too.',
+				},
+				{
 					example: 1,
+				},
+				{
+					example: 2,
 				},
 			],
 		},

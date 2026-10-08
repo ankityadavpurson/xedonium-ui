@@ -1,4 +1,4 @@
-import { Button } from 'xedonium'
+import { Button, PlusIcon } from 'xedonium'
 
 export default function Demo() {
 	return (
@@ -9,6 +9,10 @@ export default function Demo() {
 			<Button variant="success">Success</Button>
 			<Button variant="danger">Danger</Button>
 			<Button variant="warning">Warning</Button>
+			<Button>
+				<PlusIcon />
+				With icon
+			</Button>
 			<Button tooltip="Tooltip text">Hover me</Button>
 			<Button disabled>Disabled</Button>
 		</div>

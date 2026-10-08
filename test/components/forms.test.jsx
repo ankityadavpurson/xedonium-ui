@@ -180,6 +180,25 @@ describe('ThemeToggle', () => {
 		fireEvent.click(screen.getByRole('button', { name: 'Switch to light theme' }))
 		expect(toggle).toHaveBeenCalled()
 	})
+	it('cycles device / light / dark when the system mode is offered, with a monitor icon while following', () => {
+		const toggleTheme = vi.fn()
+		const renderMode = themeMode =>
+			render(
+				<ThemeContext.Provider value={{ activeTheme: 'dark', themeMode, allowSystem: true, toggleTheme }}>
+					<ThemeToggle />
+				</ThemeContext.Provider>
+			)
+		const { unmount } = renderMode('system')
+		expect(screen.getByRole('button', { name: 'Switch to light theme' }).querySelector('rect')).not.toBeNull()
+		fireEvent.click(screen.getByRole('button'))
+		expect(toggleTheme).toHaveBeenCalledTimes(1)
+		unmount()
+		const light = renderMode('light')
+		expect(screen.getByRole('button', { name: 'Switch to dark theme' })).toBeInTheDocument()
+		light.unmount()
+		renderMode('dark')
+		expect(screen.getByRole('button', { name: 'Follow the device theme' })).toBeInTheDocument()
+	})
 	it('renders the toolbar variant in light mode', () => {
 		const toggle = renderWith('light', <ThemeToggle variant="toolbar" />)
 		fireEvent.click(screen.getByRole('button', { name: 'Switch to dark theme' }))

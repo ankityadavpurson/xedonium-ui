@@ -19,6 +19,12 @@ export default {
 				{
 					example: 2,
 				},
+				{
+					md: '`AccordionSection` is one collapsible section on its own, for pages that put other content between sections. Control it with `open` and `onChange`, or use `defaultOpen`.',
+				},
+				{
+					example: 3,
+				},
 			],
 		},
 		{
@@ -58,12 +64,18 @@ export default {
 				{
 					example: 1,
 				},
+				{
+					example: 2,
+				},
 			],
 		},
 		{
 			slug: 'card',
 			name: 'Card',
 			blocks: [
+				{
+					md: 'On narrow screens the header wraps, so `actions` drop below a long title or subtitle instead of squeezing it.',
+				},
 				{
 					example: 1,
 				},
@@ -86,10 +98,13 @@ export default {
 			name: 'DataGrid',
 			blocks: [
 				{
-					md: 'Table with sorting (click a sortable header: ascending, descending, off), search, pagination and row selection.\n`columns: [{ key, header, sortable?, render?(row), align?, accessor?(row) }]`. Selection is uncontrolled with\n`selectable`, or controlled with `selected` and `onSelectionChange`.',
+					md: 'Table with sorting (click a sortable header: ascending, descending, off), search, pagination and row selection.\n`columns: [{ key, header, sortable?, render?(row), align?, accessor?(row) }]`. Selection is uncontrolled with\n`selectable`, or controlled with `selected` and `onSelectionChange`.\n\nColumns also take `className`, `headerClassName`, `width`, `minWidth` and `hideBelow` (`sm`, `md` or `lg`, hides the column on smaller screens). `loading` swaps the rows for skeletons and sets `aria-busy`. `hideFooterWhenSinglePage` hides the row count and pager when every row fits on one page.',
 				},
 				{
 					example: 1,
+				},
+				{
+					example: 2,
 				},
 			],
 		},

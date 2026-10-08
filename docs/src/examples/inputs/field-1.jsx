@@ -10,6 +10,7 @@ export default function Demo() {
 				value={name}
 				onChange={setName}
 				placeholder="Type here"
+				helperText="Shown until there is an error"
 				error={name === 'x' ? 'Too short' : ''}
 			/>
 		</div>

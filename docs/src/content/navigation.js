@@ -8,7 +8,7 @@ export default {
 			name: 'AppBar',
 			blocks: [
 				{
-					md: 'Sticky top bar. `links: [{ href, label, active?, ...extraLinkProps }]`. Also: `brand`, `logo`, `brandHref`, `actions`,\n`themeToggle`, `hideBrandOnMobile`, `linkComponent`, `linkProp`, `maxWidth`.',
+					md: "Sticky top bar. `links: [{ href, label, active?, ...extraLinkProps }]`. Also: `brand`, `logo`, `brandHref`, `actions`,\n`themeToggle`, `hideBrandOnMobile`, `linkComponent`, `linkProp`, `maxWidth`.\n\nInside the `header` of [`AppShell`](/components/application/appshell), pass `embedded` to drop the bar's own sticky frame, so there is no double border and no nested banner.",
 				},
 				{
 					example: 1,
@@ -44,7 +44,7 @@ export default {
 			name: 'Pagination',
 			blocks: [
 				{
-					md: '`page` is 1-based; `onChange` receives the new page. Add `pageSizeOptions`, `pageSize` and `onPageSizeChange` for a "Per page" select. Changing the size is up to you: usually go back to page 1 and recompute `pageCount`.',
+					md: '`page` is 1-based; `onChange` receives the new page. Add `pageSizeOptions`, `pageSize` and `onPageSizeChange` for a "Per page" select. Changing the size is up to you: usually go back to page 1 and recompute `pageCount`.\n\nThe buttons are 38px tall to line up with the per-page select, and Prev and Next share one width.',
 				},
 				{
 					example: 1,

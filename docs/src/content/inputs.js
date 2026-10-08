@@ -8,7 +8,7 @@ export default {
 			name: 'Button',
 			blocks: [
 				{
-					md: 'Variants: `default`, `secondary`, `flat`, `success`, `danger`, `warning`. Pass `tooltip` for a styled tooltip instead of the native `title`.',
+					md: 'Variants: `default`, `secondary`, `flat`, `success`, `danger`, `warning`. Pass `tooltip` for a styled tooltip instead of the native `title`.\n\nChildren are laid out in a row with a gap, so an icon next to the text sits beside it: `<Button><PlusIcon />New</Button>`.',
 				},
 				{
 					example: 1,
@@ -20,7 +20,7 @@ export default {
 			name: 'ButtonLink',
 			blocks: [
 				{
-					md: 'A link styled like `Button`, with the same variants. `disabled` sets `aria-disabled` and blocks navigation. `linkComponent` / `linkProp` swap in a router link.',
+					md: 'A link styled like `Button`, with the same variants. `disabled` sets `aria-disabled` and blocks navigation. `linkComponent` / `linkProp` swap in a router link.\n\nLike `Button`, icons and text sit side by side.',
 				},
 				{
 					example: 1,
@@ -32,7 +32,7 @@ export default {
 			name: 'Field',
 			blocks: [
 				{
-					md: 'Labelled input. Props: `label`, `value`, `onChange` (receives the value string), `placeholder`, `error`, `type`,\n`autoComplete`, `required`.',
+					md: 'Labelled input. Props: `label`, `value`, `onChange` (receives the value string), `placeholder`, `error`, `type`,\n`autoComplete`, `required`.\n\n`helperText` shows a hint under the field while there is no `error`, and links it to the control with `aria-describedby`. `Select`, `TextArea` and `PasswordInput` take it too.',
 				},
 				{
 					example: 1,
@@ -44,7 +44,7 @@ export default {
 			name: 'Input',
 			blocks: [
 				{
-					md: 'Unlabeled text input; use `Field` when you need a label and error text. `onChange` receives the value string, and\n`invalid` sets the error style.',
+					md: 'Unlabeled text input; use `Field` when you need a label and error text. `onChange` receives the value string, and\n`invalid` sets the error style.\n\n`startAdornment` and `endAdornment` put an icon or a button inside the field and pad the text to clear them. The start adornment is decorative (clicks go through to the input); the end one can be interactive, for example a clear button.',
 				},
 				{
 					example: 1,
@@ -56,7 +56,7 @@ export default {
 			name: 'PasswordInput',
 			blocks: [
 				{
-					md: 'Labelled password field with a show / hide toggle. `onChange` receives the value string. `autoComplete` defaults to `current-password`; use `new-password` on sign-up forms.',
+					md: 'Labelled password field with a show / hide toggle. `onChange` receives the value string. `autoComplete` defaults to `current-password`; use `new-password` on sign-up forms.\n\n`helperText` shows a hint under the field while there is no `error`, and links it to the control with `aria-describedby`.',
 				},
 				{
 					example: 1,
@@ -68,7 +68,7 @@ export default {
 			name: 'TextArea',
 			blocks: [
 				{
-					md: 'Labelled multi-line input. `onChange` receives the value string. Set `maxLength` for a live character count, `error` for the invalid style and message.',
+					md: 'Labelled multi-line input. `onChange` receives the value string. Set `maxLength` for a live character count, `error` for the invalid style and message.\n\n`helperText` shows a hint under the field while there is no `error`, and links it to the control with `aria-describedby`. It sits beside the character count.',
 				},
 				{
 					example: 1,
@@ -80,7 +80,7 @@ export default {
 			name: 'Select',
 			blocks: [
 				{
-					md: 'Themed select with a listbox panel that is never clipped by its container. `options: [{ value, label, disabled? }]`, optional `placeholder` and `error`. Keyboard: Up / Down / Home / End move, Enter or Space picks, Escape closes, and typing jumps to a match. `variant="flat"` gives a borderless trigger for toolbars and for use over images or video.',
+					md: 'Themed select with a listbox panel that is never clipped by its container. `options: [{ value, label, disabled? }]`, optional `placeholder` and `error`. Keyboard: Up / Down / Home / End move, Enter or Space picks, Escape closes, and typing jumps to a match. `variant="flat"` gives a borderless trigger for toolbars and for use over images or video.\n\n`helperText` shows a hint under the field while there is no `error`, and links it to the control with `aria-describedby`.',
 				},
 				{
 					example: 1,
@@ -116,7 +116,7 @@ export default {
 			name: 'Checkbox',
 			blocks: [
 				{
-					md: '`onChange` receives the new boolean. `indeterminate` shows the mixed state.',
+					md: "`onChange` receives the new boolean. `indeterminate` shows the mixed state.\n\n`description` adds a muted line under the label and links it to the input with `aria-describedby`, without changing the checkbox's accessible name.",
 				},
 				{
 					example: 1,
