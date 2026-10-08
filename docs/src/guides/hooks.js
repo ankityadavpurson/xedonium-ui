@@ -3,6 +3,8 @@
 //   example (file in examples/hooks, or { from: './examples/...' } to reuse one), code (shown when there is no live
 //   example), usedBy (component names whose docs page should link back here), see ([[label, path]] extra links)
 
+import { sortByName } from '../content/sortByName'
+
 export const hooks = [
 	{
 		id: 'usetimedtoast',
@@ -195,8 +197,8 @@ export const theme = [
 		id: 'themeprovider',
 		summary: 'Light and dark theme for the whole app.',
 		name: 'ThemeProvider',
-		signature: '<ThemeProvider storageKey="my-app-theme" favicon>…</ThemeProvider>',
-		md: 'Wrap the app once. It follows the operating system theme until the user toggles, remembers the choice in `localStorage` (under `storageKey`), mirrors the active theme to `<html data-theme="light|dark">`, and can set a theme-colored favicon. Tailwind\'s `dark:` variant is wired to the same attribute by the preset. See also [Foundations: Theme](/foundations/theme).',
+		signature: '<ThemeProvider storageKey="my-app-theme" favicon allowSystem>…</ThemeProvider>',
+		md: 'Wrap the app once. It follows the operating system theme until the user toggles, or with `allowSystem` offers "follow the device" as a third, default choice; it remembers the choice in `localStorage` (under `storageKey`), mirrors the active theme to `<html data-theme="light|dark">`, and can set a theme-colored favicon. Tailwind\'s `dark:` variant is wired to the same attribute by the preset. See also [Foundations: Theme](/foundations/theme).',
 		api: {
 			Props: [
 				['storageKey', 'string', "'xedonium-theme-override'", "Where the user's choice is stored."],
@@ -207,6 +209,12 @@ export const theme = [
 					'Set the fan favicon for the active theme (adds a <link rel="icon"> if the page has none).',
 				],
 				['faviconTitle', 'string', "''", 'Title embedded in the favicon SVG.'],
+				[
+					'allowSystem',
+					'boolean',
+					'false',
+					'Offer a third `system` mode that follows the device theme and is the default. `toggleTheme` and `ThemeToggle` then cycle system, light, dark.',
+				],
 				['children', 'ReactNode', '', 'Your app.'],
 			],
 		},
@@ -223,12 +231,25 @@ createRoot(document.getElementById('root')).render(
 		id: 'usetheme',
 		summary: 'Read and toggle the active theme.',
 		name: 'useTheme',
-		signature: 'const { activeTheme, toggleTheme } = useTheme()',
-		md: 'Reads the theme from the nearest `ThemeProvider`. `toggleTheme` switches between light and dark and stores the override. Outside a provider it returns `{ activeTheme: "dark", toggleTheme: () => {} }`.',
+		signature: 'const { activeTheme, themeMode, setThemeMode, allowSystem, toggleTheme } = useTheme()',
+		md: 'Reads the theme from the nearest `ThemeProvider`. `toggleTheme` switches between light and dark (or cycles system, light, dark with `allowSystem`) and stores the choice; `setThemeMode` picks a mode directly. Outside a provider it returns `{ activeTheme: "dark", themeMode: "dark", allowSystem: false }` with no-op functions.',
 		api: {
 			Returns: [
-				['activeTheme', "'light' | 'dark'", '', 'The theme in effect (the override, or the system theme).'],
-				['toggleTheme', '() => void', '', 'Switch to the other theme.'],
+				[
+					'activeTheme',
+					"'light' | 'dark'",
+					'',
+					'The theme in effect (the choice, or the device theme in `system` mode).',
+				],
+				['themeMode', "'light' | 'dark' | 'system'", "'system'", "The user's choice; `system` follows the device."],
+				[
+					'setThemeMode',
+					"(mode: 'light' | 'dark' | 'system') => void",
+					'',
+					'Choose a mode. `system` clears the stored choice.',
+				],
+				['allowSystem', 'boolean', 'false', 'Whether the `system` mode is offered.'],
+				['toggleTheme', '() => void', '', 'Switch to the other theme, or to the next mode with `allowSystem`.'],
 			],
 		},
 		example: 'usetheme-1.jsx',
@@ -238,17 +259,22 @@ createRoot(document.getElementById('root')).render(
 		id: 'useapptheme',
 		summary: 'The hook behind ThemeProvider, without a context.',
 		name: 'useAppTheme',
-		signature: 'const { activeTheme, toggleTheme } = useAppTheme({ storageKey, favicon = true, faviconTitle })',
+		signature:
+			'const { activeTheme, themeMode, setThemeMode, toggleTheme } = useAppTheme({ storageKey, favicon = true, faviconTitle, allowSystem })',
 		md: 'The hook behind `ThemeProvider`. Use it directly when you want the same behavior without a context provider, for example in a single top-level component. Note that `favicon` defaults to `true` here (it is `false` on `ThemeProvider`).',
 		api: {
 			Parameters: [
 				['storageKey', 'string', "'xedonium-theme-override'", "Where the user's choice is stored."],
 				['favicon', 'boolean', 'true', 'Set the fan favicon for the active theme.'],
 				['faviconTitle', 'string', "''", 'Title embedded in the favicon SVG.'],
+				['allowSystem', 'boolean', 'false', 'Offer a `system` mode that follows the device theme and is the default.'],
 			],
 			Returns: [
 				['activeTheme', "'light' | 'dark'", '', 'The theme in effect.'],
-				['toggleTheme', '() => void', '', 'Switch to the other theme.'],
+				['themeMode', "'light' | 'dark' | 'system'", "'system'", "The user's choice."],
+				['setThemeMode', "(mode: 'light' | 'dark' | 'system') => void", '', 'Choose a mode.'],
+				['allowSystem', 'boolean', 'false', 'Echoes the option.'],
+				['toggleTheme', '() => void', '', 'Switch to the other theme, or to the next mode with `allowSystem`.'],
 			],
 		},
 		code: `import { ThemeContext, useAppTheme } from 'xedonium'
@@ -263,7 +289,7 @@ function Root({ children }) {
 		summary: 'Icon button that switches the theme.',
 		name: 'ThemeToggle',
 		signature: '<ThemeToggle variant="button" />',
-		md: 'Icon button that calls `toggleTheme` from [`useTheme`](/theme/usetheme), with a tooltip naming the theme it switches to. The default `button` variant is bordered like `Button`; `toolbar` is borderless. `AppBar` and `PageLayout` can render one through their `themeToggle` prop.',
+		md: 'Icon button that calls `toggleTheme` from [`useTheme`](/theme/usetheme), with a tooltip naming the theme it switches to. With `allowSystem` on the `ThemeProvider` it cycles device, light, dark and shows a monitor icon while following the device. The default `button` variant is bordered like `Button`; `toolbar` is borderless. `AppBar` and `PageLayout` can render one through their `themeToggle` prop.',
 		api: { Props: [['variant', "'button' | 'toolbar'", "'button'", 'Bordered button, or borderless toolbar style.']] },
 		example: 'themetoggle-1.jsx',
 		see: [
@@ -306,14 +332,14 @@ export const guideSections = [
 		path: '/hooks',
 		description:
 			'React hooks exported alongside the components. Components that rely on one link to it from their own page.',
-		items: hooks,
+		items: sortByName(hooks),
 	},
 	{
 		slug: 'theme',
 		label: 'Theme',
 		path: '/theme',
 		description: 'Light and dark theming: the provider, the hooks behind it and the favicon helpers.',
-		items: theme,
+		items: sortByName(theme),
 	},
 ]
 

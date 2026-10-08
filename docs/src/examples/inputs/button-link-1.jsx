@@ -1,4 +1,4 @@
-import { ButtonLink } from 'xedonium'
+import { ButtonLink, ExternalLinkIcon } from 'xedonium'
 
 export default function Demo() {
 	return (
@@ -6,6 +6,7 @@ export default function Demo() {
 			<ButtonLink href="#docs">Docs</ButtonLink>
 			<ButtonLink href="#github" variant="secondary">
 				GitHub
+				<ExternalLinkIcon />
 			</ButtonLink>
 			<ButtonLink href="#off" variant="danger" disabled>
 				Disabled

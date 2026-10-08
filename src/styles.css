@@ -81,6 +81,19 @@ body {
 	outline-offset: 2px;
 }
 
+/* Theme switch: the page crossfades (View Transitions API); element transitions pause so nothing is captured half-faded */
+html[data-theme-switching] *,
+html[data-theme-switching] *::before,
+html[data-theme-switching] *::after {
+	transition: none !important;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation-duration: 240ms;
+	animation-timing-function: ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
 	*,
 	*::before,

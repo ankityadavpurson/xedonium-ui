@@ -12,6 +12,9 @@ export interface IconProps {
 /** Resolved color theme. */
 export type Theme = 'light' | 'dark'
 
+/** What the user picked: a fixed theme, or `system` to follow the device. */
+export type ThemeMode = Theme | 'system'
+
 /** Where an overlay sits on screen (Toast). */
 export type ScreenPosition =
 	| 'top-left'

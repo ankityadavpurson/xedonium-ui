@@ -7,7 +7,7 @@ import Neighbour from '../components/Neighbour'
 import PropsTable from '../components/PropsTable'
 import { pages, pathOf } from '../content'
 import { propsFor } from '../content/propsFor'
-import { guidePath } from '../guides/hooks'
+import { guidePath, guideSections } from '../guides/hooks'
 import NotFound from './NotFound'
 
 // Loader key of an entry's example: a file in examples/hooks, or { from } to reuse another example
@@ -19,6 +19,15 @@ const exampleOf = entry => {
 // Docs page of a component, by its name or by a name documented on the page (e.g. ConfirmDialog)
 const pageOf = name =>
 	pages.find(p => p.component.name === name || Object.keys(propsFor(p.component) ?? {}).includes(name))
+
+// A hook or theme page by name (e.g. ThemeToggle, which is documented in the Theme section), as { section, entry }
+const guideOf = name => {
+	for (const section of guideSections) {
+		const entry = section.items.find(item => item.name === name)
+		if (entry) return { section, entry }
+	}
+	return null
+}
 
 /** /hooks and /theme: a card per page. */
 export const GuideIndex = ({ section }) => {
@@ -82,12 +91,10 @@ export const GuideEntry = ({ section }) => {
 					))}
 					{(entry.usedBy ?? []).map(name => {
 						const page = pageOf(name)
-						return page ? (
-							<Link
-								key={name}
-								to={pathOf(page.category, page.component)}
-								className="underline underline-offset-2 hover:text-app-text"
-							>
+						const guide = page ? null : guideOf(name)
+						const to = page ? pathOf(page.category, page.component) : guide && guidePath(guide.section, guide.entry)
+						return to ? (
+							<Link key={name} to={to} className="underline underline-offset-2 hover:text-app-text">
 								{name}
 							</Link>
 						) : (

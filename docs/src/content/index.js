@@ -8,9 +8,12 @@ import layout from './layout'
 import media from './media'
 import navigation from './navigation'
 import overlay from './overlay'
+import { sortByName } from './sortByName'
 import typography from './typography'
 import utilities from './utilities'
 
+// The categories keep their order; the components inside each one are listed alphabetically (sidebar, category page,
+// prev / next links and search all follow this order)
 export const categories = [
 	layout,
 	typography,
@@ -24,7 +27,7 @@ export const categories = [
 	media,
 	application,
 	utilities,
-]
+].map(category => ({ ...category, components: sortByName(category.components) }))
 
 export const pathOf = (category, component) => `/components/${category.slug}/${component.slug}`
 

@@ -540,6 +540,22 @@ describe('Carousel', () => {
 		expect(onIndexChange).toHaveBeenCalledTimes(6)
 	})
 
+	it('uses icon buttons centred on the slides, with tooltips, and keeps the dots outside the slide area', () => {
+		render(<Carousel>{slides}</Carousel>)
+		const prev = screen.getByRole('button', { name: 'Previous slide' })
+		const next = screen.getByRole('button', { name: 'Next slide' })
+		expect(prev.querySelector('svg')).toBeInTheDocument()
+		expect(next.querySelector('svg')).toBeInTheDocument()
+		expect(prev.textContent).toBe('')
+		// the buttons are positioned through a slot in the same box as the slides, the dots are not in it
+		const area = prev.closest('.relative')
+		expect(area.contains(next)).toBe(true)
+		expect(area.contains(screen.getByLabelText('Go to slide 1'))).toBe(false)
+		expect(prev.closest('[class*="top-1/2"]')).toHaveClass('-translate-y-1/2')
+		fireEvent.mouseOver(prev.parentElement, { relatedTarget: document.body })
+		expect(screen.getByText('Previous slide', { selector: 'div' })).toBeInTheDocument()
+	})
+
 	it('clamps and disables arrows when not looping', () => {
 		render(
 			<Carousel loop={false} defaultIndex={0}>

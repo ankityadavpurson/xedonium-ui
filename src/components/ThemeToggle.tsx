@@ -1,5 +1,6 @@
 import { useTheme } from '../theme/ThemeContext'
 import Button from './Button'
+import MonitorIcon from './icons/Monitor'
 import Tooltip from './Tooltip'
 import toolbarButtonClass from './toolbarButtonClass'
 
@@ -35,7 +36,8 @@ const SunIcon = () => (
 	</svg>
 )
 
-// Icon-only theme switch. `variant="toolbar"` matches the borderless Home toolbar,
+// Icon-only theme switch. With `allowSystem` on the ThemeProvider it cycles device / light / dark and shows a
+// monitor icon while following the device. `variant="toolbar"` matches the borderless Home toolbar,
 // the default matches the bordered secondary buttons used on Admin / Apps Health.
 export interface ThemeToggleProps {
 	/** `toolbar` is borderless (for an AppBar); the default is a bordered secondary button. */
@@ -43,10 +45,20 @@ export interface ThemeToggleProps {
 }
 
 const ThemeToggle = ({ variant = 'button' }: ThemeToggleProps) => {
-	const { activeTheme, toggleTheme } = useTheme()
+	const { activeTheme, themeMode, allowSystem, toggleTheme } = useTheme()
 	const isDark = activeTheme === 'dark'
-	const label = `Switch to ${isDark ? 'light' : 'dark'} theme`
-	const icon = isDark ? <MoonIcon /> : <SunIcon />
+	const following = allowSystem && themeMode === 'system'
+	const next = allowSystem
+		? themeMode === 'system'
+			? 'light'
+			: themeMode === 'light'
+				? 'dark'
+				: 'system'
+		: isDark
+			? 'light'
+			: 'dark'
+	const label = next === 'system' ? 'Follow the device theme' : `Switch to ${next} theme`
+	const icon = following ? <MonitorIcon /> : isDark ? <MoonIcon /> : <SunIcon />
 
 	if (variant === 'toolbar') {
 		return (

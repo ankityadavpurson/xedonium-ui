@@ -50,10 +50,16 @@ export default {
 			name: 'Carousel',
 			blocks: [
 				{
-					md: 'Each child is a slide. Controlled via `index` + `onIndexChange` or uncontrolled via `defaultIndex`. `autoPlay` (ms)\npauses on hover and focus; `loop={false}` stops at the ends. Arrow keys work while it has focus.',
+					md: 'Each child is a slide. Controlled via `index` + `onIndexChange` or uncontrolled via `defaultIndex`. `autoPlay` (ms)\npauses on hover and focus; `loop={false}` stops at the ends. Arrow keys work while it has focus. The previous and next buttons are icon buttons with tooltips, centred on the slides; the dots below jump to a slide.',
 				},
 				{
 					example: 1,
+				},
+				{
+					md: 'Slides can be anything: here each one is an `Image` with a caption laid over it.',
+				},
+				{
+					example: 2,
 				},
 			],
 		},
