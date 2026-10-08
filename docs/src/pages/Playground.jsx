@@ -1,5 +1,5 @@
-import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { Tabs } from 'xedonium'
+import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Breadcrumb, Tabs } from 'xedonium'
 import LiveSection from '../components/LiveSection'
 import { categories } from '../content'
 import { exampleKey } from '../exampleLoader'
@@ -13,10 +13,15 @@ const Playground = () => {
 	const navigate = useNavigate()
 	const target = useLocation().hash.slice(1)
 	const category = categories.find(c => c.slug === slug)
-	if (!category) return <Navigate to={`/playground/${categories[0].slug}`} replace />
+	if (!category) return <Navigate to="/playground" replace />
 
 	return (
 		<Page title="Playground" subtitle="Pick a category, open a component, edit the code">
+			<Breadcrumb
+				linkComponent={Link}
+				linkProp="to"
+				items={[{ label: 'Playground', href: '/playground' }, { label: category.label }]}
+			/>
 			<Tabs
 				value={category.slug}
 				onChange={key => navigate(`/playground/${key}`)}

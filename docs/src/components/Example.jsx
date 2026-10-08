@@ -4,7 +4,7 @@ import { reloadOnStaleChunk } from '../reloadOnStaleChunk'
 import CodeBlock, { CopyButton } from './CodeBlock'
 
 // One broken demo should not take down the whole page
-class DemoBoundary extends Component {
+export class DemoBoundary extends Component {
 	state = { error: null }
 
 	static getDerivedStateFromError(error) {

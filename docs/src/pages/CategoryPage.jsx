@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { Card, Grid, PageHeader, useDocumentTitle } from 'xedonium'
 import { categories, pathOf } from '../content'
+import summaryOf from '../summaryOf'
 import NotFound from './NotFound'
 
 const CategoryPage = () => {
@@ -24,16 +25,6 @@ const CategoryPage = () => {
 			</Grid>
 		</div>
 	)
-}
-
-// First sentence of the first text block, without Markdown markers
-const summaryOf = component => {
-	const md = component.blocks.find(block => block.md)?.md ?? ''
-	const first = md
-		.split('\n\n')[0]
-		.replace(/[`*]/g, '')
-		.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-	return first.length > 110 ? `${first.slice(0, 107)}…` : first || 'Live example'
 }
 
 export default CategoryPage

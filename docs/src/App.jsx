@@ -31,6 +31,7 @@ const GuideIndex = lazy(() => import('./pages/GuidePage').then(module => ({ defa
 const GuideEntry = lazy(() => import('./pages/GuidePage').then(module => ({ default: module.GuideEntry })))
 const LoadingScreenPreview = lazy(() => import('./pages/LoadingScreenPreview'))
 const Playground = lazy(() => import('./pages/Playground'))
+const PlaygroundHome = lazy(() => import('./pages/PlaygroundHome'))
 
 const PageFallback = ({ label = 'Loading' }) => (
 	<div className="flex justify-center py-24">
@@ -211,7 +212,7 @@ const App = () => {
 										element={<GuideEntry section={section} />}
 									/>,
 								])}
-								<Route path="/playground" element={<Playground />} />
+								<Route path="/playground" element={<PlaygroundHome />} />
 								<Route path="/playground/:category" element={<Playground />} />
 								<Route path="*" element={<NotFound />} />
 							</Routes>

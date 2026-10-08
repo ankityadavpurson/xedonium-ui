@@ -112,7 +112,7 @@ yarn build   # dist/ (ESM, CJS, .d.ts, styles.css)
 The docs site in `docs/` is a small Vite + React app built with the library itself (imported from `src/`, no build step needed).
 
 - Pages: `docs/src/content/<category>.js` lists each component's page; its demos live in `docs/src/examples/<category>/<slug>-<n>.jsx` and the code shown is exactly the file that is rendered.
-- Playground: each docs category is a page and tab (`/playground/<category>`) and each component is a collapsible section that opens to the same examples as its docs page, live and editable with `react-live`. There is nothing extra to write: a component's examples are the ones listed in its page. Every component page links to its section ("Open in Playground"), and `yarn docs:check` fails if a page has no example.
+- Playground: `/playground` is a landing page with ten basic components to try first and a link to every category; each docs category is a page and tab (`/playground/<category>`) and each component is a collapsible section that opens to the same examples as its docs page, live and editable with `react-live`. There is nothing extra to write: a component's examples are the ones listed in its page. Every component page links to its section ("Open in Playground"), and `yarn docs:check` fails if a page has no example.
 - Props tables: `docs/src/content/props.js`. `yarn docs:check` fails if a component's props and its table drift apart.
 
 ```bash
