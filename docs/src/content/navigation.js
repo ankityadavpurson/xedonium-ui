@@ -66,5 +66,41 @@ export default {
 				},
 			],
 		},
+		{
+			slug: 'speed-dial',
+			name: 'SpeedDial',
+			blocks: [
+				{
+					md: 'A floating action button that fans out related actions. It opens on hover, on click and from the keyboard, and closes on outside click, Escape and after an action runs. `direction` (`up`, `down`, `left`, `right`) picks where the actions appear, `shape="circle"` makes every button round, and `position` fixes the whole control to a corner of the viewport.\n\nEach action needs a `label`: it is the tooltip and the accessible name. `showLabels` writes the labels beside the actions instead. Pass `icon` and `openIcon` to change the main button, and `color` (a variant name or any CSS color) to recolor it.',
+				},
+				{
+					example: 1,
+				},
+			],
+		},
+		{
+			slug: 'menu',
+			name: 'Menu',
+			blocks: [
+				{
+					md: 'A menu of actions that opens from a trigger button, with icons, `shortcut` hints, dividers (`{ key, divider: true }`) and `tone="danger"` items. Arrow keys move, Home / End jump, Enter or Space chooses, and Escape closes the menu and returns focus to the trigger. Outside clicks close it. For a plain, flat list of page actions, [ActionMenu](/components/overlay/actionmenu) is lighter.',
+				},
+				{
+					example: 1,
+				},
+				{
+					md: '**Nested menus:** give an item `children` to make it open a submenu, to any depth. Hovering the item or pressing Right opens it, Left or Escape closes just that level, and a click anywhere in an open submenu counts as inside the menu.',
+				},
+				{
+					example: 2,
+				},
+				{
+					md: 'Leave out `trigger` and pass `anchorRef` with `open` / `onOpenChange` to anchor the menu to your own element and control it yourself.',
+				},
+				{
+					example: 3,
+				},
+			],
+		},
 	],
 }

@@ -1,4 +1,7 @@
 import { Children, useEffect, useState, type ReactNode } from 'react'
+import Button from './Button'
+import ChevronLeftIcon from './icons/ChevronLeft'
+import ChevronRightIcon from './icons/ChevronRight'
 
 export interface CarouselProps {
 	/** Each child is one slide. */
@@ -16,12 +19,17 @@ export interface CarouselProps {
 	className?: string
 }
 
-const arrow =
-	'absolute top-1/2 z-10 -translate-y-1/2 border border-app-border bg-app-card/90 px-3 py-2 text-app-text transition hover:border-app-strong disabled:cursor-not-allowed disabled:opacity-40'
+// Icon-only arrows, vertically centred on the slides (not on the slides plus the dots below them). The positioning is on
+// a wrapper, not on the button: a tooltip adds its own inline wrapper, which would otherwise sit in the normal flow and
+// make the area taller than the slides.
+const arrowSlot = 'absolute top-1/2 z-10 -translate-y-1/2'
+const arrow = 'inline-flex h-9 w-9 items-center justify-center !p-0'
 
 /**
- * Slide carousel; each child is one slide. Controlled with `index` + `onIndexChange`, or uncontrolled via
- * `defaultIndex`. `autoPlay` (ms) advances automatically and pauses on hover / focus. `loop` wraps around.
+ * Slide carousel; each child is one slide (text, cards, or `Image`s). Controlled with `index` + `onIndexChange`, or
+ * uncontrolled via `defaultIndex`. `autoPlay` (ms) advances automatically and pauses on hover / focus. `loop` wraps
+ * around. The previous / next buttons are icon buttons with tooltips, centred on the slides; the dots below jump
+ * straight to a slide.
  */
 const Carousel = ({
 	children,
@@ -59,7 +67,7 @@ const Carousel = ({
 			role="region"
 			aria-roledescription="carousel"
 			aria-label={label}
-			className={`relative ${className}`}
+			className={className}
 			onMouseEnter={() => setPaused(true)}
 			onMouseLeave={() => setPaused(false)}
 			onFocus={() => setPaused(true)}
@@ -69,68 +77,80 @@ const Carousel = ({
 				else if (event.key === 'ArrowRight') go(current + 1)
 			}}
 		>
-			<div className="overflow-hidden border border-app-border bg-app-card">
-				<div
-					className="flex transition-transform duration-300 ease-out"
-					style={{ transform: `translateX(-${current * 100}%)` }}
-					aria-live={autoPlay && !paused ? 'off' : 'polite'}
-				>
-					{slides.map((slide, i) => (
-						<div
-							key={i}
-							role="group"
-							aria-roledescription="slide"
-							aria-label={`${i + 1} of ${slides.length}`}
-							aria-hidden={i !== current}
-							ref={el => {
-								if (!el) return
-								if (i === current) el.removeAttribute('inert')
-								else el.setAttribute('inert', '')
-							}}
-							className="w-full shrink-0"
-						>
-							{slide}
-						</div>
-					))}
-				</div>
-			</div>
-			{slides.length > 1 && (
-				<>
-					<button
-						type="button"
-						aria-label="Previous slide"
-						className={`${arrow} left-2`}
-						disabled={!loop && current === 0}
-						onClick={() => go(current - 1)}
+			<div className="relative">
+				<div className="overflow-hidden border border-app-border bg-app-card">
+					<div
+						className="flex transition-transform duration-300 ease-out"
+						style={{ transform: `translateX(-${current * 100}%)` }}
+						aria-live={autoPlay && !paused ? 'off' : 'polite'}
 					>
-						&lsaquo;
-					</button>
-					<button
-						type="button"
-						aria-label="Next slide"
-						className={`${arrow} right-2`}
-						disabled={!loop && current === slides.length - 1}
-						onClick={() => go(current + 1)}
-					>
-						&rsaquo;
-					</button>
-					<div className="mt-2 flex justify-center gap-1.5">
-						{slides.map((_, i) => (
-							<button
+						{slides.map((slide, i) => (
+							<div
 								key={i}
-								type="button"
-								aria-label={`Go to slide ${i + 1}`}
-								aria-current={i === current}
-								onClick={() => go(i)}
-								className="flex h-6 w-6 items-center justify-center"
+								role="group"
+								aria-roledescription="slide"
+								aria-label={`${i + 1} of ${slides.length}`}
+								aria-hidden={i !== current}
+								ref={el => {
+									if (!el) return
+									if (i === current) el.removeAttribute('inert')
+									else el.setAttribute('inert', '')
+								}}
+								className="w-full shrink-0"
 							>
-								<span
-									className={`h-2 w-2 border border-app-strong transition ${i === current ? 'bg-app-strong' : 'bg-transparent'}`}
-								/>
-							</button>
+								{slide}
+							</div>
 						))}
 					</div>
-				</>
+				</div>
+				{slides.length > 1 && (
+					<>
+						<div className={`${arrowSlot} left-2`}>
+							<Button
+								variant="secondary"
+								aria-label="Previous slide"
+								tooltip="Previous slide"
+								tooltipPlacement="top"
+								className={arrow}
+								disabled={!loop && current === 0}
+								onClick={() => go(current - 1)}
+							>
+								<ChevronLeftIcon />
+							</Button>
+						</div>
+						<div className={`${arrowSlot} right-2`}>
+							<Button
+								variant="secondary"
+								aria-label="Next slide"
+								tooltip="Next slide"
+								tooltipPlacement="top"
+								className={arrow}
+								disabled={!loop && current === slides.length - 1}
+								onClick={() => go(current + 1)}
+							>
+								<ChevronRightIcon />
+							</Button>
+						</div>
+					</>
+				)}
+			</div>
+			{slides.length > 1 && (
+				<div className="mt-2 flex justify-center gap-1.5">
+					{slides.map((_, i) => (
+						<button
+							key={i}
+							type="button"
+							aria-label={`Go to slide ${i + 1}`}
+							aria-current={i === current}
+							onClick={() => go(i)}
+							className="flex h-6 w-6 items-center justify-center"
+						>
+							<span
+								className={`h-2 w-2 border border-app-strong transition ${i === current ? 'bg-app-strong' : 'bg-transparent'}`}
+							/>
+						</button>
+					))}
+				</div>
 			)}
 		</div>
 	)

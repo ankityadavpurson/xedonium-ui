@@ -3,6 +3,8 @@
 //   example (file in examples/hooks, or { from: './examples/...' } to reuse one), code (shown when there is no live
 //   example), usedBy (component names whose docs page should link back here), see ([[label, path]] extra links)
 
+import { sortByName } from '../content/sortByName'
+
 export const hooks = [
 	{
 		id: 'usetimedtoast',
@@ -330,14 +332,14 @@ export const guideSections = [
 		path: '/hooks',
 		description:
 			'React hooks exported alongside the components. Components that rely on one link to it from their own page.',
-		items: hooks,
+		items: sortByName(hooks),
 	},
 	{
 		slug: 'theme',
 		label: 'Theme',
 		path: '/theme',
 		description: 'Light and dark theming: the provider, the hooks behind it and the favicon helpers.',
-		items: theme,
+		items: sortByName(theme),
 	},
 ]
 

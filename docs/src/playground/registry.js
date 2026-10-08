@@ -13,6 +13,7 @@ export const tabs = [
 			['typography', 'Typography'],
 			['loaders', 'Loaders'],
 			['loading-screen', 'LoadingScreen'],
+			['fab-speed-dial', 'FAB / SpeedDial'],
 		],
 	},
 	{
@@ -21,6 +22,8 @@ export const tabs = [
 		sections: [
 			['text-inputs', 'Text inputs'],
 			['toggles', 'Toggles'],
+			['number-rating-toggle', 'NumberField / Rating / ToggleButton'],
+			['transfer-list', 'TransferList'],
 			['date-and-time', 'Date and time'],
 			['file-upload', 'File upload'],
 		],
@@ -41,6 +44,7 @@ export const tabs = [
 		sections: [
 			['dialogs', 'Dialogs'],
 			['popover-notifications', 'Popover / Notifications'],
+			['menu-backdrop', 'Menu / Backdrop'],
 		],
 	},
 	{

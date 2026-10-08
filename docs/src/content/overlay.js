@@ -85,5 +85,17 @@ export default {
 				{ example: 1 },
 			],
 		},
+		{
+			slug: 'backdrop',
+			name: 'Backdrop',
+			blocks: [
+				{
+					md: 'A dimmed layer over the page that blocks interaction behind it, with optional `children` centered on it: a `Loader` while something saves, an image to preview. Give it `onClose` and clicking the dimmed area (not the children) or pressing Escape closes it. `invisible` keeps it transparent but still click-blocking, and `fullScreen={false}` covers only the nearest positioned parent.\n\nIt does not trap focus or lock scrolling: for dialogs use [Dialog (Modal)](/components/overlay/dialog).',
+				},
+				{
+					example: 1,
+				},
+			],
+		},
 	],
 }

@@ -28,6 +28,90 @@ export default {
 			],
 		},
 		{
+			slug: 'button-group',
+			name: 'ButtonGroup',
+			blocks: [
+				{
+					md: 'Joins `Button`s into one bar with shared borders. Mark the active one with a different `variant`, or use `aria-pressed` for a toggle group; the hovered, focused and pressed button rises above its neighbours so its border stays whole. Give the group an `aria-label` that says what the buttons have in common.',
+				},
+				{
+					example: 1,
+				},
+				{
+					md: '`orientation="vertical"` stacks them, `fullWidth` stretches the group and shares the space equally, and `attached={false}` keeps a gap between the buttons.',
+				},
+				{
+					example: 2,
+				},
+			],
+		},
+		{
+			slug: 'floating-action-button',
+			name: 'FloatingActionButton',
+			blocks: [
+				{
+					md: 'The main action of a screen: a raised button (square like the rest of the library, or round with `shape="circle"`) holding an icon (give it an `aria-label`), or an icon plus a `label` when extended. `size` is `sm`, `md` or `lg`; `variant` and `tooltip` work as on `Button`; `color` takes a variant name or any CSS color (`#2563eb`), with the text switching to black or white so it stays readable.\n\nPass `position` (for example `bottom-right`) to fix it to a corner of the viewport; without it the button sits where you put it.',
+				},
+				{
+					example: 1,
+				},
+			],
+		},
+		{
+			slug: 'number-field',
+			name: 'NumberField',
+			blocks: [
+				{
+					md: 'A number input with minus and plus buttons. `onChange` receives a number (or `null` when the field is emptied), never a string. Arrow Up and Down step by `step` (Shift takes ten steps) and Home / End jump to `min` / `max`.\n\nTyping stays free: the value is clamped to `min` / `max` and rounded to `precision` (by default the decimals of `step`) when you leave the field or use the buttons.',
+				},
+				{
+					example: 1,
+				},
+				{
+					md: '`error` and `helperText` show a message under the field, `showControls={false}` hides the buttons, and `disabled` locks it. Other props such as `placeholder` and `name` go to the input.',
+				},
+				{
+					example: 2,
+				},
+			],
+		},
+		{
+			slug: 'rating',
+			name: 'Rating',
+			blocks: [
+				{
+					md: 'A star rating from 0 to `max` (5 by default). Click a star to set it, click the same one again to clear it. `precision={0.5}` allows half stars, and hovering previews the value you would pick.\n\nIt is a slider for keyboards and screen readers: Left / Right or Up / Down change it by one step, Home clears it and End gives the maximum. `readOnly` shows a score, such as an average review, without letting it change.\n\n`color` colors the filled icons: `default`, `warning` (the usual gold), `danger`, `success`, `info`, or any CSS color.',
+				},
+				{
+					example: 1,
+				},
+			],
+		},
+		{
+			slug: 'toggle-button',
+			name: 'ToggleButton',
+			blocks: [
+				{
+					md: '`ToggleButton` is a button that stays pressed (`aria-pressed`), shown as a filled button. On its own, use `selected` and `onChange`. Put several in a `ToggleButtonGroup` and give each a `value`: by default any number can be pressed (`value` is an array), and with `exclusive` at most one (`value` is a string, or `null` when none is). Controlled with `value` + `onChange`, or uncontrolled with `defaultValue`.\n\nThe group takes the same layout props as [ButtonGroup](/components/inputs/button-group).',
+				},
+				{
+					example: 1,
+				},
+			],
+		},
+		{
+			slug: 'transfer-list',
+			name: 'TransferList',
+			blocks: [
+				{
+					md: 'Two lists with checkboxes and buttons to move items between them: pick what to include, which permissions to grant, who to invite. `items` is everything; `value` holds the keys that are in the right-hand list and `onChange` receives the new keys.\n\nTick items and use the single arrows to move the ticked ones, or the double arrows to move everything that can move. The header checkbox ticks a whole list. A `disabled` item stays where it is.',
+				},
+				{
+					example: 1,
+				},
+			],
+		},
+		{
 			slug: 'field',
 			name: 'Field',
 			blocks: [

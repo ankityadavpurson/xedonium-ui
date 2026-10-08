@@ -1,6 +1,6 @@
 // Compile-time checks, run by `yarn typecheck` (not by vitest): the published prop types accept what they should and
 // reject what they should. Every `@ts-expect-error` below fails the typecheck if the line starts to compile.
-import { Accordion, Button, DataGrid, Loader, Select, Toast, useTimedToast } from '../src'
+import { Accordion, Button, ButtonGroup, DataGrid, Loader, Select, Toast, useTimedToast } from '../src'
 import type { AccordionProps, LoaderProps, SelectOption } from '../src'
 
 const options: SelectOption[] = [{ value: 'a', label: 'A' }]
@@ -10,6 +10,7 @@ export const valid = (
 		<Accordion items={[{ key: 'a', title: 'A' }]} gap="md" multiple />
 		<Loader variant="spinner" size="sm" icon="🚀" iconMotion="bounce" />
 		<Select value="a" onChange={value => value.toUpperCase()} options={options} variant="flat" />
+		<ButtonGroup orientation="vertical" aria-label="Zoom" attached={false} />
 		<Button variant="danger" tooltip="Hi" tooltipPlacement="top-end" onClick={() => {}} />
 		<Toast position="top-center" toasts={[{ msg: 'Saved', type: 'success' }]} />
 		<DataGrid<{ id: number; name: string }>
@@ -27,6 +28,8 @@ export const invalid = (
 		<Accordion items={[]} gap="huge" />
 		{/* @ts-expect-error variant is a fixed list */}
 		<Loader variant="rainbow" />
+		{/* @ts-expect-error orientation is horizontal or vertical */}
+		<ButtonGroup orientation="diagonal" />
 		{/* @ts-expect-error items is required */}
 		<Accordion />
 		{/* @ts-expect-error unknown position */}
