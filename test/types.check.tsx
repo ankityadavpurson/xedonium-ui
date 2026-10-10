@@ -19,6 +19,7 @@ import {
 	useNetworkStatus,
 	useScrollProgress,
 	BackToTop,
+	RichTextEditor,
 	ScrollProgress,
 	useUnsavedChanges,
 	useTimedToast,
@@ -130,6 +131,28 @@ export const ScrollChecks = () => {
 			<ScrollProgress variant="ring" />
 			{/* @ts-expect-error threshold is a number */}
 			<BackToTop threshold="200" />
+		</>
+	)
+}
+
+export const RichTextChecks = () => {
+	const onChange = (value: string) => void value
+	return (
+		<>
+			<RichTextEditor
+				value="<p>a</p>"
+				onChange={onChange}
+				format="markdown"
+				toolbar={['bold', '|', 'link']}
+				minHeight={120}
+			/>
+			<RichTextEditor defaultValue="" toolbar={false} onImageUpload={async (file: File) => file.name} />
+			{/* @ts-expect-error unknown format */}
+			<RichTextEditor format="docx" />
+			{/* @ts-expect-error unknown toolbar item */}
+			<RichTextEditor toolbar={['sparkles']} />
+			{/* @ts-expect-error onChange receives the value, not an event */}
+			<RichTextEditor onChange={(value: number) => void value} />
 		</>
 	)
 }

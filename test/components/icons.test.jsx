@@ -337,7 +337,7 @@ describe('icon inventory', () => {
 
 describe('icons', () => {
 	it('exports every icon', () => {
-		expect(icons.length).toBe(213)
+		expect(icons.length).toBe(219)
 	})
 
 	it.each(icons)('%s renders a decorative svg with default and custom classes', (_, Icon) => {

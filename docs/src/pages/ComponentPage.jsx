@@ -1,4 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
+import BetaBadge from '../components/BetaBadge'
 import { Breadcrumb, Label, PageHeader, useDocumentTitle } from 'xedonium'
 import Example from '../components/Example'
 import FullPagePreview from '../components/FullPagePreview'
@@ -38,7 +39,18 @@ const ComponentPage = () => {
 						{ label: component.name },
 					]}
 				/>
-				<PageHeader title={component.name}>
+				<PageHeader
+					title={
+						component.beta ? (
+							<span className="inline-flex flex-wrap items-center gap-3">
+								{component.name}
+								<BetaBadge className="text-xs" />
+							</span>
+						) : (
+							component.name
+						)
+					}
+				>
 					<Link
 						to={playgroundPath(category, component)}
 						className="border border-app-border bg-app-bg px-3 py-2 text-xs font-semibold uppercase tracking-widest text-app-text transition hover:border-app-strong"

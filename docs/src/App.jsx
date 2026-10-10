@@ -68,6 +68,7 @@ const useNavItems = () =>
 					key: pathOf(category, component),
 					label: component.name,
 					href: pathOf(category, component),
+					beta: component.beta,
 				})),
 			})),
 			...guideSections.map(section => ({

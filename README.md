@@ -89,10 +89,10 @@ import { Accordion, type AccordionProps, type SelectOption } from 'xedonium'
 
 - Layout: `AppShell`, `AppBar`, `Navbar`, `Sidebar`, `PageLayout`, `PageHeader`, `NotFoundPage`, `Container`, `Flex`, `Stack`, `Grid`, `Card`, `Dashboard`, `Divider`, `Tabs`, `Breadcrumb`, `BackToTop`, `ScrollProgress`
 - Typography: `PageTitle`, `BodyText`, `HelperText`, `Label`, `TextLink`, `Markdown`
-- Forms: `Button`, `ButtonGroup`, `ButtonLink`, `FloatingActionButton`, `ToggleButton`, `ToggleButtonGroup`, `Field`, `Input`, `NumberField`, `PasswordInput`, `PasswordStrengthInfo`, `TextArea`, `Select`, `MultiSelect`, `SearchSelect`, `Checkbox`, `Radio`, `RadioGroup`, `Switch`, `Slider`, `Rating`, `TransferList`, `DatePicker`, `DateRangePicker`, `TimePicker`, `FileUpload`
+- Forms: `Button`, `ButtonGroup`, `ButtonLink`, `FloatingActionButton`, `ToggleButton`, `ToggleButtonGroup`, `Field`, `Input`, `NumberField`, `PasswordInput`, `PasswordStrengthInfo`, `TextArea`, `RichTextEditor` (beta), `Select`, `MultiSelect`, `SearchSelect`, `Checkbox`, `Radio`, `RadioGroup`, `Switch`, `Slider`, `Rating`, `TransferList`, `DatePicker`, `DateRangePicker`, `TimePicker`, `FileUpload`
 - Data: `Accordion`, `Badge`, `Chip`, `CodeDisplay`, `Table`, `DataGrid`, `List`, `SortableList`, `VirtualList`, `Tree`, `Pagination`, `Calendar`, `Carousel`, `Timeline`, `Stepper`, `StatCard`, `NestedTable`, `LogViewer`, `FileExplorer`, and charts (`LineChart`, `AreaChart`, `BarChart`, `PieChart`)
 - Feedback and overlays: `Alert`, `Toast`, `Tooltip`, `Modal`, `ConfirmDialog`, `Drawer`, `Popover`, `Menu`, `ActionMenu`, `SpeedDial`, `Backdrop`, `CommandPalette`, `NotificationCenter`, `NetworkConnection`, `Progress`, `Skeleton`, `Loader`, `FanFavicon`, `LoadingScreen`, `RackServer`
-- Media and utilities: `Avatar`, `Image`, `Video`, `Sound`, `Portal`, `FocusTrap`, `ThemeToggle`, plus 213 outline icons (see the Icons page; each is also importable as `xedonium/icons/<Name>`)
+- Media and utilities: `Avatar`, `Image`, `Video`, `Sound`, `Portal`, `FocusTrap`, `ThemeToggle`, plus 219 outline icons (see the Icons page; each is also importable as `xedonium/icons/<Name>`)
 - Hooks: `useTimedToast`, `useEscapeKey`, `useDialogFocus`, `useDismissable`, `useFlipAlign`, `useKeyboardShortcuts`, `useLeaveWarning`, `useUnsavedChanges`, `useDocumentTitle(title, suffix)`, `useDebouncedValue(value, delay, options)`, `useNetworkStatus`, `useMediaQuery(query)`, `useScrollProgress(target)`.
 - Theme: `ThemeProvider`, `useTheme`, `useAppTheme`, `buildFaviconHref`.
 
