@@ -4,6 +4,42 @@ export default {
 	description: 'Moving around an app: bars, tabs, breadcrumbs, pagination and steps.',
 	components: [
 		{
+			slug: 'backtotop',
+			name: 'BackToTop',
+			blocks: [
+				{
+					md: 'A button that appears once the page has scrolled past `threshold` px (300 by default) and scrolls back to the top, smoothly unless the reader prefers reduced motion (or `instant`). It is hidden, and out of the tab order, until it is needed. `position` is `bottom-right` (default), `bottom-left` or `bottom-center`; `label` names the button and is its tooltip.\n\nOn a page, just render `<BackToTop />`. For a scrolling panel pass `target` (a ref or an element) and `fixed={false}`, and put the button next to the scrolling element inside a `relative` wrapper.',
+				},
+				{
+					example: 1,
+				},
+				{
+					md: 'Change the corner, `shape` (`square` by default, or `circle`), `size`, or the icon (pass your own `children`). `showProgress` adds a ring that fills as the reader scrolls: see [ScrollProgress](/components/navigation/scrollprogress).',
+				},
+				{
+					example: 2,
+				},
+			],
+		},
+		{
+			slug: 'scrollprogress',
+			name: 'ScrollProgress',
+			blocks: [
+				{
+					md: 'Shows how far down the page the reader is, in two variants. `bar` (the default) is a thin line along the top of the page (`edge="bottom"` for the bottom) that fills as they scroll; `button` is a [BackToTop](/components/navigation/backtotop) button wrapped in a ring that fills instead.\n\nIt measures the page by default. For a scrolling panel pass `target` and `fixed={false}`, inside a `relative` wrapper. The bar is a `progressbar` for assistive technology. The same measurement is available as the [useScrollProgress](/hooks/usescrollprogress) hook.',
+				},
+				{
+					example: 1,
+				},
+				{
+					md: '`variant="button"` is the back-to-top button with a progress ring; it appears after `threshold` px, like `BackToTop`.',
+				},
+				{
+					example: 2,
+				},
+			],
+		},
+		{
 			slug: 'appbar',
 			name: 'AppBar',
 			blocks: [

@@ -620,6 +620,45 @@ const props = {
 			['maxWidth', 'string', "'max-w-5xl'", 'Tailwind max-width class.'],
 		],
 	},
+	backtotop: {
+		BackToTop: [
+			['target', 'HTMLElement | RefObject<HTMLElement>', 'the page', 'What scrolls: an element or a ref to one.'],
+			['threshold', 'number', '300', 'Show the button after this many pixels of scrolling.'],
+			['position', "'bottom-right' | 'bottom-left' | 'bottom-center'", "'bottom-right'", 'Which corner it sits in.'],
+			['fixed', 'boolean', 'true', 'Fix it to the viewport; `false` places it inside the nearest `relative` parent.'],
+			['showProgress', 'boolean', 'false', 'Draw a ring around the button that fills as the reader scrolls.'],
+			['label', 'string', "'Back to top'", 'Name of the button, also its tooltip.'],
+			['size', "'sm' | 'md' | 'lg'", "'md'", 'Size of the button.'],
+			['shape', "'square' | 'circle'", "'square'", 'Shape of the button (a progress ring is always round).'],
+			['children', 'ReactNode', 'an up arrow', 'Replaces the icon.'],
+			['instant', 'boolean', 'false', 'Jump to the top without the scroll animation.'],
+			className,
+		],
+	},
+	scrollprogress: {
+		ScrollProgress: [
+			[
+				'variant',
+				"'bar' | 'button'",
+				"'bar'",
+				'A bar along the edge of the page, or a back-to-top button with a progress ring.',
+			],
+			['target', 'HTMLElement | RefObject<HTMLElement>', 'the page', 'What scrolls: an element or a ref to one.'],
+			['fixed', 'boolean', 'true', 'Fix it to the viewport; `false` places it inside the nearest `relative` parent.'],
+			['label', 'string', "'Reading progress'", 'Accessible name (the button variant uses `Back to top`).'],
+			['edge', "'top' | 'bottom'", "'top'", 'Bar: which edge it sits on.'],
+			['thickness', 'number', '4', 'Bar: thickness in px.'],
+			['threshold', 'number', '300', 'Button: show it after this many pixels of scrolling.'],
+			[
+				'position',
+				"'bottom-right' | 'bottom-left' | 'bottom-center'",
+				"'bottom-right'",
+				'Button: which corner it sits in.',
+			],
+			['size', "'sm' | 'md' | 'lg'", "'md'", 'Button: size of the button.'],
+			className,
+		],
+	},
 	tabs: {
 		Tabs: [
 			['items', '{ key, label, content?, disabled? }[]', '', 'Tabs; `content` is shown in the panel when active.'],

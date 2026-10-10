@@ -11,6 +11,7 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 ### Added
 
 - `NestedTable` (tree rows and master-detail rows with lazy loading, exclusive, row actions), `LogViewer` (level filter with counts, debounced search with highlights, follow-the-newest with "Jump to latest", full screen, `parseLogFile`), `FileExplorer` (grid, list and tree layouts, breadcrumbs, filter, lazy folders), `PasswordStrengthInfo` with custom rules (`rules`, `extraRules`, `passwordRules`, `onResult`) and `NetworkConnection` (detects online, offline and no internet; panel, badge and banner).
+- `BackToTop` (appears after scrolling, smooth scroll to the top, optional progress ring) and `ScrollProgress` (a `bar` along the top of the page, or a `button` with a ring), with the `useScrollProgress` hook.
 - `useDebouncedValue` (with `leading` and `maxWait`), `useNetworkStatus`, `useMediaQuery` and `useUnsavedChanges` (asks before leaving a form with unsaved changes: the browser prompt plus held-back link clicks) hooks.
 - `NotificationCenter`: a "View all" footer (`onViewAll` or `viewAllHref`) and `maxItems`. `Modal`: `fullScreen`, `fullScreenToggle`, `defaultFullScreen` and `onFullScreenChange`.
 - `Markdown` component: GitHub-style Markdown (tables, task lists, nested lists, fenced code with highlighting, images, router-aware links) with no dependencies. HTML in the source stays text and unsafe URLs are not rendered as links or images.
