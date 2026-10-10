@@ -3,11 +3,32 @@ import { useRef } from 'react'
 import useDialogFocus from '../../src/hooks/useDialogFocus'
 import useDismissable from '../../src/hooks/useDismissable'
 import useDocumentTitle from '../../src/hooks/useDocumentTitle'
+import useDebouncedValue from '../../src/hooks/useDebouncedValue'
 import useEscapeKey from '../../src/hooks/useEscapeKey'
 import useFlipAlign from '../../src/hooks/useFlipAlign'
 import useKeyboardShortcuts from '../../src/hooks/useKeyboardShortcuts'
 import useLeaveWarning from '../../src/hooks/useLeaveWarning'
+import useUnsavedChanges from '../../src/hooks/useUnsavedChanges'
 import useTimedToast from '../../src/hooks/useTimedToast'
+
+describe('useDebouncedValue', () => {
+	beforeEach(() => vi.useFakeTimers())
+	afterEach(() => vi.useRealTimers())
+
+	it('updates only after the latest value has settled for the delay', () => {
+		const { result, rerender } = renderHook(({ value }) => useDebouncedValue(value, 300), {
+			initialProps: { value: 'a' },
+		})
+		expect(result.current).toBe('a')
+		rerender({ value: 'ab' })
+		act(() => vi.advanceTimersByTime(200))
+		rerender({ value: 'abc' })
+		act(() => vi.advanceTimersByTime(299))
+		expect(result.current).toBe('a')
+		act(() => vi.advanceTimersByTime(1))
+		expect(result.current).toBe('abc')
+	})
+})
 
 describe('useDocumentTitle', () => {
 	it('joins title and suffix', () => {
@@ -46,6 +67,93 @@ describe('useLeaveWarning', () => {
 		const ev2 = new Event('beforeunload', { cancelable: true })
 		window.dispatchEvent(ev2)
 		expect(ev2.defaultPrevented).toBe(false)
+	})
+})
+
+describe('useLeaveWarning with the back button', () => {
+	let state
+	let push
+	let back
+	let go
+	beforeEach(() => {
+		state = null
+		push = vi.spyOn(window.history, 'pushState').mockImplementation(next => {
+			state = next
+		})
+		back = vi.spyOn(window.history, 'back').mockImplementation(() => {})
+		go = vi.spyOn(window.history, 'go').mockImplementation(() => {})
+		Object.defineProperty(window.history, 'state', { configurable: true, get: () => state })
+	})
+	afterEach(() => {
+		delete window.history.state
+		vi.restoreAllMocks()
+	})
+	const pressBack = () => act(() => void window.dispatchEvent(new PopStateEvent('popstate')))
+
+	it('does nothing to the history unless asked', () => {
+		renderHook(() => useLeaveWarning(true))
+		expect(push).not.toHaveBeenCalled()
+	})
+
+	it('adds a guard entry while active, and removes it when the form is clean', () => {
+		const { rerender } = renderHook(({ when }) => useLeaveWarning(when, { backButton: true }), {
+			initialProps: { when: true },
+		})
+		expect(push).toHaveBeenCalledTimes(1)
+		rerender({ when: false })
+		expect(back).toHaveBeenCalledTimes(1)
+	})
+
+	it('asks with a confirm box: staying puts the guard back, leaving goes back past it', () => {
+		const confirm = vi.spyOn(window, 'confirm').mockReturnValueOnce(false).mockReturnValueOnce(true)
+		renderHook(() => useLeaveWarning(true, { backButton: true, message: 'Sure?' }))
+		pressBack()
+		expect(confirm).toHaveBeenCalledWith('Sure?')
+		expect(push).toHaveBeenCalledTimes(2)
+		expect(go).not.toHaveBeenCalled()
+		pressBack()
+		expect(go).toHaveBeenCalledWith(-2)
+		// after leaving it no longer reacts
+		pressBack()
+		expect(confirm).toHaveBeenCalledTimes(2)
+	})
+
+	it('uses the default question', () => {
+		const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
+		renderHook(() => useLeaveWarning(true, { backButton: true }))
+		pressBack()
+		expect(confirm).toHaveBeenCalledWith(expect.stringContaining('Leave this page?'))
+	})
+
+	it('lets you ask in your own dialog with onBack', () => {
+		const confirm = vi.spyOn(window, 'confirm')
+		let leave
+		const onBack = vi.fn(fn => (leave = fn))
+		renderHook(() => useLeaveWarning(true, { backButton: true, onBack }))
+		pressBack()
+		expect(onBack).toHaveBeenCalledTimes(1)
+		expect(confirm).not.toHaveBeenCalled()
+		expect(go).not.toHaveBeenCalled()
+		act(() => leave())
+		expect(go).toHaveBeenCalledWith(-2)
+		act(() => leave())
+		expect(go).toHaveBeenCalledTimes(1)
+	})
+
+	it('leaves the history alone on unmount after the reader chose to leave', () => {
+		vi.spyOn(window, 'confirm').mockReturnValue(true)
+		const { unmount } = renderHook(() => useLeaveWarning(true, { backButton: true }))
+		pressBack()
+		unmount()
+		expect(back).not.toHaveBeenCalled()
+	})
+
+	it('ignores the back button when nothing is unsaved', () => {
+		const confirm = vi.spyOn(window, 'confirm')
+		renderHook(() => useLeaveWarning(false, { backButton: true }))
+		pressBack()
+		expect(confirm).not.toHaveBeenCalled()
+		expect(push).not.toHaveBeenCalled()
 	})
 })
 
@@ -267,6 +375,12 @@ describe('useDialogFocus', () => {
 
 describe('useFlipAlign', () => {
 	const panelWith = rect => ({ current: { getBoundingClientRect: () => rect } })
+	// happy-dom has no layout: give the page a width
+	const viewport = 1000
+	beforeEach(() =>
+		Object.defineProperty(document.documentElement, 'clientWidth', { configurable: true, value: viewport })
+	)
+	afterEach(() => delete document.documentElement.clientWidth)
 
 	it('flips end -> start when overflowing the left edge', () => {
 		const ref = panelWith({ left: 2, right: 200 })
@@ -282,6 +396,36 @@ describe('useFlipAlign', () => {
 		expect(result.current).toBe('end')
 		rerender({ open: false })
 		expect(result.current).toBe('start')
+	})
+
+	// A panel inside its anchor (the `relative` wrapper): `anchor` is the anchor's rect
+	const panelIn = (rect, anchor) => ({
+		current: { getBoundingClientRect: () => rect, offsetParent: { getBoundingClientRect: () => anchor } },
+	})
+
+	it('flips only when the other side overflows less', () => {
+		// preferred start runs 100px past the right edge; lined up with the anchor's right edge it fits
+		const fits = panelIn(
+			{ left: viewport - 200, right: viewport + 100 },
+			{ left: viewport - 200, right: viewport - 50 }
+		)
+		expect(renderHook(() => useFlipAlign(true, fits, 'start')).result.current).toBe('end')
+		// the same on the left edge for preferred end
+		const left = panelIn({ left: -100, right: 200 }, { left: 50, right: 200 })
+		expect(renderHook(() => useFlipAlign(true, left, 'end')).result.current).toBe('start')
+	})
+
+	it('stays on the preferred side when the other side is no better', () => {
+		// a panel wider than the page: it overflows on either side, and the start side is the worse one
+		const narrow = panelIn({ left: -140, right: 960 }, { left: 900, right: 960 })
+		expect(renderHook(() => useFlipAlign(true, narrow, 'end')).result.current).toBe('end')
+		const nowhere = panelIn({ left: 10, right: viewport + 40 }, { left: 10, right: 130 })
+		expect(renderHook(() => useFlipAlign(true, nowhere, 'start')).result.current).toBe('start')
+	})
+
+	it('does not flip a panel that fits, even with an anchor', () => {
+		const ref = panelIn({ left: 50, right: 100 }, { left: 50, right: 100 })
+		expect(renderHook(() => useFlipAlign(true, ref, 'start')).result.current).toBe('start')
 	})
 
 	it('keeps preferred when it fits or when there is no panel', () => {
@@ -352,5 +496,92 @@ describe('useKeyboardShortcuts', () => {
 		press({ key: 'a' })
 		expect(b).toHaveBeenCalled()
 		expect(a).not.toHaveBeenCalled()
+	})
+})
+
+describe('useUnsavedChanges', () => {
+	const setup = (when, options = {}) => {
+		const onNavigate = vi.fn(event => event.preventDefault())
+		document.body.innerHTML =
+			'<a id="page" href="/other">Other</a><a id="here" href="#top">Top</a><a id="out" href="https://example.org/x">Out</a><a id="blank" href="/b" target="_blank">B</a><a id="dl" href="/f" download>F</a>'
+		document.addEventListener('click', onNavigate)
+		const utils = renderHook(({ when: w }) => useUnsavedChanges({ when: w, ...options }), { initialProps: { when } })
+		return { ...utils, onNavigate }
+	}
+	const click = id => act(() => document.getElementById(id).click())
+	afterEach(() => {
+		document.body.innerHTML = ''
+	})
+
+	it('holds back a click on a link to another page until the reader answers', () => {
+		const { result, onNavigate } = setup(true)
+		click('page')
+		expect(result.current.blocked).toBe(true)
+		expect(onNavigate).not.toHaveBeenCalled()
+		act(() => result.current.stay())
+		expect(result.current.blocked).toBe(false)
+	})
+
+	it('proceed follows the link, without asking again', () => {
+		const { result, onNavigate } = setup(true)
+		click('page')
+		act(() => result.current.proceed())
+		expect(onNavigate).toHaveBeenCalledTimes(1)
+		expect(result.current.blocked).toBe(false)
+		click('page')
+		expect(onNavigate).toHaveBeenCalledTimes(2)
+	})
+
+	it('proceed does nothing when no click is waiting', () => {
+		const { result } = setup(true)
+		act(() => result.current.proceed())
+		expect(result.current.blocked).toBe(false)
+	})
+
+	it('leaves links alone when nothing is unsaved, or links is off', () => {
+		const off = setup(false)
+		click('page')
+		expect(off.result.current.blocked).toBe(false)
+		expect(off.onNavigate).toHaveBeenCalledTimes(1)
+		off.unmount()
+		const noLinks = setup(true, { links: false })
+		click('page')
+		expect(noLinks.result.current.blocked).toBe(false)
+	})
+
+	it('ignores links that do not leave the page, other sites, new tabs, downloads and modified clicks', () => {
+		const { result } = setup(true)
+		for (const id of ['here', 'out', 'blank', 'dl']) click(id)
+		act(() => {
+			const link = document.getElementById('page')
+			link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, ctrlKey: true }))
+			link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, button: 1 }))
+			document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+		})
+		expect(result.current.blocked).toBe(false)
+	})
+
+	it('asks the browser to confirm closing the tab only while there are changes, until the reader chose to leave', () => {
+		const { result, rerender } = setup(true)
+		const fire = () => {
+			const event = new Event('beforeunload', { cancelable: true })
+			window.dispatchEvent(event)
+			return event.defaultPrevented
+		}
+		expect(fire()).toBe(true)
+		click('page')
+		act(() => result.current.proceed())
+		expect(fire()).toBe(false)
+		rerender({ when: false })
+		expect(fire()).toBe(false)
+		rerender({ when: true })
+		expect(fire()).toBe(true)
+	})
+
+	it('drops a held-back click when the form is saved meanwhile', () => {
+		const { result, rerender } = setup(true)
+		click('page')
+		rerender({ when: false })
+		expect(result.current.blocked).toBe(false)
 	})
 })

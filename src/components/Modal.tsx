@@ -3,6 +3,7 @@ import {
 	useEffect,
 	useId,
 	useRef,
+	useState,
 	type ComponentPropsWithoutRef,
 	type ElementType,
 	type ReactNode,
@@ -13,6 +14,8 @@ import useDialogFocus from '../hooks/useDialogFocus'
 import useEscapeKey from '../hooks/useEscapeKey'
 import Button from './Button'
 import CloseIcon from './icons/Close'
+import MaximizeIcon from './icons/Maximize'
+import MinimizeIcon from './icons/Minimize'
 
 // Form attributes that apply when `as="form"`; they are passed through to the dialog element
 type FormPassThrough = Pick<
@@ -34,6 +37,14 @@ export interface ModalProps extends Omit<ComponentPropsWithoutRef<'div'>, 'title
 	describedBy?: string
 	/** A Tailwind `max-w-*` class. */
 	maxWidth?: string
+	/** Fill the whole viewport at every screen size (no margin, border or maximum width), e.g. for a file or log viewer. Controlled. */
+	fullScreen?: boolean
+	/** Start full screen when `fullScreen` is not set. */
+	defaultFullScreen?: boolean
+	/** Called when the full screen button changes it. */
+	onFullScreenChange?: (fullScreen: boolean) => void
+	/** Show a button in the header that switches between the dialog and full screen. */
+	fullScreenToggle?: boolean
 	/** Element to focus when the dialog opens (default: the one marked `data-autofocus`, else the first control). */
 	initialFocusRef?: RefObject<HTMLElement | null>
 	/** Fill the screen (no margin, border or max width) below this breakpoint, e.g. for long forms on phones. */
@@ -48,6 +59,15 @@ const FULL_SCREEN: Record<'sm' | 'md', { wrapper: string; dialog: string }> = {
 	md: { wrapper: 'max-md:px-0', dialog: 'max-md:h-[100dvh] max-md:max-h-none max-md:max-w-none max-md:border-0' },
 }
 
+const FULL_SCREEN_ALWAYS = {
+	wrapper: 'px-0',
+	// the notch and the home bar of a phone must not cover the header or the footer
+	dialog: 'h-[100dvh] max-h-none max-w-none border-0 pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)]',
+}
+
+// Both header buttons (full screen, close) are the same square, whatever their icon
+const HEADER_BUTTON = 'inline-flex h-9 w-9 items-center justify-center !p-0'
+
 const TONES: Record<'default' | 'danger', string> = {
 	default: 'text-app-soft',
 	danger: 'text-red-700 dark:text-red-400',
@@ -59,7 +79,8 @@ const TONES: Record<'default' | 'danger', string> = {
  * `dismissible={false}` only ignores Escape / backdrop (e.g. while a nested confirm dialog is open).
  * On open, focus goes to `initialFocusRef`, else an element with `data-autofocus`, else the first control (the Close
  * button). Pass `as="form"` with `onSubmit` to make the dialog a form; `noValidate`, `autoComplete`, `action`, `method` and the
- * like are passed through to it. `fullScreenBelow="sm"` fills the screen on phones.
+ * like are passed through to it. `fullScreenBelow="sm"` fills the screen on phones; `fullScreen` fills it at every size, and
+ * `fullScreenToggle` adds a header button that lets the user switch (the page behind does not scroll while it is full screen).
  */
 const Modal = ({
 	open,
@@ -71,6 +92,10 @@ const Modal = ({
 	role = 'dialog',
 	describedBy,
 	maxWidth = 'max-w-lg',
+	fullScreen: fullScreenProp,
+	defaultFullScreen = false,
+	onFullScreenChange,
+	fullScreenToggle = false,
 	fullScreenBelow,
 	initialFocusRef,
 	className = '',
@@ -81,6 +106,12 @@ const Modal = ({
 }: ModalProps) => {
 	const dialogRef = useRef<HTMLElement>(null)
 	const titleId = useId()
+	const [innerFull, setInnerFull] = useState(defaultFullScreen)
+	const fullScreen = fullScreenProp ?? innerFull
+	const toggleFullScreen = () => {
+		if (fullScreenProp === undefined) setInnerFull(!fullScreen)
+		onFullScreenChange?.(!fullScreen)
+	}
 
 	// Keep the latest onClose without re-binding the Escape listener every render
 	const onCloseRef = useRef(onClose)
@@ -92,17 +123,28 @@ const Modal = ({
 	}, [busy, dismissible])
 
 	useEscapeKey(open, requestClose)
+
+	// the page behind a full screen dialog does not scroll
+	useEffect(() => {
+		if (!open || !fullScreen) return undefined
+		const previous = document.body.style.overflow
+		document.body.style.overflow = 'hidden'
+		return () => {
+			document.body.style.overflow = previous
+		}
+	}, [open, fullScreen])
 	useDialogFocus(open, dialogRef, initialFocusRef)
 
 	if (!open) return null
 
 	const titleClass = TONES[tone]
+	const fullscreenClasses = fullScreen ? FULL_SCREEN_ALWAYS : fullScreenBelow ? FULL_SCREEN[fullScreenBelow] : null
 
 	// Portalled to <body> so no ancestor (e.g. the app bar's backdrop-blur, which creates a
 	// containing block for fixed elements) can trap the full-screen overlay
 	return createPortal(
 		<div
-			className={`fixed inset-0 z-[var(--xd-z-modal,80)] flex items-center justify-center px-4 ${fullScreenBelow ? FULL_SCREEN[fullScreenBelow].wrapper : ''}`}
+			className={`fixed inset-0 z-[var(--xd-z-modal,80)] flex items-center justify-center ${fullScreen ? 'px-0' : 'px-4'} ${fullscreenClasses?.wrapper ?? ''}`}
 		>
 			<div aria-hidden="true" className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={requestClose} />
 			<Container
@@ -113,7 +155,11 @@ const Modal = ({
 				aria-describedby={describedBy}
 				aria-busy={busy || undefined}
 				tabIndex={-1}
-				className={`relative z-10 flex max-h-[90vh] w-full min-w-0 flex-col border border-app-border bg-app-card shadow-2xl ${maxWidth} ${fullScreenBelow ? FULL_SCREEN[fullScreenBelow].dialog : ''} ${className}`}
+				className={`relative z-10 flex w-full min-w-0 flex-col bg-app-card shadow-2xl ${
+					fullScreen
+						? FULL_SCREEN_ALWAYS.dialog
+						: `max-h-[90vh] border border-app-border ${maxWidth} ${fullscreenClasses?.dialog ?? ''}`
+				} ${className}`}
 				{...containerProps}
 			>
 				<div className="flex shrink-0 items-center justify-between border-b border-app-border px-6 pb-5 pt-6">
@@ -122,15 +168,29 @@ const Modal = ({
 							{title}
 						</h2>
 					</div>
-					<Button
-						onClick={() => !busy && onCloseRef.current()}
-						disabled={busy}
-						tooltip="Close dialog"
-						aria-label="Close dialog"
-						variant="secondary"
-					>
-						<CloseIcon />
-					</Button>
+					<div className="flex items-center gap-2">
+						{fullScreenToggle && (
+							<Button
+								onClick={toggleFullScreen}
+								tooltip={fullScreen ? 'Exit full screen' : 'Full screen'}
+								aria-label={fullScreen ? 'Exit full screen' : 'Full screen'}
+								variant="secondary"
+								className={HEADER_BUTTON}
+							>
+								{fullScreen ? <MinimizeIcon className="h-4 w-4" /> : <MaximizeIcon className="h-4 w-4" />}
+							</Button>
+						)}
+						<Button
+							onClick={() => !busy && onCloseRef.current()}
+							disabled={busy}
+							tooltip="Close dialog"
+							aria-label="Close dialog"
+							variant="secondary"
+							className={HEADER_BUTTON}
+						>
+							<CloseIcon className="h-4 w-4" />
+						</Button>
+					</div>
 				</div>
 
 				<div className="flex-1 overflow-y-auto">{children}</div>

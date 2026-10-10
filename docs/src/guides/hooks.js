@@ -7,6 +7,60 @@ import { sortByName } from '../content/sortByName'
 
 export const hooks = [
 	{
+		id: 'usedebouncedvalue',
+		summary: 'Wait until a value has stopped changing.',
+		name: 'useDebouncedValue',
+		signature: 'const debouncedValue = useDebouncedValue(value, delay = 300, { leading, maxWait })',
+		md: 'Returns the latest value after it has remained unchanged for `delay` milliseconds. A change to the value or delay cancels the pending update. Useful for debouncing search input before filtering or fetching.\n\n`leading` also takes the first change after a quiet period at once and debounces the rest (a button that should react immediately, then settle). `maxWait` caps how long the update can be held back while the value keeps changing, so a live stream still updates every so often. A `delay` of `0` returns the value as it is.',
+		api: {
+			Parameters: [
+				['value', 'Value', '', 'The value to debounce.'],
+				['delay', 'number', '300', 'Wait time in milliseconds.'],
+				['options.leading', 'boolean', 'false', 'Update at once on the first change after a quiet period.'],
+				['options.maxWait', 'number', '', 'Longest time in ms an update may be held back.'],
+			],
+			Returns: [['debouncedValue', 'Value', '', 'The last value that remained unchanged for the delay.']],
+		},
+		example: { from: './examples/hooks/usedebouncedvalue-1.jsx' },
+		usedBy: ['LogViewer'],
+	},
+	{
+		id: 'usenetworkstatus',
+		summary: 'Whether the browser is online, offline or without internet.',
+		name: 'useNetworkStatus',
+		signature:
+			'const { status, online, latency, lastChecked, connection, check } = useNetworkStatus({ probeUrl, interval, timeout, enabled })',
+		md: 'Follows the browser\'s `online` and `offline` events and the Network Information API, and, with your `probeUrl`, really tries to reach the internet: a small `HEAD` request on start, when the browser comes back online, every `interval` ms and on `check()`. That is what tells "connected to Wi-Fi" from "has internet": `status` is `online`, `offline`, `unreachable` (a network without internet access, a captive portal) or `checking`.\n\n**Always give it your own `probeUrl`.** It is required: use a health endpoint you own and control (it only needs to answer; the response is not read, so cross-origin endpoints work). Do not rely on a third-party address, which can change, throttle you, be blocked by your users\' networks or content-security policy, or track them. Without a working probe only the browser\'s flag is used, and that cannot tell Wi-Fi from internet. [NetworkConnection](/components/application/networkconnection) shows the result as a panel, a badge or a banner.',
+		api: {
+			Parameters: [
+				[
+					'probeUrl',
+					'string',
+					'required',
+					'Your own URL, checked to prove the internet is reachable (for example your API health endpoint). Do not use a third-party address.',
+				],
+				['interval', 'number', '0', 'Check again every this many ms (0: only on start, online and check()).'],
+				['timeout', 'number', '5000', 'Give up on a check after this many ms.'],
+				['enabled', 'boolean', 'true', 'Set false to stop listening and checking.'],
+			],
+			Returns: [
+				['status', "'online' | 'offline' | 'unreachable' | 'checking'", '', 'The combined result.'],
+				['online', 'boolean', '', "The browser's own online flag."],
+				['latency', 'number', '', 'Round trip of the last successful check, in ms.'],
+				['lastChecked', 'Date', '', 'When the last check finished.'],
+				[
+					'connection',
+					'{ effectiveType?, downlink?, rtt?, saveData? }',
+					'',
+					'What the browser reports about the connection.',
+				],
+				['check', '() => Promise<void>', '', 'Run a check now (needs a probeUrl).'],
+			],
+		},
+		example: { from: './examples/hooks/usenetworkstatus-1.jsx' },
+		usedBy: ['NetworkConnection'],
+	},
+	{
 		id: 'usetimedtoast',
 		summary: 'State for stacked, self-dismissing toasts.',
 		name: 'useTimedToast',
@@ -119,7 +173,7 @@ export const hooks = [
 		summary: 'Flip a panel to the other side when it would overflow.',
 		name: 'useFlipAlign',
 		signature: 'const side = useFlipAlign(open, panelRef, preferred)',
-		md: 'For a panel anchored to one edge of its trigger. Returns the side to use, flipping from the preferred one when the panel would run off the screen (8px is kept clear of the viewport edge). Handy when building your own dropdown; the library panels use `FloatingPanel` instead.',
+		md: 'For a panel anchored to one edge of its trigger. Returns the side to use, flipping from the preferred one when the panel would run off the screen (8px is kept clear of the viewport edge) and the other side fits better. When the panel is a child of a `relative` wrapper the other side is lined up with the opposite edge of that wrapper; it is measured once, each time `open` becomes true. Handy when building your own dropdown; the library panels use `FloatingPanel` instead.',
 		api: {
 			Parameters: [
 				['open', 'boolean', '', 'Measured each time this becomes true.'],
@@ -135,41 +189,59 @@ export const hooks = [
 				['side', "'start' | 'end'", '', 'The side to use: `preferred`, or the opposite one when it would not fit.'],
 			],
 		},
-		code: `import { useRef, useState } from 'react'
-import { useFlipAlign } from 'xedonium'
-
-function Menu() {
-	const [open, setOpen] = useState(false)
-	const panelRef = useRef(null)
-	const side = useFlipAlign(open, panelRef, 'end')
-
-	return (
-		<div className="relative">
-			<button onClick={() => setOpen(o => !o)}>Open</button>
-			{open && (
-				<div ref={panelRef} className={\`absolute top-full \${side === 'end' ? 'right-0' : 'left-0'}\`}>
-					Panel
-				</div>
-			)}
-		</div>
-	)
-}`,
+		example: 'useflipalign-1.jsx',
 	},
 	{
 		id: 'useleavewarning',
-		summary: 'Warn before the tab is closed with unsaved changes.',
+		summary: 'Warn before the tab is closed or the back button is used with unsaved changes.',
 		name: 'useLeaveWarning',
-		signature: 'useLeaveWarning(when)',
-		md: 'While `when` is true, closing or reloading the tab shows the browser\'s "Leave site?" prompt. Browsers ignore custom text and show their own message. It does not intercept in-app navigation; for that, use your router.',
-		api: { Parameters: [['when', 'boolean', '', 'Warn only while there are unsaved changes.']] },
-		code: `import { useState } from 'react'
-import { Field, useLeaveWarning } from 'xedonium'
-
-function Form() {
-	const [name, setName] = useState('')
-	useLeaveWarning(name !== '')
-	return <Field label="Name" value={name} onChange={setName} />
-}`,
+		signature: 'useLeaveWarning(when, { backButton = false, message, onBack })',
+		md: 'While `when` is true, closing or reloading the tab shows the browser\'s "Leave site?" prompt. Browsers ignore custom text there and show their own message. Add `backButton` to ask when the browser back button is pressed too: browsers cannot cancel that button, so the hook keeps one extra history entry while `when` is true, puts it back each time the reader chooses to stay, and removes it when `when` turns false. By default the question is a confirm box (`message`); pass `onBack(leave)` to ask in your own dialog and call `leave()` to go back after all.\n\nLinks inside your app are not intercepted: use [useUnsavedChanges](/hooks/useunsavedchanges) for those. With a router, prefer the router\'s own blocker over `backButton`, since both read the same history.',
+		api: {
+			Parameters: [
+				['when', 'boolean', '', 'Warn only while there are unsaved changes.'],
+				['options.backButton', 'boolean', 'false', 'Also ask when the browser back button is pressed.'],
+				[
+					'options.message',
+					'string',
+					"'Leave this page? Changes you made may not be saved.'",
+					'Question in the confirm box.',
+				],
+				['options.onBack', '(leave: () => void) => void', '', 'Ask in your own dialog; call `leave()` to go back.'],
+			],
+		},
+		example: 'useleavewarning-1.jsx',
+	},
+	{
+		id: 'useunsavedchanges',
+		summary: 'Ask before leaving a page with a form that is not saved.',
+		name: 'useUnsavedChanges',
+		signature: 'const { blocked, proceed, stay } = useUnsavedChanges({ when, links = true })',
+		md: 'Protects a form with changes that were not saved or submitted. While `when` is true, closing or reloading the tab shows the browser\'s own "Leave site?" prompt, and a click on a link to another page of your app is held back: `blocked` turns true, you show your own "Discard changes?" dialog, and call `proceed()` to go on to that link or `stay()` to drop the click. It works with plain links and router links alike. Set `when` back to false as soon as the form is saved or submitted.\n\nIt does not see navigation that is not a link click (the browser back button, `navigate()` in code): use your router\'s own blocker for those. For the browser prompt alone, [useLeaveWarning](/hooks/useleavewarning) is enough.',
+		api: {
+			Parameters: [
+				['when', 'boolean', '', 'True while the form has unsaved changes.'],
+				['links', 'boolean', 'true', 'Also hold back clicks on links to other pages, so you can ask first.'],
+			],
+			Returns: [
+				['blocked', 'boolean', '', 'A link click is waiting for an answer: show your dialog.'],
+				['proceed', '() => void', '', 'Leave: follows the link that was clicked, without asking again.'],
+				['stay', '() => void', '', 'Stay: drops the held-back click.'],
+			],
+		},
+		example: { from: './examples/hooks/useunsavedchanges-1.jsx' },
+	},
+	{
+		id: 'usemediaquery',
+		summary: 'Track whether a CSS media query matches.',
+		name: 'useMediaQuery',
+		signature: "const matches = useMediaQuery('(min-width: 1024px)')",
+		md: 'Returns `true` while the media query matches and updates when it changes (resizing the window, rotating the device, switching the system theme or a motion preference). It is `false` on the server and where `matchMedia` does not exist. Use it to render something different, not for styling that CSS can do with a breakpoint.',
+		api: {
+			Parameters: [['query', 'string', '', 'A CSS media query, for example `(min-width: 768px)`.']],
+			Returns: [['matches', 'boolean', '', 'Whether the query matches right now.']],
+		},
+		example: 'usemediaquery-1.jsx',
 	},
 	{
 		id: 'usedocumenttitle',
@@ -183,12 +255,7 @@ function Form() {
 				['suffix', 'string', "''", 'Site name appended after a "·".'],
 			],
 		},
-		code: `import { useDocumentTitle } from 'xedonium'
-
-function SettingsPage() {
-	useDocumentTitle('Settings', 'My App') // "Settings · My App"
-	return <h1>Settings</h1>
-}`,
+		example: 'usedocumenttitle-1.jsx',
 	},
 ]
 

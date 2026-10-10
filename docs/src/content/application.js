@@ -95,7 +95,34 @@ export default {
 			name: 'NotificationCenter',
 			blocks: [
 				{
+					md: '`onViewAll` (or `viewAllHref`, a link) adds a "View all" action at the bottom of the dropdown; it closes the dropdown first, then calls your handler. `maxItems` shows only the newest few and the action then reads "View all (12)", with the total. Customize the text with `viewAllLabel`; `linkComponent` / `linkProp` make `viewAllHref` a router link.',
+				},
+				{
 					example: 1,
+				},
+			],
+		},
+		{
+			slug: 'networkconnection',
+			name: 'NetworkConnection',
+			blocks: [
+				{
+					md: 'Shows whether the client is connected. Set `status` yourself (`connected`, `connecting`, `disconnected` or `error`) to drive it from a socket or an API health check; add `details`, `latency` and an `onRetry` action.',
+				},
+				{
+					example: 1,
+				},
+				{
+					md: '**Detecting the connection.** Leave `status` out and it checks the browser: the `online` and `offline` events, and, with a `probeUrl`, whether the internet can really be reached (a small request, repeated every `interval` ms and when the browser comes back online), so a Wi-Fi network without internet shows as "Connected, no internet access" and not as online. `showConnectionInfo` adds the connection type and speed where the browser reports them, and `onStatusChange` tells you about changes. `variant` is `panel`, a small `badge`, or a `banner` that appears only while something is wrong. The same logic is available as the [useNetworkStatus](/hooks/usenetworkstatus) hook.',
+				},
+				{
+					example: 2,
+				},
+				{
+					md: '**As a banner.** `variant="banner"` shows a bar only while the connection is down, so put it under your `AppBar` (`className="sticky top-0 z-50"` keeps it in view). The check runs when the page loads, when the browser reports it is back online, every `interval` ms and when someone presses Retry, so recovery shows within a moment.\n\nNot sure how to see it? The Playground section for NetworkConnection has a **?** button at the top right of each example that explains four ways to test it, and the Simulate buttons below show each state without touching your network.',
+				},
+				{
+					example: 3,
 				},
 			],
 		},
