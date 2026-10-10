@@ -232,6 +232,25 @@ export const hooks = [
 		example: { from: './examples/hooks/useunsavedchanges-1.jsx' },
 	},
 	{
+		id: 'usescrollprogress',
+		summary: 'How far the page or a scrolling element has been scrolled.',
+		name: 'useScrollProgress',
+		signature: 'const { progress, scrollTop, scrollable } = useScrollProgress(target)',
+		md: 'Measures how far the page, or one scrolling element, has been scrolled. It updates while scrolling and when the size changes, and only re-renders when the numbers really change. Pass an element or a ref as `target`; leave it out for the page. A ref is read after the first render, so it can point at an element the same component renders. [ScrollProgress](/components/navigation/scrollprogress) and [BackToTop](/components/navigation/backtotop) are built on it.',
+		api: {
+			Parameters: [
+				['target', 'HTMLElement | RefObject<HTMLElement>', 'the page', 'What to measure: an element or a ref to one.'],
+			],
+			Returns: [
+				['progress', 'number', '', 'From 0 (top) to 1 (the end); 0 when there is nothing to scroll.'],
+				['scrollTop', 'number', '', 'Pixels scrolled from the top.'],
+				['scrollable', 'boolean', '', 'The target is taller than its view.'],
+			],
+		},
+		example: 'usescrollprogress-1.jsx',
+		usedBy: ['BackToTop', 'ScrollProgress'],
+	},
+	{
 		id: 'usemediaquery',
 		summary: 'Track whether a CSS media query matches.',
 		name: 'useMediaQuery',

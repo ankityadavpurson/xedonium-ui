@@ -17,6 +17,9 @@ import {
 	Toast,
 	useDebouncedValue,
 	useNetworkStatus,
+	useScrollProgress,
+	BackToTop,
+	ScrollProgress,
 	useUnsavedChanges,
 	useTimedToast,
 } from '../src'
@@ -112,4 +115,21 @@ export const UnsavedChangesCheck = () => {
 	// @ts-expect-error `when` is required
 	useUnsavedChanges({})
 	return null
+}
+
+export const ScrollChecks = () => {
+	const { progress, scrollTop, scrollable } = useScrollProgress()
+	const total: number = progress + scrollTop
+	void total
+	void scrollable
+	return (
+		<>
+			<BackToTop threshold={200} position="bottom-left" showProgress />
+			<ScrollProgress variant="button" edge="top" thickness={3} />
+			{/* @ts-expect-error unknown variant */}
+			<ScrollProgress variant="ring" />
+			{/* @ts-expect-error threshold is a number */}
+			<BackToTop threshold="200" />
+		</>
+	)
 }
