@@ -73,6 +73,12 @@ export default {
 				{
 					example: 2,
 				},
+				{
+					md: '**Full screen.** `fullScreen` makes a `Modal` fill the viewport at every size (no margin, border or maximum width, safe areas respected, and the page behind does not scroll): good for a file, a log or a long form. `fullScreenToggle` adds a button to the header that switches between the dialog and full screen, `defaultFullScreen` sets where it starts, and `onFullScreenChange` reports the switch (pass `fullScreen` yourself to control it).',
+				},
+				{
+					example: 3,
+				},
 			],
 		},
 		{

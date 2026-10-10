@@ -148,6 +148,24 @@ export default {
 			],
 		},
 		{
+			slug: 'passwordstrengthinfo',
+			name: 'PasswordStrengthInfo',
+			blocks: [
+				{
+					md: 'A strength meter with a checklist of rules. Pass the current `password`. The built-in rules are length (`minLength`, 8 by default), an uppercase letter, a lowercase letter, a number and a special character; the strength is how many are met, shown as a label (`labels` renames them, `colors` recolors the bar) and as a `role="meter"`. `showStrength` and `showRequirements` hide either part.',
+				},
+				{
+					example: 1,
+				},
+				{
+					md: '**Your own rules.** `rules` replaces the built-in set and `extraRules` adds to it. A rule is `{ label, test(password), required? }`: `required: false` makes it a recommendation that counts towards the strength but never blocks. `passwordRules` has ready-made ones (`minLength(n)`, `uppercase`, `lowercase`, `digit`, `special`, `noSpaces`, `notContaining(words)`), and `defaultPasswordRules(minLength)` is the built-in set. `onResult` reports `{ score, total, level, label, valid, met }` whenever it changes, so a form can enable its submit button when `valid` (every required rule is met).',
+				},
+				{
+					example: 2,
+				},
+			],
+		},
+		{
 			slug: 'textarea',
 			name: 'TextArea',
 			blocks: [

@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { LiveError, LivePreview, LiveProvider } from 'react-live'
-import { ChevronRightIcon, ToggleButton, ToggleButtonGroup } from 'xedonium'
+import { ChevronRightIcon, CircleHelpIcon, Popover, ToggleButton, ToggleButtonGroup } from 'xedonium'
 import { loadSource } from '../exampleLoader'
+import HELP from '../playground/help'
 import { scope, toLiveCode } from '../playground/live'
 import { CopyButton } from './CodeBlock'
 import CodeEditor from './CodeEditor'
+import Markdown from './Markdown'
 
 const toolButton =
 	'text-[10px] font-semibold uppercase tracking-widest text-app-muted transition hover:text-app-text disabled:cursor-not-allowed disabled:opacity-40'
@@ -14,32 +16,45 @@ const toolButton =
  * change (react-live); Reset restores the original and Copy takes the current text. When a component has several
  * examples a toggle picks which one is shown (each keeps its own edits).
  */
-const LiveBody = ({ title, sources, showCode }) => {
+const LiveBody = ({ title, sources, showCode, help }) => {
 	const [which, setWhich] = useState(0)
 	const [edits, setEdits] = useState({})
 	const [open, setOpen] = useState(showCode)
+	const showTabs = sources.length > 1 || Boolean(help)
 	const source = sources[which]
 	const code = edits[which] ?? source
 
 	return (
 		<LiveProvider code={toLiveCode(code)} scope={scope} noInline>
-			{sources.length > 1 && (
-				<div className="border-t border-app-border px-5 pt-4">
-					<ToggleButtonGroup
-						exclusive
-						aria-label={`${title} examples`}
-						value={String(which)}
-						onChange={value => setWhich(Number(value ?? which))}
-					>
-						{sources.map((_, i) => (
-							<ToggleButton key={i} value={String(i)}>
-								Example {i + 1}
-							</ToggleButton>
-						))}
-					</ToggleButtonGroup>
+			{showTabs && (
+				<div className="flex items-center justify-between gap-3 border-t border-app-border px-5 pt-4">
+					{sources.length > 1 ? (
+						<ToggleButtonGroup
+							exclusive
+							aria-label={`${title} examples`}
+							value={String(which)}
+							onChange={value => setWhich(Number(value ?? which))}
+						>
+							{sources.map((_, i) => (
+								<ToggleButton key={i} value={String(i)}>
+									Example {i + 1}
+								</ToggleButton>
+							))}
+						</ToggleButtonGroup>
+					) : (
+						<span />
+					)}
+					{help && (
+						<Popover label={help.label} trigger={<CircleHelpIcon className="h-4 w-4" />} align="end" className="w-80">
+							<div className="flex flex-col gap-2 text-sm text-app-text">
+								<strong>{help.label}</strong>
+								<Markdown>{help.md}</Markdown>
+							</div>
+						</Popover>
+					)}
 				</div>
 			)}
-			<div className={`flex flex-col gap-3 p-5 ${sources.length > 1 ? '' : 'border-t border-app-border'}`}>
+			<div className={`flex flex-col gap-3 p-5 ${showTabs ? '' : 'border-t border-app-border'}`}>
 				<div data-demo className="min-w-0 overflow-x-auto">
 					<LivePreview />
 				</div>
@@ -125,7 +140,7 @@ const LiveSection = ({ title, id, keys, focused = false }) => {
 					<ChevronRightIcon className={`h-4 w-4 shrink-0 transition-transform ${open ? 'rotate-90' : ''}`} />
 				</button>
 			</h2>
-			{open && sources && <LiveBody title={title} sources={sources} showCode={focused} />}
+			{open && sources && <LiveBody title={title} sources={sources} showCode={focused} help={HELP[id]} />}
 		</section>
 	)
 }

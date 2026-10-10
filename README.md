@@ -89,11 +89,11 @@ import { Accordion, type AccordionProps, type SelectOption } from 'xedonium'
 
 - Layout: `AppShell`, `AppBar`, `Navbar`, `Sidebar`, `PageLayout`, `PageHeader`, `NotFoundPage`, `Container`, `Flex`, `Stack`, `Grid`, `Card`, `Dashboard`, `Divider`, `Tabs`, `Breadcrumb`
 - Typography: `PageTitle`, `BodyText`, `HelperText`, `Label`, `TextLink`, `Markdown`
-- Forms: `Button`, `ButtonGroup`, `ButtonLink`, `FloatingActionButton`, `ToggleButton`, `ToggleButtonGroup`, `Field`, `Input`, `NumberField`, `PasswordInput`, `TextArea`, `Select`, `MultiSelect`, `SearchSelect`, `Checkbox`, `Radio`, `RadioGroup`, `Switch`, `Slider`, `Rating`, `TransferList`, `DatePicker`, `DateRangePicker`, `TimePicker`, `FileUpload`
-- Data: `Accordion`, `Badge`, `Chip`, `CodeDisplay`, `Table`, `DataGrid`, `List`, `SortableList`, `VirtualList`, `Tree`, `Pagination`, `Calendar`, `Carousel`, `Timeline`, `Stepper`, `StatCard`, and charts (`LineChart`, `AreaChart`, `BarChart`, `PieChart`)
-- Feedback and overlays: `Alert`, `Toast`, `Tooltip`, `Modal`, `ConfirmDialog`, `Drawer`, `Popover`, `Menu`, `ActionMenu`, `SpeedDial`, `Backdrop`, `CommandPalette`, `NotificationCenter`, `Progress`, `Skeleton`, `Loader`, `FanFavicon`, `LoadingScreen`, `RackServer`
-- Media and utilities: `Avatar`, `Image`, `Video`, `Sound`, `Portal`, `FocusTrap`, `ThemeToggle`, plus 212 outline icons (see the Icons page; each is also importable as `xedonium/icons/<Name>`)
-- Hooks: `useTimedToast`, `useEscapeKey`, `useDialogFocus`, `useDismissable`, `useFlipAlign`, `useKeyboardShortcuts`, `useLeaveWarning`, `useDocumentTitle(title, suffix)`.
+- Forms: `Button`, `ButtonGroup`, `ButtonLink`, `FloatingActionButton`, `ToggleButton`, `ToggleButtonGroup`, `Field`, `Input`, `NumberField`, `PasswordInput`, `PasswordStrengthInfo`, `TextArea`, `Select`, `MultiSelect`, `SearchSelect`, `Checkbox`, `Radio`, `RadioGroup`, `Switch`, `Slider`, `Rating`, `TransferList`, `DatePicker`, `DateRangePicker`, `TimePicker`, `FileUpload`
+- Data: `Accordion`, `Badge`, `Chip`, `CodeDisplay`, `Table`, `DataGrid`, `List`, `SortableList`, `VirtualList`, `Tree`, `Pagination`, `Calendar`, `Carousel`, `Timeline`, `Stepper`, `StatCard`, `NestedTable`, `LogViewer`, `FileExplorer`, and charts (`LineChart`, `AreaChart`, `BarChart`, `PieChart`)
+- Feedback and overlays: `Alert`, `Toast`, `Tooltip`, `Modal`, `ConfirmDialog`, `Drawer`, `Popover`, `Menu`, `ActionMenu`, `SpeedDial`, `Backdrop`, `CommandPalette`, `NotificationCenter`, `NetworkConnection`, `Progress`, `Skeleton`, `Loader`, `FanFavicon`, `LoadingScreen`, `RackServer`
+- Media and utilities: `Avatar`, `Image`, `Video`, `Sound`, `Portal`, `FocusTrap`, `ThemeToggle`, plus 213 outline icons (see the Icons page; each is also importable as `xedonium/icons/<Name>`)
+- Hooks: `useTimedToast`, `useEscapeKey`, `useDialogFocus`, `useDismissable`, `useFlipAlign`, `useKeyboardShortcuts`, `useLeaveWarning`, `useUnsavedChanges`, `useDocumentTitle(title, suffix)`, `useDebouncedValue(value, delay, options)`, `useNetworkStatus`, `useMediaQuery(query)`.
 - Theme: `ThemeProvider`, `useTheme`, `useAppTheme`, `buildFaviconHref`.
 
 `AppBar` has no router dependency. For react-router pass `linkComponent={Link} linkProp="to"`.
