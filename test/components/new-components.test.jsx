@@ -968,3 +968,80 @@ describe('Modal full screen', () => {
 		expect(screen.getByRole('button', { name: 'Exit full screen' })).toBeInTheDocument()
 	})
 })
+
+describe('PasswordStrengthInfo showOn="focus"', () => {
+	const setup = props =>
+		render(
+			<div data-testid="group">
+				<input aria-label="password" />
+				<button>other</button>
+				<PasswordStrengthInfo password="abc" showOn="focus" {...props} />
+			</div>
+		)
+	const info = () => screen.getByRole('meter', { hidden: true }).parentElement
+
+	it('shows only while focus is inside the group', () => {
+		setup()
+		expect(info()).toHaveClass('hidden')
+		act(() => screen.getByLabelText('password').focus())
+		expect(info()).not.toHaveClass('hidden')
+		expect(screen.getByRole('meter')).toBeInTheDocument()
+		act(() => screen.getByText('other').focus())
+		expect(info()).not.toHaveClass('hidden')
+		act(() => screen.getByText('other').blur())
+		expect(info()).toHaveClass('hidden')
+	})
+
+	it('is shown at once when focus is already inside, and always by default', () => {
+		const first = render(
+			<div>
+				<input aria-label="early" autoFocus />
+				<PasswordStrengthInfo password="x" showOn="focus" />
+			</div>
+		)
+		expect(first.container.querySelector('[role=meter]').parentElement).not.toHaveClass('hidden')
+		first.unmount()
+		render(<PasswordStrengthInfo password="x" />)
+		expect(screen.getByRole('meter').parentElement).not.toHaveClass('hidden')
+	})
+
+	it('can follow another element: an id, a ref or an element', () => {
+		const ref = { current: null }
+		render(
+			<div>
+				<input id="pw" aria-label="by id" />
+				<input ref={ref} aria-label="by ref" />
+				<input aria-label="elsewhere" />
+				<PasswordStrengthInfo password="abc" showOn="focus" focusTarget="pw" />
+				<PasswordStrengthInfo password="abc" showOn="focus" focusTarget={ref} />
+			</div>
+		)
+		const [one, two] = screen.getAllByRole('meter', { hidden: true }).map(meter => meter.parentElement)
+		act(() => screen.getByLabelText('by id').focus())
+		expect(one).not.toHaveClass('hidden')
+		expect(two).toHaveClass('hidden')
+		act(() => screen.getByLabelText('by ref').focus())
+		expect(one).toHaveClass('hidden')
+		expect(two).not.toHaveClass('hidden')
+		act(() => screen.getByLabelText('elsewhere').focus())
+		expect(two).toHaveClass('hidden')
+	})
+
+	it('accepts an element, and copes with a target that does not exist', () => {
+		const target = document.createElement('input')
+		document.body.appendChild(target)
+		render(<PasswordStrengthInfo password="abc" showOn="focus" focusTarget={target} />)
+		const meter = () => screen.getByRole('meter', { hidden: true }).parentElement
+		expect(meter()).toHaveClass('hidden')
+		act(() => target.focus())
+		expect(meter()).not.toHaveClass('hidden')
+		render(<PasswordStrengthInfo password="abc" showOn="focus" focusTarget="missing" />)
+		target.remove()
+	})
+
+	it('keeps reporting the result while hidden', () => {
+		const onResult = vi.fn()
+		setup({ onResult, password: 'Abcdef1!' })
+		expect(onResult).toHaveBeenLastCalledWith(expect.objectContaining({ valid: true }))
+	})
+})

@@ -4,6 +4,34 @@ export default {
 	description: 'Buttons and form controls. Value callbacks receive the value, not the event.',
 	components: [
 		{
+			slug: 'richtexteditor',
+			name: 'RichTextEditor',
+			beta: true,
+			blocks: [
+				{
+					md: '**Beta.** This component is new and still being tested: expect rough edges, and its props and the HTML it produces may change before it is declared stable. Please report anything odd.',
+				},
+				{
+					md: 'A WYSIWYG editor with no dependencies: a formatting toolbar over an editable area. Bold, italic, underline, strike, inline code, headings, bulleted and numbered lists, quotes, code blocks, alignment, text color and highlight, links, images, tables, rules, clear formatting, undo and redo. Keyboard: `Ctrl` / `Cmd` + `B`, `I`, `U`, `K` (link), `Z`, `Y`.\n\n`value` and `onChange` carry the content (or `defaultValue` for an uncontrolled editor); empty content is an empty string. **The HTML is always sanitized**, on the way in, on paste and on the way out: only a fixed set of tags, links and styles survives, so a script, an event handler or a `javascript:` address can never get in or out. Text pasted from other pages is cleaned the same way.',
+				},
+				{
+					example: 1,
+				},
+				{
+					md: '**Markdown.** `format="markdown"` makes `value` Markdown instead of HTML, using the same parser as [Markdown](/components/typography/markdown). Markdown has no underline, colors or alignment, so those buttons are left out, and code blocks do not keep a language. Switching `format` shows the same content in the new format.',
+				},
+				{
+					example: 2,
+				},
+				{
+					md: "**Toolbar and more.** `toolbar` lists the buttons you want (`'|'` is a divider), or `false` for none; the names are `undo`, `redo`, `block`, `bold`, `italic`, `underline`, `strike`, `code`, `color`, `highlight`, `link`, `unlink`, `image`, `ul`, `ol`, `quote`, `codeblock`, `hr`, `table`, `left`, `center`, `right`, `justify`, `fullscreen` and `clear`. The `fullscreen` button (last in the default toolbar) makes the editor fill the window: `fullScreen`, `defaultFullScreen` and `onFullScreenChange` control it, the page behind does not scroll, and Escape leaves it. `label`, `helperText` and `error` work as on `TextArea`; `minHeight` and `maxHeight` size the writing area; `readOnly` shows the content without the toolbar. **Resizing.** Click an image to select it: drag the corner handle, or use the buttons for 25%, 50%, 100% or its original size (and Remove, or the Delete key). Drag the right border of a table cell to change that column's width. Sizes are saved as plain `width` attributes in the HTML, so they travel with the content; Markdown has no way to say them, so the Markdown format drops them. The image picker always has an **Upload** button (and images can be pasted): with `onImageUpload` the file goes to your server and you resolve with its address; without it the image is embedded in the content as a `data:` address, up to `maxInlineImageSize` (2 MB), which is handy for a demo but makes the value large. `name` adds a hidden input so the value travels in a native form. The pure helpers are exported too: `sanitizeHtml`, `markdownToHtml` and `htmlToMarkdown`.",
+				},
+				{
+					example: 3,
+				},
+			],
+		},
+		{
 			slug: 'button',
 			name: 'Button',
 			blocks: [
@@ -162,6 +190,12 @@ export default {
 				},
 				{
 					example: 2,
+				},
+				{
+					md: '**Only while typing.** `showOn="focus"` hides the meter until the password field has focus (keyboard users get it on Tab), which keeps a sign-up form short. By default focus anywhere inside the parent element of the info counts, so wrap the input and the info together; or point `focusTarget` at the input (its `id`, a ref or the element). `onResult` keeps reporting while it is hidden, so a submit button still follows `valid`.',
+				},
+				{
+					example: 3,
 				},
 			],
 		},

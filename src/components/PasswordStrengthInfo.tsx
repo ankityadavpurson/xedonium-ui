@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode, type RefObject } from 'react'
 import CheckIcon from './icons/Check'
 
 export interface PasswordRule {
@@ -45,8 +45,19 @@ export interface PasswordStrengthInfoProps {
 	colors?: string[]
 	/** Text shown while the password is empty. */
 	emptyLabel?: string
-	/** Called when the result changes: use `valid` to enable a submit button. */
+	/** Called when the result changes: use `valid` to enable a submit button. It keeps reporting while the info is hidden. */
 	onResult?: (result: PasswordStrengthResult) => void
+	/**
+	 * `always` (the default) shows it all the time; `focus` shows it only while the password field has focus (or
+	 * something inside the same group does, see `focusTarget`). Keyboard users get it too: it opens on Tab.
+	 */
+	showOn?: 'always' | 'focus'
+	/**
+	 * With `showOn="focus"`: what has to hold focus for the info to show. An element, a ref to one, or an element id
+	 * (the password input's, say). By default it is the parent element of the info, so put the input and the info
+	 * together in a wrapper of their own.
+	 */
+	focusTarget?: HTMLElement | RefObject<HTMLElement | null> | string | null
 	className?: string
 }
 
@@ -82,6 +93,31 @@ export const defaultPasswordRules = (minLength = 8): PasswordRule[] => [
 	passwordRules.special,
 ]
 
+/** True while focus is inside `element`; the element is looked up each time the effect runs. */
+const useFocusWithin = (enabled: boolean, find: () => HTMLElement | null | undefined) => {
+	const [within, setWithin] = useState(false)
+	const lookup = useRef(find)
+	lookup.current = find
+
+	useEffect(() => {
+		if (!enabled) return undefined
+		const element = lookup.current()
+		if (!element) return undefined
+		const onIn = () => setWithin(true)
+		const onOut = (event: FocusEvent) => setWithin(element.contains(event.relatedTarget as Node | null))
+		element.addEventListener('focusin', onIn)
+		element.addEventListener('focusout', onOut)
+		setWithin(element.contains(document.activeElement))
+		return () => {
+			element.removeEventListener('focusin', onIn)
+			element.removeEventListener('focusout', onOut)
+			setWithin(false)
+		}
+	}, [enabled])
+
+	return within
+}
+
 const LABELS = ['Very weak', 'Weak', 'Fair', 'Good', 'Strong']
 const COLORS = ['bg-red-600', 'bg-orange-500', 'bg-yellow-500', 'bg-lime-600', 'bg-emerald-600']
 
@@ -90,7 +126,7 @@ const COLORS = ['bg-red-600', 'bg-orange-500', 'bg-yellow-500', 'bg-lime-600', '
  * special character; replace them with `rules`, or append to them with `extraRules` (a rule is `{ label, test(password),
  * required? }`, and `passwordRules` has ready-made ones). The strength is how many rules are met, spread over `labels`.
  * `onResult` reports the score and `valid` (every required rule met) so a form can enable its submit button.
- * Pair it with PasswordInput.
+ * `showOn="focus"` shows it only while the password field has focus. Pair it with PasswordInput.
  */
 const PasswordStrengthInfo = ({
 	password,
@@ -103,8 +139,18 @@ const PasswordStrengthInfo = ({
 	colors = COLORS,
 	emptyLabel = 'Enter a password',
 	onResult,
+	showOn = 'always',
+	focusTarget,
 	className = '',
 }: PasswordStrengthInfoProps) => {
+	const root = useRef<HTMLDivElement>(null)
+	const focused = useFocusWithin(showOn === 'focus', () => {
+		if (typeof focusTarget === 'string') return document.getElementById(focusTarget)
+		if (!focusTarget) return root.current?.parentElement
+		return focusTarget instanceof HTMLElement ? focusTarget : (focusTarget as RefObject<HTMLElement | null>).current
+	})
+	const shown = showOn === 'always' || focused
+
 	const all = rules ?? [...defaultPasswordRules(minLength), ...(extraRules ?? [])]
 	const met = all.map(rule => rule.test(password))
 	const score = met.filter(Boolean).length
@@ -126,7 +172,11 @@ const PasswordStrengthInfo = ({
 	}, [score, total, level, valid, met.join(), onResult])
 
 	return (
-		<div className={`flex flex-col gap-2 text-sm text-app-text ${className}`}>
+		<div
+			ref={root}
+			hidden={!shown}
+			className={`${shown ? 'flex' : 'hidden'} flex-col gap-2 text-sm text-app-text ${className}`}
+		>
 			{showStrength && (
 				<>
 					<div className="flex items-center justify-between gap-2">

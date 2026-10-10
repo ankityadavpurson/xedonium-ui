@@ -1,3 +1,4 @@
+import BetaBadge from './BetaBadge'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Tree } from 'xedonium'
@@ -35,12 +36,15 @@ const DocsNav = ({ items, activePath: currentPath, onNavigate, onSelect, footer,
 	visit(items)
 
 	const renderLabel = (node, depth) => {
-		const { href, icon } = byKey.get(node.key)
+		const { href, icon, beta } = byKey.get(node.key)
 		const text =
 			depth === 0 ? (
 				<span className="text-xs font-semibold uppercase tracking-widest text-app-muted">{node.label}</span>
 			) : (
-				<span className="text-sm">{node.label}</span>
+				<span className="flex min-w-0 items-center gap-2 text-sm">
+					<span className="truncate">{node.label}</span>
+					{beta && <BetaBadge />}
+				</span>
 			)
 		// Pages are real links (open in a new tab, copy address); groups are handled by the row click
 		return href ? (
