@@ -10,6 +10,7 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `CodeDisplay` and `Markdown` fenced code now color `html` (also `xml`, `svg`), `css` (also `scss`), `apache` (also `htaccess`) and `nginx`, and take a `highlighter` prop to plug in your own tokenizer for other languages. The `Highlighter` type is exported.
 - `NestedTable` (tree rows and master-detail rows with lazy loading, exclusive, row actions), `LogViewer` (level filter with counts, debounced search with highlights, follow-the-newest with "Jump to latest", full screen, `parseLogFile`), `FileExplorer` (grid, list and tree layouts, breadcrumbs, filter, lazy folders), `PasswordStrengthInfo` with custom rules (`rules`, `extraRules`, `passwordRules`, `onResult`) and `NetworkConnection` (detects online, offline and no internet; panel, badge and banner).
 - `RichTextEditor` (**beta**): a WYSIWYG editor with no dependencies (bold, italic, headings, lists, quotes, code, alignment, colors, links, images, tables, undo and redo). HTML is sanitized by an allowlist on the way in and out; `format="markdown"` edits Markdown. Images can be resized (corner handle, width presets) and table columns dragged by their borders. Also exports `sanitizeHtml`, `markdownToHtml` and `htmlToMarkdown`, and six icons (`ListOrderedIcon`, `QuoteIcon`, `TableIcon`, `PaletteIcon`, `HighlighterIcon`, `RemoveFormattingIcon`).
 - `BackToTop` (appears after scrolling, smooth scroll to the top, optional progress ring) and `ScrollProgress` (a `bar` along the top of the page, or a `button` with a ring), with the `useScrollProgress` hook.
@@ -18,6 +19,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 - `Markdown` component: GitHub-style Markdown (tables, task lists, nested lists, fenced code with highlighting, images, router-aware links) with no dependencies. HTML in the source stays text and unsafe URLs are not rendered as links or images.
 
 ### Changed
+
+- Tailwind v4 is supported: the `tailwindcss` peer range is now `^3.4.0 || ^4.0.0`, the README has a Tailwind v4 setup section and `xedonium/tailwind-v4.css` provides the dark variant, `app-*` colours and animations.
 
 - The library source is now TypeScript (`.ts` / `.tsx`). The published `.d.ts` files describe every prop precisely:
   fixed choices are literal unions (`gap`, `variant`, `size`, `placement`, ...), optional props are optional, and

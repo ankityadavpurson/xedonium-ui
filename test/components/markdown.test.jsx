@@ -300,6 +300,21 @@ describe('Markdown', () => {
 		expect(within(blocks[0]).getByRole('button', { name: /copy/i })).toBeInTheDocument()
 	})
 
+	it('colors fenced css and passes a custom highlighter to the code blocks', () => {
+		const { container, rerender } = render(
+			<Markdown>{'```css' + String.fromCharCode(10) + 'a { color: red }' + String.fromCharCode(10) + '```'}</Markdown>
+		)
+		expect(container.querySelectorAll('code span[style]').length).toBeGreaterThan(0)
+		const highlighter = vi.fn(code => [[{ kind: 'tag', text: code }]])
+		rerender(
+			<Markdown highlighter={highlighter}>
+				{'```mine' + String.fromCharCode(10) + 'x' + String.fromCharCode(10) + '```'}
+			</Markdown>
+		)
+		expect(highlighter).toHaveBeenCalledWith('x', 'mine')
+		expect(container.querySelector('code span[style]')).toHaveTextContent('x')
+	})
+
 	it('renders images lazily with alt text and title, and shows the alt text when one fails to load', () => {
 		const { container } = render(<Markdown>{'![A cat](/cat.png "Cat")'}</Markdown>)
 		const img = screen.getByRole('img', { name: 'A cat' })
