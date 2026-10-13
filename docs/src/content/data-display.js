@@ -193,6 +193,24 @@ export default {
 			],
 		},
 		{
+			slug: 'pipelinegraph',
+			name: 'PipelineGraph',
+			blocks: [
+				{
+					md: 'Job dependency graph, left to right like the workflow view on GitHub Actions. `nodes`: `{ id, label, status, duration?, needs? }`, where `status` is `queued`, `running`, `success`, `failed`, `skipped` or `cancelled`. The column is the longest path from a root; the first dependent of a node stays on its row and the others open new rows. An unknown id in `needs` is ignored and a cycle drops the dependency that closes it.',
+				},
+				{
+					example: 1,
+				},
+				{
+					md: '**Click, select and pan.** Nodes are buttons: `onNodeClick(node)` and `selectedId` (it sets `aria-current`). When the graph is larger than its container, drag (or touch-drag) to pan; a drag does not click a node, and tabbing to a node scrolls it into view. Give the container a size with `className`. Each node can carry a React `label`, a `description`, a custom `icon`, a `trailing` slot, its own `className`, an `ariaLabel` and `disabled`; `renderNode(node, { selected, icon })` replaces the whole content, and `nodeWidth`, `nodeHeight`, `gapX` and `gapY` set the sizes.',
+				},
+				{
+					example: 2,
+				},
+			],
+		},
+		{
 			slug: 'list',
 			name: 'List',
 			blocks: [

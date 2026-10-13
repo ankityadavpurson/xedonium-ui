@@ -33,12 +33,12 @@ const sourceProps = name => {
 	if (!match) return null
 	return match[1]
 		.split(/,(?![^{[(]*[}\])])/)
-		.map(
-			part =>
-				part
-					.trim()
-					.replace(/^\.\.\./, '')
-					.split(/[\s=:]/)[0]
+		.map(part =>
+			part
+				.trim()
+				.replace(/^\.\.\./, '')
+				.split(/[\s=:]/)[0]
+				.replace(/^['"]|['"]$/g, '')
 		)
 		.filter(Boolean)
 }
