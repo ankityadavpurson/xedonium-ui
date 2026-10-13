@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import highlight, { TOKEN_KINDS, type TokenKind } from '../utils/highlight'
+import highlight, { TOKEN_KINDS, type Highlighter, type TokenKind } from '../utils/highlight'
 
 export type CodeColors = Partial<Record<TokenKind | 'text' | 'background', string>>
 
 export interface CodeDisplayProps {
 	code: string
-	/** Caption and syntax colors: js / jsx / ts / tsx / json, bash / sh. */
+	/** Caption and syntax colors: js / jsx / ts / tsx / json, bash / sh, html / xml / svg, css / scss, apache / htaccess, nginx. */
 	language?: string
 	/** Header text; overrides `language` as the caption. */
 	title?: string
@@ -19,13 +19,16 @@ export interface CodeDisplayProps {
 	highlight?: boolean
 	/** Override the palette with any CSS colors. */
 	colors?: CodeColors
+	/** Your own tokenizer, for languages that are not built in: returns the segments of every line. */
+	highlighter?: Highlighter
 	className?: string
 }
 
 /**
  * Read-only code block with an optional title, line numbers and a copy button. `code` is a string; `language` is
- * shown as a caption and picks the syntax colors: js / jsx / ts / tsx / json and bash / sh are colored, other values
- * stay plain (`highlight={false}` turns the colors off). The default palette follows the light / dark theme
+ * shown as a caption and picks the syntax colors: js / jsx / ts / tsx / json, bash / sh, html / xml / svg, css / scss,
+ * apache / htaccess and nginx are colored, other values stay plain (`highlight={false}` turns the colors off; `highlighter`
+ * plugs in your own tokenizer). The default palette follows the light / dark theme
  * (`--xd-tok-*` in styles.css); pass `colors` to override: { comment, string, keyword, tag, attr, number, fn, text,
  * background } with any CSS color.
  */
@@ -39,6 +42,7 @@ const CodeDisplay = ({
 	maxHeight,
 	highlight: colorize = true,
 	colors,
+	highlighter,
 	className = '',
 }: CodeDisplayProps) => {
 	const [copied, setCopied] = useState(false)
@@ -46,7 +50,9 @@ const CodeDisplay = ({
 	useEffect(() => () => clearTimeout(timer.current), [])
 
 	const text = String(code ?? '')
-	const lines = highlight(text.replace(/\n$/, ''), colorize ? language : undefined)
+	const source = text.replace(/\n$/, '')
+	const lines =
+		colorize && highlighter ? highlighter(source, language) : highlight(source, colorize ? language : undefined)
 
 	const copy = async () => {
 		try {

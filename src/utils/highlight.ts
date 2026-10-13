@@ -1,4 +1,4 @@
-// A tiny regex tokenizer for JS-like and shell snippets (no highlighter dependency).
+// A tiny regex tokenizer for JS-like, shell, HTML / XML, CSS and Apache / nginx config snippets (no highlighter dependency).
 // `highlight(code, language)` returns one array of { kind, text } segments per line; `kind` is null for plain text.
 
 export type TokenKind = 'comment' | 'string' | 'keyword' | 'tag' | 'attr' | 'number' | 'fn'
@@ -7,6 +7,8 @@ export interface Segment {
 	text: string
 }
 type Rule = [TokenKind, RegExp]
+/** A custom tokenizer: one array of segments per line (see `highlight`). */
+export type Highlighter = (code: string, language?: string | null) => Segment[][]
 
 const JS_RULES: Rule[] = [
 	['comment', /\/\/[^\n]*|\/\*[\s\S]*?\*\//],
@@ -28,9 +30,52 @@ const SH_RULES: Rule[] = [
 	['attr', /(?<=\s)--?[A-Za-z][\w-]*/],
 ]
 
+const QUOTED = /'(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"/
+
+const HTML_RULES: Rule[] = [
+	['comment', /<!--[\s\S]*?-->/],
+	['tag', /<\/?[A-Za-z][\w:.-]*|<[!?][A-Za-z-]+|\??\/?>/],
+	['attr', /[A-Za-z_:@][\w:.@-]*(?==)/],
+	['string', new RegExp(String.raw`(?<==\s*)(?:${QUOTED.source})`)],
+]
+
+// Selectors are names followed by a `{` before any `;` or `}`; that keeps `#fff;` (a color) apart from `#main {`.
+const CSS_RULES: Rule[] = [
+	['comment', /\/\*[\s\S]*?\*\/|(?<![:\w])\/\/[^\n]*/],
+	['string', QUOTED],
+	['keyword', /@[\w-]+/],
+	['tag', /(?<![\w(-])[.#]?[A-Za-z_-][\w-]*(?=[^;{}]*\{)/],
+	['number', /#[0-9A-Fa-f]{3,8}(?![\w-])/],
+	['number', /(?<![\w#-])-?(?:\d+(?:\.\d+)?|\.\d+)(?:[A-Za-z]+|%)?(?!\w)/],
+	['fn', /[A-Za-z_-][\w-]*(?=\()/],
+	['attr', /-{0,2}[A-Za-z][\w-]*(?=\s*:)/],
+]
+
+const APACHE_RULES: Rule[] = [
+	['comment', /^[ \t]*#[^\n]*/],
+	['string', QUOTED],
+	['tag', /<\/?[A-Za-z]\w*|(?<=<[^<>\n]*)>/],
+	['keyword', /(?<=^[ \t]*)[A-Za-z]\w*/],
+	['attr', /\[[A-Za-z]+(?:=[\w:-]+)?(?:,[A-Za-z]+(?:=[\w:-]+)?)*\]|(?<=\s)[+-][A-Za-z]\w*/],
+	['fn', /%\{[^}\n]*\}|%?\$\d/],
+	['number', /(?<![\w.-])\d+(?![\w.])/],
+]
+
+const NGINX_RULES: Rule[] = [
+	['comment', /#[^\n]*/],
+	['string', QUOTED],
+	['keyword', /(?<=(?:^|[{};])[ \t]*)[A-Za-z_]\w*(?=[\s;])/],
+	['fn', /\$[A-Za-z_]\w*|\$\{\w+\}/],
+	['number', /(?<![\w.$/-])\d+(?:\.\d+)?[kKmMgGsdhy]?(?![\w.])/],
+]
+
 const compile = (rules: Rule[]) => new RegExp(rules.map(([, re]) => `(${re.source})`).join('|'), 'gm')
 const JS: [Rule[], RegExp] = [JS_RULES, compile(JS_RULES)]
 const SH: [Rule[], RegExp] = [SH_RULES, compile(SH_RULES)]
+const HTML: [Rule[], RegExp] = [HTML_RULES, compile(HTML_RULES)]
+const CSS: [Rule[], RegExp] = [CSS_RULES, compile(CSS_RULES)]
+const APACHE: [Rule[], RegExp] = [APACHE_RULES, compile(APACHE_RULES)]
+const NGINX: [Rule[], RegExp] = [NGINX_RULES, compile(NGINX_RULES)]
 
 const GRAMMARS: Record<string, [Rule[], RegExp]> = {
 	js: JS,
@@ -44,7 +89,19 @@ const GRAMMARS: Record<string, [Rule[], RegExp]> = {
 	sh: SH,
 	shell: SH,
 	zsh: SH,
+	html: HTML,
+	htm: HTML,
+	xml: HTML,
+	svg: HTML,
+	css: CSS,
+	scss: CSS,
+	apache: APACHE,
+	htaccess: APACHE,
+	nginx: NGINX,
 }
+
+/** Language names (lowercase) that get syntax colors. */
+export const HIGHLIGHTED_LANGUAGES = Object.keys(GRAMMARS)
 
 /** Token kinds, in the order the default palette (`--xd-tok-*` in styles.css) defines them. */
 export const TOKEN_KINDS: TokenKind[] = ['comment', 'string', 'keyword', 'tag', 'attr', 'number', 'fn']

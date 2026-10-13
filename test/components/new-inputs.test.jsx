@@ -213,6 +213,26 @@ describe('CodeDisplay', () => {
 		expect(container.querySelectorAll('code span[style]')).toHaveLength(0)
 	})
 
+	it('colors html, css, apache and nginx, and takes a custom highlighter', () => {
+		const { container, rerender } = render(<CodeDisplay code={'<a href="/x">hi</a>'} language="html" />)
+		expect(container.querySelectorAll('code span[style]').length).toBeGreaterThan(2)
+		rerender(<CodeDisplay code="a { width: 100%; color: #fff }" language="CSS" />)
+		expect(container.querySelector('code')).toHaveTextContent('100%')
+		expect([...container.querySelectorAll('code span[style]')].map(s => s.textContent)).toEqual(
+			expect.arrayContaining(['100%', '#fff'])
+		)
+		rerender(<CodeDisplay code="Options -Indexes" language="htaccess" />)
+		expect(container.querySelectorAll('code span[style]')).toHaveLength(2)
+		rerender(<CodeDisplay code="listen 80;" language="nginx" />)
+		expect(container.querySelectorAll('code span[style]')).toHaveLength(2)
+		const highlighter = vi.fn(code => [[{ kind: 'keyword', text: code }]])
+		rerender(<CodeDisplay code={'mine' + String.fromCharCode(10)} language="mylang" highlighter={highlighter} />)
+		expect(highlighter).toHaveBeenCalledWith('mine', 'mylang')
+		expect(container.querySelector('code span[style]')).toHaveAttribute('style', 'color: var(--xd-tok-keyword);')
+		rerender(<CodeDisplay code="mine" language="mylang" highlighter={highlighter} highlight={false} />)
+		expect(container.querySelectorAll('code span[style]')).toHaveLength(0)
+	})
+
 	it('highlights shell commands and multi-line comments across lines', () => {
 		const { container, rerender } = render(<CodeDisplay code="yarn add xedonium # now" language="bash" />)
 		expect(container.querySelectorAll('code span[style]').length).toBeGreaterThan(1)

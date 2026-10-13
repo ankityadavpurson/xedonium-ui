@@ -23,10 +23,12 @@ npm install xedonium
 # or: yarn add xedonium
 # or: pnpm add xedonium
 
-# peers: react, react-dom (18+), tailwindcss ^3.4
+# peers: react, react-dom (18+), tailwindcss ^3.4 or ^4
 ```
 
 ## Setup
+
+Using Tailwind v4? Jump to [Tailwind v4 setup](#tailwind-v4-setup).
 
 1. Tailwind config: use the preset and scan the library's files.
 
@@ -73,6 +75,23 @@ import { ThemeProvider, useTheme } from 'xedonium/theme'
 ```
 
 `import { Button } from 'xedonium'` keeps working and is tree-shaken.
+
+## Tailwind v4 setup
+
+Tailwind v4 has no JS config by default, so use CSS instead of the preset (steps 3 and 4 above are unchanged):
+
+```css
+/* app.css */
+@import 'tailwindcss';
+/* layer(base) matters: unlayered, xedonium's border reset would beat Tailwind's .border utilities */
+@import 'xedonium/styles.css' layer(base);
+/* dark variant on html[data-theme], the app-* colours and the animations */
+@import 'xedonium/tailwind-v4.css';
+/* xedonium ships Tailwind class names inside its compiled JS */
+@source '../node_modules/xedonium/dist';
+```
+
+Adjust the `@source` path to be relative to this CSS file.
 
 ## TypeScript
 

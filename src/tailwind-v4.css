@@ -1,0 +1,44 @@
+/* xedonium setup for Tailwind CSS v4 (the CSS equivalent of tailwind-preset.js). Import it after Tailwind and styles.css:
+ *
+ *   @import 'tailwindcss';
+ *   @import 'xedonium/styles.css' layer(base);
+ *   @import 'xedonium/tailwind-v4.css';
+ *   @source '../node_modules/xedonium/dist';
+ */
+
+/* follow the app's theme toggle (html[data-theme]) rather than the OS setting */
+@custom-variant dark ([data-theme='dark'] &);
+
+/* `inline` makes utilities use the expression directly. Tailwind still lists these in its lowest `theme` layer, which
+   is why styles.css must be imported with layer(base): its real --color-app-* values then win over that list. */
+@theme inline {
+	--color-app-bg: rgb(var(--color-app-bg));
+	--color-app-card: rgb(var(--color-app-card));
+	--color-app-border: rgb(var(--color-app-border));
+	--color-app-text: rgb(var(--color-app-text));
+	--color-app-muted: rgb(var(--color-app-muted));
+	--color-app-soft: rgb(var(--color-app-soft));
+	--color-app-strong: rgb(var(--color-app-strong));
+
+	--animate-fade-up: fade-up 0.5s ease-out both;
+	--animate-indeterminate: indeterminate 1.4s ease-in-out infinite;
+
+	@keyframes fade-up {
+		0% {
+			opacity: 0;
+			transform: translateY(6px);
+		}
+		100% {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+	@keyframes indeterminate {
+		0% {
+			transform: translateX(-100%);
+		}
+		100% {
+			transform: translateX(250%);
+		}
+	}
+}

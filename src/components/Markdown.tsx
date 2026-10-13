@@ -1,6 +1,7 @@
 import { Fragment, useState, type ElementType, type ReactNode } from 'react'
 import { inlineText, parseMarkdown, type Align, type Block, type Inline, type ListItem } from '../utils/markdown'
 import CodeDisplay from './CodeDisplay'
+import type { Highlighter } from '../utils/highlight'
 
 export interface MarkdownProps {
 	/** The Markdown source. */
@@ -14,6 +15,8 @@ export interface MarkdownProps {
 	openLinksInNewTab?: boolean
 	/** Give headings an `id` (their text as a slug) so `#anchor` links work (default true). */
 	headingIds?: boolean
+	/** Your own tokenizer for fenced code (see CodeDisplay `highlighter`). */
+	highlighter?: Highlighter
 	className?: string
 }
 
@@ -72,6 +75,7 @@ const Markdown = ({
 	isInternalLink = defaultInternal,
 	openLinksInNewTab = false,
 	headingIds = true,
+	highlighter,
 	className = '',
 }: MarkdownProps) => {
 	const seen = new Map<string, number>()
@@ -205,7 +209,9 @@ const Markdown = ({
 				)
 			}
 			case 'code':
-				return <CodeDisplay key={index} code={block.text} language={block.lang || undefined} />
+				return (
+					<CodeDisplay key={index} code={block.text} language={block.lang || undefined} highlighter={highlighter} />
+				)
 			case 'hr':
 				return <hr key={index} className="m-0 border-0 border-t border-app-border" />
 			case 'table':
