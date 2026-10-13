@@ -12,6 +12,7 @@ import {
 	Modal,
 	NestedTable,
 	NetworkConnection,
+	PipelineGraph,
 	PasswordStrengthInfo,
 	Select,
 	Toast,
@@ -33,6 +34,27 @@ export const valid = (
 		<Accordion items={[{ key: 'a', title: 'A' }]} gap="md" multiple />
 		<Loader variant="spinner" size="sm" icon="🚀" iconMotion="bounce" />
 		<Select value="a" onChange={value => value.toUpperCase()} options={options} variant="flat" />
+		<PipelineGraph
+			nodes={[
+				{ id: 'a', label: 'a', status: 'success', duration: '3s' },
+				{
+					id: 'b',
+					label: <b>b</b>,
+					status: 'running',
+					needs: ['a'],
+					description: 'd',
+					icon: <i />,
+					trailing: 'x',
+					ariaLabel: 'B',
+					disabled: true,
+				},
+			]}
+			onNodeClick={node => node.id.toUpperCase()}
+			selectedId="a"
+			renderNode={(node, { selected }) => `${node.id}${selected}`}
+			nodeWidth={160}
+			gapY={12}
+		/>
 		<Markdown linkProp="to" openLinksInNewTab headingIds={false}>
 			{'# Title'}
 		</Markdown>
@@ -72,6 +94,8 @@ export const invalid = (
 		<Accordion items={[]} gap="huge" />
 		{/* @ts-expect-error variant is a fixed list */}
 		<Loader variant="rainbow" />
+		{/* @ts-expect-error status must be one of the known states */}
+		<PipelineGraph nodes={[{ id: 'a', label: 'a', status: 'done' }]} />
 		{/* @ts-expect-error openLinksInNewTab is a boolean */}
 		<Markdown openLinksInNewTab="yes" />
 		{/* @ts-expect-error a log level is one of four */}

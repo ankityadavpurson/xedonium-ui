@@ -1273,6 +1273,31 @@ const props = {
 			className,
 		],
 	},
+	pipelinegraph: {
+		PipelineGraph: [
+			[
+				'nodes',
+				'{ id, label, status, duration?, needs?, icon?, description?, trailing?, className?, ariaLabel?, title?, disabled? }[]',
+				'',
+				'Jobs; `status` is queued | running | success | failed | skipped | cancelled, `needs` lists the ids a job waits for. `label`, `duration`, `description`, `icon` and `trailing` take any React node; `className` styles one node, `ariaLabel` names it when the label is not text, `disabled` makes it unclickable.',
+			],
+			['onNodeClick', '(node) => void', '', 'Called when a node is clicked (not after a drag).'],
+			['selectedId', 'string | null', '', 'Id of the highlighted node (sets aria-current).'],
+			[
+				'renderNode',
+				'(node, { selected, icon }) => ReactNode',
+				'',
+				'Replaces the content inside a node; `icon` is the default status icon, to keep it.',
+			],
+			['nodeWidth', 'number', '176', 'Node width in px.'],
+			['nodeHeight', 'number', '52', 'Node height in px.'],
+			['gapX', 'number', '48', 'Space between columns in px.'],
+			['gapY', 'number', '16', 'Space between rows in px.'],
+			['emptyText', 'ReactNode', '', 'Shown when there are no nodes (nothing is rendered by default).'],
+			['aria-label', 'string', "'Pipeline'", 'Accessible name of the graph.'],
+			className,
+		],
+	},
 	list: {
 		List: [
 			[
