@@ -95,6 +95,100 @@ describe('Calendar', () => {
 		expect(day(2024, 4, 13)).toHaveFocus() // Monday
 	})
 
+	describe('month navigation within min and max', () => {
+		const min = new Date(2024, 4, 10)
+		const max = new Date(2024, 6, 20)
+		const prev = () => screen.getByLabelText('Previous month')
+		const next = () => screen.getByLabelText('Next month')
+
+		it('disables the buttons when no day is selectable in the next or previous month', () => {
+			render(<Calendar value={new Date(2024, 5, 15)} min={min} max={max} locale="en-US" />)
+			expect(prev()).toBeEnabled()
+			expect(next()).toBeEnabled()
+			fireEvent.click(prev())
+			expect(screen.getByText('May 2024')).toBeInTheDocument()
+			expect(prev()).toBeDisabled()
+			fireEvent.click(prev())
+			expect(screen.getByText('May 2024')).toBeInTheDocument()
+			fireEvent.click(next())
+			fireEvent.click(next())
+			expect(screen.getByText('July 2024')).toBeInTheDocument()
+			expect(next()).toBeDisabled()
+			fireEvent.click(next())
+			expect(screen.getByText('July 2024')).toBeInTheDocument()
+		})
+
+		it('keeps the buttons enabled without min and max, or with only one of them', () => {
+			const { rerender } = render(<Calendar value={value} />)
+			expect(prev()).toBeEnabled()
+			expect(next()).toBeEnabled()
+			rerender(<Calendar value={value} min={new Date(2024, 4, 1)} />)
+			expect(prev()).toBeDisabled()
+			expect(next()).toBeEnabled()
+			rerender(<Calendar value={value} max={new Date(2024, 4, 31)} />)
+			expect(prev()).toBeEnabled()
+			expect(next()).toBeDisabled()
+		})
+
+		it('does not page past the range with PageUp and PageDown', () => {
+			render(<Calendar value={new Date(2024, 5, 15)} min={min} max={max} locale="en-US" />)
+			const press = key => fireEvent.keyDown(document.activeElement, { key })
+			day(2024, 5, 15).focus()
+			press('PageDown')
+			expect(screen.getByText('July 2024')).toBeInTheDocument()
+			expect(day(2024, 6, 15)).toHaveFocus()
+			press('PageDown')
+			// the next month is out of range: stay in July, on the last allowed day
+			expect(screen.getByText('July 2024')).toBeInTheDocument()
+			expect(day(2024, 6, 20)).toHaveFocus()
+			expect(day(2024, 6, 20)).toBeEnabled()
+			press('PageDown')
+			expect(screen.getByText('July 2024')).toBeInTheDocument()
+			press('PageUp')
+			press('PageUp')
+			expect(screen.getByText('May 2024')).toBeInTheDocument()
+			press('PageUp')
+			expect(screen.getByText('May 2024')).toBeInTheDocument()
+			expect(day(2024, 4, 10)).toHaveFocus()
+			expect(day(2024, 4, 10)).toBeEnabled()
+		})
+
+		it('does not move focus onto a disabled day with the arrow keys', () => {
+			render(<Calendar value={new Date(2024, 4, 10)} min={min} max={max} locale="en-US" />)
+			day(2024, 4, 10).focus()
+			fireEvent.keyDown(document.activeElement, { key: 'ArrowLeft' })
+			expect(day(2024, 4, 10)).toHaveFocus()
+			fireEvent.keyDown(document.activeElement, { key: 'ArrowUp' })
+			expect(day(2024, 4, 10)).toHaveFocus()
+			expect(screen.getByText('May 2024')).toBeInTheDocument()
+		})
+
+		it('opens on the nearest allowed month when today is outside the range', () => {
+			vi.useFakeTimers({ toFake: ['Date'] })
+			vi.setSystemTime(new Date(2024, 0, 10, 12))
+			const { unmount } = render(<Calendar min={min} max={max} locale="en-US" />)
+			expect(screen.getByText('May 2024')).toBeInTheDocument()
+			unmount()
+			vi.setSystemTime(new Date(2025, 0, 10, 12))
+			render(<Calendar min={min} max={max} locale="en-US" />)
+			expect(screen.getByText('July 2024')).toBeInTheDocument()
+		})
+
+		it('treats a time on min and max as the whole day, so the boundary days stay selectable', () => {
+			render(<Calendar value={new Date(2024, 5, 1)} min={new Date(2024, 5, 1, 15, 30)} max={new Date(2024, 5, 3, 9)} />)
+			expect(day(2024, 5, 1)).toBeEnabled()
+			expect(day(2024, 5, 3)).toBeEnabled()
+			expect(day(2024, 4, 31)).toBeDisabled()
+			expect(day(2024, 5, 4)).toBeDisabled()
+		})
+
+		it('also limits the pickers built on it', () => {
+			render(<DatePicker value={new Date(2024, 4, 15)} min={min} max={max} />)
+			fireEvent.click(screen.getByRole('button', { name: /May 15, 2024|2024/ }))
+			expect(screen.getByLabelText('Previous month')).toBeDisabled()
+		})
+	})
+
 	it('disables days outside min/max', () => {
 		render(<Calendar value={value} min={new Date(2024, 4, 10)} max={new Date(2024, 4, 20)} />)
 		expect(day(2024, 4, 9)).toBeDisabled()

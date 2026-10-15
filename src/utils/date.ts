@@ -19,6 +19,21 @@ export const isBefore = (a: Date, b: Date) => a.getTime() < b.getTime()
 export const isOutOfRange = (date: Date, min?: Date | null, max?: Date | null) =>
 	(!!min && isBefore(date, min)) || (!!max && isBefore(max, date))
 
+// Whether any day of the month of `month` lies within min..max (both compared by day)
+export const monthHasSelectableDay = (month: Date, min?: Date | null, max?: Date | null) => {
+	const first = new Date(month.getFullYear(), month.getMonth(), 1)
+	const last = new Date(month.getFullYear(), month.getMonth() + 1, 0)
+	return !(min && isBefore(last, min)) && !(max && isBefore(max, first))
+}
+
+// The nearest day within min..max (the date itself when it is inside, or when the range is empty)
+export const clampToRange = (date: Date, min?: Date | null, max?: Date | null) => {
+	if (min && max && isBefore(max, min)) return date
+	if (min && isBefore(date, min)) return min
+	if (max && isBefore(max, date)) return max
+	return date
+}
+
 // Weeks (arrays of 7 dates) covering the month of `viewDate`, padded with neighbouring-month days
 export const monthGrid = (viewDate: Date, weekStartsOn = 0): Date[][] => {
 	const first = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1)

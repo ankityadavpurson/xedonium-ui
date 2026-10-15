@@ -10,6 +10,7 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- Icons `ArrowUpDownIcon`, `ArrowLeftRightIcon`, `ChevronsUpDownIcon`, `CpuIcon`, `LaptopIcon`, `KeyboardIcon`, `MouseIcon`, `MemoryStickIcon` and `TabletIcon` (#62).
 - `PipelineGraph`: a left-to-right job dependency graph (like the workflow view on GitHub Actions) with status icons, per-node `icon`, `description`, `trailing`, `className` and `disabled`, elbow connectors, drag or touch to pan, `onNodeClick` / `selectedId` and `renderNode`. The grid layout is exported as `layoutPipeline`.
 - `CodeDisplay` and `Markdown` fenced code now color `html` (also `xml`, `svg`), `css` (also `scss`), `apache` (also `htaccess`) and `nginx`, and take a `highlighter` prop to plug in your own tokenizer for other languages. The `Highlighter` type is exported.
 - `NestedTable` (tree rows and master-detail rows with lazy loading, exclusive, row actions), `LogViewer` (level filter with counts, debounced search with highlights, follow-the-newest with "Jump to latest", full screen, `parseLogFile`), `FileExplorer` (grid, list and tree layouts, breadcrumbs, filter, lazy folders), `PasswordStrengthInfo` with custom rules (`rules`, `extraRules`, `passwordRules`, `onResult`) and `NetworkConnection` (detects online, offline and no internet; panel, badge and banner).
@@ -31,6 +32,7 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Fixed
 
+- `Calendar` (and `DatePicker`, `DateTimePicker`, `DateRangePicker`): the month buttons are disabled when the previous or next month has no day within `min` / `max`, `PageUp` / `PageDown` and the arrow keys no longer move outside the range or onto a disabled day, and with nothing selected it opens on the nearest allowed month. A time on `min` / `max` no longer disables its own day (#63).
 - Docs: the Badge page points to `Chip` (with `tone`) for status labels, and the Chip page says when to use `Badge`
   instead (#36).
 - Docs: `PageLayout` needs a full-height flex column as its parent (`min-h-screen flex flex-col`); the README, the Getting
