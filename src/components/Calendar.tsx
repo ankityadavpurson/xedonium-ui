@@ -2,9 +2,11 @@ import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import {
 	addDays,
 	addMonths,
+	clampToRange,
 	formatMonth,
 	isBefore,
 	isOutOfRange,
+	monthHasSelectableDay,
 	isSameDay,
 	monthGrid,
 	startOfDay,
@@ -18,7 +20,7 @@ export interface CalendarProps {
 	/** Highlight a range (used by DateRangePicker). */
 	rangeStart?: Date | null
 	rangeEnd?: Date | null
-	/** Days outside `min`..`max` are disabled. */
+	/** Days outside `min`..`max` are disabled, and so is paging to months with no allowed day. */
 	min?: Date | null
 	max?: Date | null
 	/** 0 = Sunday (default). */
@@ -47,7 +49,11 @@ const Calendar = ({
 	className = '',
 }: CalendarProps) => {
 	const today = startOfDay(new Date())
-	const anchor = value ?? rangeStart ?? today
+	// min / max limit whole days: a time on them does not disable their own day
+	const lo = min ? startOfDay(min) : null
+	const hi = max ? startOfDay(max) : null
+	// With nothing selected, open on today, or on the nearest allowed day when today is outside the range
+	const anchor = value ?? rangeStart ?? clampToRange(today, lo, hi)
 	const [focused, setFocused] = useState(startOfDay(anchor))
 	const [view, setView] = useState(new Date(anchor.getFullYear(), anchor.getMonth(), 1))
 	const gridRef = useRef<HTMLTableElement>(null)
@@ -81,13 +87,22 @@ const Calendar = ({
 		}
 		if (!moves[event.key]) return
 		event.preventDefault()
-		moveFocus(moves[event.key])
+		// never into a day (or a month) outside min..max
+		moveFocus(clampToRange(moves[event.key], lo, hi))
 	}
 
+	const prevMonth = addMonths(view, -1)
+	const nextMonth = addMonths(view, 1)
+	const canGoBack = monthHasSelectableDay(prevMonth, lo, hi)
+	const canGoForward = monthHasSelectableDay(nextMonth, lo, hi)
+
 	const shiftMonth = (delta: number) => {
+		if (!(delta < 0 ? canGoBack : canGoForward)) return
 		const nextView = addMonths(view, delta)
 		setView(nextView)
-		setFocused(new Date(nextView.getFullYear(), nextView.getMonth(), Math.min(focused.getDate(), 28)))
+		setFocused(
+			clampToRange(new Date(nextView.getFullYear(), nextView.getMonth(), Math.min(focused.getDate(), 28)), lo, hi)
+		)
 	}
 
 	const [from, to] =
@@ -97,13 +112,25 @@ const Calendar = ({
 	return (
 		<div className={`inline-block border border-app-border bg-app-card p-3 text-app-text ${className}`}>
 			<div className="mb-2 flex items-center justify-between gap-2">
-				<button type="button" className={navButton} aria-label="Previous month" onClick={() => shiftMonth(-1)}>
+				<button
+					type="button"
+					className={navButton}
+					aria-label="Previous month"
+					disabled={!canGoBack}
+					onClick={() => shiftMonth(-1)}
+				>
 					&lsaquo;
 				</button>
 				<div aria-live="polite" className="text-xs font-semibold uppercase tracking-widest">
 					{formatMonth(view, locale)}
 				</div>
-				<button type="button" className={navButton} aria-label="Next month" onClick={() => shiftMonth(1)}>
+				<button
+					type="button"
+					className={navButton}
+					aria-label="Next month"
+					disabled={!canGoForward}
+					onClick={() => shiftMonth(1)}
+				>
 					&rsaquo;
 				</button>
 			</div>
@@ -128,7 +155,7 @@ const Calendar = ({
 								const selected = isSameDay(day, value) || isSameDay(day, from) || isSameDay(day, to)
 								const inRange = from && to && !isBefore(day, from) && !isBefore(to, day)
 								const outside = day.getMonth() !== view.getMonth()
-								const disabled = isOutOfRange(day, min, max)
+								const disabled = isOutOfRange(day, lo, hi)
 								let tone = 'text-app-text hover:bg-app-bg'
 								if (selected) tone = 'bg-app-strong text-app-bg'
 								else if (inRange) tone = 'bg-app-soft/20 text-app-text'

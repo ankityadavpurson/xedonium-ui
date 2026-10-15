@@ -200,6 +200,15 @@ const EXTRA = [
 	'layout-grid',
 	'book-open',
 	'user-badge',
+	'arrow-up-down',
+	'arrow-left-right',
+	'chevrons-up-down',
+	'cpu',
+	'laptop',
+	'keyboard',
+	'mouse',
+	'memory-stick',
+	'tablet',
 ]
 
 const ROUNDED = ['whatsapp', 'eye', 'eye-off', 'map-pin', 'rocket', 'shield', 'shield-check', 'shield-alert', 'github']
@@ -337,7 +346,7 @@ describe('icon inventory', () => {
 
 describe('icons', () => {
 	it('exports every icon', () => {
-		expect(icons.length).toBe(219)
+		expect(icons.length).toBe(228)
 	})
 
 	it.each(icons)('%s renders a decorative svg with default and custom classes', (_, Icon) => {
