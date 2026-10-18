@@ -540,6 +540,23 @@ describe('Carousel', () => {
 		expect(onIndexChange).toHaveBeenCalledTimes(6)
 	})
 
+	it('lets the button and dot wording be customised, for the label and the tooltip', () => {
+		render(
+			<Carousel previousLabel="Previous order" nextLabel="Next order" dotLabel={i => `Go to order ${i + 1}`}>
+				{slides}
+			</Carousel>
+		)
+		expect(screen.getByRole('button', { name: 'Previous order' })).toBeInTheDocument()
+		expect(screen.getByRole('button', { name: 'Next order' })).toBeInTheDocument()
+		expect(screen.getByRole('button', { name: 'Go to order 3' })).toBeInTheDocument()
+		expect(screen.queryByLabelText('Next slide')).toBeNull()
+		expect(screen.queryByLabelText('Go to slide 1')).toBeNull()
+		fireEvent.mouseOver(screen.getByRole('button', { name: 'Next order' }).parentElement, {
+			relatedTarget: document.body,
+		})
+		expect(screen.getByText('Next order', { selector: 'div' })).toBeInTheDocument()
+	})
+
 	it('uses icon buttons centred on the slides, with tooltips, and keeps the dots outside the slide area', () => {
 		render(<Carousel>{slides}</Carousel>)
 		const prev = screen.getByRole('button', { name: 'Previous slide' })

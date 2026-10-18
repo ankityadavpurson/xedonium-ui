@@ -10,6 +10,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `Carousel` accepts `previousLabel`, `nextLabel` and `dotLabel(index)` to change the wording of the buttons and dots
+  (aria-label and tooltip), for example "Previous order" or a translation (#66).
 - Icons `ArrowUpDownIcon`, `ArrowLeftRightIcon`, `ChevronsUpDownIcon`, `CpuIcon`, `LaptopIcon`, `KeyboardIcon`, `MouseIcon`, `MemoryStickIcon` and `TabletIcon` (#62).
 - `PipelineGraph`: a left-to-right job dependency graph (like the workflow view on GitHub Actions) with status icons, per-node `icon`, `description`, `trailing`, `className` and `disabled`, elbow connectors, drag or touch to pan, `onNodeClick` / `selectedId` and `renderNode`. The grid layout is exported as `layoutPipeline`.
 - `CodeDisplay` and `Markdown` fenced code now color `html` (also `xml`, `svg`), `css` (also `scss`), `apache` (also `htaccess`) and `nginx`, and take a `highlighter` prop to plug in your own tokenizer for other languages. The `Highlighter` type is exported.
