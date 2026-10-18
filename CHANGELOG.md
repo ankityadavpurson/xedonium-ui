@@ -10,6 +10,11 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- Brand logo icons: `WindowsIcon`, `AppleIcon`, `LinuxIcon`, `AndroidIcon`, `UbuntuIcon`, `DebianIcon`, `FedoraIcon`,
+  `FreeBsdIcon` and database logos `MysqlIcon` (name and logo), `MysqlNameIcon` (name only), `MysqlLogoIcon` (dolphin only), `PostgresqlIcon`, `MongodbIcon`, `SupabaseIcon`, `FirebaseIcon`, `MariadbIcon`,
+  `SqliteIcon`, `RedisIcon` (current "R" mark), `OldRedisIcon` (the classic layered logo), `ElasticsearchIcon`, `CassandraIcon`. They are filled one-colour marks (`currentColor`) from
+  Simple Icons (CC0), except Windows, which is drawn here. Not included: Chrome OS, SQL Server and Oracle, which are not
+  in a licensed icon set (#68).
 - `ThemeProvider` / `useAppTheme` accept `defaultTheme` (`light`, `dark` or `system`, default `system`): the theme used until
   the user chooses one. The default is never stored; only a different choice is, and `system` is stored when it is not
   the default. New `getThemeInitScript({ storageKey, defaultTheme })` returns an inline script that sets `data-theme`
