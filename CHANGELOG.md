@@ -10,6 +10,9 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `DataGrid` accepts `virtualized` (with `rowHeight`, default 40, and `height`, default 400): only the rows in view are rendered,
+  between spacer rows, with a sticky header and `aria-rowcount` / `aria-rowindex`. All rows scroll in one list unless
+  `pageSize` is set; sorting, search and selection cover every row. Row heights must be fixed (#67).
 - Brand logo icons: `WindowsIcon`, `AppleIcon`, `LinuxIcon`, `AndroidIcon`, `UbuntuIcon`, `DebianIcon`, `FedoraIcon`,
   `FreeBsdIcon` and database logos `MysqlIcon` (name and logo), `MysqlNameIcon` (name only), `MysqlLogoIcon` (dolphin only), `PostgresqlIcon`, `MongodbIcon`, `SupabaseIcon`, `FirebaseIcon`, `MariadbIcon`,
   `SqliteIcon`, `RedisIcon` (current "R" mark), `OldRedisIcon` (the classic layered logo), `ElasticsearchIcon`, `CassandraIcon`. They are filled one-colour marks (`currentColor`) from
