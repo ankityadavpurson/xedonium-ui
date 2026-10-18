@@ -344,9 +344,55 @@ describe('icon inventory', () => {
 	})
 })
 
+// Operating system and database logos: one filled path each, no outline styling
+const BRAND_ICONS = [
+	'AppleIcon',
+	'LinuxIcon',
+	'AndroidIcon',
+	'UbuntuIcon',
+	'DebianIcon',
+	'FedoraIcon',
+	'FreeBsdIcon',
+	'MysqlIcon',
+	'MysqlLogoIcon',
+	'MysqlNameIcon',
+	'PostgresqlIcon',
+	'MongodbIcon',
+	'SupabaseIcon',
+	'FirebaseIcon',
+	'MariadbIcon',
+	'SqliteIcon',
+	'RedisIcon',
+	'OldRedisIcon',
+	'ElasticsearchIcon',
+	'CassandraIcon',
+	'WindowsIcon',
+]
+
+describe('brand logos', () => {
+	it.each(BRAND_ICONS)('%s is a filled one-colour mark that follows the text colour', name => {
+		const Icon = api[name]
+		expect(Icon, name).toBeTypeOf('function')
+		const { container } = render(<Icon className="h-6 w-6" />)
+		const svg = container.querySelector('svg')
+		expect(svg).toHaveAttribute('viewBox', '0 0 24 24')
+		expect(svg).toHaveAttribute('fill', 'currentColor')
+		expect(svg).not.toHaveAttribute('stroke')
+		expect(svg).toHaveAttribute('aria-hidden', 'true')
+		expect(svg).toHaveClass('h-6', 'w-6')
+		expect(svg.querySelectorAll('path')).toHaveLength(1)
+		expect(svg.querySelector('path').getAttribute('d').length).toBeGreaterThan(20)
+	})
+
+	it('defaults to the compact icon size', () => {
+		const { container } = render(<api.WindowsIcon />)
+		expect(container.querySelector('svg')).toHaveClass('h-4', 'w-4')
+	})
+})
+
 describe('icons', () => {
 	it('exports every icon', () => {
-		expect(icons.length).toBe(228)
+		expect(icons.length).toBe(249)
 	})
 
 	it.each(icons)('%s renders a decorative svg with default and custom classes', (_, Icon) => {

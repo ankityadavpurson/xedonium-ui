@@ -166,6 +166,12 @@ export default {
 				{
 					example: 2,
 				},
+				{
+					md: '**Large result sets.** `virtualized` renders only the rows in view (plus a few more) inside a scrolling area, so tens of thousands of rows stay fast. Give it a fixed `rowHeight` (default 40; cell content must fit on one line) and a `height` for the scroll area (default 400). The header stays visible, all rows scroll in one list instead of paging, and sorting, search and selection still cover every row, including those scrolled out of view. Pass `pageSize` as well if you also want a pager. Rows of different heights are not supported, and browsers limit how tall a scroll area can be (roughly 17 million px in Firefox, about 400,000 rows at the default row height), so for larger results load them in chunks.',
+				},
+				{
+					example: 3,
+				},
 			],
 		},
 		{

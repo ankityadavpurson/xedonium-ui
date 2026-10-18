@@ -10,6 +10,20 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `DataGrid` accepts `virtualized` (with `rowHeight`, default 40, and `height`, default 400): only the rows in view are rendered,
+  between spacer rows, with a sticky header and `aria-rowcount` / `aria-rowindex`. All rows scroll in one list unless
+  `pageSize` is set; sorting, search and selection cover every row. Row heights must be fixed (#67).
+- Brand logo icons: `WindowsIcon`, `AppleIcon`, `LinuxIcon`, `AndroidIcon`, `UbuntuIcon`, `DebianIcon`, `FedoraIcon`,
+  `FreeBsdIcon` and database logos `MysqlIcon` (name and logo), `MysqlNameIcon` (name only), `MysqlLogoIcon` (dolphin only), `PostgresqlIcon`, `MongodbIcon`, `SupabaseIcon`, `FirebaseIcon`, `MariadbIcon`,
+  `SqliteIcon`, `RedisIcon` (current "R" mark), `OldRedisIcon` (the classic layered logo), `ElasticsearchIcon`, `CassandraIcon`. They are filled one-colour marks (`currentColor`) from
+  Simple Icons (CC0), except Windows, which is drawn here. Not included: Chrome OS, SQL Server and Oracle, which are not
+  in a licensed icon set (#68).
+- `ThemeProvider` / `useAppTheme` accept `defaultTheme` (`light`, `dark` or `system`, default `system`): the theme used until
+  the user chooses one. The default is never stored; only a different choice is, and `system` is stored when it is not
+  the default. New `getThemeInitScript({ storageKey, defaultTheme })` returns an inline script that sets `data-theme`
+  before the first paint (#65).
+- `Carousel` accepts `previousLabel`, `nextLabel` and `dotLabel(index)` to change the wording of the buttons and dots
+  (aria-label and tooltip), for example "Previous order" or a translation (#66).
 - Icons `ArrowUpDownIcon`, `ArrowLeftRightIcon`, `ChevronsUpDownIcon`, `CpuIcon`, `LaptopIcon`, `KeyboardIcon`, `MouseIcon`, `MemoryStickIcon` and `TabletIcon` (#62).
 - `PipelineGraph`: a left-to-right job dependency graph (like the workflow view on GitHub Actions) with status icons, per-node `icon`, `description`, `trailing`, `className` and `disabled`, elbow connectors, drag or touch to pan, `onNodeClick` / `selectedId` and `renderNode`. The grid layout is exported as `layoutPipeline`.
 - `CodeDisplay` and `Markdown` fenced code now color `html` (also `xml`, `svg`), `css` (also `scss`), `apache` (also `htaccess`) and `nginx`, and take a `highlighter` prop to plug in your own tokenizer for other languages. The `Highlighter` type is exported.

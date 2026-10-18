@@ -16,6 +16,12 @@ export interface CarouselProps {
 	loop?: boolean
 	/** Accessible name of the carousel. */
 	label?: string
+	/** Label of the previous button, used as its `aria-label` and tooltip (default 'Previous slide'). */
+	previousLabel?: string
+	/** Label of the next button, used as its `aria-label` and tooltip (default 'Next slide'). */
+	nextLabel?: string
+	/** Label of the dot that jumps to slide `index` (0-based; default `Go to slide ${index + 1}`). */
+	dotLabel?: (index: number) => string
 	className?: string
 }
 
@@ -29,7 +35,8 @@ const arrow = 'inline-flex h-9 w-9 items-center justify-center !p-0'
  * Slide carousel; each child is one slide (text, cards, or `Image`s). Controlled with `index` + `onIndexChange`, or
  * uncontrolled via `defaultIndex`. `autoPlay` (ms) advances automatically and pauses on hover / focus. `loop` wraps
  * around. The previous / next buttons are icon buttons with tooltips, centred on the slides; the dots below jump
- * straight to a slide.
+ * straight to a slide. `previousLabel`, `nextLabel` and `dotLabel(index)` replace the wording (for example "Previous
+ * order" / "Go to order 2"), also for translation; each feeds the `aria-label` and, for the arrows, the tooltip.
  */
 const Carousel = ({
 	children,
@@ -39,6 +46,9 @@ const Carousel = ({
 	autoPlay = 0,
 	loop = true,
 	label = 'Carousel',
+	previousLabel = 'Previous slide',
+	nextLabel = 'Next slide',
+	dotLabel = index => `Go to slide ${index + 1}`,
 	className = '',
 }: CarouselProps) => {
 	const slides = Children.toArray(children)
@@ -108,8 +118,8 @@ const Carousel = ({
 						<div className={`${arrowSlot} left-2`}>
 							<Button
 								variant="secondary"
-								aria-label="Previous slide"
-								tooltip="Previous slide"
+								aria-label={previousLabel}
+								tooltip={previousLabel}
 								tooltipPlacement="top"
 								className={arrow}
 								disabled={!loop && current === 0}
@@ -121,8 +131,8 @@ const Carousel = ({
 						<div className={`${arrowSlot} right-2`}>
 							<Button
 								variant="secondary"
-								aria-label="Next slide"
-								tooltip="Next slide"
+								aria-label={nextLabel}
+								tooltip={nextLabel}
 								tooltipPlacement="top"
 								className={arrow}
 								disabled={!loop && current === slides.length - 1}
@@ -140,7 +150,7 @@ const Carousel = ({
 						<button
 							key={i}
 							type="button"
-							aria-label={`Go to slide ${i + 1}`}
+							aria-label={dotLabel(i)}
 							aria-current={i === current}
 							onClick={() => go(i)}
 							className="flex h-6 w-6 items-center justify-center"

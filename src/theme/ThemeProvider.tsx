@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import type { ThemeMode } from '../types'
 import { ThemeContext } from './ThemeContext'
 import useAppTheme from './useAppTheme'
 
@@ -12,10 +13,19 @@ export interface ThemeProviderProps {
 	faviconTitle?: string
 	/** Offer a third `system` mode that follows the device theme, and make it the default. */
 	allowSystem?: boolean
+	/** Theme used until the user chooses: `light`, `dark` or `system` (follow the device; the default). */
+	defaultTheme?: ThemeMode
 }
 
-const ThemeProvider = ({ children, storageKey, favicon = false, faviconTitle, allowSystem }: ThemeProviderProps) => {
-	const theme = useAppTheme({ storageKey, favicon, faviconTitle, allowSystem })
+const ThemeProvider = ({
+	children,
+	storageKey,
+	favicon = false,
+	faviconTitle,
+	allowSystem,
+	defaultTheme,
+}: ThemeProviderProps) => {
+	const theme = useAppTheme({ storageKey, favicon, faviconTitle, allowSystem, defaultTheme })
 	return <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
 }
 

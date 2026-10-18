@@ -16,9 +16,16 @@ export interface UseAppThemeOptions {
 	 * system -> light -> dark -> system. Without it, the device theme is followed until the user toggles (the default).
 	 */
 	allowSystem?: boolean
+	/**
+	 * The theme used until the user chooses one: `light`, `dark`, or `system` (follow the device, the default).
+	 * Picking the default again clears the saved choice, so the default is never stored as if the user had chosen it.
+	 */
+	defaultTheme?: ThemeMode
 }
 
 type ViewTransitionDocument = Document & { startViewTransition?: (update: () => void) => { finished: Promise<void> } }
+
+const isMode = (value: unknown): value is ThemeMode => value === 'light' || value === 'dark' || value === 'system'
 
 const prefersReducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
@@ -27,11 +34,14 @@ const useAppTheme = ({
 	favicon = true,
 	faviconTitle = '',
 	allowSystem = false,
+	defaultTheme: requestedDefault = 'system',
 }: UseAppThemeOptions = {}) => {
 	const [systemTheme, setSystemTheme] = useState<Theme>(getSystemTheme)
-	const [themeOverride, setThemeOverride] = useState<Theme | null>(() => getStoredThemeOverride(storageKey))
-	const activeTheme = themeOverride || systemTheme
-	const themeMode: ThemeMode = themeOverride ?? 'system'
+	const defaultTheme: ThemeMode = isMode(requestedDefault) ? requestedDefault : 'system'
+	// The saved choice, or null while the user has not chosen (the default applies)
+	const [choice, setChoice] = useState<ThemeMode | null>(() => getStoredThemeOverride(storageKey))
+	const themeMode: ThemeMode = choice ?? defaultTheme
+	const activeTheme: Theme = themeMode === 'system' ? systemTheme : themeMode
 
 	useEffect(() => {
 		if (typeof window === 'undefined') return undefined
@@ -45,12 +55,12 @@ const useAppTheme = ({
 
 	useEffect(() => {
 		try {
-			if (themeOverride) window.localStorage.setItem(storageKey, themeOverride)
+			if (choice) window.localStorage.setItem(storageKey, choice)
 			else window.localStorage.removeItem(storageKey)
 		} catch {
 			// storage blocked: theme still works for this session
 		}
-	}, [themeOverride, storageKey])
+	}, [choice, storageKey])
 
 	useEffect(() => {
 		document.documentElement.setAttribute('data-theme', activeTheme)
@@ -73,19 +83,20 @@ const useAppTheme = ({
 	// new snapshot is not captured half-faded). Browsers without it, and users who prefer reduced motion, just
 	// get the per-element colour transitions from styles.css.
 	const setThemeMode = (mode: ThemeMode) => {
-		const override = mode === 'system' ? null : mode
-		const next: Theme = override ?? systemTheme
+		// Choosing the default clears the saved choice; anything else is saved (including `system` under a light / dark default)
+		const override = mode === defaultTheme ? null : mode
+		const next: Theme = mode === 'system' ? systemTheme : mode
 		const root = document.documentElement
 		const doc = document as ViewTransitionDocument
 		if (next === activeTheme || !doc.startViewTransition || prefersReducedMotion()) {
-			setThemeOverride(override)
+			setChoice(override)
 			return
 		}
 		root.setAttribute('data-theme-switching', '')
 		const transition = doc.startViewTransition(() =>
 			flushSync(() => {
 				root.setAttribute('data-theme', next)
-				setThemeOverride(override)
+				setChoice(override)
 			})
 		)
 		const done = () => root.removeAttribute('data-theme-switching')

@@ -61,6 +61,12 @@ export default {
 				{
 					example: 2,
 				},
+				{
+					md: 'The wording of the buttons can be changed, for example to match what the slides are or to translate it: `previousLabel`, `nextLabel` and `dotLabel(index)`. The first two are used for both the `aria-label` and the tooltip.',
+				},
+				{
+					example: 3,
+				},
 			],
 		},
 		{

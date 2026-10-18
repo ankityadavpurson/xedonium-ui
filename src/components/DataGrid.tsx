@@ -45,6 +45,15 @@ export interface DataGridProps<Row extends object = Record<string, unknown>> {
 	loading?: boolean
 	/** Hide the footer (row count, page size select, pager) when all `rows` fit on one page. */
 	hideFooterWhenSinglePage?: boolean
+	/**
+	 * Render only the rows in view (plus a few more) inside a scrolling area, for thousands of rows. Rows must have a
+	 * fixed height (`rowHeight`). All rows then scroll in one list with a sticky header; pass `pageSize` to page them too.
+	 */
+	virtualized?: boolean
+	/** Row height in px when `virtualized` (default 40). Cell content must fit in it; it is not wrapped. */
+	rowHeight?: number
+	/** Height in px of the scrolling area when `virtualized` (default 400); it is shorter when there are few rows. */
+	height?: number
 	empty?: ReactNode
 	caption?: string
 	className?: string
@@ -75,12 +84,25 @@ const columnStyle = <Row extends object>(column: DataGridColumn<Row>): CSSProper
 		? undefined
 		: { width: column.width, minWidth: column.minWidth }
 
+// Extra rows rendered above and below the visible window when virtualized
+const OVERSCAN = 6
+
+// Sticky header cells (the bar stays while the rows scroll); the inset shadow draws the line a collapsed border can't
+const STICKY = 'sticky top-0 z-10 bg-app-bg shadow-[inset_0_-1px_0_0_rgb(var(--color-app-border))]'
+
 const compare = (a: unknown, b: unknown) => {
 	if (a == null) return b == null ? 0 : 1
 	if (b == null) return -1
 	if (typeof a === 'number' && typeof b === 'number') return a - b
 	return String(a).localeCompare(String(b), undefined, { numeric: true, sensitivity: 'base' })
 }
+
+// Empty row standing in for the rows outside the window, so the scroll bar has the full height
+const Spacer = ({ height, columns }: { height: number; columns: number }) => (
+	<tr aria-hidden="true" style={{ height }}>
+		<td colSpan={columns} className="p-0" />
+	</tr>
+)
 
 /**
  * Table with client-side sorting, search, pagination and row selection.
@@ -91,13 +113,15 @@ const compare = (a: unknown, b: unknown) => {
  * `pageSize` (`onPageSizeChange(size)` is called on each change).
  * `hideFooterWhenSinglePage` hides the footer while `rows.length <= pageSize` (the current page size).
  * `loading` replaces the rows with skeleton placeholders (up to 5) and marks the table busy.
+ * `virtualized` renders only the visible rows (fixed `rowHeight`, scroll area `height`), so tens of thousands of rows
+ * stay fast; all rows scroll in one list unless `pageSize` is set. Sorting, search and selection work on every row.
  * Selection is controlled with `selected` (array of row keys) + `onSelectionChange`, or uncontrolled with `selectable`.
  */
 const DataGrid = <Row extends object = Record<string, unknown>>({
 	columns,
 	rows,
 	rowKey = 'id',
-	pageSize = 10,
+	pageSize: pageSizeProp,
 	pageSizeOptions,
 	onPageSizeChange,
 	searchable = false,
@@ -106,6 +130,9 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 	onSelectionChange,
 	loading = false,
 	hideFooterWhenSinglePage = false,
+	virtualized = false,
+	rowHeight = 40,
+	height = 400,
 	empty = 'No results',
 	caption,
 	className = '',
@@ -114,7 +141,10 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 	const [query, setQuery] = useState('')
 	const [page, setPage] = useState(1)
 	const [chosenSize, setChosenSize] = useState<number | null>(null)
-	const size = pageSizeOptions ? (chosenSize ?? pageSize) : pageSize
+	// Virtualized grids scroll all rows in one list, unless the page size is asked for explicitly
+	const paged = !virtualized || pageSizeProp !== undefined || !!pageSizeOptions
+	const pageSize = pageSizeProp ?? 10
+	const [scrollTop, setScrollTop] = useState(0)
 	const [innerSelected, setInnerSelected] = useState<(string | number)[]>([])
 	const selection = selected ?? innerSelected
 
@@ -140,6 +170,7 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 		return result
 	}, [rows, columns, query, sort])
 
+	const size = paged ? (pageSizeOptions ? (chosenSize ?? pageSize) : pageSize) : Math.max(processed.length, 1)
 	const pageCount = Math.max(1, Math.ceil(processed.length / size))
 	const currentPage = Math.min(page, pageCount)
 	const visible = processed.slice((currentPage - 1) * size, currentPage * size)
@@ -149,8 +180,19 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 		onSelectionChange?.(next)
 	}
 	const visibleKeys = visible.map(keyOf)
-	const allChecked = visibleKeys.length > 0 && visibleKeys.every(key => selection.includes(key))
-	const someChecked = visibleKeys.some(key => selection.includes(key))
+	const selectedSet = new Set(selection)
+	const allChecked = visibleKeys.length > 0 && visibleKeys.every(key => selectedSet.has(key))
+	const someChecked = visibleKeys.some(key => selectedSet.has(key))
+
+	// The rows actually rendered: the window around the scroll position when virtualized
+	const windowStart = virtualized ? Math.max(0, Math.floor(scrollTop / rowHeight) - OVERSCAN) : 0
+	const windowEnd = virtualized
+		? Math.min(visible.length, Math.ceil((scrollTop + height) / rowHeight) + OVERSCAN)
+		: visible.length
+	const rendered = virtualized ? visible.slice(windowStart, windowEnd) : visible
+	const columnCount = columns.length + (selectable ? 1 : 0)
+	// Fixed-height rows: no vertical padding, one line, ellipsis
+	const cellY = virtualized ? 'py-0 whitespace-nowrap overflow-hidden text-ellipsis' : 'py-2.5'
 
 	const toggleSort = (column: DataGridColumn<Row>) => {
 		setPage(1)
@@ -179,15 +221,24 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 					/>
 				</div>
 			)}
-			<div className="overflow-x-auto border border-app-border">
-				<table aria-busy={loading || undefined} className="w-full border-collapse bg-app-card text-sm text-app-text">
+			<div
+				className={`border border-app-border ${virtualized ? 'overflow-auto' : 'overflow-x-auto'}`}
+				style={virtualized ? { maxHeight: height } : undefined}
+				onScroll={virtualized ? event => setScrollTop(event.currentTarget.scrollTop) : undefined}
+				{...(virtualized ? { tabIndex: 0, role: 'region', 'aria-label': caption ?? 'Table' } : {})}
+			>
+				<table
+					aria-busy={loading || undefined}
+					aria-rowcount={virtualized ? visible.length + 1 : undefined}
+					className="w-full border-collapse bg-app-card text-sm text-app-text"
+				>
 					{caption && <caption className="sr-only">{caption}</caption>}
 					<thead>
 						<tr className="border-b border-app-border bg-app-bg">
 							{selectable && (
-								<th scope="col" className="w-10 px-4 py-2.5">
+								<th scope="col" className={`w-10 px-4 py-2.5 ${virtualized ? STICKY : ''}`}>
 									<Checkbox
-										aria-label="Select all rows on this page"
+										aria-label={paged ? 'Select all rows on this page' : 'Select all rows'}
 										checked={allChecked}
 										indeterminate={!allChecked && someChecked}
 										onChange={checked =>
@@ -210,7 +261,7 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 											active ? (sort?.dir === 'asc' ? 'ascending' : 'descending') : column.sortable ? 'none' : undefined
 										}
 										style={columnStyle(column)}
-										className={`px-4 py-2.5 text-xs font-semibold uppercase tracking-widest text-app-muted ${columnClass(column, column.headerClassName)}`}
+										className={`px-4 py-2.5 text-xs font-semibold uppercase tracking-widest text-app-muted ${virtualized ? STICKY : ''} ${columnClass(column, column.headerClassName)}`}
 									>
 										{column.sortable ? (
 											<button
@@ -233,7 +284,7 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 						{loading ? (
 							Array.from({ length: Math.min(size, 5) }, (_, index) => (
 								<tr key={index} className="border-b border-app-border last:border-b-0">
-									{Array.from({ length: columns.length + (selectable ? 1 : 0) }, (_, cell) => (
+									{Array.from({ length: columnCount }, (_, cell) => (
 										<td key={cell} className="px-4 py-3">
 											<Skeleton className="h-4 w-full" />
 										</td>
@@ -242,41 +293,49 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 							))
 						) : visible.length === 0 ? (
 							<tr>
-								<td colSpan={columns.length + (selectable ? 1 : 0)} className="px-4 py-6 text-center text-app-muted">
+								<td colSpan={columnCount} className="px-4 py-6 text-center text-app-muted">
 									{empty}
 								</td>
 							</tr>
 						) : (
-							visible.map(row => {
-								const key = keyOf(row)
-								const checked = selection.includes(key)
-								return (
-									<tr
-										key={key}
-										aria-selected={selectable ? checked : undefined}
-										className={`border-b border-app-border last:border-b-0 hover:bg-app-bg ${checked ? 'bg-app-soft/10' : ''}`}
-									>
-										{selectable && (
-											<td className="px-4 py-2.5">
-												<Checkbox
-													aria-label={`Select row ${key}`}
-													checked={checked}
-													onChange={on => setSelection(on ? [...selection, key] : selection.filter(k => k !== key))}
-												/>
-											</td>
-										)}
-										{columns.map(column => (
-											<td
-												key={column.key}
-												style={columnStyle(column)}
-												className={`px-4 py-2.5 ${columnClass(column, column.className)}`}
-											>
-												{column.render ? column.render(row) : (row[column.key as keyof Row] as ReactNode)}
-											</td>
-										))}
-									</tr>
-								)
-							})
+							<>
+								{virtualized && windowStart > 0 && <Spacer height={windowStart * rowHeight} columns={columnCount} />}
+								{rendered.map((row, offset) => {
+									const key = keyOf(row)
+									const checked = selectedSet.has(key)
+									return (
+										<tr
+											key={key}
+											aria-selected={selectable ? checked : undefined}
+											aria-rowindex={virtualized ? windowStart + offset + 2 : undefined}
+											style={virtualized ? { height: rowHeight } : undefined}
+											className={`border-b border-app-border last:border-b-0 hover:bg-app-bg ${checked ? 'bg-app-soft/10' : ''}`}
+										>
+											{selectable && (
+												<td className={`px-4 ${cellY}`}>
+													<Checkbox
+														aria-label={`Select row ${key}`}
+														checked={checked}
+														onChange={on => setSelection(on ? [...selection, key] : selection.filter(k => k !== key))}
+													/>
+												</td>
+											)}
+											{columns.map(column => (
+												<td
+													key={column.key}
+													style={columnStyle(column)}
+													className={`px-4 ${cellY} ${columnClass(column, column.className)}`}
+												>
+													{column.render ? column.render(row) : (row[column.key as keyof Row] as ReactNode)}
+												</td>
+											))}
+										</tr>
+									)
+								})}
+								{virtualized && windowEnd < visible.length && (
+									<Spacer height={(visible.length - windowEnd) * rowHeight} columns={columnCount} />
+								)}
+							</>
 						)}
 					</tbody>
 				</table>

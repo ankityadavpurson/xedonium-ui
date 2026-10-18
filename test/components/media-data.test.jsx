@@ -540,6 +540,23 @@ describe('Carousel', () => {
 		expect(onIndexChange).toHaveBeenCalledTimes(6)
 	})
 
+	it('lets the button and dot wording be customised, for the label and the tooltip', () => {
+		render(
+			<Carousel previousLabel="Previous order" nextLabel="Next order" dotLabel={i => `Go to order ${i + 1}`}>
+				{slides}
+			</Carousel>
+		)
+		expect(screen.getByRole('button', { name: 'Previous order' })).toBeInTheDocument()
+		expect(screen.getByRole('button', { name: 'Next order' })).toBeInTheDocument()
+		expect(screen.getByRole('button', { name: 'Go to order 3' })).toBeInTheDocument()
+		expect(screen.queryByLabelText('Next slide')).toBeNull()
+		expect(screen.queryByLabelText('Go to slide 1')).toBeNull()
+		fireEvent.mouseOver(screen.getByRole('button', { name: 'Next order' }).parentElement, {
+			relatedTarget: document.body,
+		})
+		expect(screen.getByText('Next order', { selector: 'div' })).toBeInTheDocument()
+	})
+
 	it('uses icon buttons centred on the slides, with tooltips, and keeps the dots outside the slide area', () => {
 		render(<Carousel>{slides}</Carousel>)
 		const prev = screen.getByRole('button', { name: 'Previous slide' })
@@ -856,6 +873,102 @@ describe('DataGrid', () => {
 		expect(screen.queryByText(`${rows.length} rows`)).toBeNull()
 		rerender(<DataGrid columns={columns} rows={rows} pageSize={2} hideFooterWhenSinglePage />)
 		expect(screen.getByText(`${rows.length} rows`)).toBeInTheDocument()
+	})
+
+	describe('virtualized', () => {
+		const many = Array.from({ length: 10000 }, (_, i) => ({
+			id: i + 1,
+			name: `Row ${i + 1}`,
+			score: (i * 7919) % 1000,
+		}))
+		const cols = [
+			{ key: 'name', header: 'Name', sortable: true },
+			{ key: 'score', header: 'Score', sortable: true },
+		]
+		const bodyRows = () =>
+			screen
+				.getAllByRole('row')
+				.filter(row => row.hasAttribute('aria-rowindex') && row.getAttribute('aria-rowindex') !== '1')
+		const scrollTo = (top, label = 'Table') => {
+			const region = screen.getByRole('region', { name: label })
+			Object.defineProperty(region, 'scrollTop', { value: top, configurable: true })
+			fireEvent.scroll(region)
+		}
+
+		it('renders only the rows in view, with spacers keeping the full scroll height and row counts for screen readers', () => {
+			const { container } = render(<DataGrid columns={cols} rows={many} virtualized rowHeight={40} height={400} />)
+			const rendered = bodyRows()
+			// 400 / 40 = 10 visible, plus 6 of overscan below
+			expect(rendered.length).toBeGreaterThan(9)
+			expect(rendered.length).toBeLessThan(25)
+			expect(screen.getByText('Row 1')).toBeInTheDocument()
+			expect(screen.queryByText('Row 5000')).toBeNull()
+			expect(screen.getByRole('table')).toHaveAttribute('aria-rowcount', '10001')
+			expect(rendered[0]).toHaveAttribute('aria-rowindex', '2')
+			expect(rendered[0]).toHaveStyle({ height: '40px' })
+			// bottom spacer stands in for everything below the window
+			const spacers = [...container.querySelectorAll('tr[aria-hidden="true"]')]
+			expect(spacers).toHaveLength(1)
+			expect(Number.parseInt(spacers[0].style.height, 10)).toBe((10000 - rendered.length) * 40)
+			expect(screen.getByText('10000 rows')).toBeInTheDocument()
+			// no pager: everything scrolls in one list
+			expect(screen.queryByRole('navigation', { name: 'Pagination' })).toBeNull()
+		})
+
+		it('moves the window when scrolled, with a spacer above', () => {
+			const { container } = render(<DataGrid columns={cols} rows={many} virtualized rowHeight={40} height={400} />)
+			scrollTo(4000)
+			expect(screen.queryByText('Row 1')).toBeNull()
+			expect(screen.getByText('Row 101')).toBeInTheDocument()
+			expect(bodyRows()[0].getAttribute('aria-rowindex')).toBe('96')
+			expect(container.querySelectorAll('tr[aria-hidden="true"]')).toHaveLength(2)
+			scrollTo(0)
+			expect(screen.getByText('Row 1')).toBeInTheDocument()
+			expect(container.querySelectorAll('tr[aria-hidden="true"]')).toHaveLength(1)
+		})
+
+		it('sorts and searches every row, not just the visible ones', () => {
+			render(<DataGrid columns={cols} rows={many} virtualized searchable />)
+			fireEvent.click(screen.getByRole('button', { name: /Name/ }))
+			fireEvent.click(screen.getByRole('button', { name: /Name/ }))
+			expect(screen.getByText('Row 9999')).toBeInTheDocument()
+			fireEvent.change(screen.getByLabelText('Search rows'), { target: { value: 'row 777' } })
+			expect(screen.getByText('11 rows')).toBeInTheDocument()
+		})
+
+		it('keeps selection by key for rows that are scrolled out of view', () => {
+			const onSelectionChange = vi.fn()
+			render(<DataGrid columns={cols} rows={many} virtualized selectable onSelectionChange={onSelectionChange} />)
+			fireEvent.click(screen.getByLabelText('Select row 1'))
+			scrollTo(4000)
+			expect(screen.queryByLabelText('Select row 1')).toBeNull()
+			fireEvent.click(screen.getByLabelText('Select row 101'))
+			expect(onSelectionChange).toHaveBeenLastCalledWith([1, 101])
+			expect(screen.getByText('10000 rows, 2 selected')).toBeInTheDocument()
+			scrollTo(0)
+			expect(screen.getByLabelText('Select row 1')).toBeChecked()
+		})
+
+		it('selects all rows from the header checkbox, including those not rendered', () => {
+			const onSelectionChange = vi.fn()
+			render(<DataGrid columns={cols} rows={many} virtualized selectable onSelectionChange={onSelectionChange} />)
+			fireEvent.click(screen.getByLabelText('Select all rows'))
+			expect(onSelectionChange.mock.calls.at(-1)[0]).toHaveLength(10000)
+		})
+
+		it('pages as well when pageSize is given, and has a sticky header', () => {
+			render(<DataGrid columns={cols} rows={many} virtualized pageSize={500} />)
+			expect(screen.getByRole('navigation', { name: 'Pagination' })).toBeInTheDocument()
+			expect(screen.getByRole('table')).toHaveAttribute('aria-rowcount', '501')
+			expect(screen.getByRole('columnheader', { name: /Name/ })).toHaveClass('sticky', 'top-0')
+		})
+
+		it('leaves normal grids unchanged (no region, no row heights, no rowcount)', () => {
+			render(<DataGrid columns={cols} rows={many.slice(0, 5)} />)
+			expect(screen.queryByRole('region')).toBeNull()
+			expect(screen.getByRole('table')).not.toHaveAttribute('aria-rowcount')
+			expect(screen.getByText('Row 1').closest('tr')).not.toHaveAttribute('style')
+		})
 	})
 
 	it('shows skeleton rows and aria-busy while loading', () => {

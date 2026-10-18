@@ -335,6 +335,27 @@ export { default as WrenchIcon } from './components/icons/Wrench'
 export { default as XIcon } from './components/icons/X'
 export { default as XCircleIcon } from './components/icons/XCircle'
 export { default as ZapIcon } from './components/icons/Zap'
+export { default as AppleIcon } from './components/icons/Apple'
+export { default as LinuxIcon } from './components/icons/Linux'
+export { default as AndroidIcon } from './components/icons/Android'
+export { default as UbuntuIcon } from './components/icons/Ubuntu'
+export { default as DebianIcon } from './components/icons/Debian'
+export { default as FedoraIcon } from './components/icons/Fedora'
+export { default as FreeBsdIcon } from './components/icons/FreeBsd'
+export { default as MysqlIcon } from './components/icons/Mysql'
+export { default as MysqlLogoIcon } from './components/icons/MysqlLogo'
+export { default as MysqlNameIcon } from './components/icons/MysqlName'
+export { default as PostgresqlIcon } from './components/icons/Postgresql'
+export { default as MongodbIcon } from './components/icons/Mongodb'
+export { default as SupabaseIcon } from './components/icons/Supabase'
+export { default as FirebaseIcon } from './components/icons/Firebase'
+export { default as MariadbIcon } from './components/icons/Mariadb'
+export { default as SqliteIcon } from './components/icons/Sqlite'
+export { default as RedisIcon } from './components/icons/Redis'
+export { default as OldRedisIcon } from './components/icons/OldRedis'
+export { default as ElasticsearchIcon } from './components/icons/Elasticsearch'
+export { default as CassandraIcon } from './components/icons/Cassandra'
+export { default as WindowsIcon } from './components/icons/Windows'
 
 export { default as useDialogFocus } from './hooks/useDialogFocus'
 export { default as useDocumentTitle } from './hooks/useDocumentTitle'
@@ -356,6 +377,7 @@ export {
 	ThemeContext,
 	ThemeProvider,
 	buildFaviconHref,
+	getThemeInitScript,
 	useAppTheme,
 	useTheme,
 } from './theme'
@@ -469,6 +491,7 @@ export { default as useDebouncedValue } from './hooks/useDebouncedValue'
 export { default as useNetworkStatus } from './hooks/useNetworkStatus'
 export type { ToastType, ToastAction, ToastItem, ShowToastOptions } from './hooks/useTimedToast'
 export type { ThemeValue } from './theme/ThemeContext'
+export type { ThemeInitScriptOptions } from './theme/initScript'
 export type { ThemeProviderProps } from './theme/ThemeProvider'
 export type { UseAppThemeOptions } from './theme/useAppTheme'
 export type { ChartSeries, Scale } from './components/charts/ChartFrame'
