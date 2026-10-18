@@ -356,6 +356,7 @@ export {
 	ThemeContext,
 	ThemeProvider,
 	buildFaviconHref,
+	getThemeInitScript,
 	useAppTheme,
 	useTheme,
 } from './theme'
@@ -469,6 +470,7 @@ export { default as useDebouncedValue } from './hooks/useDebouncedValue'
 export { default as useNetworkStatus } from './hooks/useNetworkStatus'
 export type { ToastType, ToastAction, ToastItem, ShowToastOptions } from './hooks/useTimedToast'
 export type { ThemeValue } from './theme/ThemeContext'
+export type { ThemeInitScriptOptions } from './theme/initScript'
 export type { ThemeProviderProps } from './theme/ThemeProvider'
 export type { UseAppThemeOptions } from './theme/useAppTheme'
 export type { ChartSeries, Scale } from './components/charts/ChartFrame'

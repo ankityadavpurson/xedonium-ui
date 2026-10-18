@@ -4,6 +4,7 @@ import ThemeProvider from '../../src/theme/ThemeProvider'
 import { DEFAULT_THEME_STORAGE_KEY, THEME_FAVICON_COLORS } from '../../src/theme/constants'
 import { buildFaviconHref } from '../../src/theme/favicon'
 import { getStoredThemeOverride, getSystemTheme } from '../../src/theme/systemTheme'
+import { getThemeInitScript } from '../../src/theme/initScript'
 import useAppTheme from '../../src/theme/useAppTheme'
 
 const mockMedia = dark => {
@@ -32,6 +33,8 @@ describe('systemTheme', () => {
 		expect(getStoredThemeOverride()).toBeNull()
 		window.localStorage.setItem(DEFAULT_THEME_STORAGE_KEY, 'dark')
 		expect(getStoredThemeOverride()).toBe('dark')
+		window.localStorage.setItem('k', 'system')
+		expect(getStoredThemeOverride('k')).toBe('system')
 		window.localStorage.setItem('k', 'purple')
 		expect(getStoredThemeOverride('k')).toBeNull()
 	})
@@ -92,6 +95,91 @@ describe('useAppTheme', () => {
 		expect(result.current.activeTheme).toBe('light')
 		const again = renderHook(() => useAppTheme({ favicon: false, storageKey: 'k' }))
 		expect(again.result.current.activeTheme).toBe('light')
+	})
+
+	describe('defaultTheme', () => {
+		it('uses the default instead of the device theme until the user chooses, without storing it', () => {
+			mockMedia(true)
+			const { result } = renderHook(() => useAppTheme({ favicon: false, defaultTheme: 'light', storageKey: 'd' }))
+			expect(result.current.activeTheme).toBe('light')
+			expect(result.current.themeMode).toBe('light')
+			expect(document.documentElement).toHaveAttribute('data-theme', 'light')
+			expect(window.localStorage.getItem('d')).toBeNull()
+		})
+
+		it('stores a different choice, and clears it when the default is chosen again', () => {
+			mockMedia(true)
+			const { result } = renderHook(() => useAppTheme({ favicon: false, defaultTheme: 'light', storageKey: 'd' }))
+			act(() => result.current.toggleTheme())
+			expect([result.current.themeMode, result.current.activeTheme]).toEqual(['dark', 'dark'])
+			expect(window.localStorage.getItem('d')).toBe('dark')
+			act(() => result.current.toggleTheme())
+			expect([result.current.themeMode, result.current.activeTheme]).toEqual(['light', 'light'])
+			expect(window.localStorage.getItem('d')).toBeNull()
+		})
+
+		it('a stored choice wins over the default, and an invalid default falls back to system', () => {
+			mockMedia(false)
+			window.localStorage.setItem('d', 'dark')
+			expect(
+				renderHook(() => useAppTheme({ favicon: false, defaultTheme: 'light', storageKey: 'd' })).result.current
+					.activeTheme
+			).toBe('dark')
+			window.localStorage.clear()
+			mockMedia(true)
+			const { result } = renderHook(() => useAppTheme({ favicon: false, defaultTheme: 'purple', storageKey: 'd' }))
+			expect(result.current.themeMode).toBe('system')
+			expect(result.current.activeTheme).toBe('dark')
+		})
+
+		it('keeps the device choice when it is not the default, and cycles with allowSystem', () => {
+			const media = mockMedia(true)
+			const { result } = renderHook(() =>
+				useAppTheme({ favicon: false, allowSystem: true, defaultTheme: 'light', storageKey: 'd' })
+			)
+			// light (default) -> dark -> system -> light
+			act(() => result.current.toggleTheme())
+			expect(result.current.themeMode).toBe('dark')
+			act(() => result.current.toggleTheme())
+			expect([result.current.themeMode, result.current.activeTheme]).toEqual(['system', 'dark'])
+			expect(window.localStorage.getItem('d')).toBe('system')
+			act(() => media.emit(false))
+			expect(result.current.activeTheme).toBe('light')
+			expect(
+				renderHook(() => useAppTheme({ favicon: false, defaultTheme: 'light', storageKey: 'd' })).result.current
+					.themeMode
+			).toBe('system')
+			act(() => result.current.toggleTheme())
+			expect(result.current.themeMode).toBe('light')
+			expect(window.localStorage.getItem('d')).toBeNull()
+		})
+	})
+
+	describe('getThemeInitScript', () => {
+		const run = (script, { stored, dark }) => {
+			document.documentElement.removeAttribute('data-theme')
+			window.localStorage.clear()
+			if (stored) window.localStorage.setItem('k', stored)
+			mockMedia(dark)
+			new Function(script)()
+			return document.documentElement.getAttribute('data-theme')
+		}
+
+		it('applies the saved choice, else the default, resolving system from the device', () => {
+			const script = getThemeInitScript({ storageKey: 'k', defaultTheme: 'light' })
+			expect(run(script, { dark: true })).toBe('light')
+			expect(run(script, { stored: 'dark', dark: false })).toBe('dark')
+			expect(run(script, { stored: 'system', dark: true })).toBe('dark')
+			expect(run(script, { stored: 'bogus', dark: true })).toBe('light')
+			const system = getThemeInitScript({ storageKey: 'k' })
+			expect(run(system, { dark: true })).toBe('dark')
+			expect(run(system, { dark: false })).toBe('light')
+		})
+
+		it('encodes the options safely and uses the default key', () => {
+			expect(getThemeInitScript({ storageKey: '"; alert(1); "' })).toContain('"\\"; alert(1); \\""')
+			expect(getThemeInitScript()).toContain(JSON.stringify(DEFAULT_THEME_STORAGE_KEY))
+		})
 	})
 
 	describe('system mode (allowSystem)', () => {

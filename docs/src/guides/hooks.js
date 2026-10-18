@@ -299,7 +299,13 @@ export const theme = [
 					'allowSystem',
 					'boolean',
 					'false',
-					'Offer a third `system` mode that follows the device theme and is the default. `toggleTheme` and `ThemeToggle` then cycle system, light, dark.',
+					'Offer a third `system` mode that follows the device theme. `toggleTheme` and `ThemeToggle` then cycle through the three modes.',
+				],
+				[
+					'defaultTheme',
+					"'light' | 'dark' | 'system'",
+					"'system'",
+					'The theme used until the user chooses one. `system` follows the device. It is not stored; only a different choice is.',
 				],
 				['children', 'ReactNode', '', 'Your app.'],
 			],
@@ -346,14 +352,15 @@ createRoot(document.getElementById('root')).render(
 		summary: 'The hook behind ThemeProvider, without a context.',
 		name: 'useAppTheme',
 		signature:
-			'const { activeTheme, themeMode, setThemeMode, toggleTheme } = useAppTheme({ storageKey, favicon = true, faviconTitle, allowSystem })',
+			'const { activeTheme, themeMode, setThemeMode, toggleTheme } = useAppTheme({ storageKey, favicon = true, faviconTitle, allowSystem, defaultTheme })',
 		md: 'The hook behind `ThemeProvider`. Use it directly when you want the same behavior without a context provider, for example in a single top-level component. Note that `favicon` defaults to `true` here (it is `false` on `ThemeProvider`).',
 		api: {
 			Parameters: [
 				['storageKey', 'string', "'xedonium-theme-override'", "Where the user's choice is stored."],
 				['favicon', 'boolean', 'true', 'Set the fan favicon for the active theme.'],
 				['faviconTitle', 'string', "''", 'Title embedded in the favicon SVG.'],
-				['allowSystem', 'boolean', 'false', 'Offer a `system` mode that follows the device theme and is the default.'],
+				['allowSystem', 'boolean', 'false', 'Offer a `system` mode that follows the device theme.'],
+				['defaultTheme', "'light' | 'dark' | 'system'", "'system'", 'The theme used until the user chooses one.'],
 			],
 			Returns: [
 				['activeTheme', "'light' | 'dark'", '', 'The theme in effect.'],
@@ -398,6 +405,30 @@ function Root({ children }) {
 		},
 		example: 'buildfaviconhref-1.jsx',
 		usedBy: ['FanFavicon'],
+	},
+	{
+		id: 'getthemeinitscript',
+		summary: 'Set the theme before the first paint, to avoid a flash.',
+		name: 'getThemeInitScript',
+		signature: 'getThemeInitScript({ storageKey, defaultTheme })',
+		md: 'Returns JavaScript source that sets `<html data-theme>` before the page paints, with the same rules as [`ThemeProvider`](/theme/themeprovider): the saved choice, otherwise `defaultTheme`, with `system` resolved from the device. `ThemeProvider` only applies the theme after the app has hydrated, so without this a visitor whose saved or default theme differs from the browser default can see the wrong theme for a moment. Put the result in an inline script in the document head, and pass the same `storageKey` and `defaultTheme` as the provider. The values are JSON-encoded, so any key is safe.',
+		api: {
+			Parameters: [
+				['storageKey', 'string', "'xedonium-theme-override'", 'Must match the ThemeProvider.'],
+				['defaultTheme', "'light' | 'dark' | 'system'", "'system'", 'Must match the ThemeProvider.'],
+			],
+			Returns: [['script', 'string', '', 'JavaScript source for an inline <script>.']],
+		},
+		code: `import { getThemeInitScript } from 'xedonium'
+
+// Next.js pages router: pages/_document.tsx
+<Head>
+	<script dangerouslySetInnerHTML={{ __html: getThemeInitScript({ storageKey: 'my-app-theme', defaultTheme: 'light' }) }} />
+</Head>
+
+// Vite / plain HTML: build the string once and paste it into index.html
+// <script>…the returned source…</script>`,
+		see: [['Foundations: Theme', '/foundations/theme']],
 	},
 	{
 		id: 'theme-constants',

@@ -78,6 +78,38 @@ function ThemeMenu() {
 }`}
 		/>
 
+		<H2>Default theme</H2>
+		<Markdown>
+			{
+				'`defaultTheme` (`light`, `dark` or `system`, default `system`) is the theme used until the user chooses one. Use it for an app that should open in light, or in dark, regardless of the device.'
+			}
+		</Markdown>
+		<CodeBlock
+			code={`<ThemeProvider storageKey="my-app-theme" defaultTheme="light">
+	<App />
+</ThemeProvider>`}
+		/>
+		<Markdown>
+			{
+				'- The default is not stored. Only a different choice is saved, and choosing the default again clears it, so changing `defaultTheme` later reaches everyone who never picked a theme.\n- Combine it with `allowSystem` to offer all three modes while starting from `light` or `dark`. Choosing `system` is then saved, so it sticks.\n- A saved choice always wins over the default.'
+			}
+		</Markdown>
+
+		<H2>Avoiding a flash</H2>
+		<Markdown>
+			{
+				'`ThemeProvider` sets `data-theme` once the app has hydrated, so server-rendered pages can show the wrong theme for a moment. [`getThemeInitScript`](/theme/getthemeinitscript) returns a small inline script that applies the saved choice, or the default, before the first paint. Pass it the same `storageKey` and `defaultTheme` as the provider.'
+			}
+		</Markdown>
+		<CodeBlock
+			code={`import { getThemeInitScript } from 'xedonium'
+
+// pages/_document.tsx (Next.js)
+<script
+	dangerouslySetInnerHTML={{ __html: getThemeInitScript({ storageKey: 'my-app-theme', defaultTheme: 'light' }) }}
+/>`}
+		/>
+
 		<H2>Switching</H2>
 		<Markdown>
 			{
@@ -88,7 +120,7 @@ function ThemeMenu() {
 		<H2>Reference</H2>
 		<Markdown>
 			{
-				"- [`ThemeProvider`](/theme/themeprovider) takes `storageKey`, `favicon`, `faviconTitle` and `allowSystem`.\n- [`useTheme()`](/theme/usetheme) returns `{ activeTheme, themeMode, setThemeMode, allowSystem, toggleTheme }`.\n- [`ThemeToggle`](/theme/themetoggle) is a ready-made button for `toggleTheme`.\n- [`useAppTheme`](/theme/useapptheme) is the hook behind the provider, for use without a context.\n- [`buildFaviconHref(theme)`](/theme/buildfaviconhref) builds a theme-colored favicon data URL.\n\nAll of them are documented, with examples, in the [Theme](/theme) section.\n\nTailwind's `dark:` variant is wired to the same attribute by the preset (`darkMode: ['selector', '[data-theme=\"dark\"]']`). `data-theme` always holds the resolved theme (`light` or `dark`), never `system`, so your own CSS only needs to handle those two."
+				"- [`ThemeProvider`](/theme/themeprovider) takes `storageKey`, `favicon`, `faviconTitle`, `allowSystem` and `defaultTheme`.\n- [`useTheme()`](/theme/usetheme) returns `{ activeTheme, themeMode, setThemeMode, allowSystem, toggleTheme }`.\n- [`ThemeToggle`](/theme/themetoggle) is a ready-made button for `toggleTheme`.\n- [`useAppTheme`](/theme/useapptheme) is the hook behind the provider, for use without a context.\n- [`buildFaviconHref(theme)`](/theme/buildfaviconhref) builds a theme-colored favicon data URL.\n- [`getThemeInitScript()`](/theme/getthemeinitscript) returns an inline script that sets the theme before the first paint.\n\nAll of them are documented, with examples, in the [Theme](/theme) section.\n\nTailwind's `dark:` variant is wired to the same attribute by the preset (`darkMode: ['selector', '[data-theme=\"dark\"]']`). `data-theme` always holds the resolved theme (`light` or `dark`), never `system`, so your own CSS only needs to handle those two."
 			}
 		</Markdown>
 	</Page>

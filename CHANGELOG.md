@@ -10,6 +10,10 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `ThemeProvider` / `useAppTheme` accept `defaultTheme` (`light`, `dark` or `system`, default `system`): the theme used until
+  the user chooses one. The default is never stored; only a different choice is, and `system` is stored when it is not
+  the default. New `getThemeInitScript({ storageKey, defaultTheme })` returns an inline script that sets `data-theme`
+  before the first paint (#65).
 - `Carousel` accepts `previousLabel`, `nextLabel` and `dotLabel(index)` to change the wording of the buttons and dots
   (aria-label and tooltip), for example "Previous order" or a translation (#66).
 - Icons `ArrowUpDownIcon`, `ArrowLeftRightIcon`, `ChevronsUpDownIcon`, `CpuIcon`, `LaptopIcon`, `KeyboardIcon`, `MouseIcon`, `MemoryStickIcon` and `TabletIcon` (#62).
