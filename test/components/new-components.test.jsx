@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { useState } from 'react'
 import FileExplorer from '../../src/components/FileExplorer'
 import LogViewer from '../../src/components/LogViewer'
@@ -778,11 +778,14 @@ describe('NetworkConnection', () => {
 			'https://example.test/ping',
 			expect.objectContaining({ method: 'HEAD', mode: 'no-cors', cache: 'no-store' })
 		)
-		expect(onStatusChange).toHaveBeenLastCalledWith('error', expect.objectContaining({ online: true }))
+		// onStatusChange runs in an effect, which can lag the DOM under load
+		await waitFor(() =>
+			expect(onStatusChange).toHaveBeenLastCalledWith('error', expect.objectContaining({ online: true }))
+		)
 		fireEvent.click(screen.getByRole('button', { name: 'Retry' }))
 		expect(await screen.findByText('Online')).toBeInTheDocument()
 		expect(screen.getByText(/\d+ ms/)).toBeInTheDocument()
-		expect(onStatusChange).toHaveBeenLastCalledWith('connected', expect.anything())
+		await waitFor(() => expect(onStatusChange).toHaveBeenLastCalledWith('connected', expect.anything()))
 		vi.unstubAllGlobals()
 	})
 
