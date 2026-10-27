@@ -21,6 +21,8 @@ export interface AppShellProps {
 	sidebar?: ReactNode | ((close: () => void, context: AppShellSidebarContext) => ReactNode)
 	/** Show the inline sidebar as an icon rail (`collapsed: true`) between `md` and this breakpoint. */
 	sidebarCollapsedBelow?: 'lg'
+	/** Let the sidebar run the full height of the window, with the header only over the content column. */
+	sidebarFullHeight?: boolean
 	/** Title of the drawer shown on small screens. */
 	sidebarTitle?: string
 	/** Variant of the mobile menu button (default `secondary`). */
@@ -38,6 +40,7 @@ export interface AppShellProps {
  * `sidebar` may be a node, or a function `(close, { inDrawer, collapsed }) => node` if it should close the drawer on
  * selection or adapt to where it is rendered. `sidebarCollapsedBelow="lg"` shows an icon rail between `md` and `lg`
  * (the render function receives `collapsed: true` there; render a `Sidebar collapsed={collapsed}`).
+ * `sidebarFullHeight` puts the sidebar beside the header instead of under it, so it owns the full height.
  * `menuButtonVariant` / `menuButtonProps` customise the menu button so it can match the header's other buttons.
  */
 const AppShell = ({
@@ -45,6 +48,7 @@ const AppShell = ({
 	sidebar,
 	sidebarTitle = 'Menu',
 	sidebarCollapsedBelow,
+	sidebarFullHeight = false,
 	menuButtonVariant = 'secondary',
 	menuButtonProps,
 	children,
@@ -65,30 +69,50 @@ const AppShell = ({
 
 	const sidebarNode = typeof sidebar === 'function' ? sidebar(close, { inDrawer: false, collapsed }) : sidebar
 
+	const headerBar = (
+		<header className="flex shrink-0 items-center gap-3 border-b border-app-border bg-app-card px-4 py-2">
+			{sidebar && (
+				<span className="md:hidden">
+					<Button
+						variant={menuButtonVariant}
+						aria-label="Open menu"
+						{...menuButtonProps}
+						onClick={event => {
+							menuButtonProps?.onClick?.(event)
+							setOpen(true)
+						}}
+					>
+						<MenuIcon />
+					</Button>
+				</span>
+			)}
+			<div className="min-w-0 flex-1">{header}</div>
+		</header>
+	)
+	const mainArea = <main className="relative min-w-0 flex-1 overflow-y-auto p-4 sm:p-6">{children}</main>
+	const aside = sidebar && <aside className="hidden shrink-0 md:block">{sidebarNode}</aside>
+
 	return (
-		<div className={`relative flex h-screen flex-col overflow-hidden bg-app-bg text-app-text ${className}`}>
-			<header className="flex shrink-0 items-center gap-3 border-b border-app-border bg-app-card px-4 py-2">
-				{sidebar && (
-					<span className="md:hidden">
-						<Button
-							variant={menuButtonVariant}
-							aria-label="Open menu"
-							{...menuButtonProps}
-							onClick={event => {
-								menuButtonProps?.onClick?.(event)
-								setOpen(true)
-							}}
-						>
-							<MenuIcon />
-						</Button>
-					</span>
-				)}
-				<div className="min-w-0 flex-1">{header}</div>
-			</header>
-			<div className="flex min-h-0 flex-1">
-				{sidebar && <aside className="hidden shrink-0 md:block">{sidebarNode}</aside>}
-				<main className="relative min-w-0 flex-1 overflow-y-auto p-4 sm:p-6">{children}</main>
-			</div>
+		<div
+			className={`relative flex h-screen overflow-hidden bg-app-bg text-app-text ${sidebarFullHeight ? 'flex-row' : 'flex-col'} ${className}`}
+		>
+			{sidebarFullHeight ? (
+				<>
+					{aside}
+					<div className="flex min-h-0 min-w-0 flex-1 flex-col">
+						{headerBar}
+						{mainArea}
+					</div>
+				</>
+			) : (
+				<>
+					{headerBar}
+					<div className="flex min-h-0 flex-1">
+						{aside}
+						{mainArea}
+					</div>
+				</>
+			)}
 			{sidebar && (
 				<Drawer open={open} onClose={close} title={sidebarTitle} side="left" width="max-w-xs" padded={false}>
 					{/* fill the drawer: the sidebar's own fixed width and right border would leave a stray line */}

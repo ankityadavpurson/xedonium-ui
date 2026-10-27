@@ -10,6 +10,12 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `Table` accepts `rowProps(row)` (extra attributes such as `className` or `aria-selected` for a row) and `isRowHidden(row)`, which hides a row with the `hidden` attribute but keeps it mounted, so filtering does not reload images or reset inputs. The last visible row has no bottom border, and the empty message shows when no row is visible (#70).
+- `Sidebar` accepts `divider: true` items (an unlabeled `section` renders the same), `textCase="none"`, `iconSize`, `itemClassName`, `width` and `borderRight` (independent of `bordered`); an item's `label` is optional for dividers. `AppShell` accepts `sidebarFullHeight`, which puts the header over the content column only (#77).
+- `MultiSelect` accepts `creatable` (with `createLabel` and `onCreate`): Enter or a comma adds the typed text as a value even if it is not in `options`, an `Add "text"` row offers the same, and duplicates are never added (#79).
+- `Markdown` accepts `inline`, which renders only the inline subset into a fragment (or a `span` with `className`), for short strings inside a heading or paragraph (#80).
+- `ScrollProgress` accepts `barClassName`, and the bar fill and the ring stroke (also on `BackToTop`) read the `--xd-progress` CSS variable (#83).
+- Primary colour tokens `--color-app-primary`, `--color-app-primary-hover` and `--color-app-primary-text` (and the `app-primary`, `app-primary-hover` and `app-primary-text` colours in the Tailwind preset and `tailwind-v4.css`): the default `Button` / `ButtonLink` and the keyboard focus ring read them. They default to the previous colours, so nothing changes until you override them on `:root` (#84).
 - `ActionMenu` items accept `tone: 'danger'` (red text, icon, hover and focus background) next to `warning` (#75).
 - `ConfirmDialog` accepts `maxWidth` (a `max-w-*` class), `confirmDisabled` and `confirmVariant` (#76).
 - `Input` accepts `clearable` (and `clearLabel`): a clear button shows while there is a value, Escape clears too, and focus returns to the input (#78).

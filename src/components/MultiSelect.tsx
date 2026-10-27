@@ -32,6 +32,12 @@ export interface MultiSelectProps extends Omit<ComponentPropsWithoutRef<'input'>
 	error?: ReactNode
 	/** Adds one hidden input per selected value for forms. */
 	name?: string
+	/** Free-form values: Enter or a comma adds the typed text as a value even if it is not in `options` (implies `searchable`). */
+	creatable?: boolean
+	/** Text of the "create" row (default `Add "text"`). */
+	createLabel?: (text: string) => ReactNode
+	/** Called with the new text when a value is created. */
+	onCreate?: (text: string) => void
 }
 
 const Chevron = ({ open }: { open: boolean }) => (
@@ -85,6 +91,9 @@ const chipButtonClass =
  * type to filter the options. The list stays open while picking. Keyboard: Up / Down move (Home / End too when not
  * searchable), Enter toggles the active option, Backspace in the empty input removes the last chip, Escape closes.
  * options: [{ value, label, disabled? }]. `name` adds one hidden input per selected value for forms.
+ * `creatable` turns it into a tag input: Enter or a comma adds the typed text (also when it is not in `options`), an
+ * `Add "text"` row (`createLabel`) offers the same, and `onCreate(text)` reports it. Text that matches an option or a
+ * chosen value is never added twice.
  */
 const MultiSelect = ({
 	label,
@@ -92,16 +101,20 @@ const MultiSelect = ({
 	onChange,
 	options,
 	placeholder,
-	searchable = false,
+	searchable: searchableProp = false,
 	clearable = true,
 	emptyText = 'No matches',
 	filter,
 	error,
 	disabled = false,
 	name,
+	creatable = false,
+	createLabel = text => `Add "${text}"`,
+	onCreate,
 	className = '',
 	...rest
 }: MultiSelectProps) => {
+	const searchable = searchableProp || creatable
 	const id = useId()
 	const labelId = `${id}-label`
 	const listId = `${id}-list`
@@ -114,13 +127,27 @@ const MultiSelect = ({
 	const [query, setQuery] = useState('')
 	const [active, setActive] = useState(-1)
 
-	const selectedOptions = options.filter(o => value.includes(o.value))
+	const selectedOptions = creatable
+		? value.map(v => options.find(o => o.value === v) ?? { value: v, label: v })
+		: options.filter(o => value.includes(o.value))
 	const matches = searchable
 		? options.filter(o =>
 				filter ? filter(query, o) : String(o.label).toLowerCase().includes(query.trim().toLowerCase())
 			)
 		: options
-	const enabledIndexes = matches.map((o, i) => (o.disabled ? -1 : i)).filter(i => i >= 0)
+	const typed = query.trim()
+	const typedLower = typed.toLowerCase()
+	// the option (or selected value) that already says what was typed, so Enter picks it instead of duplicating it
+	const existing =
+		creatable && typed
+			? options.find(o => o.value.toLowerCase() === typedLower || String(o.label).toLowerCase() === typedLower)
+			: undefined
+	const canCreate = creatable && !!typed && !existing && !value.some(v => v.toLowerCase() === typedLower)
+	const createIndex = canCreate ? matches.length : -1
+	const enabledIndexes = [
+		...matches.map((o, i) => (o.disabled ? -1 : i)).filter(i => i >= 0),
+		...(canCreate ? [createIndex] : []),
+	]
 
 	const close = () => {
 		setOpen(false)
@@ -143,11 +170,24 @@ const MultiSelect = ({
 		setOpen(true)
 	}
 
+	// Enter or a comma with text typed: pick the option it names, or add it as a new value (never twice)
+	const commit = () => {
+		if (existing) {
+			if (!existing.disabled && !value.includes(existing.value)) onChange?.([...value, existing.value])
+		} else if (canCreate) {
+			onCreate?.(typed)
+			onChange?.([...value, typed])
+		}
+		setQuery('')
+	}
+
 	const toggle = (index: number) => {
+		if (index === createIndex && canCreate) return commit()
 		const option = matches[index]
-		if (!option || option.disabled) return
+		if (!option || option.disabled) return undefined
 		onChange?.(value.includes(option.value) ? value.filter(v => v !== option.value) : [...value, option.value])
 		setQuery('')
+		return undefined
 	}
 
 	const remove = (optionValue: string) => {
@@ -182,6 +222,7 @@ const MultiSelect = ({
 		else if (key === 'ArrowUp') move(-1)
 		else if (key === 'Home' && open && !searchable) setActive(enabledIndexes[0] ?? -1)
 		else if (key === 'End' && open && !searchable) setActive(enabledIndexes[enabledIndexes.length - 1] ?? -1)
+		else if (creatable && typed && (key === ',' || (key === 'Enter' && active < 0))) commit()
 		else if (key === 'Enter') {
 			if (open) toggle(active >= 0 ? active : (enabledIndexes[0] ?? -1))
 			else openList()
@@ -316,8 +357,22 @@ const MultiSelect = ({
 							</li>
 						)
 					})}
+					{canCreate && (
+						<li
+							id={`${id}-opt-${createIndex}`}
+							role="option"
+							aria-selected={false}
+							data-active={createIndex === active}
+							onMouseDown={event => event.preventDefault()}
+							onMouseMove={() => setActive(createIndex)}
+							onClick={commit}
+							className={`cursor-pointer px-3 py-2 text-sm ${createIndex === active ? 'bg-app-strong text-app-bg' : 'text-app-text'}`}
+						>
+							{createLabel(typed)}
+						</li>
+					)}
 				</ul>
-				{matches.length === 0 && <div className="px-3 py-2 text-sm text-app-muted">{emptyText}</div>}
+				{matches.length === 0 && !canCreate && <div className="px-3 py-2 text-sm text-app-muted">{emptyText}</div>}
 			</FloatingPanel>
 			{error && (
 				<span id={errorId} className="text-xs text-red-700 dark:text-red-400">

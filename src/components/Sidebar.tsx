@@ -3,13 +3,16 @@ import Tooltip from './Tooltip'
 
 export interface SidebarItem {
 	key: string
-	label: string
+	/** Optional for a `divider`. */
+	label?: string
 	icon?: ReactNode
 	href?: string
 	onClick?: () => void
 	badge?: ReactNode
 	/** A non-interactive caption that groups the items after it (e.g. "Main Menu"); only `key` and `label` are used. */
 	section?: boolean
+	/** A plain rule between groups; only `key` is used. A `section` with no label renders the same way. */
+	divider?: boolean
 	/** Makes the item a group with an indented sub-list. */
 	children?: SidebarItem[]
 }
@@ -37,6 +40,16 @@ export interface SidebarProps {
 	headerClassName?: string
 	/** Replaces the list's default padding (`py-2`). */
 	listClassName?: string
+	/** Draw the right edge (default: the value of `bordered`), independent of the header and footer lines. */
+	borderRight?: boolean
+	/** Tailwind width class of the expanded sidebar (default `w-60`); `w-full` fills a container such as a drawer. */
+	width?: string
+	/** `none` shows sentence-case labels (larger, regular tracking) instead of the default small capitals. */
+	textCase?: 'uppercase' | 'none'
+	/** Size of the item icons (default `sm` = 16px, `md` = 20px). */
+	iconSize?: 'sm' | 'md'
+	/** Added to every item row. */
+	itemClassName?: string
 	className?: string
 }
 
@@ -46,7 +59,8 @@ export interface SidebarProps {
  * `collapsed` shows icons only (give every item an `icon`). `linkComponent` / `linkProp` swap in a router link.
  * `section: true` makes an item a caption (a thin divider when collapsed). Labels cut off by the width get a tooltip.
  * `bordered={false}` removes the separators; `density` sets the item height; `headerClassName` / `listClassName` replace
- * the header and list padding.
+ * the header and list padding. `divider: true` adds a plain rule; `borderRight` and `bordered` can differ;
+ * `width`, `textCase`, `iconSize` and `itemClassName` adjust the size and look of the rows.
  */
 const DENSITY: Record<'dense' | 'default' | 'comfortable', string> = {
 	dense: 'py-1.5',
@@ -65,12 +79,19 @@ const Sidebar = ({
 	linkProp = 'href',
 	label = 'Sidebar',
 	bordered = true,
+	borderRight = bordered,
+	width = 'w-60',
+	textCase = 'uppercase',
+	iconSize = 'sm',
+	itemClassName = '',
 	density = 'default',
 	headerClassName = 'px-3 py-3',
 	listClassName = 'py-2',
 	className = '',
 }: SidebarProps) => {
 	const renderItem = (item: SidebarItem, depth = 0): ReactNode => {
+		if (item.divider || (item.section && !item.label))
+			return <li key={item.key} role="separator" className="mx-2 my-2 border-t border-app-border" />
 		if (item.section)
 			return collapsed ? (
 				<li key={item.key} role="separator" className="mx-2 my-2 border-t border-app-border" />
@@ -86,16 +107,22 @@ const Sidebar = ({
 		const active = item.key === activeKey
 		const content = (
 			<>
-				{item.icon && <span className="shrink-0 [&>svg]:h-4 [&>svg]:w-4">{item.icon}</span>}
+				{item.icon && (
+					<span className={`shrink-0 ${iconSize === 'md' ? '[&>svg]:h-5 [&>svg]:w-5' : '[&>svg]:h-4 [&>svg]:w-4'}`}>
+						{item.icon}
+					</span>
+				)}
 				{!collapsed && <span className="min-w-0 flex-1 truncate text-left">{item.label}</span>}
 				{!collapsed && item.badge != null && (
 					<span className="bg-app-strong px-1.5 text-[10px] font-semibold text-app-bg">{item.badge}</span>
 				)}
 			</>
 		)
-		const classes = `flex w-full items-center gap-3 ${DENSITY[density]} text-xs font-semibold uppercase tracking-widest transition ${
+		const classes = `flex w-full items-center gap-3 ${DENSITY[density]} ${
+			textCase === 'none' ? 'text-sm font-medium' : 'text-xs font-semibold uppercase tracking-widest'
+		} transition ${
 			active ? 'bg-app-strong text-app-bg' : 'text-app-muted hover:bg-app-bg hover:text-app-text'
-		} ${collapsed ? 'justify-center px-2' : 'pr-3'}`
+		} ${collapsed ? 'justify-center px-2' : 'pr-3'} ${itemClassName}`
 		const style = collapsed ? undefined : { paddingLeft: `${0.75 + depth * 1}rem` }
 		const handle = () => {
 			item.onClick?.()
@@ -151,7 +178,7 @@ const Sidebar = ({
 	return (
 		<nav
 			aria-label={label}
-			className={`flex h-full flex-col bg-app-card ${bordered ? 'border-r border-app-border' : ''} ${collapsed ? 'w-14' : 'w-60'} ${className}`}
+			className={`flex h-full flex-col bg-app-card ${borderRight ? 'border-r border-app-border' : ''} ${collapsed ? 'w-14' : width} ${className}`}
 		>
 			{header && (
 				<div className={`shrink-0 ${bordered ? 'border-b border-app-border' : ''} ${headerClassName}`}>{header}</div>

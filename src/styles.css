@@ -33,6 +33,10 @@
 	--color-app-muted: 98 98 98;
 	--color-app-soft: 58 58 58;
 	--color-app-strong: 34 34 34;
+	/* Primary action colours (Button, ButtonLink, focus ring). Override on :root for a brand colour; they follow the theme until you do. */
+	--color-app-primary: var(--color-app-strong);
+	--color-app-primary-hover: var(--color-app-text);
+	--color-app-primary-text: var(--color-app-bg);
 }
 
 html[data-theme='dark'] {
@@ -77,7 +81,7 @@ body {
 
 /* Keyboard focus is always visible, in both themes */
 :focus-visible {
-	outline: 2px solid rgb(var(--color-app-strong));
+	outline: 2px solid rgb(var(--color-app-primary));
 	outline-offset: 2px;
 }
 

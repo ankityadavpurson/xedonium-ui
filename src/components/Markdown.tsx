@@ -1,5 +1,13 @@
 import { Fragment, useState, type ElementType, type ReactNode } from 'react'
-import { inlineText, parseMarkdown, type Align, type Block, type Inline, type ListItem } from '../utils/markdown'
+import {
+	inlineText,
+	parseInline,
+	parseMarkdown,
+	type Align,
+	type Block,
+	type Inline,
+	type ListItem,
+} from '../utils/markdown'
 import CodeDisplay from './CodeDisplay'
 import type { Highlighter } from '../utils/highlight'
 
@@ -17,6 +25,8 @@ export interface MarkdownProps {
 	headingIds?: boolean
 	/** Your own tokenizer for fenced code (see CodeDisplay `highlighter`). */
 	highlighter?: Highlighter
+	/** Render only the inline subset (emphasis, strong, strikethrough, code, links, images) with no block wrapper, so it can sit inside a heading or paragraph. */
+	inline?: boolean
 	className?: string
 }
 
@@ -67,6 +77,8 @@ const defaultInternal = (href: string) => href.startsWith('/') && !href.startsWi
  * It is safe for text you do not control: HTML in the source stays literal text, and links and images with unsafe URLs
  * (`javascript:`, `data:` ...) are shown as plain text. Links starting with `/` go through `linkComponent` /
  * `linkProp` (a router link), the rest are plain `<a>`; `openLinksInNewTab` opens external ones in a new tab.
+ * `inline` renders only the inline subset (no paragraph or other block wrapper) into a fragment, or a `span` when
+ * `className` is set, with the same link rules: use it for a short string inside a heading or a paragraph.
  */
 const Markdown = ({
 	children = '',
@@ -76,6 +88,7 @@ const Markdown = ({
 	openLinksInNewTab = false,
 	headingIds = true,
 	highlighter,
+	inline = false,
 	className = '',
 }: MarkdownProps) => {
 	const seen = new Map<string, number>()
@@ -242,6 +255,11 @@ const Markdown = ({
 					</div>
 				)
 		}
+	}
+
+	if (inline) {
+		const content = renderInline(parseInline(children))
+		return className ? <span className={className}>{content}</span> : <>{content}</>
 	}
 
 	return (
