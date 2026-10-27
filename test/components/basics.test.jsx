@@ -273,6 +273,19 @@ describe('Image', () => {
 		expect(container.querySelector('img')).toBeNull()
 		expect(screen.getByRole('img', { name: 'pic' })).toHaveTextContent('Image unavailable')
 	})
+	it('tries again when src changes after a failure', () => {
+		const { container, rerender } = render(<Image src="/broken.png" alt="a" />)
+		fireEvent.error(container.querySelector('img'))
+		expect(container.querySelector('img')).toBeNull()
+		rerender(<Image src="/good.png" alt="a" />)
+		expect(container.querySelector('img')).toHaveAttribute('src', '/good.png')
+	})
+	it('shows the fallback for an image that already failed before React attached', () => {
+		const agent = vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue('Mozilla/5.0 Chrome')
+		const { container } = render(<Image src="/broken.png" alt="a" />)
+		expect(container.querySelector('img')).toBeNull()
+		agent.mockRestore()
+	})
 	it('supports a custom fallback', () => {
 		render(<Image src="/a.png" alt="pic" fallback="Nope" ratio="square" />)
 		fireEvent.error(screen.getByAltText('pic'))

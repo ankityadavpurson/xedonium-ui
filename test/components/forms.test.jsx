@@ -84,6 +84,17 @@ describe('Tooltip on SVG shapes', () => {
 })
 
 describe('Tooltip', () => {
+	it('lets a display class on the wrapper replace inline-flex', () => {
+		render(
+			<Tooltip text="Tip" className="flex min-w-0">
+				<button>go</button>
+			</Tooltip>
+		)
+		const wrapper = screen.getByRole('button').parentElement
+		expect(wrapper).toHaveClass('flex', 'min-w-0')
+		expect(wrapper).not.toHaveClass('inline-flex')
+	})
+
 	it('returns children untouched without text', () => {
 		render(
 			<Tooltip>
@@ -391,7 +402,14 @@ describe('Field', () => {
 		render(<Field label="Email" value="" onChange={onChange} placeholder="you@x" />)
 		fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'a' } })
 		expect(onChange).toHaveBeenCalledWith('a')
-		expect(screen.getByLabelText('Email')).toHaveAttribute('aria-required', 'true')
+		expect(screen.getByLabelText('Email')).toHaveAttribute('aria-required', 'false')
+	})
+	it('is optional by default and sets the native required only when asked', () => {
+		const { rerender } = render(<Field label="A" value="" onChange={() => {}} />)
+		expect(screen.getByLabelText('A')).not.toBeRequired()
+		rerender(<Field label="A" value="" onChange={() => {}} required />)
+		expect(screen.getByLabelText('A')).toBeRequired()
+		expect(screen.getByLabelText('A')).toHaveAttribute('aria-required', 'true')
 	})
 	it('shows errors accessibly', () => {
 		render(<Field label="Email" value="" onChange={() => {}} error="Required" required={false} type="email" />)
@@ -501,6 +519,30 @@ describe('Slider valueLabel popover', () => {
 
 describe('FileUpload', () => {
 	const file = (name = 'a.txt', size = 3) => new File(['x'.repeat(size)], name)
+
+	it('ignores dropped files that do not match accept and reports them', () => {
+		const onChange = vi.fn()
+		const onReject = vi.fn()
+		render(<FileUpload accept="image/*,.svg" multiple onChange={onChange} onReject={onReject} label="Drop" />)
+		const png = new File(['x'], 'a.png', { type: 'image/png' })
+		const pdf = new File(['x'], 'doc.pdf', { type: 'application/pdf' })
+		fireEvent.drop(screen.getByText('Drop'), { dataTransfer: { files: [png, pdf] } })
+		expect(onChange).toHaveBeenCalledWith([png])
+		expect(onReject).toHaveBeenCalledWith([pdf])
+		onChange.mockClear()
+		fireEvent.drop(screen.getByText('Drop'), { dataTransfer: { files: [pdf] } })
+		expect(onChange).not.toHaveBeenCalled()
+	})
+
+	it('clears the input value so the same file can be chosen again, and can forget the names', () => {
+		const onChange = vi.fn()
+		render(<FileUpload clearOnSelect onChange={onChange} />)
+		const input = document.querySelector('input[type=file]')
+		fireEvent.change(input, { target: { files: [file('a.txt')] } })
+		expect(onChange).toHaveBeenCalledTimes(1)
+		expect(screen.queryByText('a.txt')).toBeNull()
+		expect(input.value).toBe('')
+	})
 
 	it('lists files chosen via the input', () => {
 		const onChange = vi.fn()

@@ -46,6 +46,13 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Fixed
 
+- `Field`: `required` now defaults to `false` (it was `true`, so every field was announced as required) and, when set, also
+  puts the native `required` attribute on the input, so browser validation and `:invalid` styling work. **Note:** forms
+  that relied on the old default should pass `required` explicitly (#73).
+- `Image`: the fallback is cleared when `src` changes, and an image that failed before hydration now shows the fallback (#71).
+- `FileUpload`: dropped files are filtered by `accept` like the picker (new `onReject` receives the rest), the input is reset
+  so the same file can be chosen twice, and `clearOnSelect` forgets the selection after `onChange` (#72).
+- `Tooltip`: a display utility in `className` (`flex`, `block`, ...) replaces the wrapper's default `inline-flex` (#74).
 - `Calendar` (and `DatePicker`, `DateTimePicker`, `DateRangePicker`): the month buttons are disabled when the previous or next month has no day within `min` / `max`, `PageUp` / `PageDown` and the arrow keys no longer move outside the range or onto a disabled day, and with nothing selected it opens on the nearest allowed month. A time on `min` / `max` no longer disables its own day (#63).
 - Docs: the Badge page points to `Chip` (with `tone`) for status labels, and the Chip page says when to use `Badge`
   instead (#36).

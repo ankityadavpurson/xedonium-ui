@@ -1,4 +1,4 @@
-import { useState, type ComponentPropsWithoutRef, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ComponentPropsWithoutRef, type ReactNode } from 'react'
 
 type Ratio = 'square' | 'video' | 'photo'
 
@@ -25,6 +25,14 @@ const Image = ({
 	...rest
 }: ImageProps) => {
 	const [failed, setFailed] = useState(false)
+	const imgRef = useRef<HTMLImageElement>(null)
+	// A new src gets a fresh try; an image that failed before hydration never fires `error` to React.
+	// jsdom and happy-dom never load images (every one is `complete` with no width), so they are skipped.
+	useEffect(() => {
+		const img = imgRef.current
+		const loads = typeof navigator === 'undefined' || !/jsdom|happydom/i.test(navigator.userAgent)
+		setFailed(loads && !!img && img.complete && img.naturalWidth === 0 && !!img.getAttribute('src'))
+	}, [src])
 	const box = `${ratio ? RATIOS[ratio] : ''} ${className}`
 
 	if (failed) {
@@ -40,6 +48,7 @@ const Image = ({
 	}
 	return (
 		<img
+			ref={imgRef}
 			src={src}
 			alt={alt}
 			loading="lazy"

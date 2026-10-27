@@ -29,6 +29,10 @@ export interface TooltipProps {
 	onlyIfTruncated?: boolean
 }
 
+// A display utility in `className` (flex, block, ...) replaces the wrapper's default inline-flex
+const hasDisplay = (className: string) =>
+	className.split(/\s+/).some(token => /^(block|inline|inline-block|flex|inline-flex|grid|inline-grid|contents|hidden)$/.test(token))
+
 const GAP = 6 // px between trigger and tooltip
 
 // Replaces the native `title` attribute. Shows `text` next to the child on hover or keyboard focus
@@ -37,7 +41,8 @@ const GAP = 6 // px between trigger and tooltip
 // `placement` is top | bottom | left | right | auto (default bottom), optionally with -start / -end; the tooltip
 // flips to the opposite side when there is no room and always stays inside the viewport.
 // Hover is tracked on the wrapper, so it also works for disabled buttons.
-// `className` styles the wrapper (e.g. to position it where the bare button used to sit).
+// `className` styles the wrapper (e.g. to position it where the bare button used to sit); a display utility such as
+// `flex` or `block` in it replaces the default `inline-flex`.
 // `as` changes the wrapper element: use `as="g"` to put a tooltip on SVG shapes (a span is not valid inside <svg>).
 // `onlyIfTruncated` shows the tip only when the text inside is cut off (the visible label is already the name).
 // `followPointer` places the tooltip at the mouse instead of beside the trigger, for big shapes such as pie slices.
@@ -118,7 +123,7 @@ const Tooltip = ({
 			// don't fire mouse events for disabled elements); the wrapper keeps the not-allowed cursor
 			className={
 				Wrapper === 'span'
-					? `inline-flex [&>:disabled]:pointer-events-none has-[>:disabled]:cursor-not-allowed ${className}`
+					? `${hasDisplay(className) ? '' : 'inline-flex'} [&>:disabled]:pointer-events-none has-[>:disabled]:cursor-not-allowed ${className}`
 					: className || undefined
 			}
 			onMouseEnter={(event: MouseEvent) => {
