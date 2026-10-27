@@ -115,13 +115,7 @@ const Markdown = ({
 				case 'strong':
 					return <strong key={index}>{renderInline(node.children)}</strong>
 				case 'em':
-					// italic glyphs lean into the neighbouring spaces (most of all a synthesized italic in a tight-tracked heading),
-					// so the word gets a little room on both sides
-					return (
-						<em key={index} className="px-[0.1em]">
-							{renderInline(node.children)}
-						</em>
-					)
+					return <em key={index}>{renderInline(node.children)}</em>
 				case 'del':
 					return <del key={index}>{renderInline(node.children)}</del>
 				case 'br':

@@ -239,10 +239,3 @@ describe('Table compact', () => {
 		expect(screen.getByText('Name')).toHaveClass('px-3', 'py-1.5')
 	})
 })
-
-describe('Markdown emphasis spacing', () => {
-	it('gives italic text room on both sides', () => {
-		const { container } = render(<Markdown>{'## When *not* to build'}</Markdown>)
-		expect(container.querySelector('h2 em')).toHaveClass('px-[0.1em]')
-	})
-})
