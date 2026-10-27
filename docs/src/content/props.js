@@ -622,9 +622,21 @@ const props = {
 	fileupload: {
 		FileUpload: [
 			['label', 'string', "'Choose files or drop them here'", 'Drop-zone text.'],
-			['accept', 'string', '', 'Accepted file types (native `accept`).'],
+			[
+				'accept',
+				'string',
+				'',
+				'Accepted file types (native `accept`); dropped files that do not match are ignored too.',
+			],
 			['multiple', 'boolean', 'false', 'Allow several files.'],
 			['onChange', '(files: File[]) => void', '', 'Called with the selected files.'],
+			['onReject', '(files: File[]) => void', '', 'Called with dropped files that do not match `accept`.'],
+			[
+				'clearOnSelect',
+				'boolean',
+				'false',
+				'Forget the selection after `onChange`: no names are listed and the same file can be chosen again.',
+			],
 			['disabled', 'boolean', 'false', 'Disable the control.'],
 		],
 	},
