@@ -10,6 +10,17 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `Table` accepts `rowProps(row)` (extra attributes such as `className` or `aria-selected` for a row) and `isRowHidden(row)`, which hides a row with the `hidden` attribute but keeps it mounted, so filtering does not reload images or reset inputs. The last visible row has no bottom border, and the empty message shows when no row is visible (#70).
+- `Sidebar` accepts `divider: true` items (an unlabeled `section` renders the same), `textCase="none"`, `iconSize`, `itemClassName`, `width` and `borderRight` (independent of `bordered`); an item's `label` is optional for dividers. `AppShell` accepts `sidebarFullHeight`, which puts the header over the content column only (#77).
+- `MultiSelect` accepts `creatable` (with `createLabel` and `onCreate`): Enter or a comma adds the typed text as a value even if it is not in `options`, an `Add "text"` row offers the same, and duplicates are never added (#79).
+- `Markdown` accepts `inline`, which renders only the inline subset into a fragment (or a `span` with `className`), for short strings inside a heading or paragraph (#80).
+- `ScrollProgress` accepts `barClassName`, and the bar fill and the ring stroke (also on `BackToTop`) read the `--xd-progress` CSS variable (#83).
+- Primary colour tokens `--color-app-primary`, `--color-app-primary-hover` and `--color-app-primary-text` (and the `app-primary`, `app-primary-hover` and `app-primary-text` colours in the Tailwind preset and `tailwind-v4.css`): the default `Button` / `ButtonLink` and the keyboard focus ring read them. They default to the previous colours, so nothing changes until you override them on `:root` (#84).
+- `ActionMenu` items accept `tone: 'danger'` (red text, icon, hover and focus background) next to `warning` (#75).
+- `ConfirmDialog` accepts `maxWidth` (a `max-w-*` class), `confirmDisabled` and `confirmVariant` (#76).
+- `Input` accepts `clearable` (and `clearLabel`): a clear button shows while there is a value, Escape clears too, and focus returns to the input (#78).
+- `Badge` accepts `shape` (`square`, `rounded` or `pill`; default `square`) (#81).
+- `StatCard` accepts `size="compact"`, which puts the value beside the label in a shorter tile (#82).
 - `DataGrid` accepts `virtualized` (with `rowHeight`, default 40, and `height`, default 400): only the rows in view are rendered,
   between spacer rows, with a sticky header and `aria-rowcount` / `aria-rowindex`. All rows scroll in one list unless
   `pageSize` is set; sorting, search and selection cover every row. Row heights must be fixed (#67).
@@ -46,6 +57,13 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Fixed
 
+- `Field`: `required` now defaults to `false` (it was `true`, so every field was announced as required) and, when set, also
+  puts the native `required` attribute on the input, so browser validation and `:invalid` styling work. **Note:** forms
+  that relied on the old default should pass `required` explicitly (#73).
+- `Image`: the fallback is cleared when `src` changes, and an image that failed before hydration now shows the fallback (#71).
+- `FileUpload`: dropped files are filtered by `accept` like the picker (new `onReject` receives the rest), the input is reset
+  so the same file can be chosen twice, and `clearOnSelect` forgets the selection after `onChange` (#72).
+- `Tooltip`: a display utility in `className` (`flex`, `block`, ...) replaces the wrapper's default `inline-flex` (#74).
 - `Calendar` (and `DatePicker`, `DateTimePicker`, `DateRangePicker`): the month buttons are disabled when the previous or next month has no day within `min` / `max`, `PageUp` / `PageDown` and the arrow keys no longer move outside the range or onto a disabled day, and with nothing selected it opens on the nearest allowed month. A time on `min` / `max` no longer disables its own day (#63).
 - Docs: the Badge page points to `Chip` (with `tone`) for status labels, and the Chip page says when to use `Badge`
   instead (#36).

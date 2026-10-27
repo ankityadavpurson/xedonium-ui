@@ -10,7 +10,7 @@ export interface FieldProps extends Omit<ComponentPropsWithoutRef<'input'>, 'onC
 	error?: ReactNode
 	/** Hint shown under the field while there is no `error`; linked with `aria-describedby`. */
 	helperText?: ReactNode
-	/** Sets `aria-required` (default true). */
+	/** Sets the native `required` and `aria-required` (default false). */
 	required?: boolean
 }
 
@@ -23,7 +23,7 @@ const Field = ({
 	helperText,
 	type = 'text',
 	autoComplete = 'off',
-	required = true,
+	required = false,
 	...inputProps
 }: FieldProps) => {
 	const id = useId()
@@ -37,6 +37,7 @@ const Field = ({
 				id={id}
 				type={type}
 				autoComplete={autoComplete}
+				required={required}
 				aria-required={required}
 				aria-invalid={!!error}
 				aria-describedby={error ? errorId : helperText ? helperId : undefined}

@@ -273,6 +273,19 @@ describe('Image', () => {
 		expect(container.querySelector('img')).toBeNull()
 		expect(screen.getByRole('img', { name: 'pic' })).toHaveTextContent('Image unavailable')
 	})
+	it('tries again when src changes after a failure', () => {
+		const { container, rerender } = render(<Image src="/broken.png" alt="a" />)
+		fireEvent.error(container.querySelector('img'))
+		expect(container.querySelector('img')).toBeNull()
+		rerender(<Image src="/good.png" alt="a" />)
+		expect(container.querySelector('img')).toHaveAttribute('src', '/good.png')
+	})
+	it('shows the fallback for an image that already failed before React attached', () => {
+		const agent = vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue('Mozilla/5.0 Chrome')
+		const { container } = render(<Image src="/broken.png" alt="a" />)
+		expect(container.querySelector('img')).toBeNull()
+		agent.mockRestore()
+	})
 	it('supports a custom fallback', () => {
 		render(<Image src="/a.png" alt="pic" fallback="Nope" ratio="square" />)
 		fireEvent.error(screen.getByAltText('pic'))
@@ -375,6 +388,17 @@ describe('Skeleton', () => {
 		rerender(<Skeleton lines={3} />)
 		expect(container.firstChild.children).toHaveLength(3)
 		expect(container.firstChild.lastChild).toHaveClass('w-2/3')
+	})
+})
+
+describe('StatCard compact', () => {
+	it('keeps the content and uses the compact frame', () => {
+		const { container } = render(<StatCard size="compact" label="Users" value="10" hint="vs last" />)
+		expect(screen.getByText('Users')).toBeInTheDocument()
+		expect(screen.getByText('10')).toBeInTheDocument()
+		expect(screen.getByText('vs last')).toBeInTheDocument()
+		expect(container.firstChild).toHaveClass('items-center', 'px-3')
+		expect(container.firstChild).not.toHaveClass('flex-col')
 	})
 })
 

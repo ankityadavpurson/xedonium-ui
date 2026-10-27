@@ -74,10 +74,16 @@ export default {
 			name: 'Image',
 			blocks: [
 				{
-					md: '`ratio`: `square`, `video`, `photo`. Falls back to a labelled box if loading fails.',
+					md: '`ratio`: `square`, `video`, `photo`. `fit` is `cover` (the default, fills the box) or `contain` (shows the whole image).',
 				},
 				{
 					example: 1,
+				},
+				{
+					md: '**Fallback.** If the image fails to load, a labelled box of the same size is shown instead (`fallback` sets its content). It tries again when `src` changes.',
+				},
+				{
+					example: 2,
 				},
 			],
 		},

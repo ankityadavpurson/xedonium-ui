@@ -24,12 +24,15 @@ export interface ScrollProgressProps {
 	position?: BackToTopPosition
 	/** Button: size of the button. */
 	size?: Size
+	/** Classes for the bar's fill (e.g. `bg-red-500`). Set the `--xd-progress` CSS variable to colour the bar and the ring without classes. */
+	barClassName?: string
 	className?: string
 }
 
 /**
  * Shows how far down the page (or a scrolling element) the reader is. The `bar` variant is a slim line along the top
  * edge; the `button` variant is a back-to-top button wrapped in a progress ring (see `BackToTop`).
+ * The bar fill and the ring stroke read the `--xd-progress` CSS variable (default: the strong text colour); `barClassName` styles the bar fill.
  */
 const ScrollProgress = ({
 	variant = 'bar',
@@ -41,6 +44,7 @@ const ScrollProgress = ({
 	threshold,
 	position,
 	size,
+	barClassName = '',
 	className = '',
 }: ScrollProgressProps) => {
 	const { progress } = useScrollProgress(target)
@@ -71,7 +75,10 @@ const ScrollProgress = ({
 			style={{ height: thickness }}
 			className={`${fixed ? 'fixed' : 'absolute'} inset-x-0 ${edge === 'top' ? 'top-0' : 'bottom-0'} z-[var(--xd-z-popover,85)] bg-app-border/40 ${className}`}
 		>
-			<div className="h-full bg-app-strong" style={{ width: `${progress * 100}%` }} />
+			<div
+				className={`h-full ${barClassName}`}
+				style={{ width: `${progress * 100}%`, background: 'var(--xd-progress, rgb(var(--color-app-strong)))' }}
+			/>
 		</div>
 	)
 }

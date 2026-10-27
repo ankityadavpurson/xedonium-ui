@@ -91,6 +91,12 @@ export default {
 				{
 					example: 1,
 				},
+				{
+					md: '**Compact.** `compact` tightens the cell padding for dense lists. `rowProps(row)` adds attributes such as `className` or `aria-selected` to a row, and `isRowHidden(row)` hides a row with the `hidden` attribute while keeping it mounted, so filtering does not reload its images or reset its inputs.',
+				},
+				{
+					example: 2,
+				},
 			],
 		},
 		{

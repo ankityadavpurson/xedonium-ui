@@ -63,7 +63,7 @@ export const ProgressRing = ({ progress }: { progress: number }) => {
 					pathLength={100}
 					strokeDasharray={full ? undefined : 100}
 					strokeDashoffset={full ? undefined : 100 - progress * 100}
-					className="stroke-app-strong"
+					style={{ stroke: 'var(--xd-progress, rgb(var(--color-app-strong)))' }}
 				/>
 			</svg>
 		</span>

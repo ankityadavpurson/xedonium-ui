@@ -12,6 +12,9 @@ export default {
 				'app-muted': 'rgb(var(--color-app-muted) / <alpha-value>)',
 				'app-soft': 'rgb(var(--color-app-soft) / <alpha-value>)',
 				'app-strong': 'rgb(var(--color-app-strong) / <alpha-value>)',
+				'app-primary': 'rgb(var(--color-app-primary) / <alpha-value>)',
+				'app-primary-hover': 'rgb(var(--color-app-primary-hover) / <alpha-value>)',
+				'app-primary-text': 'rgb(var(--color-app-primary-text) / <alpha-value>)',
 			},
 			keyframes: {
 				'fade-up': {

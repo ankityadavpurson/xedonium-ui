@@ -2,7 +2,8 @@
 export type ButtonVariant = 'default' | 'secondary' | 'flat' | 'danger' | 'success' | 'warning'
 
 const variantClasses: Record<ButtonVariant, string> = {
-	default: 'bg-app-strong text-app-bg border border-app-strong hover:bg-app-text',
+	default:
+		'bg-app-primary text-app-primary-text border border-app-primary hover:bg-app-primary-hover hover:border-app-primary-hover',
 	secondary: 'bg-app-bg text-app-text border border-app-border hover:border-app-strong hover:text-app-text',
 	flat: 'bg-transparent text-app-text border border-transparent hover:bg-app-card hover:border-app-border',
 	danger: 'bg-red-500/10 text-red-700 dark:text-red-400 border border-red-500/30 hover:bg-red-500/20',

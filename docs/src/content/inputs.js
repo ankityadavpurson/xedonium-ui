@@ -144,7 +144,7 @@ export default {
 			name: 'Field',
 			blocks: [
 				{
-					md: 'Labelled input. Props: `label`, `value`, `onChange` (receives the value string), `placeholder`, `error`, `type`,\n`autoComplete`, `required`.\n\n`helperText` shows a hint under the field while there is no `error`, and links it to the control with `aria-describedby`. `Select`, `TextArea` and `PasswordInput` take it too.',
+					md: 'Labelled input. Props: `label`, `value`, `onChange` (receives the value string), `placeholder`, `error`, `type`,\n`autoComplete`, `required` (default false; sets the native `required` and `aria-required`).\n\n`helperText` shows a hint under the field while there is no `error`, and links it to the control with `aria-describedby`. `Select`, `TextArea` and `PasswordInput` take it too.',
 				},
 				{
 					example: 1,
@@ -232,6 +232,12 @@ export default {
 				},
 				{
 					example: 1,
+				},
+				{
+					md: '**Free-form values.** `creatable` turns it into a tag input: type and press Enter or a comma to add the text as a value even if it is not in `options`; an `Add "text"` row (`createLabel`) offers the same, and `onCreate(text)` reports it. Text that matches an option picks that option, and nothing is added twice. Backspace in the empty input removes the last chip.',
+				},
+				{
+					example: 2,
 				},
 			],
 		},

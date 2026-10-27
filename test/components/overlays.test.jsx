@@ -148,6 +148,20 @@ describe('Popover', () => {
 	})
 })
 
+describe('ActionMenu danger tone', () => {
+	it('styles a danger item in red', () => {
+		render(
+			<ActionMenu
+				label="Actions"
+				trigger="Menu"
+				items={[{ key: 'd', label: 'Delete', tone: 'danger', onClick: () => {} }]}
+			/>
+		)
+		fireEvent.click(screen.getByRole('button', { name: 'Actions' }))
+		expect(screen.getByRole('menuitem', { name: 'Delete' })).toHaveClass('text-red-700')
+	})
+})
+
 describe('ActionMenu', () => {
 	const makeItems = (onClick = vi.fn()) => [
 		{ key: 'a', label: 'Alpha', description: 'first', badge: 3, onClick },
@@ -311,6 +325,32 @@ describe('Modal', () => {
 		fireEvent.keyDown(window, { key: 'Escape' })
 		expect(second).toHaveBeenCalled()
 		expect(first).not.toHaveBeenCalled()
+	})
+})
+
+describe('ConfirmDialog options', () => {
+	it('can disable the confirm button, widen the dialog and restyle the button', () => {
+		const onConfirm = vi.fn()
+		const { rerender } = render(
+			<ConfirmDialog
+				open
+				onClose={() => {}}
+				onConfirm={onConfirm}
+				confirmLabel="Go"
+				confirmDisabled
+				maxWidth="max-w-3xl"
+			>
+				Body
+			</ConfirmDialog>
+		)
+		expect(screen.getByRole('button', { name: 'Go' })).toBeDisabled()
+		expect(document.querySelector('.max-w-3xl')).not.toBeNull()
+		rerender(
+			<ConfirmDialog open onClose={() => {}} onConfirm={onConfirm} confirmLabel="Go" confirmVariant="warning">
+				Body
+			</ConfirmDialog>
+		)
+		expect(screen.getByRole('button', { name: 'Go' })).toBeEnabled()
 	})
 })
 

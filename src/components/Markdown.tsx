@@ -1,5 +1,14 @@
 import { Fragment, useState, type ElementType, type ReactNode } from 'react'
-import { inlineText, parseMarkdown, type Align, type Block, type Inline, type ListItem } from '../utils/markdown'
+import {
+	inlineText,
+	parseInline,
+	parseMarkdown,
+	type Align,
+	type Block,
+	type Inline,
+	type ListItem,
+} from '../utils/markdown'
+import Checkbox from './Checkbox'
 import CodeDisplay from './CodeDisplay'
 import type { Highlighter } from '../utils/highlight'
 
@@ -17,6 +26,8 @@ export interface MarkdownProps {
 	headingIds?: boolean
 	/** Your own tokenizer for fenced code (see CodeDisplay `highlighter`). */
 	highlighter?: Highlighter
+	/** Render only the inline subset (emphasis, strong, strikethrough, code, links, images) with no block wrapper, so it can sit inside a heading or paragraph. */
+	inline?: boolean
 	className?: string
 }
 
@@ -67,6 +78,8 @@ const defaultInternal = (href: string) => href.startsWith('/') && !href.startsWi
  * It is safe for text you do not control: HTML in the source stays literal text, and links and images with unsafe URLs
  * (`javascript:`, `data:` ...) are shown as plain text. Links starting with `/` go through `linkComponent` /
  * `linkProp` (a router link), the rest are plain `<a>`; `openLinksInNewTab` opens external ones in a new tab.
+ * `inline` renders only the inline subset (no paragraph or other block wrapper) into a fragment, or a `span` when
+ * `className` is set, with the same link rules: use it for a short string inside a heading or a paragraph.
  */
 const Markdown = ({
 	children = '',
@@ -76,6 +89,7 @@ const Markdown = ({
 	openLinksInNewTab = false,
 	headingIds = true,
 	highlighter,
+	inline = false,
 	className = '',
 }: MarkdownProps) => {
 	const seen = new Map<string, number>()
@@ -101,7 +115,13 @@ const Markdown = ({
 				case 'strong':
 					return <strong key={index}>{renderInline(node.children)}</strong>
 				case 'em':
-					return <em key={index}>{renderInline(node.children)}</em>
+					// italic glyphs lean into the neighbouring spaces (most of all a synthesized italic in a tight-tracked heading),
+					// so the word gets a little room on both sides
+					return (
+						<em key={index} className="px-[0.1em]">
+							{renderInline(node.children)}
+						</em>
+					)
 				case 'del':
 					return <del key={index}>{renderInline(node.children)}</del>
 				case 'br':
@@ -144,13 +164,12 @@ const Markdown = ({
 			className={item.checked !== null ? `flex list-none items-start gap-2 ${mixed ? '-ml-6' : ''}` : undefined}
 		>
 			{item.checked !== null && (
-				<input
-					type="checkbox"
+				// the library's square checkbox, display only: not dimmed like a disabled field, no row height of its own
+				<Checkbox
 					checked={item.checked}
-					readOnly
 					disabled
 					aria-label={item.checked ? 'Done' : 'Not done'}
-					className="mt-1 h-4 w-4 shrink-0 accent-[rgb(var(--color-app-strong))]"
+					className="mt-0.5 !min-h-0 !cursor-default !opacity-100"
 				/>
 			)}
 			<div className="min-w-0 flex-1">
@@ -242,6 +261,11 @@ const Markdown = ({
 					</div>
 				)
 		}
+	}
+
+	if (inline) {
+		const content = renderInline(parseInline(children))
+		return className ? <span className={className}>{content}</span> : <>{content}</>
 	}
 
 	return (

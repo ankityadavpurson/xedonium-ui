@@ -65,7 +65,7 @@ export default {
 			name: 'Dialog (Modal)',
 			blocks: [
 				{
-					md: '`Modal` is the dialog shell and `ConfirmDialog` is built on it. `ActionMenu` doubles as the dropdown / menu\ncomponent.\n\n`ConfirmDialog` shows a spinner on the confirm button while `busy`; Escape, backdrop and close are ignored then. Use\n`tone="danger"` for destructive actions.\n\nWhen a `Modal` or `Drawer` opens, focus goes to the first control, which is the Close button. To focus something else\n(the first field of a form, say), put the `data-autofocus` attribute on it or pass a ref as `initialFocusRef`.\n\n`fullScreenBelow="sm"` (or `"md"`) makes the dialog fill the screen below that breakpoint, which suits long forms on phones. With `as="form"`, form attributes such as `noValidate`, `autoComplete` and `method` are passed through. `initialFocusRef` chooses the element focused on open.',
+					md: '`Modal` is the dialog shell; [`ConfirmDialog`](/components/overlay/confirmdialog) is built on it. `ActionMenu` doubles as the dropdown / menu\ncomponent.\n\nWhen a `Modal` or `Drawer` opens, focus goes to the first control, which is the Close button. To focus something else\n(the first field of a form, say), put the `data-autofocus` attribute on it or pass a ref as `initialFocusRef`.\n\n`fullScreenBelow="sm"` (or `"md"`) makes the dialog fill the screen below that breakpoint, which suits long forms on phones. With `as="form"`, form attributes such as `noValidate`, `autoComplete` and `method` are passed through. `initialFocusRef` chooses the element focused on open.',
 				},
 				{
 					example: 1,
@@ -78,6 +78,24 @@ export default {
 				},
 				{
 					example: 3,
+				},
+			],
+		},
+		{
+			slug: 'confirmdialog',
+			name: 'ConfirmDialog',
+			blocks: [
+				{
+					md: 'A confirm / cancel dialog built on `Modal`. `onConfirm` runs the action and `onClose` dismisses it. While `busy` the confirm button shows a spinner (with `busyLabel`) and Escape, the backdrop and close are ignored. Use `tone="danger"` for destructive actions; `error` shows a message inside the dialog.',
+				},
+				{
+					example: 1,
+				},
+				{
+					md: '**Typed confirmation and width.** `confirmDisabled` keeps the confirm button off until the user has done what you ask (type a phrase, tick a box), `maxWidth` takes a Tailwind `max-w-*` class for a wider dialog, and `confirmVariant` restyles the confirm button.',
+				},
+				{
+					example: 2,
 				},
 			],
 		},
