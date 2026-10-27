@@ -170,14 +170,30 @@ const MultiSelect = ({
 		setOpen(true)
 	}
 
+	// Adds each text as a value: the option it names, or a new one; never a value that is already chosen
+	const addTexts = (texts: string[]) => {
+		const next = [...value]
+		let changed = false
+		texts.forEach(raw => {
+			const text = raw.trim()
+			const lower = text.toLowerCase()
+			if (!text || next.some(v => v.toLowerCase() === lower)) return
+			const option = options.find(o => o.value.toLowerCase() === lower || String(o.label).toLowerCase() === lower)
+			if (option) {
+				if (option.disabled) return
+				next.push(option.value)
+			} else {
+				onCreate?.(text)
+				next.push(text)
+			}
+			changed = true
+		})
+		if (changed) onChange?.(next)
+	}
+
 	// Enter or a comma with text typed: pick the option it names, or add it as a new value (never twice)
 	const commit = () => {
-		if (existing) {
-			if (!existing.disabled && !value.includes(existing.value)) onChange?.([...value, existing.value])
-		} else if (canCreate) {
-			onCreate?.(typed)
-			onChange?.([...value, typed])
-		}
+		addTexts([typed])
 		setQuery('')
 	}
 
@@ -201,6 +217,13 @@ const MultiSelect = ({
 	}
 
 	const search = (text: string) => {
+		// a comma ends a value, also when it arrives by paste or a keyboard that sends no key event ("a, b, c")
+		if (creatable && text.includes(',')) {
+			const parts = text.split(',')
+			const rest = parts.pop() ?? ''
+			addTexts(parts)
+			text = rest.trimStart()
+		}
 		setQuery(text)
 		setOpen(true)
 		setActive(-1)

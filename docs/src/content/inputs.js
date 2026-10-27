@@ -233,6 +233,12 @@ export default {
 				{
 					example: 1,
 				},
+				{
+					md: '**Free-form values.** `creatable` turns it into a tag input: type and press Enter or a comma to add the text as a value even if it is not in `options`; an `Add "text"` row (`createLabel`) offers the same, and `onCreate(text)` reports it. Text that matches an option picks that option, and nothing is added twice. Backspace in the empty input removes the last chip.',
+				},
+				{
+					example: 2,
+				},
 			],
 		},
 		{

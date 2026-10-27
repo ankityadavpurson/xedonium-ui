@@ -17,6 +17,8 @@ export interface TableProps<Row extends object = Record<string, unknown>> {
 	empty?: ReactNode
 	/** Screen-reader caption. */
 	caption?: string
+	/** Tighter cell padding, for dense lists. */
+	compact?: boolean
 	/** Rows for which this returns true get the `hidden` attribute but stay mounted (images and inputs keep their state). */
 	isRowHidden?: (row: Row) => boolean
 	/** Extra attributes for a row's `<tr>`, e.g. `className` or `aria-selected`. */
@@ -32,7 +34,7 @@ const ALIGN: Record<'left' | 'center' | 'right', string> = {
 
 /**
  * Simple data table. columns: [{ key, header, render?(row), align? }]. `rowKey` names the unique field on each row
- * (default "id"). Scrolls horizontally when it doesn't fit.
+ * (default "id"). Scrolls horizontally when it doesn't fit. `compact` tightens the cell padding.
  * `rowProps(row)` adds attributes (such as `className`) to a row; `isRowHidden(row)` hides a row with the `hidden`
  * attribute without unmounting it, so filtering keeps its images and inputs alive. The empty message shows when no
  * row is visible.
@@ -43,6 +45,7 @@ const Table = <Row extends object = Record<string, unknown>>({
 	rowKey = 'id',
 	empty = 'No data',
 	caption,
+	compact = false,
 	isRowHidden,
 	rowProps,
 	className = '',
@@ -59,7 +62,7 @@ const Table = <Row extends object = Record<string, unknown>>({
 							<th
 								key={column.key}
 								scope="col"
-								className={`px-4 py-2.5 text-xs font-semibold uppercase tracking-widest text-app-muted ${ALIGN[column.align ?? 'left']}`}
+								className={`${compact ? 'px-3 py-1.5' : 'px-4 py-2.5'} text-xs font-semibold uppercase tracking-widest text-app-muted ${ALIGN[column.align ?? 'left']}`}
 							>
 								{column.header}
 							</th>
@@ -69,7 +72,10 @@ const Table = <Row extends object = Record<string, unknown>>({
 				<tbody>
 					{lastVisible === -1 && (
 						<tr>
-							<td colSpan={columns.length} className="px-4 py-6 text-center text-app-muted">
+							<td
+								colSpan={columns.length}
+								className={`${compact ? 'px-3 py-4' : 'px-4 py-6'} text-center text-app-muted`}
+							>
 								{empty}
 							</td>
 						</tr>
@@ -84,7 +90,10 @@ const Table = <Row extends object = Record<string, unknown>>({
 								className={`border-app-border hover:bg-app-bg ${index === lastVisible ? '' : 'border-b'} ${rowClass}`}
 							>
 								{columns.map(column => (
-									<td key={column.key} className={`px-4 py-2.5 ${ALIGN[column.align ?? 'left']}`}>
+									<td
+										key={column.key}
+										className={`${compact ? 'px-3 py-1.5' : 'px-4 py-2.5'} ${ALIGN[column.align ?? 'left']}`}
+									>
 										{column.render ? column.render(row) : (row[column.key as keyof Row] as ReactNode)}
 									</td>
 								))}

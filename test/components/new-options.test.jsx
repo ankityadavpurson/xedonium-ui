@@ -146,6 +146,16 @@ describe('MultiSelect creatable', () => {
 		expect(input).toHaveValue('')
 	})
 
+	it('splits on commas typed or pasted into the field', () => {
+		render(<Harness />)
+		type('svelte, solid,')
+		expect(chips()).toEqual(['Remove svelte', 'Remove solid'])
+		expect(screen.getByRole('combobox')).toHaveValue('')
+		type('vue, astro')
+		expect(chips()).toEqual(['Remove svelte', 'Remove solid', 'Remove Vue'])
+		expect(screen.getByRole('combobox')).toHaveValue('astro')
+	})
+
 	it('picks the existing option when the typed text names it', () => {
 		render(<Harness />)
 		type('vue')
@@ -215,5 +225,24 @@ describe('primary colour tokens', () => {
 			'text-app-primary-text',
 			'hover:bg-app-primary-hover'
 		)
+	})
+})
+
+describe('Table compact', () => {
+	it('tightens the cell padding', () => {
+		const columns = [{ key: 'name', header: 'Name' }]
+		const rows = [{ id: 1, name: 'one' }]
+		const { rerender } = render(<Table columns={columns} rows={rows} />)
+		expect(screen.getByText('one')).toHaveClass('px-4', 'py-2.5')
+		rerender(<Table compact columns={columns} rows={rows} />)
+		expect(screen.getByText('one')).toHaveClass('px-3', 'py-1.5')
+		expect(screen.getByText('Name')).toHaveClass('px-3', 'py-1.5')
+	})
+})
+
+describe('Markdown emphasis spacing', () => {
+	it('gives italic text room on both sides', () => {
+		const { container } = render(<Markdown>{'## When *not* to build'}</Markdown>)
+		expect(container.querySelector('h2 em')).toHaveClass('px-[0.1em]')
 	})
 })

@@ -1,30 +1,21 @@
 import { useState } from 'react'
-import { Button, ConfirmDialog } from 'xedonium'
+import { Button, Modal } from 'xedonium'
 
 export default function Demo() {
 	const [open, setOpen] = useState(false)
-	const [busy, setBusy] = useState(false)
-	const confirm = () => {
-		setBusy(true)
-		setTimeout(() => {
-			setBusy(false)
-			setOpen(false)
-		}, 1200)
-	}
 	return (
 		<>
 			<Button onClick={() => setOpen(true)}>Open dialog</Button>
-			<ConfirmDialog
+			<Modal
 				open={open}
 				onClose={() => setOpen(false)}
-				onConfirm={confirm}
-				busy={busy}
-				title="Confirm action"
-				confirmLabel="Confirm"
-				busyLabel="Working..."
+				title="Release notes"
+				footer={<Button onClick={() => setOpen(false)}>Done</Button>}
 			>
-				<p>Are you sure you want to continue?</p>
-			</ConfirmDialog>
+				<p className="m-0 px-6 py-5 text-sm text-app-text">
+					A dialog with a title, a body and a footer. Escape, the backdrop and the close button dismiss it.
+				</p>
+			</Modal>
 		</>
 	)
 }

@@ -988,6 +988,8 @@ const props = {
 			children,
 			['...containerProps', '', '', 'Passed to the container element.'],
 		],
+	},
+	confirmdialog: {
 		ConfirmDialog: [
 			['open', 'boolean', '', 'Whether the dialog is shown.'],
 			['onClose', '() => void', '', 'Called when cancelled or dismissed.'],
@@ -1166,6 +1168,7 @@ const props = {
 			['rowKey', 'string', "'id'", 'Field holding each row’s unique key.'],
 			['empty', 'ReactNode', "'No data'", 'Shown when there are no rows.'],
 			['caption', 'string', '', 'Screen-reader caption.'],
+			['compact', 'boolean', 'false', 'Tighter cell padding.'],
 			[
 				'isRowHidden',
 				'(row) => boolean',

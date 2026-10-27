@@ -8,6 +8,7 @@ import {
 	type Inline,
 	type ListItem,
 } from '../utils/markdown'
+import Checkbox from './Checkbox'
 import CodeDisplay from './CodeDisplay'
 import type { Highlighter } from '../utils/highlight'
 
@@ -114,7 +115,13 @@ const Markdown = ({
 				case 'strong':
 					return <strong key={index}>{renderInline(node.children)}</strong>
 				case 'em':
-					return <em key={index}>{renderInline(node.children)}</em>
+					// italic glyphs lean into the neighbouring spaces (most of all a synthesized italic in a tight-tracked heading),
+					// so the word gets a little room on both sides
+					return (
+						<em key={index} className="px-[0.1em]">
+							{renderInline(node.children)}
+						</em>
+					)
 				case 'del':
 					return <del key={index}>{renderInline(node.children)}</del>
 				case 'br':
@@ -157,13 +164,12 @@ const Markdown = ({
 			className={item.checked !== null ? `flex list-none items-start gap-2 ${mixed ? '-ml-6' : ''}` : undefined}
 		>
 			{item.checked !== null && (
-				<input
-					type="checkbox"
+				// the library's square checkbox, display only: not dimmed like a disabled field, no row height of its own
+				<Checkbox
 					checked={item.checked}
-					readOnly
 					disabled
 					aria-label={item.checked ? 'Done' : 'Not done'}
-					className="mt-1 h-4 w-4 shrink-0 accent-[rgb(var(--color-app-strong))]"
+					className="mt-0.5 !min-h-0 !cursor-default !opacity-100"
 				/>
 			)}
 			<div className="min-w-0 flex-1">
