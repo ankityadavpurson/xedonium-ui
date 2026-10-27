@@ -358,6 +358,29 @@ describe('Radio / RadioGroup', () => {
 	})
 })
 
+describe('Input clearable', () => {
+	it('clears with the button or Escape, refocuses and hides when empty', () => {
+		const onChange = vi.fn()
+		const { rerender } = render(<Input clearable value="abc" onChange={onChange} placeholder="q" />)
+		const input = screen.getByPlaceholderText('q')
+		fireEvent.click(screen.getByRole('button', { name: 'Clear' }))
+		expect(onChange).toHaveBeenLastCalledWith('')
+		expect(input).toHaveFocus()
+		onChange.mockClear()
+		fireEvent.keyDown(input, { key: 'Escape' })
+		expect(onChange).toHaveBeenCalledWith('')
+		rerender(<Input clearable value="" onChange={onChange} placeholder="q" />)
+		expect(screen.queryByRole('button', { name: 'Clear' })).toBeNull()
+		rerender(<Input clearable clearLabel="Reset" value="x" onChange={onChange} placeholder="q" disabled />)
+		expect(screen.queryByRole('button', { name: 'Reset' })).toBeNull()
+		rerender(
+			<Input clearable clearLabel="Reset" value="x" endAdornment={<i>e</i>} onChange={onChange} placeholder="q" />
+		)
+		expect(screen.getByRole('button', { name: 'Reset' })).toBeInTheDocument()
+		expect(screen.getByText('e')).toBeInTheDocument()
+	})
+})
+
 describe('Input', () => {
 	it('reports string values, forwards refs, supports invalid', () => {
 		const onChange = vi.fn()

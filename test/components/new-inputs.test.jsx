@@ -560,6 +560,26 @@ describe('PasswordInput', () => {
 	})
 })
 
+describe('Badge shape', () => {
+	it('rounds the badge for rounded and pill, and stays square by default', () => {
+		const { container, rerender } = render(<Badge badgeContent={4}>x</Badge>)
+		const badge = () => container.querySelector('[data-hidden]')
+		expect(badge()).not.toHaveClass('rounded', 'rounded-full')
+		rerender(
+			<Badge badgeContent={4} shape="rounded">
+				x
+			</Badge>
+		)
+		expect(badge()).toHaveClass('rounded')
+		rerender(
+			<Badge badgeContent={4} shape="pill">
+				x
+			</Badge>
+		)
+		expect(badge()).toHaveClass('rounded-full')
+	})
+})
+
 describe('Badge', () => {
 	const indicator = container => container.querySelector('[data-hidden]')
 

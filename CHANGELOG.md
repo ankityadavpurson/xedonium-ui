@@ -10,6 +10,11 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `ActionMenu` items accept `tone: 'danger'` (red text, icon, hover and focus background) next to `warning` (#75).
+- `ConfirmDialog` accepts `maxWidth` (a `max-w-*` class), `confirmDisabled` and `confirmVariant` (#76).
+- `Input` accepts `clearable` (and `clearLabel`): a clear button shows while there is a value, Escape clears too, and focus returns to the input (#78).
+- `Badge` accepts `shape` (`square`, `rounded` or `pill`; default `square`) (#81).
+- `StatCard` accepts `size="compact"`, which puts the value beside the label in a shorter tile (#82).
 - `DataGrid` accepts `virtualized` (with `rowHeight`, default 40, and `height`, default 400): only the rows in view are rendered,
   between spacer rows, with a sticky header and `aria-rowcount` / `aria-rowindex`. All rows scroll in one list unless
   `pageSize` is set; sorting, search and selection cover every row. Row heights must be fixed (#67).

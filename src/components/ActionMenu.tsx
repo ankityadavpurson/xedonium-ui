@@ -12,7 +12,7 @@ export interface ActionMenuItem {
 	icon?: ReactNode
 	description?: ReactNode
 	badge?: ReactNode
-	tone?: 'default' | 'warning'
+	tone?: 'default' | 'warning' | 'danger'
 	disabled?: boolean
 	/** Marks an item that opens a dialog (`aria-haspopup`). */
 	hasDialog?: boolean
@@ -30,15 +30,17 @@ export interface ActionMenuProps {
 	className?: string
 }
 
-const TONES: Record<'default' | 'warning', string> = {
+const TONES: Record<'default' | 'warning' | 'danger', string> = {
 	default: 'text-app-text hover:bg-app-bg',
 	warning: 'text-amber-700 hover:bg-amber-400/10 dark:text-amber-400',
+	danger: 'text-red-700 hover:bg-red-500/10 focus-visible:bg-red-500/10 dark:text-red-400',
 }
 
 /**
  * Dropdown of page actions. Closes on outside click and Escape (focus returns to the trigger).
  * The menu is portalled to <body>, so scroll containers and overflow: hidden ancestors can't clip it.
  * items: [{ key, label, icon?, description?, badge?, tone?, disabled?, hasDialog?, onClick }]
+ * `tone` is `default`, `warning` or `danger` (red text and icon, for destructive items such as Delete).
  * `trigger` is the button content; `variant` styles the trigger (e.g. 'warning' to flag pending work).
  * `placement` is where the menu opens (default "bottom-start"; e.g. "bottom-end", "top-start"). It flips above or to the other edge when there is no room, and re-adjusts on scroll and resize.
  */

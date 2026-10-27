@@ -391,6 +391,17 @@ describe('Skeleton', () => {
 	})
 })
 
+describe('StatCard compact', () => {
+	it('keeps the content and uses the compact frame', () => {
+		const { container } = render(<StatCard size="compact" label="Users" value="10" hint="vs last" />)
+		expect(screen.getByText('Users')).toBeInTheDocument()
+		expect(screen.getByText('10')).toBeInTheDocument()
+		expect(screen.getByText('vs last')).toBeInTheDocument()
+		expect(container.firstChild).toHaveClass('items-center', 'px-3')
+		expect(container.firstChild).not.toHaveClass('flex-col')
+	})
+})
+
 describe('StatCard', () => {
 	it('renders deltas by trend', () => {
 		const { rerender } = render(<StatCard label="Users" value="10" />)

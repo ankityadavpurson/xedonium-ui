@@ -2,6 +2,7 @@ import type { ComponentPropsWithoutRef, ReactNode } from 'react'
 
 export type BadgeColor = 'default' | 'secondary' | 'success' | 'danger' | 'warning' | 'info'
 type BadgeSize = 'sm' | 'md'
+type BadgeShape = 'square' | 'rounded' | 'pill'
 type Vertical = 'top' | 'bottom'
 type Horizontal = 'left' | 'right'
 
@@ -10,6 +11,8 @@ export interface BadgeProps extends ComponentPropsWithoutRef<'span'> {
 	badgeContent?: ReactNode
 	color?: BadgeColor
 	size?: BadgeSize
+	/** Corner style of the badge: `square` (default), `rounded` or `pill`. A `dot` is not affected. */
+	shape?: BadgeShape
 	/** `dot` shows a plain dot. */
 	variant?: 'standard' | 'dot'
 	max?: number
@@ -29,6 +32,8 @@ const colorClasses: Record<BadgeColor, string> = {
 	warning: 'bg-amber-400 text-black',
 	info: 'bg-sky-600 text-white',
 }
+
+const shapeClasses: Record<BadgeShape, string> = { square: '', rounded: 'rounded', pill: 'rounded-full' }
 
 const sizeClasses: Record<BadgeSize, string> = {
 	sm: 'h-4 min-w-4 px-1 pb-px text-[10px]',
@@ -50,12 +55,13 @@ const placement = (vertical: Vertical, horizontal: Horizontal, circular: boolean
  * Overlays a small indicator (a count, text or a dot) on the corner of its children, like an unread count on an icon.
  * `badgeContent` numbers above `max` show as "99+"; zero is hidden unless `showZero`. `variant="dot"` shows a plain dot.
  * `invisible` hides it. With no children the badge renders on its own, inline.
- * `size` is `sm` or `md`. Colors: `default`, `secondary`, `success`, `danger`, `warning`, `info`.
+ * `size` is `sm` or `md`; `shape` is `square` (default), `rounded` or `pill`. Colors: `default`, `secondary`, `success`, `danger`, `warning`, `info`.
  */
 const Badge = ({
 	badgeContent,
 	color = 'default',
 	size = 'md',
+	shape = 'square',
 	variant = 'standard',
 	max = 99,
 	showZero = false,
@@ -82,7 +88,7 @@ const Badge = ({
 				style={hasChildren ? position.style : undefined}
 				className={`z-10 inline-flex items-center justify-center whitespace-nowrap font-semibold leading-none ring-2 ring-app-bg transition-transform ${
 					colorClasses[color]
-				} ${dot ? 'h-2 w-2' : sizeClasses[size]} ${
+				} ${shapeClasses[shape]} ${dot ? 'h-2 w-2' : sizeClasses[size]} ${
 					hasChildren ? `absolute ${position.transform} ${hidden ? 'scale-0' : 'scale-100'}` : hidden ? 'hidden' : ''
 				}`}
 			>
