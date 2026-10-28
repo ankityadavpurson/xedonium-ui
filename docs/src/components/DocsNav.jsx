@@ -54,7 +54,7 @@ const DocsNav = ({ items, activePath: currentPath, onNavigate, onSelect, footer,
 					event.stopPropagation()
 					onSelect?.(node.key)
 				}}
-				className={`flex min-w-0 flex-1 items-center truncate ${depth > 0 ? '-ml-2' : ''} ${icon && depth === 0 ? '-ml-6 gap-1' : ''}`}
+				className={`-my-1.5 -mr-3 flex min-h-9 min-w-0 flex-1 items-center truncate py-1.5 pr-3 ${depth > 0 ? '-ml-2 pl-2' : ''} ${icon && depth === 0 ? '-ml-8 gap-1 pl-2' : ''}`}
 			>
 				{icon && depth === 0 && (
 					<span aria-hidden="true" className="flex h-5 w-5 shrink-0 items-center justify-center text-app-muted">

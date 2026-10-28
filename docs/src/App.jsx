@@ -21,6 +21,7 @@ import { categories, pages, pathOf } from './content'
 import { guidePath, guideSections } from './guides/hooks'
 import { foundations } from './foundations'
 import NotFound from './pages/NotFound'
+import useSeo from './useSeo'
 
 // Every page is its own chunk, fetched when it is first opened (the Playground alone is large: it compiles JSX in the
 // browser with react-live). The shell, navigation data and NotFound stay in the main chunk.
@@ -94,6 +95,8 @@ const App = () => {
 	const [searchOpen, setSearchOpen] = useState(false)
 	const items = useNavItems()
 
+	useSeo(pathname)
+
 	useKeyboardShortcuts({ 'mod+k': () => setSearchOpen(true), '/': () => setSearchOpen(true) })
 
 	// The shell scrolls its <main>, not the window, so reset it (and the title) on navigation
@@ -141,7 +144,6 @@ const App = () => {
 			<Button
 				variant="secondary"
 				onClick={() => setSearchOpen(true)}
-				aria-label="Search the docs"
 				tooltip="Search the docs (Ctrl K)"
 				tooltipPlacement="bottom-end"
 			>

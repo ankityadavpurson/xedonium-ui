@@ -89,6 +89,16 @@ for (const category of categories) {
 	}
 }
 
+// seo.js lists the foundation pages itself (foundations/index.js cannot be imported outside Vite)
+const foundationPaths = [
+	...fs.readFileSync(path.join(docs, 'foundations/index.js'), 'utf8').matchAll(/path: '([^']+)'/g),
+]
+const seoSource = fs.readFileSync(path.join(docs, 'seo.js'), 'utf8')
+for (const [, foundationPath] of foundationPaths) {
+	if (!seoSource.includes(`['${foundationPath}',`))
+		problems.push(`${foundationPath}: missing from the sitemap list in docs/src/seo.js`)
+}
+
 if (problems.length) {
 	console.error(problems.join('\n'))
 	process.exit(1)
