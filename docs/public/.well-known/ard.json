@@ -1,0 +1,15 @@
+{
+	"entries": [
+		{
+			"identifier": "urn:air:xedonium-ui.web.app:docs:llms-txt",
+			"displayName": "Xedonium docs index",
+			"type": "text/markdown",
+			"url": "https://xedonium-ui.web.app/llms.txt",
+			"representativeQueries": [
+				"Which React components does Xedonium have?",
+				"How do I set up the Xedonium Tailwind preset?",
+				"What props does the Xedonium Button accept?"
+			]
+		}
+	]
+}

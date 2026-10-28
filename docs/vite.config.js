@@ -1,6 +1,7 @@
 import react from '@vitejs/plugin-react'
 import path from 'node:path'
 import { defineConfig } from 'vite'
+import seoPlugin from './seoPlugin.js'
 import xedoniumImports from './xedoniumImports.js'
 
 const root = import.meta.dirname
@@ -13,7 +14,7 @@ const VENDOR = /node_modules[\\/](react|react-dom|react-router|react-router-dom|
 export default defineConfig(() => ({
 	root,
 	base: '/',
-	plugins: [xedoniumImports(), react()],
+	plugins: [xedoniumImports(), react(), seoPlugin()],
 	resolve: {
 		alias: {
 			'xedonium/styles.css': path.join(root, '../src/styles.css'),

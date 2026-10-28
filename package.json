@@ -72,6 +72,7 @@
 		"docs:build": "vite build --config docs/vite.config.js",
 		"docs:preview": "vite preview --config docs/vite.config.js",
 		"docs:check": "node scripts/check-docs.mjs",
+		"docs:deploy:preview": "yarn docs:build && firebase hosting:channel:deploy preview",
 		"prepublishOnly": "npm run lint && npm run typecheck && npm run build && npm run check:exports",
 		"format": "prettier --write .",
 		"test": "vitest run",

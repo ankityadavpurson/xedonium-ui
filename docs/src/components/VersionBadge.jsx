@@ -8,7 +8,7 @@ const VersionBadge = ({ className = '' }) => {
 			href={`https://www.npmjs.com/package/xedonium/v/${version}`}
 			target="_blank"
 			rel="noreferrer"
-			aria-label={`Version ${version} on npm`}
+			aria-label={`v${version} on npm`}
 			className={`border border-app-border bg-app-card px-1.5 py-0.5 text-[10px] font-semibold tracking-widest text-app-muted transition hover:border-app-strong hover:text-app-text ${className}`}
 		>
 			v{version}
