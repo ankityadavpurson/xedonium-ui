@@ -69,6 +69,16 @@ const NGINX_RULES: Rule[] = [
 	['number', /(?<![\w.$/-])\d+(?:\.\d+)?[kKmMgGsdhy]?(?![\w.])/],
 ]
 
+// Keys are names followed by `:` and a space or line end, so `http://x` stays plain; `#` only starts a comment after whitespace.
+const YAML_RULES: Rule[] = [
+	['comment', /(?<=^|\s)#[^\n]*/],
+	['fn', /\$\{\{[^}\n]*\}\}/],
+	['string', QUOTED],
+	['attr', /(?<=^[ \t]*(?:-[ \t]+)*)[\w./-]+(?=[ \t]*:(?:[ \t]|$))/],
+	['keyword', /(?<=[\s:[,-]|^)(?:true|false|null|yes|no|on|off)(?=[\s,\]]|$)/i],
+	['number', /(?<=[\s:[,-]|^)-?\d+(?:\.\d+)?(?=[\s,\]]|$)/],
+]
+
 const compile = (rules: Rule[]) => new RegExp(rules.map(([, re]) => `(${re.source})`).join('|'), 'gm')
 const JS: [Rule[], RegExp] = [JS_RULES, compile(JS_RULES)]
 const SH: [Rule[], RegExp] = [SH_RULES, compile(SH_RULES)]
@@ -76,6 +86,8 @@ const HTML: [Rule[], RegExp] = [HTML_RULES, compile(HTML_RULES)]
 const CSS: [Rule[], RegExp] = [CSS_RULES, compile(CSS_RULES)]
 const APACHE: [Rule[], RegExp] = [APACHE_RULES, compile(APACHE_RULES)]
 const NGINX: [Rule[], RegExp] = [NGINX_RULES, compile(NGINX_RULES)]
+
+const YAML: [Rule[], RegExp] = [YAML_RULES, compile(YAML_RULES)]
 
 const GRAMMARS: Record<string, [Rule[], RegExp]> = {
 	js: JS,
@@ -98,6 +110,8 @@ const GRAMMARS: Record<string, [Rule[], RegExp]> = {
 	apache: APACHE,
 	htaccess: APACHE,
 	nginx: NGINX,
+	yaml: YAML,
+	yml: YAML,
 }
 
 /** Language names (lowercase) that get syntax colors. */

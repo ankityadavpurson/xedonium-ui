@@ -21,6 +21,27 @@ describe('highlight', () => {
 		)
 	})
 
+	it('colors yaml keys, scalars, comments and actions expressions', () => {
+		const code = '# ci\non: push\njobs:\n  - name: "Build"\n    run: echo ${{ github.ref }} # now\n    retries: 3\n    url: http://a#b\n'
+		expect(colored(code, 'yml')).toEqual([
+			['comment', '# ci'],
+			['attr', 'on'],
+			['attr', 'jobs'],
+			['attr', 'name'],
+			['string', '"Build"'],
+			['attr', 'run'],
+			['fn', '${{ github.ref }}'],
+			['comment', '# now'],
+			['attr', 'retries'],
+			['number', '3'],
+			['attr', 'url'],
+		])
+		expect(colored('on: true', 'yaml')).toEqual([
+			['attr', 'on'],
+			['keyword', 'true'],
+		])
+	})
+
 	it('colors html tags, attributes, strings and comments', () => {
 		expect(colored('<!-- note -->\n<a href="/x" class=\'y\'>Don\'t "quote"</a>', 'html')).toEqual([
 			['comment', '<!-- note -->'],

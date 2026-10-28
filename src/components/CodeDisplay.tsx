@@ -5,7 +5,7 @@ export type CodeColors = Partial<Record<TokenKind | 'text' | 'background', strin
 
 export interface CodeDisplayProps {
 	code: string
-	/** Caption and syntax colors: js / jsx / ts / tsx / json, bash / sh, html / xml / svg, css / scss, apache / htaccess, nginx. */
+	/** Caption and syntax colors: js / jsx / ts / tsx / json, bash / sh, html / xml / svg, css / scss, apache / htaccess, nginx, yaml / yml. */
 	language?: string
 	/** Header text; overrides `language` as the caption. */
 	title?: string
@@ -27,7 +27,7 @@ export interface CodeDisplayProps {
 /**
  * Read-only code block with an optional title, line numbers and a copy button. `code` is a string; `language` is
  * shown as a caption and picks the syntax colors: js / jsx / ts / tsx / json, bash / sh, html / xml / svg, css / scss,
- * apache / htaccess and nginx are colored, other values stay plain (`highlight={false}` turns the colors off; `highlighter`
+ * apache / htaccess, nginx and yaml / yml are colored, other values stay plain (`highlight={false}` turns the colors off; `highlighter`
  * plugs in your own tokenizer). The default palette follows the light / dark theme
  * (`--xd-tok-*` in styles.css); pass `colors` to override: { comment, string, keyword, tag, attr, number, fn, text,
  * background } with any CSS color.

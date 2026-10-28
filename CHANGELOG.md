@@ -10,6 +10,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `CodeDisplay` and `Markdown` fenced code now color `yaml` / `yml` (keys, quoted scalars, comments, booleans, numbers and GitHub Actions `${{ }}` expressions). The built-in `highlight` function is exported so a custom `highlighter` can fall back to the defaults.
+
 - `Table` accepts `rowProps(row)` (extra attributes such as `className` or `aria-selected` for a row) and `isRowHidden(row)`, which hides a row with the `hidden` attribute but keeps it mounted, so filtering does not reload images or reset inputs. The last visible row has no bottom border, and the empty message shows when no row is visible (#70).
 - `Sidebar` accepts `divider: true` items (an unlabeled `section` renders the same), `textCase="none"`, `iconSize`, `itemClassName`, `width` and `borderRight` (independent of `bordered`); an item's `label` is optional for dividers. `AppShell` accepts `sidebarFullHeight`, which puts the header over the content column only (#77).
 - `MultiSelect` accepts `creatable` (with `createLabel` and `onCreate`): Enter or a comma adds the typed text as a value even if it is not in `options`, an `Add "text"` row offers the same, and duplicates are never added (#79).

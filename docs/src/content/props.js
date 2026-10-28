@@ -1139,7 +1139,7 @@ const props = {
 				'language',
 				'string',
 				'',
-				'Caption shown in the header, and the syntax colors: js, jsx, ts, tsx, json, bash, sh, html, xml, svg, css, scss, apache, htaccess, nginx (other values stay plain).',
+				'Caption shown in the header, and the syntax colors: js, jsx, ts, tsx, json, bash, sh, html, xml, svg, css, scss, apache, htaccess, nginx, yaml, yml (other values stay plain).',
 			],
 			['title', 'string', '', 'Header text; overrides `language` as the caption.'],
 			['lineNumbers', 'boolean', 'false', 'Show line numbers.'],
