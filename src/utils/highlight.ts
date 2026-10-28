@@ -74,9 +74,9 @@ const YAML_RULES: Rule[] = [
 	['comment', /(?<=^|\s)#[^\n]*/],
 	['fn', /\$\{\{[^}\n]*\}\}/],
 	['string', QUOTED],
-	['attr', /(?<=^[ \t]*(?:-[ \t]+)*)[\w.\/-]+(?=[ \t]*:(?:[ \t]|$))/],
-	['keyword', /(?<=[\s:\[,-]|^)(?:true|false|null|yes|no|on|off)(?=[\s,\]]|$)/i],
-	['number', /(?<=[\s:\[,-]|^)-?\d+(?:\.\d+)?(?=[\s,\]]|$)/],
+	['attr', /(?<=^[ \t]*(?:-[ \t]+)*)[\w./-]+(?=[ \t]*:(?:[ \t]|$))/],
+	['keyword', /(?<=[\s:[,-]|^)(?:true|false|null|yes|no|on|off)(?=[\s,\]]|$)/i],
+	['number', /(?<=[\s:[,-]|^)-?\d+(?:\.\d+)?(?=[\s,\]]|$)/],
 ]
 
 const compile = (rules: Rule[]) => new RegExp(rules.map(([, re]) => `(${re.source})`).join('|'), 'gm')
