@@ -6,6 +6,7 @@ import {
 	CodeIcon,
 	CommandPalette,
 	FanFavicon,
+	HistoryIcon,
 	RocketIcon,
 	ThemeToggle,
 	Tooltip,
@@ -30,6 +31,7 @@ const ComponentPage = lazy(() => import('./pages/ComponentPage'))
 const GuideIndex = lazy(() => import('./pages/GuidePage').then(module => ({ default: module.GuideIndex })))
 const GuideEntry = lazy(() => import('./pages/GuidePage').then(module => ({ default: module.GuideEntry })))
 const LoadingScreenPreview = lazy(() => import('./pages/LoadingScreenPreview'))
+const Changelog = lazy(() => import('./pages/Changelog'))
 const Playground = lazy(() => import('./pages/Playground'))
 const PlaygroundHome = lazy(() => import('./pages/PlaygroundHome'))
 
@@ -81,6 +83,7 @@ const useNavItems = () =>
 				})),
 			})),
 			{ key: '/playground', label: 'Playground', href: '/playground', icon: <CodeIcon /> },
+			{ key: '/changelog', label: 'Changelog', href: '/changelog', icon: <HistoryIcon /> },
 		],
 		[]
 	)
@@ -122,6 +125,7 @@ const App = () => {
 				}))
 			),
 			{ key: 'playground', label: 'Playground', group: 'Guides', onSelect: () => navigate('/playground') },
+			{ key: 'changelog', label: 'Changelog', group: 'Guides', onSelect: () => navigate('/changelog') },
 		],
 		[navigate]
 	)
@@ -213,6 +217,7 @@ const App = () => {
 										element={<GuideEntry section={section} />}
 									/>,
 								])}
+								<Route path="/changelog" element={<Changelog />} />
 								<Route path="/playground" element={<PlaygroundHome />} />
 								<Route path="/playground/:category" element={<Playground />} />
 								<Route path="*" element={<NotFound />} />
