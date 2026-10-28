@@ -2,7 +2,7 @@ name: Release
 
 # One run per push to main. `changes` looks at which files the push touched:
 #   lib  (src/, package.json, yarn.lock, tailwind-preset.js, build config/scripts) -> npm publish
-#   docs (docs/, src/, scripts/, package.json, yarn.lock)                  -> Firebase Hosting deploy
+#   docs (docs/, src/, scripts/, package.json, yarn.lock, firebase.json)                  -> Firebase Hosting deploy
 # (the docs render the library straight from src/, so a lib change redeploys the docs too).
 # verify (lint, types, tests with 90% coverage, build) runs first when either changed,
 # then docs deploy and npm publish run in parallel. Manual runs do everything.
@@ -36,7 +36,7 @@ jobs:
           AFTER: ${{ github.sha }}
         run: |
           LIB='^(src/|package\.json$|yarn\.lock$|tailwind-preset\.js$|tsconfig\.build\.json$|tsconfig\.json$|vite\.config\.js$|scripts/(copy-css|check-exports))'
-          DOCS='^(docs/|src/|package\.json$|yarn\.lock$|scripts/check-docs)'
+          DOCS='^(docs/|src/|package\.json$|yarn\.lock$|firebase\.json$|CHANGELOG\.md$|scripts/check-docs)'
 
           # Manual run, first push, or a force-push whose old commit is gone: assume everything changed
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] \
@@ -77,8 +77,9 @@ jobs:
           if-no-files-found: error
 
   docs-deploy:
-    needs: [changes, verify]
-    if: needs.changes.outputs.docs == 'true'
+    # Waits for publish so the docs include the stamped CHANGELOG.md; a failed or skipped publish does not block it
+    needs: [changes, verify, publish]
+    if: ${{ !cancelled() && needs.verify.result == 'success' && needs.changes.outputs.docs == 'true' }}
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -87,6 +88,8 @@ jobs:
       cancel-in-progress: true
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: main # includes the "chore(release)" commit publish just pushed
       - uses: actions/setup-node@v7
         with:
           node-version: 22
@@ -166,6 +169,7 @@ jobs:
           npm version "${{ steps.bump.outputs.level }}" --no-git-tag-version
           VERSION=$(node -p "require('./package.json').version")
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          node scripts/stamp-changelog.mjs "$VERSION"
           git commit -am "chore(release): v$VERSION [skip ci]"
           git tag "v$VERSION"
 

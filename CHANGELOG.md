@@ -8,9 +8,15 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+## [1.18.0] - 2026-10-28
+
 ### Added
 
 - `CodeDisplay` and `Markdown` fenced code now color `yaml` / `yml` (keys, quoted scalars, comments, booleans, numbers and GitHub Actions `${{ }}` expressions). The built-in `highlight` function is exported so a custom `highlighter` can fall back to the defaults.
+
+## [1.16.0] - 2026-10-27
+
+### Added
 
 - `Table` accepts `rowProps(row)` (extra attributes such as `className` or `aria-selected` for a row) and `isRowHidden(row)`, which hides a row with the `hidden` attribute but keeps it mounted, so filtering does not reload images or reset inputs. The last visible row has no bottom border, and the empty message shows when no row is visible (#70).
 - `Sidebar` accepts `divider: true` items (an unlabeled `section` renders the same), `textCase="none"`, `iconSize`, `itemClassName`, `width` and `borderRight` (independent of `bordered`); an item's `label` is optional for dividers. `AppShell` accepts `sidebarFullHeight`, which puts the header over the content column only (#77).
@@ -23,6 +29,21 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 - `Input` accepts `clearable` (and `clearLabel`): a clear button shows while there is a value, Escape clears too, and focus returns to the input (#78).
 - `Badge` accepts `shape` (`square`, `rounded` or `pill`; default `square`) (#81).
 - `StatCard` accepts `size="compact"`, which puts the value beside the label in a shorter tile (#82).
+
+### Fixed
+
+- `Field`: `required` now defaults to `false` (it was `true`, so every field was announced as required) and, when set, also
+  puts the native `required` attribute on the input, so browser validation and `:invalid` styling work. **Note:** forms
+  that relied on the old default should pass `required` explicitly (#73).
+- `Image`: the fallback is cleared when `src` changes, and an image that failed before hydration now shows the fallback (#71).
+- `FileUpload`: dropped files are filtered by `accept` like the picker (new `onReject` receives the rest), the input is reset
+  so the same file can be chosen twice, and `clearOnSelect` forgets the selection after `onChange` (#72).
+- `Tooltip`: a display utility in `className` (`flex`, `block`, ...) replaces the wrapper's default `inline-flex` (#74).
+
+## [1.15.0] - 2026-10-18
+
+### Added
+
 - `DataGrid` accepts `virtualized` (with `rowHeight`, default 40, and `height`, default 400): only the rows in view are rendered,
   between spacer rows, with a sticky header and `aria-rowcount` / `aria-rowindex`. All rows scroll in one list unless
   `pageSize` is set; sorting, search and selection cover every row. Row heights must be fixed (#67).
@@ -37,45 +58,55 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
   before the first paint (#65).
 - `Carousel` accepts `previousLabel`, `nextLabel` and `dotLabel(index)` to change the wording of the buttons and dots
   (aria-label and tooltip), for example "Previous order" or a translation (#66).
+
+## [1.14.0] - 2026-10-15
+
+### Added
+
 - Icons `ArrowUpDownIcon`, `ArrowLeftRightIcon`, `ChevronsUpDownIcon`, `CpuIcon`, `LaptopIcon`, `KeyboardIcon`, `MouseIcon`, `MemoryStickIcon` and `TabletIcon` (#62).
+
+### Fixed
+
+- `Calendar` (and `DatePicker`, `DateTimePicker`, `DateRangePicker`): the month buttons are disabled when the previous or next month has no day within `min` / `max`, `PageUp` / `PageDown` and the arrow keys no longer move outside the range or onto a disabled day, and with nothing selected it opens on the nearest allowed month. A time on `min` / `max` no longer disables its own day (#63).
+
+## [1.13.0] - 2026-10-13
+
+### Added
+
 - `PipelineGraph`: a left-to-right job dependency graph (like the workflow view on GitHub Actions) with status icons, per-node `icon`, `description`, `trailing`, `className` and `disabled`, elbow connectors, drag or touch to pan, `onNodeClick` / `selectedId` and `renderNode`. The grid layout is exported as `layoutPipeline`.
+
+## [1.12.0] - 2026-10-13
+
+### Added
+
 - `CodeDisplay` and `Markdown` fenced code now color `html` (also `xml`, `svg`), `css` (also `scss`), `apache` (also `htaccess`) and `nginx`, and take a `highlighter` prop to plug in your own tokenizer for other languages. The `Highlighter` type is exported.
-- `NestedTable` (tree rows and master-detail rows with lazy loading, exclusive, row actions), `LogViewer` (level filter with counts, debounced search with highlights, follow-the-newest with "Jump to latest", full screen, `parseLogFile`), `FileExplorer` (grid, list and tree layouts, breadcrumbs, filter, lazy folders), `PasswordStrengthInfo` with custom rules (`rules`, `extraRules`, `passwordRules`, `onResult`) and `NetworkConnection` (detects online, offline and no internet; panel, badge and banner).
-- `RichTextEditor` (**beta**): a WYSIWYG editor with no dependencies (bold, italic, headings, lists, quotes, code, alignment, colors, links, images, tables, undo and redo). HTML is sanitized by an allowlist on the way in and out; `format="markdown"` edits Markdown. Images can be resized (corner handle, width presets) and table columns dragged by their borders. Also exports `sanitizeHtml`, `markdownToHtml` and `htmlToMarkdown`, and six icons (`ListOrderedIcon`, `QuoteIcon`, `TableIcon`, `PaletteIcon`, `HighlighterIcon`, `RemoveFormattingIcon`).
-- `BackToTop` (appears after scrolling, smooth scroll to the top, optional progress ring) and `ScrollProgress` (a `bar` along the top of the page, or a `button` with a ring), with the `useScrollProgress` hook.
-- `useDebouncedValue` (with `leading` and `maxWait`), `useNetworkStatus`, `useMediaQuery` and `useUnsavedChanges` (asks before leaving a form with unsaved changes: the browser prompt plus held-back link clicks) hooks.
-- `NotificationCenter`: a "View all" footer (`onViewAll` or `viewAllHref`) and `maxItems`. `Modal`: `fullScreen`, `fullScreenToggle`, `defaultFullScreen` and `onFullScreenChange`.
-- `Markdown` component: GitHub-style Markdown (tables, task lists, nested lists, fenced code with highlighting, images, router-aware links) with no dependencies. HTML in the source stays text and unsafe URLs are not rendered as links or images.
 
 ### Changed
 
 - Tailwind v4 is supported: the `tailwindcss` peer range is now `^3.4.0 || ^4.0.0`, the README has a Tailwind v4 setup section and `xedonium/tailwind-v4.css` provides the dark variant, `app-*` colours and animations.
 
-- The library source is now TypeScript (`.ts` / `.tsx`). The published `.d.ts` files describe every prop precisely:
-  fixed choices are literal unions (`gap`, `variant`, `size`, `placement`, ...), optional props are optional, and
-  callbacks, item shapes and the generic `Table` / `DataGrid` / `RadioGroup` are typed. Prop types are exported from
-  `xedonium` (`import type { AccordionProps } from 'xedonium'`). TypeScript apps that relied on the old, looser types
-  may see new errors where a prop was misused.
+## [1.11.0] - 2026-10-10
 
-### Fixed
+### Added
 
-- `Field`: `required` now defaults to `false` (it was `true`, so every field was announced as required) and, when set, also
-  puts the native `required` attribute on the input, so browser validation and `:invalid` styling work. **Note:** forms
-  that relied on the old default should pass `required` explicitly (#73).
-- `Image`: the fallback is cleared when `src` changes, and an image that failed before hydration now shows the fallback (#71).
-- `FileUpload`: dropped files are filtered by `accept` like the picker (new `onReject` receives the rest), the input is reset
-  so the same file can be chosen twice, and `clearOnSelect` forgets the selection after `onChange` (#72).
-- `Tooltip`: a display utility in `className` (`flex`, `block`, ...) replaces the wrapper's default `inline-flex` (#74).
-- `Calendar` (and `DatePicker`, `DateTimePicker`, `DateRangePicker`): the month buttons are disabled when the previous or next month has no day within `min` / `max`, `PageUp` / `PageDown` and the arrow keys no longer move outside the range or onto a disabled day, and with nothing selected it opens on the nearest allowed month. A time on `min` / `max` no longer disables its own day (#63).
-- Docs: the Badge page points to `Chip` (with `tone`) for status labels, and the Chip page says when to use `Badge`
-  instead (#36).
-- Docs: `PageLayout` needs a full-height flex column as its parent (`min-h-screen flex flex-col`); the README, the Getting
-  Started page and the component docs now say so and show it (#45).
-- `Card` header wraps on narrow screens, so `actions` drop below a long title / subtitle instead of squeezing the text
-  into a narrow column (#37).
-- `Button` / `ButtonLink` lay out as `inline-flex` with a gap, so an icon next to a label sits beside it instead of
-  stacking above it (#23).
-- `Pagination` buttons are 38px tall, matching the per-page `Select`, and Prev / Next share one minimum width (#34).
+- `RichTextEditor` (**beta**): a WYSIWYG editor with no dependencies (bold, italic, headings, lists, quotes, code, alignment, colors, links, images, tables, undo and redo). HTML is sanitized by an allowlist on the way in and out; `format="markdown"` edits Markdown. Images can be resized (corner handle, width presets) and table columns dragged by their borders. Also exports `sanitizeHtml`, `markdownToHtml` and `htmlToMarkdown`, and six icons (`ListOrderedIcon`, `QuoteIcon`, `TableIcon`, `PaletteIcon`, `HighlighterIcon`, `RemoveFormattingIcon`).
+
+## [1.10.0] - 2026-10-10
+
+### Added
+
+- `NestedTable` (tree rows and master-detail rows with lazy loading, exclusive, row actions), `LogViewer` (level filter with counts, debounced search with highlights, follow-the-newest with "Jump to latest", full screen, `parseLogFile`), `FileExplorer` (grid, list and tree layouts, breadcrumbs, filter, lazy folders), `PasswordStrengthInfo` with custom rules (`rules`, `extraRules`, `passwordRules`, `onResult`) and `NetworkConnection` (detects online, offline and no internet; panel, badge and banner).
+- `BackToTop` (appears after scrolling, smooth scroll to the top, optional progress ring) and `ScrollProgress` (a `bar` along the top of the page, or a `button` with a ring), with the `useScrollProgress` hook.
+- `useDebouncedValue` (with `leading` and `maxWait`), `useNetworkStatus`, `useMediaQuery` and `useUnsavedChanges` (asks before leaving a form with unsaved changes: the browser prompt plus held-back link clicks) hooks.
+- `NotificationCenter`: a "View all" footer (`onViewAll` or `viewAllHref`) and `maxItems`. `Modal`: `fullScreen`, `fullScreenToggle`, `defaultFullScreen` and `onFullScreenChange`.
+
+## [1.9.0] - 2026-10-08
+
+### Added
+
+- `Markdown` component: GitHub-style Markdown (tables, task lists, nested lists, fenced code with highlighting, images, router-aware links) with no dependencies. HTML in the source stays text and unsafe URLs are not rendered as links or images.
+
+## [1.8.0] - 2026-10-08
 
 ### Added
 
@@ -85,6 +116,11 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
   nothing changes.
 - Switching the theme now crossfades the whole page (View Transitions API) instead of fading elements one by one;
   browsers without it, and users who prefer reduced motion, keep the plain colour transitions.
+
+## [1.7.1] - 2026-10-07
+
+### Added
+
 - `Modal`, `Drawer` and `useDialogFocus` accept `initialFocusRef` to choose the element focused on open; the
   `data-autofocus` attribute is now documented (#46).
 - Icons `BanIcon`, `ArrowUpRightIcon`, `DevicesIcon`, `LayoutGridIcon` (same drawing as `GridIcon`), `BookOpenIcon` and
@@ -125,7 +161,37 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 - `Field`, `Select`, `TextArea` and `PasswordInput` accept `helperText`, shown under the field while there is no `error`
   and linked to the control with `aria-describedby` (#30).
 - `Input` accepts `startAdornment` and `endAdornment` (an icon or a clear button) and pads the text to clear them (#31).
+
+### Fixed
+
+- Docs: the Badge page points to `Chip` (with `tone`) for status labels, and the Chip page says when to use `Badge`
+  instead (#36).
+- Docs: `PageLayout` needs a full-height flex column as its parent (`min-h-screen flex flex-col`); the README, the Getting
+  Started page and the component docs now say so and show it (#45).
+- `Card` header wraps on narrow screens, so `actions` drop below a long title / subtitle instead of squeezing the text
+  into a narrow column (#37).
+- `Button` / `ButtonLink` lay out as `inline-flex` with a gap, so an icon next to a label sits beside it instead of
+  stacking above it (#23).
+- `Pagination` buttons are 38px tall, matching the per-page `Select`, and Prev / Next share one minimum width (#34).
+
+## [1.7.0] - 2026-10-07
+
+### Added
+
 - `yarn typecheck` (also run in CI, on pre-push and before publishing) and compile-time type tests.
+
+### Changed
+
+- The library source is now TypeScript (`.ts` / `.tsx`). The published `.d.ts` files describe every prop precisely:
+  fixed choices are literal unions (`gap`, `variant`, `size`, `placement`, ...), optional props are optional, and
+  callbacks, item shapes and the generic `Table` / `DataGrid` / `RadioGroup` are typed. Prop types are exported from
+  `xedonium` (`import type { AccordionProps } from 'xedonium'`). TypeScript apps that relied on the old, looser types
+  may see new errors where a prop was misused.
+
+## [1.2.0] - 2026-10-06
+
+### Added
+
 - Unit test suite (Vitest + Testing Library) with a 90% coverage gate enforced by a pre-push hook and CI.
 - CI workflow that lints and tests every push to `dev`.
 - Community files: contributing guide, code of conduct, security policy, and issue and pull request templates.
