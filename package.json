@@ -12,7 +12,7 @@
 	"bugs": {
 		"url": "https://github.com/ankityadavpurson/xedonium-ui/issues"
 	},
-	"homepage": "https://ankityadavpurson.github.io/xedonium-ui",
+	"homepage": "https://xedonium-ui.web.app",
 	"keywords": [
 		"react",
 		"tailwind",
@@ -69,7 +69,7 @@
 		"build:types": "tsc -p tsconfig.build.json",
 		"lint": "eslint .",
 		"typecheck": "tsc --noEmit",
-		"docs:build": "vite build --config docs/vite.config.js && node scripts/spa-fallback.mjs",
+		"docs:build": "vite build --config docs/vite.config.js",
 		"docs:preview": "vite preview --config docs/vite.config.js",
 		"docs:check": "node scripts/check-docs.mjs",
 		"prepublishOnly": "npm run lint && npm run typecheck && npm run build && npm run check:exports",

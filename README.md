@@ -9,7 +9,7 @@
 Forms, charts, overlays and 160+ icons with light and dark themes,</br>
 each one a separate module you can import on its own.
 
-[Live docs](https://ankityadavpurson.github.io/xedonium-ui/)
+[Live docs](https://xedonium-ui.web.app/)
 
 </div>
 
@@ -145,7 +145,7 @@ The docs site in `docs/` is a small Vite + React app built with the library itse
 - Props tables: `docs/src/content/props.js`. `yarn docs:check` fails if a component's props and its table drift apart.
 
 ```bash
-yarn docs:build     # static site in docs/dist (+ 404.html for GitHub Pages deep links)
+yarn docs:build     # static site in docs/dist (Firebase Hosting serves it; see firebase.json)
 yarn docs:preview   # serve the production build
 yarn docs:check     # verify props tables and example files
 ```

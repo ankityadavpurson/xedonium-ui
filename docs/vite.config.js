@@ -8,11 +8,11 @@ const root = import.meta.dirname
 // React and the router change rarely: keep them in one long-cacheable chunk apart from the app code.
 const VENDOR = /node_modules[\\/](react|react-dom|react-router|react-router-dom|@remix-run|scheduler)[\\/]/
 
-// Served from /xedonium-ui/ on GitHub Pages; plain / in dev. The docs import the library straight from ../src,
+// Served from the site root on Firebase Hosting. The docs import the library straight from ../src,
 // one module per component (see xedoniumImports.js), so pages only load what they use.
-export default defineConfig(({ command }) => ({
+export default defineConfig(() => ({
 	root,
-	base: command === 'build' ? '/xedonium-ui/' : '/',
+	base: '/',
 	plugins: [xedoniumImports(), react()],
 	resolve: {
 		alias: {

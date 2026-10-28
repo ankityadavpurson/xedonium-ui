@@ -2,7 +2,7 @@ name: Release
 
 # One run per push to main. `changes` looks at which files the push touched:
 #   lib  (src/, package.json, yarn.lock, tailwind-preset.js, build config/scripts) -> npm publish
-#   docs (docs/, src/, scripts/, package.json, yarn.lock)                  -> GitHub Pages deploy
+#   docs (docs/, src/, scripts/, package.json, yarn.lock)                  -> Firebase Hosting deploy
 # (the docs render the library straight from src/, so a lib change redeploys the docs too).
 # verify (lint, types, tests with 90% coverage, build) runs first when either changed,
 # then docs deploy and npm publish run in parallel. Manual runs do everything.
@@ -36,7 +36,7 @@ jobs:
           AFTER: ${{ github.sha }}
         run: |
           LIB='^(src/|package\.json$|yarn\.lock$|tailwind-preset\.js$|tsconfig\.build\.json$|tsconfig\.json$|vite\.config\.js$|scripts/(copy-css|check-exports))'
-          DOCS='^(docs/|src/|package\.json$|yarn\.lock$|scripts/(check-docs|spa-fallback))'
+          DOCS='^(docs/|src/|package\.json$|yarn\.lock$|scripts/check-docs)'
 
           # Manual run, first push, or a force-push whose old commit is gone: assume everything changed
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] \
@@ -76,12 +76,15 @@ jobs:
           path: dist
           if-no-files-found: error
 
-  docs-build:
+  docs-deploy:
     needs: [changes, verify]
     if: needs.changes.outputs.docs == 'true'
     runs-on: ubuntu-24.04
     permissions:
       contents: read
+    concurrency:
+      group: docs-deploy
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -90,26 +93,12 @@ jobs:
           cache: yarn
       - run: yarn install --frozen-lockfile
       - run: yarn docs:check
-      - run: yarn docs:build # also writes dist/404.html so deep links work on Pages
-      - uses: actions/upload-pages-artifact@v5
+      - run: yarn docs:build # static site in docs/dist; firebase.json rewrites deep links to index.html
+      - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          path: docs/dist
-
-  docs-deploy:
-    needs: docs-build
-    runs-on: ubuntu-24.04
-    permissions:
-      pages: write
-      id-token: write
-    concurrency:
-      group: pages
-      cancel-in-progress: true
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v5
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_XEDONIUM_UI }}
+          projectId: xedonium-ui
+          channelId: live
 
   publish:
     needs: [changes, verify]
