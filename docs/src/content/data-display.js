@@ -202,6 +202,18 @@ export default {
 				{
 					example: 1,
 				},
+				{
+					md: '**Branched timeline.** Give events a `branch` and the timeline draws lanes side by side, like a git graph. Events without a `branch` sit on the main lane; the first event of another branch splits off the lane named by `forkFrom` (the main lane by default), and an event with `mergeFrom` (one branch id or a list) joins those branches back in, ending them on its row. `branches` sets the lane order, the first being the main lane, and gives each one a `label` that is shown beside its first event.',
+				},
+				{
+					example: 2,
+				},
+				{
+					md: '**Horizontal.** `orientation="horizontal"` runs the events left to right with the branch lanes stacked above them, and scrolls sideways when it does not fit. Everything else, including branches, works the same.',
+				},
+				{
+					example: 3,
+				},
 			],
 		},
 		{

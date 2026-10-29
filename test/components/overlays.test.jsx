@@ -655,3 +655,72 @@ describe('AppShell', () => {
 		expect(screen.queryByRole('dialog')).toBeNull()
 	})
 })
+
+describe('Drawer sides and animation', () => {
+	it.each([
+		['top', 'top-0'],
+		['bottom', 'bottom-0'],
+		['left', 'left-0'],
+		['right', 'right-0'],
+	])('opens from the %s edge', (side, cls) => {
+		render(
+			<Drawer open onClose={() => {}} title="Panel" side={side}>
+				body
+			</Drawer>
+		)
+		expect(screen.getByRole('dialog')).toHaveClass(cls)
+	})
+
+	it('sizes top and bottom drawers with height, not width', () => {
+		render(
+			<Drawer open onClose={() => {}} title="Panel" side="top" height="max-h-40" width="max-w-xs">
+				body
+			</Drawer>
+		)
+		expect(screen.getByRole('dialog')).toHaveClass('max-h-40')
+		expect(screen.getByRole('dialog')).not.toHaveClass('max-w-xs')
+	})
+
+	it('unmounts at once when not animated', () => {
+		const { rerender } = render(
+			<Drawer open onClose={() => {}} title="Panel">
+				body
+			</Drawer>
+		)
+		rerender(
+			<Drawer open={false} onClose={() => {}} title="Panel">
+				body
+			</Drawer>
+		)
+		expect(screen.queryByRole('dialog')).toBeNull()
+	})
+
+	it('stays mounted for the slide-out when animated, then unmounts', () => {
+		vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'requestAnimationFrame', 'cancelAnimationFrame'] })
+		try {
+			const { rerender } = render(
+				<Drawer open animated onClose={() => {}} title="Panel">
+					body
+				</Drawer>
+			)
+			// off-screen until the entrance frames have run
+			expect(screen.getByRole('dialog')).toHaveClass('translate-x-full')
+			act(() => {
+				vi.advanceTimersByTime(100)
+			})
+			expect(screen.getByRole('dialog')).toHaveClass('translate-x-0')
+			rerender(
+				<Drawer open={false} animated onClose={() => {}} title="Panel">
+					body
+				</Drawer>
+			)
+			expect(screen.getByRole('dialog')).toHaveClass('translate-x-full')
+			act(() => {
+				vi.advanceTimersByTime(250)
+			})
+			expect(screen.queryByRole('dialog')).toBeNull()
+		} finally {
+			vi.useRealTimers()
+		}
+	})
+})

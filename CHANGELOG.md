@@ -8,6 +8,14 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+### Added
+
+- `Timeline` has an `orientation` prop: `horizontal` runs the events (and branches) left to right.
+- `Timeline` can draw a branched, git-graph style timeline: events take a `branch`, a branch splits off with `forkFrom` and joins back with `mergeFrom`, and the new `branches` prop orders and labels the lanes.
+- `Drawer` can open from the `top` or `bottom` (`side`, with `height` to size them) and has an `animated` option that slides it in and out and fades the backdrop.
+- `ContextMenu` opens a `Menu` at the pointer when its children are right-clicked (or the Menu key is pressed), with the same items, shortcuts, danger tone and submenus.
+- `Switch` has a `showState` prop that prints | (on) or 0 (off) inside the track.
+
 ## [1.20.0] - 2026-10-28
 
 ## [1.18.0] - 2026-10-28

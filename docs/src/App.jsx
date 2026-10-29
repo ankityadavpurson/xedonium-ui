@@ -36,6 +36,10 @@ const Changelog = lazy(() => import('./pages/Changelog'))
 const Playground = lazy(() => import('./pages/Playground'))
 const PlaygroundHome = lazy(() => import('./pages/PlaygroundHome'))
 
+// Cmd on Apple platforms, Ctrl elsewhere (matches what `mod` resolves to in useKeyboardShortcuts)
+const modKeyLabel = () =>
+	/Mac|iPhone|iPad|iPod/i.test(navigator.userAgentData?.platform || navigator.platform || '') ? '⌘' : 'Ctrl'
+
 const PageFallback = ({ label = 'Loading' }) => (
 	<div className="flex justify-center py-24">
 		<FanFavicon label={label} />
@@ -93,6 +97,7 @@ const App = () => {
 	const { pathname } = useLocation()
 	const navigate = useNavigate()
 	const [searchOpen, setSearchOpen] = useState(false)
+	const modKey = useMemo(modKeyLabel, [])
 	const items = useNavItems()
 
 	useSeo(pathname)
@@ -144,10 +149,10 @@ const App = () => {
 			<Button
 				variant="secondary"
 				onClick={() => setSearchOpen(true)}
-				tooltip="Search the docs (Ctrl K)"
+				tooltip={`Search the docs (${modKey} K)`}
 				tooltipPlacement="bottom-end"
 			>
-				Search <span className="ml-1 hidden text-app-muted sm:inline">Ctrl K</span>
+				Search <span className="ml-1 hidden text-app-muted sm:inline">{modKey} K</span>
 			</Button>
 			<Tooltip text="View on GitHub" placement="bottom-end">
 				<a

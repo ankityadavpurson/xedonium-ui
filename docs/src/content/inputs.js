@@ -282,10 +282,13 @@ export default {
 			name: 'Switch',
 			blocks: [
 				{
-					md: 'On/off toggle with `role="switch"`; `onChange` receives the new boolean.',
+					md: 'On/off toggle with `role="switch"`; `onChange` receives the new boolean. Add `showState` to print | or 0 inside the track.',
 				},
 				{
 					example: 1,
+				},
+				{
+					example: 2,
 				},
 			],
 		},

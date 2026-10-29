@@ -5,7 +5,7 @@ export default function Demo() {
 	const [open, setOpen] = useState(false)
 	return (
 		<>
-			<Button onClick={() => setOpen(true)}>Open drawer</Button>
+			<Button onClick={() => setOpen(true)}>Open settings</Button>
 			<Drawer
 				open={open}
 				onClose={() => setOpen(false)}

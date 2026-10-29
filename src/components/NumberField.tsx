@@ -43,7 +43,7 @@ const decimalsOf = (n: number) => {
 const clamp = (n: number, min?: number, max?: number) => Math.min(Math.max(n, min ?? -Infinity), max ?? Infinity)
 
 const controlClass =
-	'flex w-9 shrink-0 items-center justify-center border border-app-border bg-app-bg text-app-text outline-none transition hover:border-app-strong focus-visible:ring-2 focus-visible:ring-app-strong disabled:cursor-not-allowed disabled:opacity-50'
+	'relative flex w-9 shrink-0 hover:z-10 focus-visible:z-10 items-center justify-center border border-app-border bg-app-bg text-app-text outline-none transition hover:border-app-strong focus-visible:ring-2 focus-visible:ring-app-strong disabled:cursor-not-allowed disabled:opacity-50'
 
 /**
  * Number input with minus / plus buttons. `onChange` receives a number (or null when emptied), never a string. Arrow
@@ -153,7 +153,7 @@ const NumberField = ({
 					onChange={handleChange}
 					onBlur={handleBlur}
 					onKeyDown={handleKeyDown}
-					className={`${inputClass(!!error)} min-w-0 text-center tabular-nums ${className}`}
+					className={`${inputClass(!!error)} relative min-w-0 focus:z-10 text-center tabular-nums ${className}`}
 					{...rest}
 				/>
 				{showControls && (

@@ -28,17 +28,32 @@ export default {
 			],
 		},
 		{
+			slug: 'contextmenu',
+			name: 'ContextMenu',
+			blocks: [
+				{
+					md: 'Wrap an area and give it `items`; right-clicking inside opens a custom menu at the pointer instead of the default browser menu. The items are the same as [Menu](/components/navigation/menu): icons, `shortcut` hints, dividers, `tone="danger"` and nested `children`. Arrow keys move, Enter chooses, Escape or an outside click closes it, and the Menu key opens it from the keyboard. Right-clicking again elsewhere moves it. `disabled` hands the click back to the browser.',
+				},
+				{
+					example: 1,
+				},
+			],
+		},
+		{
 			slug: 'drawer',
 			name: 'Drawer',
 			blocks: [
 				{
-					md: 'Side panel dialog (`side`: `right` or `left`) with focus trap, Escape and backdrop to close.\n\nWhile `busy`, Escape, the backdrop and the close button are ignored, as in `Modal`; `busyOverlay` also covers the body with a spinner. `initialFocusRef` picks the element focused on open; otherwise it is the one marked `data-autofocus`, else the first control (the Close button).',
+					md: 'Panel dialog that opens from an edge (`side`: `right`, `left`, `top` or `bottom`) with focus trap, Escape and backdrop to close. `width` (a `max-w-*` class) sizes the side drawers and `height` (a `max-h-*` class) the top and bottom ones. Add `animated` to slide it in and out and fade the backdrop; it is off by default, and reduced-motion settings skip it.\n\nWhile `busy`, Escape, the backdrop and the close button are ignored, as in `Modal`; `busyOverlay` also covers the body with a spinner. `initialFocusRef` picks the element focused on open; otherwise it is the one marked `data-autofocus`, else the first control (the Close button).',
 				},
 				{
 					example: 1,
 				},
 				{
 					example: 2,
+				},
+				{
+					example: 3,
 				},
 			],
 		},
