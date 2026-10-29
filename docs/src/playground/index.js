@@ -1,8 +1,10 @@
-// The Playground shows every docs example of a component, live and editable. A section per component, grouped by the
-// docs categories: /playground/<category>#<component>.
+import { pathOf } from '../content'
 
-/** Path of a component's section in the Playground: its category page, scrolled to the component. */
-export const playgroundPath = (category, component) => `/playground/${category.slug}#${component.slug}`
+// The Playground shows every docs example of a component, live and editable. Each component has its own page under its
+// docs URL (/components/<category>/<component>/playground); /playground/<category> lists a whole category.
+
+/** Path of a component's Playground page: its docs URL plus /playground. */
+export const playgroundPath = (category, component) => `${pathOf(category, component)}/playground`
 
 // The ten components the Playground landing page starts with: [category slug, component slug]
 export const BASICS = [
