@@ -587,6 +587,7 @@ const props = {
 			['checked', 'boolean', '', 'On/off state.'],
 			['onChange', '(checked: boolean) => void', '', 'Called with the new state.'],
 			['label', 'ReactNode', '', 'Label text.'],
+			['showState', 'boolean', 'false', 'Print | (on) or 0 (off) inside the track.'],
 			['disabled', 'boolean', 'false', 'Disable the control.'],
 			className,
 			rest,
@@ -911,6 +912,21 @@ const props = {
 			className,
 		],
 	},
+	contextmenu: {
+		ContextMenu: [
+			['children', 'ReactNode', '', 'The area that opens the menu when right-clicked.'],
+			[
+				'items',
+				'{ key, label?, icon?, shortcut?, disabled?, tone?, onClick?, children?, divider? }[]',
+				'',
+				'The entries, as in `Menu`. `children` makes a submenu; `{ key, divider: true }` is a separator.',
+			],
+			['label', 'string', '', 'Accessible name of the menu.'],
+			['disabled', 'boolean', 'false', "Leave the browser's own context menu alone."],
+			['onOpenChange', '(open: boolean) => void', '', 'Called when it opens or closes.'],
+			className,
+		],
+	},
 	actionmenu: {
 		ActionMenu: [
 			['label', 'string', '', 'Accessible label of the trigger.'],
@@ -938,8 +954,15 @@ const props = {
 			['open', 'boolean', '', 'Whether the drawer is shown.'],
 			['onClose', '() => void', '', 'Called on Escape, backdrop click or the close button.'],
 			['title', 'ReactNode', '', 'Header title.'],
-			['side', "'right' | 'left'", "'right'", 'Edge it slides from.'],
-			['width', 'string', "'max-w-md'", 'Tailwind max-width class.'],
+			['side', "'right' | 'left' | 'top' | 'bottom'", "'right'", 'Edge it opens from.'],
+			['width', 'string', "'max-w-md'", 'Tailwind max-width class (left and right drawers).'],
+			['height', 'string', "'max-h-[60vh]'", 'Tailwind max-height class (top and bottom drawers).'],
+			[
+				'animated',
+				'boolean',
+				'false',
+				'Slide in and out from its edge and fade the backdrop, instead of appearing at once.',
+			],
 			['padded', 'boolean', 'true', 'Pad and scroll the body; false lets the content fill the drawer itself.'],
 			[
 				'initialFocusRef',
@@ -1352,9 +1375,21 @@ const props = {
 		Timeline: [
 			[
 				'items',
-				'{ key, title, description?, time?, tone? }[]',
+				'{ key, title, description?, time?, tone?, branch?, forkFrom?, mergeFrom? }[]',
 				'',
-				'Events; `tone` is default | success | warning | danger.',
+				'Events; `tone` is default | success | warning | danger. `branch` puts an event on a lane (default: the main lane), `forkFrom` names the lane a branch splits off, `mergeFrom` the branch id(s) that join here.',
+			],
+			[
+				'orientation',
+				"'vertical' | 'horizontal'",
+				"'vertical'",
+				'Top to bottom, or left to right with the branch lanes stacked above the events.',
+			],
+			[
+				'branches',
+				'{ id, label? }[]',
+				'',
+				'Lane order (the first is the main lane) and a label shown beside the first event of each branch.',
 			],
 			className,
 		],

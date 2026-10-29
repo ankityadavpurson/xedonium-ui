@@ -660,3 +660,67 @@ describe('class helpers', () => {
 		expect(inputClass(true)).toContain('border-red-500')
 	})
 })
+
+describe('Timeline branches', () => {
+	const items = [
+		{ key: 1, title: 'Start' },
+		{ key: 2, title: 'Feature work', branch: 'feature' },
+		{ key: 3, title: 'Main work' },
+		{ key: 4, title: 'Merged', mergeFrom: 'feature' },
+	]
+
+	it('stays a plain list without branches', () => {
+		const { container } = render(<Timeline items={items.map(({ key, title }) => ({ key, title }))} />)
+		expect(screen.getAllByRole('listitem')).toHaveLength(4)
+		expect(container.querySelectorAll('li > span:first-child')[0].style.width).toBe('11px')
+	})
+
+	it('adds a lane per branch and widens the graph', () => {
+		const { container } = render(<Timeline items={items} />)
+		expect(container.querySelector('li > span:first-child').style.width).toBe('31px')
+	})
+
+	it('shows the label of a branch beside its first event only', () => {
+		render(
+			<Timeline
+				items={[...items.slice(0, 2), { key: 5, title: 'More feature work', branch: 'feature' }, ...items.slice(2)]}
+				branches={[{ id: 'main' }, { id: 'feature', label: 'feature/x' }]}
+			/>
+		)
+		expect(screen.getAllByText('feature/x')).toHaveLength(1)
+	})
+
+	it('ends a merged branch on the merge row', () => {
+		const { container } = render(<Timeline items={items} />)
+		const rows = container.querySelectorAll('li')
+		// the feature lane runs through the row between its event and the merge, and stops at the merge row
+		const laneLines = row => [...row.querySelectorAll('span[style*="left: 25px"]')]
+		expect(laneLines(rows[2])).toHaveLength(1)
+		expect(laneLines(rows[3])).toHaveLength(1)
+		expect(laneLines(rows[3])[0].style.bottom).toContain('calc')
+	})
+})
+
+describe('Timeline horizontal', () => {
+	const items = [
+		{ key: 1, title: 'Start' },
+		{ key: 2, title: 'Feature work', branch: 'feature' },
+		{ key: 3, title: 'Merged', mergeFrom: 'feature' },
+	]
+
+	it('lays the events out in a row', () => {
+		const { container } = render(<Timeline items={items} orientation="horizontal" />)
+		expect(container.querySelector('ol')).toHaveClass('flex')
+		expect(screen.getAllByRole('listitem')).toHaveLength(3)
+	})
+
+	it('stacks the lanes vertically', () => {
+		const { container } = render(<Timeline items={items} orientation="horizontal" />)
+		expect(container.querySelector('li > span:first-child').style.height).toBe('31px')
+	})
+
+	it('stays a column by default', () => {
+		const { container } = render(<Timeline items={items} />)
+		expect(container.querySelector('ol')).not.toHaveClass('flex')
+	})
+})

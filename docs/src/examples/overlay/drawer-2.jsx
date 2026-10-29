@@ -14,7 +14,7 @@ export default function Demo() {
 	}
 	return (
 		<>
-			<Button onClick={() => setOpen(true)}>Open drawer</Button>
+			<Button onClick={() => setOpen(true)}>Edit profile</Button>
 			<Drawer
 				open={open}
 				onClose={() => setOpen(false)}
