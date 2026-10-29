@@ -16,6 +16,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 - `ContextMenu` opens a `Menu` at the pointer when its children are right-clicked (or the Menu key is pressed), with the same items, shortcuts, danger tone and submenus.
 - `Switch` has a `showState` prop that prints | (on) or 0 (off) inside the track.
 
+## [1.20.0] - 2026-10-28
+
 ## [1.18.0] - 2026-10-28
 
 ### Added
