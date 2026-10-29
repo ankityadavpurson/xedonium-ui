@@ -16,7 +16,7 @@ const sources = [
 export default function Demo() {
 	return (
 		<div className="max-w-2xl">
-			<Video title="Big Buck Bunny" sources={sources} defaultQuality="720p" />
+			<Video title="Big Buck Bunny" sources={sources} />
 		</div>
 	)
 }

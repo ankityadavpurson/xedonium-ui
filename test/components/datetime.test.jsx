@@ -208,6 +208,83 @@ describe('Calendar', () => {
 		rerender(<Calendar rangeStart={new Date(2024, 4, 14)} />)
 		expect(day(2024, 4, 12)).not.toHaveClass('bg-app-soft/20')
 	})
+
+	describe('jumpMode', () => {
+		it('opens a popover to pick a month and a year', () => {
+			render(<Calendar value={new Date(2024, 4, 10)} jumpMode="dropdown" locale="en-US" />)
+			expect(screen.queryByLabelText('Day')).not.toBeInTheDocument()
+			fireEvent.click(screen.getByRole('button', { name: /choose month and year/ }))
+			fireEvent.click(screen.getByRole('button', { name: 'Choose year' }))
+			fireEvent.click(screen.getByRole('button', { name: '2026' }))
+			fireEvent.click(screen.getByRole('button', { name: 'Dec' }))
+			expect(screen.getByRole('button', { name: /December 2026/ })).toBeInTheDocument()
+			expect(screen.queryByRole('button', { name: 'Dec' })).not.toBeInTheDocument()
+			expect(day(2026, 11, 5)).toBeInTheDocument()
+		})
+
+		it('limits the popover to min and max and closes on Escape', () => {
+			render(
+				<Calendar
+					value={new Date(2024, 4, 10)}
+					min={new Date(2024, 2, 1)}
+					max={new Date(2024, 8, 30)}
+					jumpMode="dropdown"
+					locale="en-US"
+				/>
+			)
+			fireEvent.click(screen.getByRole('button', { name: /choose month and year/ }))
+			expect(screen.getByRole('button', { name: 'Feb' })).toBeDisabled()
+			expect(screen.getByRole('button', { name: 'Oct' })).toBeDisabled()
+			expect(screen.getByRole('button', { name: 'Next year' })).toBeDisabled()
+			fireEvent.keyDown(screen.getByRole('button', { name: 'Jun' }), { key: 'Escape' })
+			expect(screen.queryByRole('button', { name: 'Jun' })).not.toBeInTheDocument()
+		})
+
+		it('keeps a plain title by default', () => {
+			render(<Calendar value={new Date(2024, 4, 10)} locale="en-US" />)
+			expect(screen.queryByRole('button', { name: /choose month and year/ })).not.toBeInTheDocument()
+			expect(screen.queryByRole('button', { name: /enter a date/ })).not.toBeInTheDocument()
+		})
+
+		describe('input', () => {
+			const openPicker = () => fireEvent.click(screen.getByRole('button', { name: /enter a date/ }))
+			const type = (d, m, y) => {
+				fireEvent.change(screen.getByLabelText('Day'), { target: { value: d } })
+				fireEvent.change(screen.getByLabelText('Month number'), { target: { value: m } })
+				fireEvent.change(screen.getByLabelText('Year number'), { target: { value: y } })
+				fireEvent.click(screen.getByRole('button', { name: 'Go' }))
+			}
+
+			it('picks a typed DD / MM / YYYY date and closes', () => {
+				const onChange = vi.fn()
+				render(<Calendar value={new Date(2024, 4, 10)} onChange={onChange} jumpMode="input" locale="en-US" />)
+				openPicker()
+				type('29', '02', '2028')
+				expect(onChange).toHaveBeenCalledWith(new Date(2028, 1, 29))
+				expect(screen.queryByLabelText('Day')).not.toBeInTheDocument()
+				expect(screen.getByRole('button', { name: /February 2028/ })).toBeInTheDocument()
+			})
+
+			it('rejects impossible and out-of-range typed dates', () => {
+				const onChange = vi.fn()
+				render(
+					<Calendar
+						value={new Date(2024, 4, 10)}
+						onChange={onChange}
+						min={new Date(2024, 4, 1)}
+						jumpMode="input"
+						locale="en-US"
+					/>
+				)
+				openPicker()
+				type('31', '02', '2024')
+				expect(screen.getByRole('alert')).toHaveTextContent('valid date')
+				type('15', '03', '2024')
+				expect(screen.getByRole('alert')).toHaveTextContent('not available')
+				expect(onChange).not.toHaveBeenCalled()
+			})
+		})
+	})
 })
 
 describe('DatePicker', () => {

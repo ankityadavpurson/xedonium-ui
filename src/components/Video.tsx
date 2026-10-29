@@ -21,8 +21,10 @@ export interface VideoProps extends Omit<ComponentPropsWithoutRef<'video'>, 'tit
 	src?: string
 	/** Several resolutions instead of `src`; adds a quality menu. */
 	sources?: VideoSource[]
-	/** Label of the source to start with (default: the first). */
+	/** Label of the source to start with (default: `Auto`, or the first source when `autoQuality` is off). */
 	defaultQuality?: string
+	/** Offer an `Auto` entry that picks a resolution from the player size and connection (default true). */
+	autoQuality?: boolean
 	poster?: string
 	title?: string
 	/** `video` (16:9) or `auto` (the video's own size). */
@@ -51,6 +53,36 @@ const format = (seconds: number) => {
 	return `${m}:${String(s).padStart(2, '0')}`
 }
 
+export const AUTO_QUALITY = 'Auto'
+
+// Height in pixels from a label such as `1080p`, `4K` or `8K`; 0 when it has none
+const labelHeight = (label: string) => {
+	const p = label.match(/(\d{3,4})\s*p/i)
+	if (p) return Number(p[1])
+	const k = label.match(/(\d)\s*k\b/i)
+	return k ? Number(k[1]) * 540 : 0
+}
+
+// Rough bandwidth (Mbps) a stream of that height needs
+const neededMbps = (height: number) =>
+	height <= 360 ? 1 : height <= 480 ? 2.5 : height <= 720 ? 5 : height <= 1080 ? 8 : height <= 1440 ? 16 : 25
+
+type Connection = { downlink?: number; saveData?: boolean }
+
+// Index (in `heights`, ascending) of the best fit for the player's pixel size and the connection's speed
+const autoIndex = (heights: number[], playerWidth: number) => {
+	const connection = (navigator as Navigator & { connection?: Connection }).connection
+	if (connection?.saveData) return 0
+	const wanted = ((playerWidth || 640) * (window.devicePixelRatio || 1) * 9) / 16
+	let best = 0
+	heights.forEach((height, i) => {
+		const fitsScreen = height <= wanted * 1.15
+		const fitsLink = !connection?.downlink || neededMbps(height) <= connection.downlink * 0.8
+		if (fitsScreen && fitsLink) best = i
+	})
+	return best
+}
+
 const BUFFERING_DELAY = 300 // ms a stall must last before the spinner shows
 
 const DEFAULT_SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 2]
@@ -63,7 +95,9 @@ const currentFullscreen = () => document.fullscreenElement ?? (document as Fulls
  * slider (the speaker icon follows the level), playback speed, quality and fullscreen.
  * `speeds` lists the playback rates offered (1 is normal speed). For several resolutions pass `sources`, e.g.
  * `[{ label: '1080p', src: '/hd.mp4' }, { label: '4K', src: '/uhd.mp4' }]`, instead of `src`: a quality menu appears
- * (starting at `defaultQuality`, else the first one) and switching keeps the position and whether it was playing.
+ * with an `Auto` entry (turn off with `autoQuality={false}`) that picks the resolution from the player size and the
+ * connection, and steps down when playback stalls
+ * (starting at `defaultQuality`, else `Auto`) and switching keeps the position and whether it was playing.
  * Extra props go to the <video> element.
  * The controls float over the bottom of the video and fade out after `hideDelay` ms without pointer, touch or keyboard
  * activity while it plays (they stay while paused, hovered or focused; `autoHide={false}` keeps them always visible).
@@ -74,6 +108,7 @@ const Video = ({
 	src,
 	sources,
 	defaultQuality,
+	autoQuality = true,
 	poster,
 	title = 'Video',
 	ratio = 'video',
@@ -92,12 +127,17 @@ const Video = ({
 	const [buffered, setBuffered] = useState(0)
 	const [buffering, setBuffering] = useState(false)
 	const bufferTimer = useRef<ReturnType<typeof setTimeout>>()
+	const stepDown = useRef(() => {})
 	const [muted, setMuted] = useState(false)
 	const [volume, setVolume] = useState(1)
 	const [speed, setSpeed] = useState(1)
+	const hasAuto = autoQuality && !!sources && sources.length > 1
 	const [quality, setQuality] = useState(
-		() => sources?.find(source => source.label === defaultQuality)?.label ?? sources?.[0]?.label
+		() =>
+			sources?.find(source => source.label === defaultQuality)?.label ?? (hasAuto ? AUTO_QUALITY : sources?.[0]?.label)
 	)
+	const [autoDrop, setAutoDrop] = useState(0) // levels Auto has stepped down after stalls
+	const [playerWidth, setPlayerWidth] = useState(0)
 	const resume = useRef<{ time: number; play: boolean } | null>(null) // where to continue after a quality switch reloads the video
 	const [fullscreen, setFullscreen] = useState(false)
 	const [awake, setAwake] = useState(true)
@@ -115,13 +155,20 @@ const Video = ({
 		}
 	}, [])
 
+	useEffect(() => {
+		setPlayerWidth(wrapRef.current?.clientWidth ?? 0)
+	}, [])
+
 	useEffect(() => () => clearTimeout(hideTimer.current), [])
 	useEffect(() => () => clearTimeout(bufferTimer.current), [])
 
 	// Playback stalled for lack of data: show the spinner only if it lasts, so short hiccups do not flash it
 	const startBuffering = () => {
 		clearTimeout(bufferTimer.current)
-		bufferTimer.current = setTimeout(() => setBuffering(true), BUFFERING_DELAY)
+		bufferTimer.current = setTimeout(() => {
+			setBuffering(true)
+			stepDown.current()
+		}, BUFFERING_DELAY)
 	}
 	const stopBuffering = () => {
 		clearTimeout(bufferTimer.current)
@@ -157,7 +204,30 @@ const Video = ({
 		setBuffered(end)
 	}
 
-	const current = sources?.find(source => source.label === quality)?.src ?? sources?.[0]?.src ?? src
+	// Auto: the best fit for the player and connection, minus the levels dropped after stalls
+	const levels = hasAuto
+		? sources.map(source => ({ ...source, height: labelHeight(source.label) })).sort((a, b) => a.height - b.height)
+		: []
+	const autoBase = levels.length
+		? autoIndex(
+				levels.map(level => level.height),
+				playerWidth
+			)
+		: 0
+	const autoPick = levels[Math.max(0, autoBase - autoDrop)]
+	const isAuto = hasAuto && quality === AUTO_QUALITY
+	const current = isAuto
+		? autoPick?.src
+		: (sources?.find(source => source.label === quality)?.src ?? sources?.[0]?.src ?? src)
+
+	// A stall while playing on Auto drops one resolution and carries on from the same spot
+	stepDown.current = () => {
+		const video = videoRef.current
+		if (!isAuto || !video || video.paused || autoBase - autoDrop <= 0) return
+		resume.current = { time: video.currentTime, play: true }
+		setAutoDrop(drop => drop + 1)
+		setPlaying(false)
+	}
 
 	// Switching resolution reloads the media: remember where we were, then restore it once the new one has metadata
 	const changeQuality = (label: string) => {
@@ -165,6 +235,7 @@ const Video = ({
 		if (!video) return
 		resume.current = { time: video.currentTime, play: !video.paused }
 		setQuality(label)
+		setAutoDrop(0)
 		setPlaying(false)
 		setBuffering(true)
 	}
@@ -334,12 +405,22 @@ const Video = ({
 					</div>
 					<span className="flex-1" />
 					{sources && sources.length > 1 && (
-						<div className="w-24">
+						<div className={hasAuto ? 'w-32' : 'w-24'}>
 							<Select
 								aria-label="Quality"
 								value={quality}
 								onChange={changeQuality}
-								options={sources.map(source => ({ value: source.label, label: source.label }))}
+								options={[
+									...(hasAuto
+										? [
+												{
+													value: AUTO_QUALITY,
+													label: isAuto && autoPick ? `${AUTO_QUALITY} (${autoPick.label})` : AUTO_QUALITY,
+												},
+											]
+										: []),
+									...sources.map(source => ({ value: source.label, label: source.label })),
+								]}
 								variant="flat"
 								className="min-h-9 !py-1 text-xs font-semibold tracking-widest"
 							/>

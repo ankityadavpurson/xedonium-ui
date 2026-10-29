@@ -182,6 +182,47 @@ describe('Video', () => {
 			rerender(<Video sources={sources} defaultQuality="4K" title="Clip" />)
 		})
 
+		it('defaults to Auto and shows the resolution it picked', () => {
+			setup({ src: undefined, sources })
+			expect(screen.getByRole('combobox', { name: 'Quality' })).toHaveTextContent('Auto (1080p)')
+		})
+
+		it('Auto picks by player size and connection, and can be turned off', () => {
+			const ladder = [
+				{ label: '360p', src: '/360.mp4' },
+				{ label: '720p', src: '/720.mp4' },
+				{ label: '4K', src: '/4k.mp4' },
+			]
+			const width = vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(1280)
+			const { video, unmount } = setup({ src: undefined, sources: ladder })
+			expect(video.getAttribute('src')).toBe('/720.mp4')
+			unmount()
+			Object.defineProperty(navigator, 'connection', { value: { downlink: 2 }, configurable: true })
+			expect(setup({ src: undefined, sources: ladder }).video.getAttribute('src')).toBe('/360.mp4')
+			delete navigator.connection
+			width.mockRestore()
+			const off = setup({ src: undefined, sources: ladder, autoQuality: false })
+			expect(off.video.getAttribute('src')).toBe('/360.mp4')
+			expect(screen.getAllByRole('combobox', { name: 'Quality' }).at(-1)).toHaveTextContent('360p')
+		})
+
+		it('Auto steps down a resolution when playback stalls', () => {
+			vi.useFakeTimers()
+			const ladder = [
+				{ label: '360p', src: '/360.mp4' },
+				{ label: '720p', src: '/720.mp4' },
+			]
+			vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(1280)
+			const { video } = setup({ src: undefined, sources: ladder })
+			expect(video.getAttribute('src')).toBe('/720.mp4')
+			video.paused = false
+			fireEvent.waiting(video)
+			act(() => vi.advanceTimersByTime(400))
+			expect(video.getAttribute('src')).toBe('/360.mp4')
+			vi.restoreAllMocks()
+			vi.useRealTimers()
+		})
+
 		it('honours defaultQuality', () => {
 			const { video } = setup({ src: undefined, sources, defaultQuality: '4K' })
 			expect(video.getAttribute('src')).toBe('/uhd.mp4')
@@ -193,7 +234,7 @@ describe('Video', () => {
 			fireEvent.play(video)
 			video.paused = false
 			fireEvent.click(screen.getByRole('combobox', { name: 'Quality' }))
-			expect(screen.getAllByRole('option').map(o => o.textContent)).toEqual(['1080p', '4K'])
+			expect(screen.getAllByRole('option').map(o => o.textContent)).toEqual(['Auto (1080p)', '1080p', '4K'])
 			fireEvent.click(screen.getByRole('option', { name: '4K' }))
 			expect(video.getAttribute('src')).toBe('/uhd.mp4')
 			expect(screen.getByRole('button', { name: 'Play' })).toBeInTheDocument()

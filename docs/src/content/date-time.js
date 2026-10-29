@@ -11,7 +11,16 @@ export default {
 					md: 'Arrow keys move by day or week, PageUp / PageDown by month, Home / End to the week edges. `min` / `max` disable days,\n`weekStartsOn` is 0 (Sunday) or 1 (Monday).',
 				},
 				{
+					md: '**Default** (`jumpMode="none"`): the title is plain text and you page month by month with the arrows.',
+				},
+				{
 					example: 1,
+				},
+				{
+					md: '**Jump modes**: `jumpMode="dropdown"` (left) opens a month and year picker from the title; `jumpMode="input"` (right) opens a DD / MM / YYYY entry from the title.',
+				},
+				{
+					example: 2,
 				},
 			],
 		},
