@@ -14,7 +14,7 @@ const Mail = () => (
 export default function Demo() {
 	const [count, setCount] = useState(1)
 	return (
-		<div className="flex flex-col gap-6">
+		<div className="flex flex-col gap-6 py-3">
 			<div className="flex flex-wrap items-center gap-6">
 				<Badge badgeContent={4}>
 					<Mail />

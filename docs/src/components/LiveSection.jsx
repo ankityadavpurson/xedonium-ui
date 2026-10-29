@@ -4,6 +4,7 @@ import { ChevronRightIcon, CircleHelpIcon, Popover, ToggleButton, ToggleButtonGr
 import { loadSource } from '../exampleLoader'
 import HELP from '../playground/help'
 import { scope, toLiveCode } from '../playground/live'
+import { loadTailwindRuntime } from '../playground/tailwindRuntime'
 import { CopyButton } from './CodeBlock'
 import CodeEditor from './CodeEditor'
 import Markdown from './Markdown'
@@ -16,79 +17,83 @@ const toolButton =
  * change (react-live); Reset restores the original and Copy takes the current text. When a component has several
  * examples a toggle picks which one is shown (each keeps its own edits).
  */
-const LiveBody = ({ title, sources, showCode, help }) => {
+const LiveBody = ({ title, sources, help, className = '' }) => {
 	const [which, setWhich] = useState(0)
 	const [edits, setEdits] = useState({})
-	const [open, setOpen] = useState(showCode)
 	const showTabs = sources.length > 1 || Boolean(help)
 	const source = sources[which]
 	const code = edits[which] ?? source
 
 	return (
 		<LiveProvider code={toLiveCode(code)} scope={scope} noInline>
-			{showTabs && (
-				<div className="flex items-center justify-between gap-3 border-t border-app-border px-5 pt-4">
-					{sources.length > 1 ? (
-						<ToggleButtonGroup
-							exclusive
-							aria-label={`${title} examples`}
-							value={String(which)}
-							onChange={value => setWhich(Number(value ?? which))}
-						>
-							{sources.map((_, i) => (
-								<ToggleButton key={i} value={String(i)}>
-									Example {i + 1}
-								</ToggleButton>
-							))}
-						</ToggleButtonGroup>
-					) : (
-						<span />
+			<div className={`flex flex-col gap-4 ${className}`}>
+				<div className="flex flex-col gap-4">
+					{showTabs && (
+						<div className="flex items-center justify-between gap-3">
+							{sources.length > 1 ? (
+								<ToggleButtonGroup
+									exclusive
+									aria-label={`${title} examples`}
+									value={String(which)}
+									onChange={value => setWhich(Number(value ?? which))}
+								>
+									{sources.map((_, i) => (
+										<ToggleButton key={i} value={String(i)}>
+											Example {i + 1}
+										</ToggleButton>
+									))}
+								</ToggleButtonGroup>
+							) : (
+								<span />
+							)}
+							{help && (
+								<Popover
+									label={help.label}
+									trigger={<CircleHelpIcon className="h-4 w-4" />}
+									align="end"
+									className="w-80"
+								>
+									<div className="flex flex-col gap-2 text-sm text-app-text">
+										<strong>{help.label}</strong>
+										<Markdown>{help.md}</Markdown>
+									</div>
+								</Popover>
+							)}
+						</div>
 					)}
-					{help && (
-						<Popover label={help.label} trigger={<CircleHelpIcon className="h-4 w-4" />} align="end" className="w-80">
-							<div className="flex flex-col gap-2 text-sm text-app-text">
-								<strong>{help.label}</strong>
-								<Markdown>{help.md}</Markdown>
-							</div>
-						</Popover>
-					)}
+					<div className="flex flex-col gap-3">
+						<div data-demo className="min-w-0 overflow-x-auto">
+							<LivePreview />
+						</div>
+					</div>
 				</div>
-			)}
-			<div className={`flex flex-col gap-3 p-5 ${showTabs ? '' : 'border-t border-app-border'}`}>
-				<div data-demo className="min-w-0 overflow-x-auto">
-					<LivePreview />
+				<div className="border border-app-border bg-app-card">
+					<div className="flex items-center justify-between gap-3 px-3">
+						<div className="ml-auto flex items-center gap-3">
+							<button
+								type="button"
+								disabled={code === source}
+								onClick={() => setEdits(e => ({ ...e, [which]: undefined }))}
+								className={`${toolButton} py-3`}
+							>
+								Reset
+							</button>
+							<CopyButton text={code} />
+						</div>
+					</div>
+					<CodeEditor
+						value={code}
+						onChange={value => setEdits(e => ({ ...e, [which]: value }))}
+						label={`${title} code`}
+						className="border-t border-app-border"
+					/>
+					<LiveError
+						role="alert"
+						data-live-error
+						className="m-0 overflow-x-auto whitespace-pre-wrap border-t border-red-500/40 bg-red-500/10 p-3 text-xs text-red-700 dark:text-red-300"
+					/>
 				</div>
 			</div>
-			<div className="flex items-center justify-between gap-3 border-t border-app-border px-3">
-				<button type="button" aria-expanded={open} onClick={() => setOpen(o => !o)} className={`${toolButton} py-3`}>
-					{open ? 'Hide code' : 'Show code'}
-				</button>
-				<div className="flex items-center gap-3">
-					<button
-						type="button"
-						disabled={code === source}
-						onClick={() => setEdits(e => ({ ...e, [which]: undefined }))}
-						className={`${toolButton} py-3`}
-					>
-						Reset
-					</button>
-					<CopyButton text={code} />
-				</div>
-			</div>
-			{open && (
-				<CodeEditor
-					value={code}
-					onChange={value => setEdits(e => ({ ...e, [which]: value }))}
-					label={`${title} code`}
-					className="border-t border-app-border"
-				/>
-			)}
-			{/* shown even while the code is hidden, so a broken edit is never silent */}
-			<LiveError
-				role="alert"
-				data-live-error
-				className="m-0 overflow-x-auto whitespace-pre-wrap border-t border-red-500/40 bg-red-500/10 p-3 text-xs text-red-700 dark:text-red-300"
-			/>
 		</LiveProvider>
 	)
 }
@@ -96,18 +101,23 @@ const LiveBody = ({ title, sources, showCode, help }) => {
 /**
  * One component of the Playground: a titled row that opens to its live examples. Closed sections cost nothing: the
  * examples are only loaded and compiled when the section is opened. `focused` (the URL names this component) opens it
- * with its code shown and scrolls it into view. `keys` are the example files of the component's docs page.
+ * and scrolls it into view. `keys` are the example files of the component's docs page.
+ * `plain` drops the row: the examples are always open, on the page itself (a component's own Playground page).
  */
-const LiveSection = ({ title, id, keys, focused = false }) => {
-	const [open, setOpen] = useState(focused)
+const LiveSection = ({ title, id, keys, focused = false, plain = false }) => {
+	const [open, setOpen] = useState(focused || plain)
 	const [sources, setSources] = useState(null)
 	const ref = useRef(null)
 
 	useEffect(() => {
-		if (!focused) return
+		if (!focused || plain) return
 		setOpen(true)
 		ref.current?.scrollIntoView({ block: 'start' })
-	}, [focused])
+	}, [focused, plain])
+
+	useEffect(() => {
+		if (open) loadTailwindRuntime().catch(() => {})
+	}, [open])
 
 	useEffect(() => {
 		if (!open || sources) return undefined
@@ -121,6 +131,10 @@ const LiveSection = ({ title, id, keys, focused = false }) => {
 		// `keys` is a new array on every render; its contents are what matter
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [open, sources, keys.join('|')])
+
+	if (plain) {
+		return sources && <LiveBody title={title} sources={sources} help={HELP[id]} />
+	}
 
 	return (
 		<section
@@ -140,7 +154,9 @@ const LiveSection = ({ title, id, keys, focused = false }) => {
 					<ChevronRightIcon className={`h-4 w-4 shrink-0 transition-transform ${open ? 'rotate-90' : ''}`} />
 				</button>
 			</h2>
-			{open && sources && <LiveBody title={title} sources={sources} showCode={focused} help={HELP[id]} />}
+			{open && sources && (
+				<LiveBody title={title} sources={sources} help={HELP[id]} className="border-t border-app-border p-4" />
+			)}
 		</section>
 	)
 }

@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useMemo, useState } from 'react'
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import {
 	AppShell,
@@ -15,6 +15,7 @@ import {
 	useTheme,
 } from 'xedonium'
 import DocsNav from './components/DocsNav'
+import OnThisPage from './components/OnThisPage'
 import RouteBoundary from './components/RouteBoundary'
 import VersionBadge from './components/VersionBadge'
 import { categories, pages, pathOf } from './content'
@@ -33,6 +34,7 @@ const GuideIndex = lazy(() => import('./pages/GuidePage').then(module => ({ defa
 const GuideEntry = lazy(() => import('./pages/GuidePage').then(module => ({ default: module.GuideEntry })))
 const LoadingScreenPreview = lazy(() => import('./pages/LoadingScreenPreview'))
 const Changelog = lazy(() => import('./pages/Changelog'))
+const ComponentPlayground = lazy(() => import('./pages/ComponentPlayground'))
 const Playground = lazy(() => import('./pages/Playground'))
 const PlaygroundHome = lazy(() => import('./pages/PlaygroundHome'))
 
@@ -98,6 +100,7 @@ const App = () => {
 	const navigate = useNavigate()
 	const [searchOpen, setSearchOpen] = useState(false)
 	const modKey = useMemo(modKeyLabel, [])
+	const contentRef = useRef(null)
 	const items = useNavItems()
 
 	useSeo(pathname)
@@ -205,32 +208,36 @@ const App = () => {
 					/>
 				)}
 			>
-				<div className="mx-auto w-full max-w-4xl">
-					<RouteBoundary key={pathname}>
-						<Suspense fallback={<PageFallback />}>
-							<Routes>
-								<Route path="/" element={<Home />} />
-								<Route path="/getting-started" element={<GettingStarted />} />
-								{foundations.map(f => (
-									<Route key={f.path} path={f.path} element={<f.Page />} />
-								))}
-								<Route path="/components/:category" element={<CategoryPage />} />
-								<Route path="/components/:category/:slug" element={<ComponentPage />} />
-								{guideSections.map(section => [
-									<Route key={section.slug} path={section.path} element={<GuideIndex section={section} />} />,
-									<Route
-										key={`${section.slug}-entry`}
-										path={`${section.path}/:id`}
-										element={<GuideEntry section={section} />}
-									/>,
-								])}
-								<Route path="/changelog" element={<Changelog />} />
-								<Route path="/playground" element={<PlaygroundHome />} />
-								<Route path="/playground/:category" element={<Playground />} />
-								<Route path="*" element={<NotFound />} />
-							</Routes>
-						</Suspense>
-					</RouteBoundary>
+				<div className="mx-auto flex w-full max-w-4xl xl:gap-8 xl:max-w-[71rem]">
+					<div ref={contentRef} className="min-w-0 max-w-4xl flex-1">
+						<RouteBoundary key={pathname}>
+							<Suspense fallback={<PageFallback />}>
+								<Routes>
+									<Route path="/" element={<Home />} />
+									<Route path="/getting-started" element={<GettingStarted />} />
+									{foundations.map(f => (
+										<Route key={f.path} path={f.path} element={<f.Page />} />
+									))}
+									<Route path="/components/:category" element={<CategoryPage />} />
+									<Route path="/components/:category/:slug" element={<ComponentPage />} />
+									<Route path="/components/:category/:slug/playground" element={<ComponentPlayground />} />
+									{guideSections.map(section => [
+										<Route key={section.slug} path={section.path} element={<GuideIndex section={section} />} />,
+										<Route
+											key={`${section.slug}-entry`}
+											path={`${section.path}/:id`}
+											element={<GuideEntry section={section} />}
+										/>,
+									])}
+									<Route path="/changelog" element={<Changelog />} />
+									<Route path="/playground" element={<PlaygroundHome />} />
+									<Route path="/playground/:category" element={<Playground />} />
+									<Route path="*" element={<NotFound />} />
+								</Routes>
+							</Suspense>
+						</RouteBoundary>
+					</div>
+					<OnThisPage rootRef={contentRef} watch={pathname} />
 				</div>
 			</AppShell>
 			<CommandPalette
