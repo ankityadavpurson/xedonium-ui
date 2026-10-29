@@ -10,6 +10,15 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [1.22.0] - 2026-10-29
 
+### Added
+
+- `Calendar` has a `jumpMode` prop: `dropdown` turns the title into a month/year picker (months and years outside `min` / `max` are disabled), and `input` lets you type a DD / MM / YYYY date and jump to it. The default `none` keeps the plain title.
+- `Video` has an `autoQuality` prop (on by default): with more than one source it adds an `Auto` quality that picks the highest resolution fitting the player size, pixel ratio and connection, and steps down when playback stalls. `defaultQuality` still wins when set.
+
+### Changed
+
+- `Calendar` previous / next buttons use chevron icons instead of text characters.
+
 ## [1.21.0] - 2026-10-29
 
 ### Added
