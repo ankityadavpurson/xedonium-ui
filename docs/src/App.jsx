@@ -147,7 +147,7 @@ const App = () => {
 				<Logo />
 				<span className="hidden min-[360px]:inline">Xedonium</span>
 			</Link>
-			<VersionBadge className="hidden sm:inline-block" />
+			<VersionBadge className="hidden sm:inline-block border-none" />
 			<span className="flex-1" />
 			<Button
 				variant="secondary"
@@ -200,9 +200,16 @@ const App = () => {
 						onSelect={close}
 						className="w-64"
 						footer={
-							<div className="flex items-center justify-between gap-2">
-								<span className="text-[10px] font-semibold uppercase tracking-widest text-app-muted">xedonium</span>
-								<VersionBadge />
+							<div className="flex items-center justify-end px-3">
+								<Link
+									to="https://ankityadav.net.in"
+									target="_blank"
+									rel="noopener noreferrer"
+									className="font-extrabold tracking-[-0.02em] text-app-text transition-colors hover:text-[#d97757]"
+								>
+									ankit
+									<span className="text-[#d97757]">.</span>
+								</Link>
 							</div>
 						}
 					/>
