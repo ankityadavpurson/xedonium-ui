@@ -14,6 +14,7 @@ const problems = []
 const load = async file => (await import(pathToFileURL(path.join(docs, file)).href)).default
 
 const props = await load('content/props.js')
+const exampleTitles = await load('playground/exampleTitles.js')
 
 const categories = []
 for (const file of fs
@@ -86,6 +87,19 @@ for (const category of categories) {
 				problems.push(`${category.slug}/${component.slug}: missing example ${block.example}`)
 			}
 		}
+	}
+}
+
+// Components with several examples name them in playground/exampleTitles.js, one name per example
+for (const category of categories) {
+	for (const component of category.components) {
+		const count = new Set(component.blocks.filter(block => block.example).map(block => block.example)).size
+		const names = exampleTitles[`${category.slug}/${component.slug}`]
+		if (count > 1 && names?.length !== count)
+			problems.push(
+				`${category.slug}/${component.slug}: ${count} examples need ${count} names in playground/exampleTitles.js`
+			)
+		if (count <= 1 && names) problems.push(`${category.slug}/${component.slug}: has names but fewer than two examples`)
 	}
 }
 

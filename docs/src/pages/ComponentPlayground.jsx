@@ -3,7 +3,7 @@ import { Breadcrumb, PageHeader, useDocumentTitle } from 'xedonium'
 import LiveSection from '../components/LiveSection'
 import { findPage, pathOf } from '../content'
 import { exampleKey } from '../exampleLoader'
-import { exampleNumbers } from '../playground'
+import { exampleNames, exampleNumbers } from '../playground'
 import NotFound from './NotFound'
 
 // The live, editable examples of one component, under its docs URL: /components/<category>/<component>/playground
@@ -43,6 +43,7 @@ const ComponentPlayground = () => {
 				id={component.slug}
 				title={component.name}
 				keys={exampleNumbers(component).map(n => exampleKey(category, component, n))}
+				names={exampleNames(category, component)}
 			/>
 		</article>
 	)

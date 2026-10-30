@@ -2,7 +2,9 @@ import { useRef } from 'react'
 import { highlight } from './highlight'
 
 // Identical metrics for the highlighted <pre> and the transparent <textarea> laid over it
-const TEXT = 'm-0 p-4 font-mono text-xs leading-relaxed [tab-size:2] whitespace-pre'
+// geometricPrecision: no per-glyph rounding, so both layers stay character for character the same at any display scaling or zoom
+const TEXT =
+	'm-0 p-4 font-code text-sm font-semibold leading-[1.35] [tab-size:2] whitespace-pre [text-rendering:geometricPrecision]'
 
 const PAIRS = { '(': ')', '[': ']', '{': '}', '"': '"', "'": "'", '`': '`' }
 const CLOSERS = new Set(Object.values(PAIRS))
@@ -199,25 +201,41 @@ const CodeEditor = ({ value, onChange, label = 'Code editor', lang = 'js', class
 	}
 
 	return (
-		<div className={`relative overflow-x-auto bg-app-card ${className}`}>
-			<div className="relative min-w-max">
-				<pre aria-hidden="true" className={`${TEXT} pointer-events-none text-app-text`}>
-					<code>{highlight(`${value}\n`, lang)}</code>
-				</pre>
-				<textarea
-					aria-label={label}
-					value={value}
-					onChange={event => onChange(event.target.value)}
-					onKeyDown={handleKeyDown}
-					onBlur={() => (released.current = false)}
-					spellCheck={false}
-					autoCapitalize="off"
-					autoComplete="off"
-					autoCorrect="off"
-					wrap="off"
-					className={`${TEXT} absolute inset-0 h-full w-full resize-none overflow-hidden border-0 bg-transparent text-transparent caret-[rgb(var(--color-app-text))] outline-none selection:bg-app-soft/30 focus-visible:shadow-[inset_0_0_0_2px_rgb(var(--color-app-strong))]`}
-				/>
+		<div className={`group relative ${className}`}>
+			<div className="overflow-x-auto bg-app-card">
+				<div className="flex min-w-max">
+					<pre
+						aria-hidden="true"
+						className="sticky left-0 z-10 m-0 select-none border-r border-app-border bg-app-card px-3 py-4 text-right font-code text-sm leading-[1.35] text-app-muted"
+					>
+						{Array.from({ length: value.split('\n').length }, (_, i) => i + 1).join('\n')}
+					</pre>
+					<div className="relative flex-1">
+						<pre aria-hidden="true" className={`${TEXT} pointer-events-none text-app-text`}>
+							<code>{highlight(`${value}\n`, lang)}</code>
+						</pre>
+						<textarea
+							aria-label={label}
+							value={value}
+							onChange={event => onChange(event.target.value)}
+							onKeyDown={handleKeyDown}
+							onBlur={() => (released.current = false)}
+							spellCheck={false}
+							autoCapitalize="off"
+							autoComplete="off"
+							autoCorrect="off"
+							wrap="off"
+							id="code-editor-textarea"
+							className={`${TEXT} absolute inset-0 h-full w-full resize-none overflow-hidden border-0 bg-transparent text-transparent caret-[rgb(var(--color-app-text))] outline-none selection:bg-app-soft/30`}
+						/>
+					</div>
+				</div>
 			</div>
+			{/* the frame sits above the line numbers, which are stacked over the text while it scrolls sideways */}
+			<div
+				aria-hidden="true"
+				className="pointer-events-none absolute inset-0 z-20 border border-app-border group-has-[textarea:focus-visible]:border-app-strong"
+			/>
 		</div>
 	)
 }

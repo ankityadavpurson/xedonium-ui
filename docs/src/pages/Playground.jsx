@@ -3,7 +3,7 @@ import { Breadcrumb, Tabs } from 'xedonium'
 import LiveSection from '../components/LiveSection'
 import { categories } from '../content'
 import { exampleKey } from '../exampleLoader'
-import { exampleNumbers } from '../playground'
+import { exampleNames, exampleNumbers } from '../playground'
 import Page from './Page'
 
 // Every docs category is a tab and its own page (/playground/inputs); every component of it is a section that opens
@@ -37,6 +37,7 @@ const Playground = () => {
 										id={component.slug}
 										title={component.name}
 										keys={exampleNumbers(component).map(n => exampleKey(category, component, n))}
+										names={exampleNames(category, component)}
 										focused={component.slug === target}
 									/>
 								))}

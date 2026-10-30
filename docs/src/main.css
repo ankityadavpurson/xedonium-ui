@@ -3,30 +3,47 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Code token colors (see components/highlight.jsx) */
+/* Code token colors (see components/highlight.jsx): VS Code's Light Modern and Dark Modern themes */
 :root {
-	--tok-comment: #6b7280;
-	--tok-string: #0b7a4b;
-	--tok-keyword: #9b2fae;
-	--tok-tag: #1d4ed8;
-	--tok-attr: #b45309;
-	--tok-number: #b91c1c;
-	--tok-fn: #0e7490;
+	--tok-comment: #008000;
+	--tok-string: #a31515;
+	--tok-keyword: #0000ff;
+	--tok-control: #af00db;
+	--tok-tag: #800000;
+	--tok-component: #267f99;
+	--tok-punct: #800000;
+	--tok-attr: #e50000;
+	--tok-number: #098658;
+	--tok-fn: #795e26;
+	--tok-variable: #0070c1;
+	--tok-property: #001080;
+	--tok-b1: #0431fa;
+	--tok-b2: #319331;
+	--tok-b0: #7b3814;
+	--tok-bx: #e51400;
 }
 
 html[data-theme='dark'] {
-	--tok-comment: #8d8d96;
-	--tok-string: #86d9a0;
-	--tok-keyword: #d6a0ff;
-	--tok-tag: #7cb7ff;
-	--tok-attr: #f0b866;
-	--tok-number: #ff9e9e;
-	--tok-fn: #67d4e8;
+	--tok-comment: #6a9955;
+	--tok-string: #ce9178;
+	--tok-keyword: #569cd6;
+	--tok-control: #c586c0;
+	--tok-tag: #569cd6;
+	--tok-component: #4ec9b0;
+	--tok-punct: #808080;
+	--tok-attr: #9cdcfe;
+	--tok-number: #b5cea8;
+	--tok-fn: #dcdcaa;
+	--tok-variable: #4fc1ff;
+	--tok-property: #9cdcfe;
+	--tok-b1: #ffd700;
+	--tok-b2: #da70d6;
+	--tok-b0: #179fff;
+	--tok-bx: #ff1212;
 }
 
 .tok-comment {
 	color: var(--tok-comment);
-	font-style: italic;
 }
 .tok-string {
 	color: var(--tok-string);
@@ -34,8 +51,17 @@ html[data-theme='dark'] {
 .tok-keyword {
 	color: var(--tok-keyword);
 }
+.tok-control {
+	color: var(--tok-control);
+}
 .tok-tag {
 	color: var(--tok-tag);
+}
+.tok-component {
+	color: var(--tok-component);
+}
+.tok-punct {
+	color: var(--tok-punct);
 }
 .tok-attr {
 	color: var(--tok-attr);
@@ -45,4 +71,22 @@ html[data-theme='dark'] {
 }
 .tok-fn {
 	color: var(--tok-fn);
+}
+.tok-variable {
+	color: var(--tok-variable);
+}
+.tok-property {
+	color: var(--tok-property);
+}
+.tok-b0 {
+	color: var(--tok-b0);
+}
+.tok-b1 {
+	color: var(--tok-b1);
+}
+.tok-b2 {
+	color: var(--tok-b2);
+}
+.tok-bx {
+	color: var(--tok-bx);
 }
