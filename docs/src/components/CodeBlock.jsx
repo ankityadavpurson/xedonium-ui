@@ -64,7 +64,7 @@ const CodeBlock = ({ code, lang = 'js', lineNumbers = false, className = '' }) =
 						{Array.from({ length: text.split('\n').length }, (_, i) => i + 1).join('\n')}
 					</pre>
 				)}
-				<pre className="m-0 min-w-max flex-1 p-4 pr-20 font-code font-semibold text-app-text [tab-size:2]">
+				<pre className="m-0 min-w-max flex-1 p-4 pr-20 font-code text-app-text [tab-size:2]">
 					<code>{highlight(text, lang)}</code>
 				</pre>
 			</div>
