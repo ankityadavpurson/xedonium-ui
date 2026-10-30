@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import exampleTitles from '../playground/exampleTitles'
 
 const slugOf = text =>
 	text
@@ -7,7 +8,7 @@ const slugOf = text =>
 		.replace(/^-|-$/g, '') || 'section'
 
 // Headings, bold lead-ins of a Markdown paragraph ("**Branched timeline.** ...") and, when there are several, the examples
-const collect = root => {
+const collect = (root, names = []) => {
 	const found = []
 	const used = new Set()
 	let examples = 0
@@ -16,9 +17,11 @@ const collect = root => {
 		let text = node.textContent.trim().replace(/[.:]$/, '')
 		if (node.matches('[data-demo]')) {
 			el = node.parentElement
-			text = `Example ${++examples}`
+			text = names[examples] ?? `Example ${examples + 1}`
+			examples++
 		} else if (node.tagName === 'STRONG') {
-			if (node.parentElement.firstChild !== node) return
+			// named examples already say what the text above them introduces
+			if (names.length || node.parentElement.firstChild !== node) return
 			el = node.parentElement
 		} else if (node.closest('[data-demo]')) return
 		if (!text || (node.tagName === 'STRONG' && text.length > 60)) return
@@ -50,7 +53,9 @@ const OnThisPage = ({ rootRef, watch }) => {
 		const scan = () => {
 			clearTimeout(timer)
 			timer = setTimeout(() => {
-				const next = collect(root)
+				// a component page names its examples (playground/exampleTitles.js)
+				const [, , category, slug] = watch.split('/')
+				const next = collect(root, exampleTitles[`${category}/${slug}`])
 				setEntries(prev =>
 					prev.length === next.length &&
 					prev.every((entry, i) => entry.id === next[i].id && entry.text === next[i].text)

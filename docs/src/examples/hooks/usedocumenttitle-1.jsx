@@ -4,7 +4,7 @@ import { Field, useDocumentTitle } from 'xedonium'
 // The browser tab title follows the field. (The demo puts the page's own title back when it goes away.)
 export default function Demo() {
 	const [title, setTitle] = useState('Settings')
-	const original = useRef(document.title)
+	const original = useRef(typeof document === 'undefined' ? '' : document.title)
 	useDocumentTitle(title, 'My App')
 	useEffect(() => () => void (document.title = original.current), [])
 

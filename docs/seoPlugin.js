@@ -23,18 +23,25 @@ const llmsTxt = () => {
 }
 
 // Writes sitemap.xml and llms.txt next to index.html in the build output (robots.txt in public/ points to the sitemap)
-export default () => ({
-	name: 'xedonium-seo',
-	apply: 'build',
-	generateBundle() {
-		const urls = seoPages()
-			.map(({ path }) => `\t<url><loc>${url(path)}</loc></url>`)
-			.join('\n')
-		this.emitFile({
-			type: 'asset',
-			fileName: 'sitemap.xml',
-			source: `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`,
-		})
-		this.emitFile({ type: 'asset', fileName: 'llms.txt', source: llmsTxt() })
-	},
-})
+export default () => {
+	let server = false
+	return {
+		name: 'xedonium-seo',
+		apply: 'build',
+		config: (_, { isSsrBuild }) => {
+			server = Boolean(isSsrBuild)
+		},
+		generateBundle() {
+			if (server) return // only the browser build carries the sitemap
+			const urls = seoPages()
+				.map(({ path }) => `\t<url><loc>${url(path)}</loc></url>`)
+				.join('\n')
+			this.emitFile({
+				type: 'asset',
+				fileName: 'sitemap.xml',
+				source: `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`,
+			})
+			this.emitFile({ type: 'asset', fileName: 'llms.txt', source: llmsTxt() })
+		},
+	}
+}

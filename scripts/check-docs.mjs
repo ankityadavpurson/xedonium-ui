@@ -109,7 +109,7 @@ const foundationPaths = [
 ]
 const seoSource = fs.readFileSync(path.join(docs, 'seo.js'), 'utf8')
 for (const [, foundationPath] of foundationPaths) {
-	if (!seoSource.includes(`['${foundationPath}',`))
+	if (!new RegExp(String.raw`\[\s*'${foundationPath}',`).test(seoSource))
 		problems.push(`${foundationPath}: missing from the sitemap list in docs/src/seo.js`)
 }
 
