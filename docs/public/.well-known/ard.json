@@ -1,10 +1,16 @@
 {
+	"specVersion": "1.0",
+	"host": {
+		"displayName": "Xedonium",
+		"documentationUrl": "https://xedonium-ui.web.app/getting-started"
+	},
 	"entries": [
 		{
 			"identifier": "urn:air:xedonium-ui.web.app:docs:llms-txt",
-			"displayName": "Xedonium docs index",
+			"displayName": "Xedonium documentation index",
 			"type": "text/markdown",
 			"url": "https://xedonium-ui.web.app/llms.txt",
+			"description": "Every Xedonium component and guide, one link each, for LLMs.",
 			"representativeQueries": [
 				"Which React components does Xedonium have?",
 				"How do I set up the Xedonium Tailwind preset?",
