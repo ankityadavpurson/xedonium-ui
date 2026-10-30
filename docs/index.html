@@ -28,10 +28,23 @@
 		<title>Xedonium</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<!-- The font stylesheet loads without blocking the first paint (a plain rel="stylesheet" would hold it back); text
+		     shows in the fallback font until Archivo arrives (display=swap) -->
 		<link
+			rel="preload"
+			as="style"
 			href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap"
-			rel="stylesheet"
+			onload="
+				this.onload = null
+				this.rel = 'stylesheet'
+			"
 		/>
+		<noscript>
+			<link
+				rel="stylesheet"
+				href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap"
+			/>
+		</noscript>
 		<!-- Static fan icon for first paint; ThemeProvider swaps in the theme-matched one -->
 		<link id="app-favicon" rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
 		<!-- Catalog of what AI agents can use here (Agentic Resource Discovery); also served at /.well-known/ai-catalog.json -->
