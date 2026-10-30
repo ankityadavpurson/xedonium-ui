@@ -41,6 +41,7 @@ export default {
 	'navigation/scrollprogress': ['Bar', 'Button'],
 	'overlay/confirmdialog': ['Confirm', 'Typed confirmation'],
 	'overlay/dialog': ['Basic', 'Form', 'Full screen'],
+	'overlay/actionmenu': ['Basic', 'Links and keyboard'],
 	'overlay/drawer': ['Basic', 'Busy state', 'Sides and animation'],
 	'overlay/popover': ['Basic', 'Never clipped'],
 	'typography/markdown': ['Basics', 'Links and live editor'],

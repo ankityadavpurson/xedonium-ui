@@ -221,6 +221,159 @@ describe('ActionMenu', () => {
 	})
 })
 
+describe('ActionMenu link items', () => {
+	const open = props => {
+		render(<ActionMenu label="Actions" trigger="Menu" {...props} />)
+		fireEvent.click(screen.getByRole('button', { name: 'Actions' }))
+	}
+
+	it('renders an item with an href as a real link, closes the menu and still calls onClick', () => {
+		const onClick = vi.fn()
+		open({ items: [{ key: 'a', label: 'Apps', href: '/apps', onClick }] })
+		const link = screen.getByRole('menuitem', { name: 'Apps' })
+		expect(link.tagName).toBe('A')
+		expect(link).toHaveAttribute('href', '/apps')
+		fireEvent.click(link)
+		expect(onClick).toHaveBeenCalledTimes(1)
+		expect(screen.queryByRole('menu')).toBeNull()
+	})
+
+	it('closes the menu for a link item without an onClick', () => {
+		open({ items: [{ key: 'a', label: 'Apps', href: '/apps' }] })
+		fireEvent.click(screen.getByRole('menuitem', { name: 'Apps' }))
+		expect(screen.queryByRole('menu')).toBeNull()
+	})
+
+	it('uses linkComponent and linkProp for router links', () => {
+		const RouterLink = ({ to, children, ...rest }) => (
+			<a data-router="yes" data-to={to} {...rest}>
+				{children}
+			</a>
+		)
+		open({
+			linkComponent: RouterLink,
+			linkProp: 'to',
+			items: [
+				{ key: 'a', label: 'Health', href: '/health' },
+				{ key: 'b', label: 'Site', href: 'https://example.com' },
+			],
+		})
+		// absolute URLs are not router paths: they stay plain anchors
+		expect(screen.getByRole('menuitem', { name: 'Site' })).toHaveAttribute('href', 'https://example.com')
+		expect(screen.getByRole('menuitem', { name: 'Site' })).not.toHaveAttribute('data-router')
+		const link = screen.getByRole('menuitem', { name: 'Health' })
+		expect(link).toHaveAttribute('data-router', 'yes')
+		expect(link).toHaveAttribute('data-to', '/health')
+		expect(link).not.toHaveAttribute('href')
+	})
+
+	it('renders a disabled link without an href and ignores it', () => {
+		const onClick = vi.fn()
+		open({ items: [{ key: 'a', label: 'Apps', href: '/apps', disabled: true, onClick }] })
+		const link = screen.getByRole('menuitem', { name: 'Apps' })
+		expect(link).not.toHaveAttribute('href')
+		expect(link).toHaveAttribute('aria-disabled', 'true')
+		fireEvent.click(link)
+		expect(onClick).not.toHaveBeenCalled()
+	})
+})
+
+describe('ActionMenu keyboard and link target', () => {
+	const items = [
+		{ key: 'a', label: 'Alpha', onClick: () => {} },
+		{ key: 'b', label: 'Beta', disabled: true, onClick: () => {} },
+		{ key: 'c', label: 'Gamma', href: '/gamma' },
+		{ key: 'd', label: 'Delta', onClick: () => {} },
+	]
+	const open = (extra = {}) => {
+		render(
+			<>
+				<ActionMenu label="Actions" trigger="Menu" items={items} {...extra} />
+				<button>after</button>
+			</>
+		)
+		fireEvent.click(screen.getByRole('button', { name: 'Actions' }))
+	}
+	const item = name => screen.getByRole('menuitem', { name })
+
+	it('focuses the first enabled item when it opens', () => {
+		open()
+		expect(item('Alpha')).toHaveFocus()
+	})
+
+	it('moves between enabled items with the arrow keys, wrapping, and Home / End', () => {
+		open()
+		const menu = screen.getByRole('menu')
+		fireEvent.keyDown(menu, { key: 'ArrowDown' })
+		expect(item('Gamma')).toHaveFocus() // Beta is disabled
+		fireEvent.keyDown(menu, { key: 'ArrowDown' })
+		expect(item('Delta')).toHaveFocus()
+		fireEvent.keyDown(menu, { key: 'ArrowDown' })
+		expect(item('Alpha')).toHaveFocus()
+		fireEvent.keyDown(menu, { key: 'ArrowUp' })
+		expect(item('Delta')).toHaveFocus()
+		fireEvent.keyDown(menu, { key: 'Home' })
+		expect(item('Alpha')).toHaveFocus()
+		fireEvent.keyDown(menu, { key: 'End' })
+		expect(item('Delta')).toHaveFocus()
+	})
+
+	it('chooses a link item with Space and closes on Tab, handing focus to the trigger', () => {
+		open()
+		const menu = screen.getByRole('menu')
+		const click = vi.fn(event => event.preventDefault())
+		fireEvent.keyDown(menu, { key: 'ArrowDown' })
+		item('Gamma').addEventListener('click', click)
+		fireEvent.keyDown(menu, { key: ' ' })
+		expect(click).toHaveBeenCalledTimes(1)
+		expect(screen.queryByRole('menu')).toBeNull()
+		fireEvent.click(screen.getByRole('button', { name: 'Actions' }))
+		fireEvent.keyDown(screen.getByRole('menu'), { key: 'Tab' })
+		expect(screen.queryByRole('menu')).toBeNull()
+		expect(screen.getByRole('button', { name: 'Actions' })).toHaveFocus()
+	})
+
+	it('shows an arrow only on external links', () => {
+		render(
+			<ActionMenu
+				label="Actions"
+				trigger="Menu"
+				items={[
+					{ key: 'a', label: 'Absolute', href: 'https://example.com' },
+					{ key: 'b', label: 'Blank', href: '/docs', target: '_blank' },
+					{ key: 'c', label: 'Inside', href: '/inside' },
+					{ key: 'd', label: 'Mail', href: 'mailto:a@b.c' },
+					{ key: 'e', label: 'Forced', href: '/x', external: true },
+					{ key: 'f', label: 'Off', href: 'https://example.com', external: false },
+					{ key: 'g', label: 'Button', onClick: () => {} },
+				]}
+			/>
+		)
+		fireEvent.click(screen.getByRole('button', { name: 'Actions' }))
+		const hasArrow = name => screen.getByRole('menuitem', { name }).querySelector('svg') !== null
+		expect(['Absolute', 'Blank', 'Forced'].map(hasArrow)).toEqual([true, true, true])
+		expect(['Inside', 'Mail', 'Off', 'Button'].map(hasArrow)).toEqual([false, false, false, false])
+	})
+
+	it('opens a target="_blank" link safely and leaves other links alone', () => {
+		render(
+			<ActionMenu
+				label="Actions"
+				trigger="Menu"
+				items={[
+					{ key: 'a', label: 'External', href: 'https://example.com', target: '_blank' },
+					{ key: 'b', label: 'Internal', href: '/inside' },
+				]}
+			/>
+		)
+		fireEvent.click(screen.getByRole('button', { name: 'Actions' }))
+		expect(item('External')).toHaveAttribute('target', '_blank')
+		expect(item('External')).toHaveAttribute('rel', 'noopener noreferrer')
+		expect(item('Internal')).not.toHaveAttribute('target')
+		expect(item('Internal')).not.toHaveAttribute('rel')
+	})
+})
+
 describe('Modal', () => {
 	it('fills the screen below a breakpoint and passes form props through', () => {
 		const { rerender } = render(

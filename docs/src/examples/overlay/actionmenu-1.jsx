@@ -16,6 +16,12 @@ export default function Demo() {
 						onClick: () => showToast('First'),
 					},
 					{ key: 'b', label: 'Second', icon: <Trash2Icon />, badge: 3, onClick: () => showToast('Second', 'error') },
+					{
+						key: 'c',
+						label: 'Source on GitHub',
+						href: 'https://github.com/ankityadavpurson/xedonium-ui',
+						target: '_blank',
+					},
 				]}
 			/>
 			<Toast toast={toast} />

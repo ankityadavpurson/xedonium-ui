@@ -1,5 +1,5 @@
 import { Table } from 'xedonium'
-import { Code } from './Markdown'
+import { Code, renderInline } from './Markdown'
 
 const columns = [
 	{ key: 'name', header: 'Prop', render: row => <Code>{row.name}</Code> },
@@ -9,7 +9,7 @@ const columns = [
 		header: 'Default',
 		render: row => (row.default ? <Code>{row.default}</Code> : <span className="text-app-muted">–</span>),
 	},
-	{ key: 'description', header: 'Description' },
+	{ key: 'description', header: 'Description', render: row => renderInline(row.description ?? '') },
 ]
 
 // Phone and tablet: one card per prop (the inline sidebar leaves a table too little room below the lg breakpoint)
@@ -26,7 +26,7 @@ const PropCards = ({ rows }) => (
 						Default: <Code>{row.default}</Code>
 					</div>
 				)}
-				{row.description && <p className="m-0 text-app-text">{row.description}</p>}
+				{row.description && <p className="m-0 text-app-text">{renderInline(row.description)}</p>}
 			</li>
 		))}
 	</ul>
@@ -41,7 +41,11 @@ const PropsTable = ({ groups }) => {
 				const data = rows.map(([name, type, def, description]) => ({ name, type, default: def, description }))
 				return (
 					<div key={component} className="flex flex-col gap-2">
-						{entries.length > 1 && <h3 className="m-0 text-sm font-semibold text-app-text">{component}</h3>}
+						{entries.length > 1 && (
+							<h3 id={component.toLowerCase()} className="m-0 scroll-mt-4 text-sm font-semibold text-app-text">
+								{component}
+							</h3>
+						)}
 						<PropCards rows={data} />
 						<div className="hidden lg:block">
 							<Table caption={`${component} props`} rowKey="name" columns={columns} rows={data} />

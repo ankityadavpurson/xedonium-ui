@@ -20,10 +20,16 @@ export default {
 			name: 'ActionMenu',
 			blocks: [
 				{
-					md: '`items: [{ key, label, description?, badge?, tone?, disabled?, hasDialog?, onClick }]`. Closes on outside click and\nEscape.\n\nItems can have an `icon`, shown before the label and hidden from screen readers.',
+					md: '`items: [{ key, label, description?, badge?, tone?, disabled?, hasDialog?, href?, target?, external?, onClick? }]`. Closes on outside click and\nEscape.\n\nItems can have an `icon`, shown before the label and hidden from screen readers.',
 				},
 				{
 					example: 1,
+				},
+				{
+					md: 'Give an item an `href` to make it a real link: it can be opened in a new tab, its address copied, and screen readers announce a link. Choosing it closes the menu and still calls `onClick` if there is one. For client-side routing pass `linkComponent` and `linkProp`, for example `linkComponent={Link} linkProp="to"` with React Router. `target="_blank"` opens an external link in a new tab. A link to another site (`target="_blank"` or an absolute `http(s)://` address) shows an arrow; `external` turns it on or off.\n\nThe menu is keyboard friendly: opening it focuses the first item, Arrow Up and Down (wrapping), Home and End move between items, Enter or Space chooses, Tab closes it and Escape closes it and returns focus to the trigger.',
+				},
+				{
+					example: 2,
 				},
 			],
 		},
