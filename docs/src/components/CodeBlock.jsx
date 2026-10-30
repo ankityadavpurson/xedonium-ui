@@ -49,14 +49,27 @@ export const CopyButton = ({ text, className = '' }) => {
 	)
 }
 
-/** Syntax-highlighted code with a copy button. `lang` is js (default, also JSX) or bash. */
-const CodeBlock = ({ code, lang = 'js', className = '' }) => (
-	<div className={`relative border border-app-border bg-app-card ${className}`}>
-		<CopyButton text={code} className="absolute right-2 top-2" />
-		<pre className="m-0 overflow-x-auto p-4 pr-20 text-xs leading-relaxed text-app-text">
-			<code>{highlight(code.trim(), lang)}</code>
-		</pre>
-	</div>
-)
+/** Syntax-highlighted code with a copy button. `lang` is js (default, also JSX) or bash; `lineNumbers` numbers the lines. */
+const CodeBlock = ({ code, lang = 'js', lineNumbers = false, className = '' }) => {
+	const text = code.trim()
+	return (
+		<div className={`relative border border-app-border bg-app-card ${className}`}>
+			<CopyButton text={code} className="absolute right-2 top-2" />
+			<div className="flex overflow-x-auto font-code text-sm leading-[1.35]">
+				{lineNumbers && (
+					<pre
+						aria-hidden="true"
+						className="sticky left-0 m-0 select-none border-r border-app-border bg-app-card px-3 py-4 text-right font-code text-app-muted"
+					>
+						{Array.from({ length: text.split('\n').length }, (_, i) => i + 1).join('\n')}
+					</pre>
+				)}
+				<pre className="m-0 min-w-max flex-1 p-4 pr-20 font-code font-semibold text-app-text [tab-size:2]">
+					<code>{highlight(text, lang)}</code>
+				</pre>
+			</div>
+		</div>
+	)
+}
 
 export default CodeBlock

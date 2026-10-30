@@ -57,18 +57,18 @@ const Example = ({ example }) => {
 					)}
 				</DemoBoundary>
 			</div>
-			<div className="flex items-center justify-between gap-2 border-t border-app-border bg-app-card px-3 py-2">
+			<div className="flex items-center justify-between gap-2 border-t border-app-border bg-app-card px-4 py-3">
 				<button
 					type="button"
 					aria-expanded={open}
 					onClick={() => setOpen(o => !o)}
-					className="-my-2 py-3 text-[10px] font-semibold uppercase tracking-widest text-app-muted transition hover:text-app-text sm:py-2"
+					className="border border-app-border bg-app-card px-2 py-2 text-[10px] font-semibold uppercase tracking-widest text-app-muted outline-none transition hover:border-app-strong hover:text-app-text focus-visible:border-app-strong sm:py-1"
 				>
 					{open ? 'Hide code' : 'Show code'}
 				</button>
 				{!open && source && <CopyButton text={source} />}
 			</div>
-			{open && source && <CodeBlock code={source} className="border-0 border-t" />}
+			{open && source && <CodeBlock code={source} lineNumbers className="border-0 border-t" />}
 		</div>
 	)
 }

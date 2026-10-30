@@ -8,12 +8,16 @@ let loading = null
 
 export const loadTailwindRuntime = () => {
 	if (loading) return loading
-	// the library's own theme (app-* colors, dark mode selector); the built stylesheet already has the base styles
-	window.tailwind = { config: { ...preset, corePlugins: { preflight: false } } }
 	loading = new Promise((resolve, reject) => {
 		const script = document.createElement('script')
 		script.src = SRC
-		script.onload = resolve
+		script.onload = () => {
+			// The script creates `window.tailwind` itself and only reads the config assigned to it afterwards. It gets the
+			// library's own theme (the app-* colors and the data-theme dark mode, without which `dark:` would follow the
+			// OS instead of the theme toggle); the built stylesheet already has the base styles, so preflight is off.
+			window.tailwind.config = { ...preset, corePlugins: { preflight: false } }
+			resolve()
+		}
 		script.onerror = () => {
 			loading = null
 			reject(new Error('Tailwind runtime failed to load'))

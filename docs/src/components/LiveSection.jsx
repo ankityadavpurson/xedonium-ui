@@ -9,6 +9,10 @@ import { CopyButton } from './CodeBlock'
 import CodeEditor from './CodeEditor'
 import Markdown from './Markdown'
 
+// How long the preview waits after the last keystroke: half-typed code is often invalid, and running it on every key
+// would flash an error (and re-mount the demo) with each character
+const TYPING_PAUSE_MS = 400
+
 const toolButton =
 	'text-[10px] font-semibold uppercase tracking-widest text-app-muted transition hover:text-app-text disabled:cursor-not-allowed disabled:opacity-40'
 
@@ -17,15 +21,24 @@ const toolButton =
  * change (react-live); Reset restores the original and Copy takes the current text. When a component has several
  * examples a toggle picks which one is shown (each keeps its own edits).
  */
-const LiveBody = ({ title, sources, help, className = '' }) => {
+const LiveBody = ({ title, sources, names = [], help, className = '' }) => {
 	const [which, setWhich] = useState(0)
 	const [edits, setEdits] = useState({})
 	const showTabs = sources.length > 1 || Boolean(help)
 	const source = sources[which]
 	const code = edits[which] ?? source
+	const [shown, setShown] = useState({ which, code })
+
+	useEffect(() => {
+		const timer = setTimeout(() => setShown({ which, code }), TYPING_PAUSE_MS)
+		return () => clearTimeout(timer)
+	}, [which, code])
+
+	// switching example (or Reset) must not wait: only typing does
+	const live = shown.which === which && code !== source && edits[which] !== undefined ? shown.code : code
 
 	return (
-		<LiveProvider code={toLiveCode(code)} scope={scope} noInline>
+		<LiveProvider code={toLiveCode(live)} scope={scope} noInline>
 			<div className={`flex flex-col gap-4 ${className}`}>
 				<div className="flex flex-col gap-4">
 					{showTabs && (
@@ -39,7 +52,7 @@ const LiveBody = ({ title, sources, help, className = '' }) => {
 								>
 									{sources.map((_, i) => (
 										<ToggleButton key={i} value={String(i)}>
-											Example {i + 1}
+											{names[i] ?? `Example ${i + 1}`}
 										</ToggleButton>
 									))}
 								</ToggleButtonGroup>
@@ -68,7 +81,7 @@ const LiveBody = ({ title, sources, help, className = '' }) => {
 					</div>
 				</div>
 				<div className="border border-app-border bg-app-card">
-					<div className="flex items-center justify-between gap-3 px-3">
+					<div className="flex items-center justify-between gap-3 border-b border-app-border px-3">
 						<div className="ml-auto flex items-center gap-3">
 							<button
 								type="button"
@@ -85,7 +98,7 @@ const LiveBody = ({ title, sources, help, className = '' }) => {
 						value={code}
 						onChange={value => setEdits(e => ({ ...e, [which]: value }))}
 						label={`${title} code`}
-						className="border-t border-app-border"
+						className="-m-px"
 					/>
 					<LiveError
 						role="alert"
@@ -104,7 +117,7 @@ const LiveBody = ({ title, sources, help, className = '' }) => {
  * and scrolls it into view. `keys` are the example files of the component's docs page.
  * `plain` drops the row: the examples are always open, on the page itself (a component's own Playground page).
  */
-const LiveSection = ({ title, id, keys, focused = false, plain = false }) => {
+const LiveSection = ({ title, id, keys, names, focused = false, plain = false }) => {
 	const [open, setOpen] = useState(focused || plain)
 	const [sources, setSources] = useState(null)
 	const ref = useRef(null)
@@ -133,7 +146,7 @@ const LiveSection = ({ title, id, keys, focused = false, plain = false }) => {
 	}, [open, sources, keys.join('|')])
 
 	if (plain) {
-		return sources && <LiveBody title={title} sources={sources} help={HELP[id]} />
+		return sources && <LiveBody title={title} sources={sources} names={names} help={HELP[id]} />
 	}
 
 	return (
@@ -155,7 +168,13 @@ const LiveSection = ({ title, id, keys, focused = false, plain = false }) => {
 				</button>
 			</h2>
 			{open && sources && (
-				<LiveBody title={title} sources={sources} help={HELP[id]} className="border-t border-app-border p-4" />
+				<LiveBody
+					title={title}
+					sources={sources}
+					names={names}
+					help={HELP[id]}
+					className="border-t border-app-border p-4"
+				/>
 			)}
 		</section>
 	)
