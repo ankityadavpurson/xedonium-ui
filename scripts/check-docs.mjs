@@ -113,6 +113,26 @@ for (const [, foundationPath] of foundationPaths) {
 		problems.push(`${foundationPath}: missing from the sitemap list in docs/src/seo.js`)
 }
 
+// The AI resource catalog (Agentic Resource Discovery, https://github.com/ards-project/ard-spec) must keep matching its schema:
+// Lighthouse fails the "Agentic Browsing" audit for a malformed one
+const catalogFile = name => fs.readFileSync(path.join(docs, '../public/.well-known', name), 'utf8')
+const catalog = JSON.parse(catalogFile('ai-catalog.json'))
+// the same catalog is published as ard.json (the name the spec's newer versions use): keep the two identical
+const sameLines = text => text.replace(/\r\n/g, '\n')
+if (sameLines(catalogFile('ard.json')) !== sameLines(catalogFile('ai-catalog.json')))
+	problems.push('ard.json and ai-catalog.json must have the same content')
+if (catalog.specVersion !== '1.0') problems.push('ai-catalog.json: specVersion must be "1.0"')
+if (!Array.isArray(catalog.entries)) problems.push('ai-catalog.json: entries must be an array')
+for (const entry of catalog.entries ?? []) {
+	const where = `ai-catalog.json (${entry.identifier ?? 'entry'})`
+	if (!/^urn:air:[a-zA-Z0-9.-]+(:[a-zA-Z0-9._-]+)+$/.test(entry.identifier ?? ''))
+		problems.push(`${where}: identifier must look like urn:air:<domain>:<namespace>:<name>`)
+	if (!entry.displayName || !entry.type) problems.push(`${where}: displayName and type are required`)
+	if (Boolean(entry.url) === Boolean(entry.data)) problems.push(`${where}: give exactly one of url or data`)
+	if (entry.representativeQueries && (entry.representativeQueries.length < 2 || entry.representativeQueries.length > 5))
+		problems.push(`${where}: representativeQueries takes 2 to 5 items`)
+}
+
 if (problems.length) {
 	console.error(problems.join('\n'))
 	process.exit(1)
