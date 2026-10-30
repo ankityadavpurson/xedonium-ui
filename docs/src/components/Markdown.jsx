@@ -8,7 +8,7 @@ export const Code = ({ children }) => (
 	<code className="border border-app-border bg-app-card px-1 py-0.5 text-[0.85em] text-app-text">{children}</code>
 )
 
-const renderInline = text =>
+export const renderInline = text =>
 	text.split(INLINE).map((part, i) => {
 		if (part.startsWith('`')) return <Code key={i}>{part.slice(1, -1)}</Code>
 		if (part.startsWith('**')) return <strong key={i}>{part.slice(2, -2)}</strong>
@@ -16,6 +16,23 @@ const renderInline = text =>
 		if (link) {
 			const [, label, href] = link
 			const cls = 'underline underline-offset-2 hover:text-app-strong'
+			// "#id": scroll to that element on the page (the shell scrolls its <main>, not the window)
+			if (href.startsWith('#'))
+				return (
+					<a
+						key={i}
+						href={href}
+						className={cls}
+						onClick={event => {
+							const target = document.getElementById(href.slice(1))
+							if (!target) return
+							event.preventDefault()
+							target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+						}}
+					>
+						{label}
+					</a>
+				)
 			return href.startsWith('/') ? (
 				<Link key={i} to={href} className={cls}>
 					{label}

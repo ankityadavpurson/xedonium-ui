@@ -8,6 +8,11 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+### Added
+
+- `ActionMenu` items accept `href`, which renders a real link (`<a role="menuitem">`) so navigation items support middle-click and "copy link address" and are announced as links; `onClick` is now optional. `linkComponent` and `linkProp` swap in a router link, as in `Breadcrumb`, and `target` (for example `_blank`, which also sets a safe `rel`) opens a link elsewhere. Links to another site (`target="_blank"` or an absolute http(s) address) show an arrow, and `external` turns it on or off (#105).
+- `ActionMenu` is keyboard friendly: opening it focuses the first item, Arrow Up / Down (wrapping), Home and End move between items, Space chooses a link item and Tab closes the menu (#105).
+
 ## [1.22.0] - 2026-10-29
 
 ### Added

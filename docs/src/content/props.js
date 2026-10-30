@@ -294,9 +294,9 @@ const props = {
 		SpeedDial: [
 			[
 				'actions',
-				'{ key, icon, label, disabled?, onClick? }[]',
+				'SpeedDialAction[]',
 				'',
-				'The actions; `label` is the tooltip and accessible name.',
+				'The actions; `label` is the tooltip and accessible name. See the [SpeedDialAction](#speeddialaction) table below.',
 			],
 			['icon', 'ReactNode', 'plus icon', 'Icon of the main button.'],
 			['openIcon', 'ReactNode', 'close icon', 'Icon of the main button while open.'],
@@ -334,14 +334,26 @@ const props = {
 			['hidden', 'boolean', 'false', 'Hide the whole control.'],
 			className,
 		],
+		SpeedDialAction: [
+			['key', 'string', '', 'Unique key of the action.'],
+			['icon', 'ReactNode', '', "The action's icon."],
+			[
+				'label',
+				'string',
+				'',
+				'Its name: shown in a tooltip (or beside it with showLabels) and used as the accessible name.',
+			],
+			['disabled', 'boolean', 'false', 'Dim the action and ignore it.'],
+			['onClick', '() => void', '', 'Called when the action is chosen.'],
+		],
 	},
 	menu: {
 		Menu: [
 			[
 				'items',
-				'{ key, label?, icon?, shortcut?, disabled?, tone?, onClick?, children?, divider? }[]',
+				'MenuItem[]',
 				'',
-				'The entries. `children` makes a submenu; `{ key, divider: true }` is a separator.',
+				'The entries. `children` makes a submenu; `{ key, divider: true }` is a separator. See the [MenuItem](#menuitem) table below.',
 			],
 			['trigger', 'ReactNode', '', 'Content of the trigger button; leave it out to use `anchorRef`.'],
 			['label', 'string', '', 'Accessible name of the trigger and the menu.'],
@@ -362,6 +374,17 @@ const props = {
 			['onOpenChange', '(open: boolean) => void', '', 'Called when it opens or closes.'],
 			['anchorRef', 'RefObject<HTMLElement>', '', 'Element the menu is placed next to when there is no `trigger`.'],
 			className,
+		],
+		MenuItem: [
+			['key', 'string', '', 'Unique key of the item.'],
+			['label', 'ReactNode', '', 'Text of the item (not needed for a divider).'],
+			['icon', 'ReactNode', '', 'Shown before the label, hidden from screen readers.'],
+			['shortcut', 'string', '', 'A keyboard shortcut hint at the end, e.g. "Ctrl+C" (display only).'],
+			['disabled', 'boolean', 'false', 'Dim the item and ignore it.'],
+			['tone', "'default' | 'danger'", "'default'", 'Color of the item; "danger" is red, for destructive actions.'],
+			['onClick', '() => void', '', 'Called when the item is chosen.'],
+			['children', 'MenuItem[]', '', 'Makes the item open a submenu with these items.'],
+			['divider', 'boolean', 'false', 'A separator line instead of an item (only key is needed).'],
 		],
 	},
 	'button-link': {
@@ -459,12 +482,17 @@ const props = {
 	passwordstrengthinfo: {
 		PasswordStrengthInfo: [
 			['password', 'string', '', 'Current password to evaluate.'],
-			['rules', '{ key?, label, test(password), required? }[]', '', 'Your own rules, replacing the built-in ones.'],
+			[
+				'rules',
+				'PasswordRule[]',
+				'',
+				'Your own rules, replacing the built-in ones. See the [PasswordRule](#passwordrule) table below.',
+			],
 			[
 				'extraRules',
-				'{ key?, label, test(password), required? }[]',
+				'PasswordRule[]',
 				'',
-				'Rules added after the built-in ones (ignored when `rules` is set).',
+				'Rules added after the built-in ones (ignored when `rules` is set). See the [PasswordRule](#passwordrule) table below.',
 			],
 			['minLength', 'number', '8', 'Minimum length for the built-in length rule.'],
 			['showStrength', 'boolean', 'true', 'Show the strength label and bar.'],
@@ -486,6 +514,17 @@ const props = {
 				'With `showOn="focus"`: the element (or ref, or element id) that has to hold focus for the info to show.',
 			],
 			className,
+		],
+		PasswordRule: [
+			['key', 'string', '', 'Identifies the rule (default: its position).'],
+			['label', 'ReactNode', '', 'What the password must do, e.g. "At least 8 characters".'],
+			['test', '(password) => boolean', '', 'true when the password satisfies the rule.'],
+			[
+				'required',
+				'boolean',
+				'true',
+				'false makes it a recommendation: it counts towards the strength, but a failure does not make valid false.',
+			],
 		],
 	},
 	textarea: {
@@ -654,12 +693,18 @@ const props = {
 			['brand', 'ReactNode', '', 'Brand name or element.'],
 			['logo', 'ReactNode', '', 'Logo shown before the brand.'],
 			['brandHref', 'string', "'/'", 'Where the brand links to.'],
-			['links', '{ href, label, active?, ...linkProps }[]', '[]', 'Navigation links.'],
+			['links', 'AppBarLink[]', '[]', 'Navigation links. See the [AppBarLink](#appbarlink) table below.'],
 			['actions', 'ReactNode', '', 'Extra controls on the right.'],
 			['themeToggle', 'boolean', 'true', 'Show the theme toggle.'],
 			['hideBrandOnMobile', 'boolean', 'false', 'Hide the brand text on small screens.'],
 			...link,
 			['maxWidth', 'string', "'max-w-5xl'", 'Tailwind max-width class.'],
+		],
+		AppBarLink: [
+			['href', 'string', '', 'Destination of the link.'],
+			['label', 'ReactNode', '', 'Text of the link.'],
+			['active', 'boolean', 'false', 'Marks the current page.'],
+			['...linkProps', '', '', 'Any other attribute is passed to the link element.'],
 		],
 	},
 	backtotop: {
@@ -768,7 +813,12 @@ const props = {
 	},
 	tabs: {
 		Tabs: [
-			['items', '{ key, label, content?, disabled? }[]', '', 'Tabs; `content` is shown in the panel when active.'],
+			[
+				'items',
+				'TabItem[]',
+				'',
+				'Tabs; `content` is shown in the panel when active. See the [TabItem](#tabitem) table below.',
+			],
 			['value', 'string', '', 'Active key (controlled).'],
 			['defaultValue', 'string', 'first key', 'Initially active key (uncontrolled).'],
 			['onChange', '(key: string) => void', '', 'Called when the active tab changes.'],
@@ -779,6 +829,12 @@ const props = {
 				'Show scroll buttons at both ends when the tabs do not fit; never hides them.',
 			],
 			className,
+		],
+		TabItem: [
+			['key', 'string', '', 'Unique key of the tab.'],
+			['label', 'ReactNode', '', 'Text of the tab button.'],
+			['content', 'ReactNode', '', 'Shown in the panel while the tab is active.'],
+			['disabled', 'boolean', 'false', 'Dim the tab and ignore it.'],
 		],
 	},
 	breadcrumb: {
@@ -917,27 +973,40 @@ const props = {
 			['children', 'ReactNode', '', 'The area that opens the menu when right-clicked.'],
 			[
 				'items',
-				'{ key, label?, icon?, shortcut?, disabled?, tone?, onClick?, children?, divider? }[]',
+				'MenuItem[]',
 				'',
-				'The entries, as in `Menu`. `children` makes a submenu; `{ key, divider: true }` is a separator.',
+				'The entries, as in `Menu`. `children` makes a submenu; `{ key, divider: true }` is a separator. See the [MenuItem](#menuitem) table below.',
 			],
 			['label', 'string', '', 'Accessible name of the menu.'],
 			['disabled', 'boolean', 'false', "Leave the browser's own context menu alone."],
 			['onOpenChange', '(open: boolean) => void', '', 'Called when it opens or closes.'],
 			className,
 		],
+		MenuItem: [
+			['key', 'string', '', 'Unique key of the item.'],
+			['label', 'ReactNode', '', 'Text of the item (not needed for a divider).'],
+			['icon', 'ReactNode', '', 'Shown before the label, hidden from screen readers.'],
+			['shortcut', 'string', '', 'A keyboard shortcut hint at the end, e.g. "Ctrl+C" (display only).'],
+			['disabled', 'boolean', 'false', 'Dim the item and ignore it.'],
+			['tone', "'default' | 'danger'", "'default'", 'Color of the item; "danger" is red, for destructive actions.'],
+			['onClick', '() => void', '', 'Called when the item is chosen.'],
+			['children', 'MenuItem[]', '', 'Makes the item open a submenu with these items.'],
+			['divider', 'boolean', 'false', 'A separator line instead of an item (only key is needed).'],
+		],
 	},
 	actionmenu: {
 		ActionMenu: [
-			['label', 'string', '', 'Accessible label of the trigger.'],
+			['label', 'string', '', 'Accessible label of the trigger and the menu.'],
 			['trigger', 'ReactNode', '', 'Trigger button content.'],
 			['variant', 'string', "'secondary'", 'Button variant of the trigger (e.g. "warning").'],
+			['items', 'ActionMenuItem[]', '', 'Menu entries; see the [ActionMenuItem](#actionmenuitem) table below.'],
 			[
-				'items',
-				'{ key, label, icon?, description?, badge?, tone?, disabled?, hasDialog?, onClick }[]',
-				'',
-				'Menu entries. `tone` is "default", "warning" or "danger" (red, for destructive items).',
+				'linkComponent',
+				'ElementType',
+				"'a'",
+				'Component used for items with a site path as href (not absolute URLs), e.g. a router Link.',
 			],
+			['linkProp', 'string', "'href'", 'Prop that receives the href on linkComponent, e.g. "to".'],
 			[
 				'placement',
 				'string',
@@ -945,6 +1014,35 @@ const props = {
 				'Where the menu opens, e.g. "bottom-end" or "top-start". Flips above or to the other edge when there is no room, and re-adjusts on scroll and resize.',
 			],
 			className,
+		],
+		ActionMenuItem: [
+			['key', 'string', '', 'Unique key of the item.'],
+			['label', 'ReactNode', '', 'Text of the item.'],
+			['icon', 'ReactNode', '', 'Decorative icon before the label (hidden from screen readers).'],
+			['description', 'ReactNode', '', 'Smaller line under the label.'],
+			['badge', 'ReactNode', '', 'Short value shown at the end of the row, e.g. a count.'],
+			[
+				'tone',
+				"'default' | 'warning' | 'danger'",
+				"'default'",
+				'Color of the item; "danger" is red, for destructive actions such as Delete.',
+			],
+			['disabled', 'boolean', 'false', 'Dim the item and ignore it.'],
+			['hasDialog', 'boolean', 'false', 'Marks an item that opens a dialog (aria-haspopup="dialog").'],
+			['href', 'string', '', 'Makes the item a real link instead of a button; onClick is then optional.'],
+			[
+				'target',
+				'string',
+				'',
+				'For link items: where to open it. "_blank" opens a new tab and adds rel="noopener noreferrer".',
+			],
+			[
+				'external',
+				'boolean',
+				'',
+				'Show the external-link arrow. By default a link is external when it has target="_blank" or an absolute http(s) address.',
+			],
+			['onClick', '() => void', '', 'Called when the item is chosen, after the menu closes. Optional for link items.'],
 		],
 	},
 	drawer: {
@@ -1051,9 +1149,9 @@ const props = {
 		Toast: [
 			[
 				'toasts',
-				'{ id, msg, type?, link?, actions?, icon? }[]',
+				'ToastItem[]',
 				'',
-				'Toasts to stack, from `useTimedToast`. `type` is "success" (default), "danger" (or "error"), "warning" or "info"; `actions` is `{ label, onClick }[]`.',
+				'Toasts to stack, from `useTimedToast`. `type` is "success" (default), "danger" (or "error"), "warning" or "info"; `actions` is `{ label, onClick }[]`. See the [ToastItem](#toastitem) table below.',
 			],
 			['toast', '{ msg, type?, ... } | null', '', 'A single toast, when you do not need a stack.'],
 			[
@@ -1068,6 +1166,14 @@ const props = {
 				'',
 				'Adds a dismiss button to each toast, and dismisses it after an action is used (pass `hideToast`).',
 			],
+		],
+		ToastItem: [
+			['id', 'number', '', 'Unique id of the toast.'],
+			['msg', 'ReactNode', '', 'Message.'],
+			['type', "'success' | 'danger' | 'error' | 'warning' | 'info'", "'success'", 'Color and icon of the toast.'],
+			['link', '{ href, label }', '', 'A link shown in the toast.'],
+			['actions', '{ label, onClick }[]', '', 'Buttons shown in the toast.'],
+			['icon', 'ReactNode', '', 'Replaces the default icon.'],
 		],
 	},
 
@@ -1127,7 +1233,7 @@ const props = {
 	},
 	accordion: {
 		Accordion: [
-			['items', '{ key, title, content, disabled? }[]', '', 'Sections.'],
+			['items', 'AccordionItem[]', '', 'Sections. See the [AccordionItem](#accordionitem) table below.'],
 			['value', 'string[]', '', 'Open keys (controlled).'],
 			['defaultValue', 'string[]', '[]', 'Initially open keys (uncontrolled).'],
 			['onChange', '(keys: string[]) => void', '', 'Called with the new array of open keys.'],
@@ -1139,6 +1245,12 @@ const props = {
 				'Space between items (0.5 / 1 / 1.5rem). Any gap gives each item its own border.',
 			],
 			className,
+		],
+		AccordionItem: [
+			['key', 'string', '', 'Unique key of the section.'],
+			['title', 'ReactNode', '', 'Text of the section header.'],
+			['content', 'ReactNode', '', 'Shown while the section is open.'],
+			['disabled', 'boolean', 'false', 'Dim the section and keep it closed.'],
 		],
 		AccordionSection: [
 			['title', 'ReactNode', '', 'Header content.'],
@@ -1172,9 +1284,9 @@ const props = {
 			['highlight', 'boolean', 'true', 'Color the code by syntax (see `language` for the supported languages).'],
 			[
 				'colors',
-				'{ comment?, string?, keyword?, tag?, attr?, number?, fn?, text?, background? }',
+				'CodeColors',
 				'',
-				'Override the theme-aware default colors with any CSS colors.',
+				'Override the theme-aware default colors with any CSS colors; see the [CodeDisplayColors](#codedisplaycolors) table below.',
 			],
 			[
 				'highlighter',
@@ -1183,6 +1295,17 @@ const props = {
 				'Your own tokenizer: one array of { kind, text } segments per line (kind is a token kind or null). Used instead of the built-in languages.',
 			],
 			className,
+		],
+		CodeDisplayColors: [
+			['comment', 'string', '--xd-tok-comment', 'Comments.'],
+			['string', 'string', '--xd-tok-string', 'Quoted strings and attribute values.'],
+			['keyword', 'string', '--xd-tok-keyword', 'Keywords, at-rules and directives.'],
+			['tag', 'string', '--xd-tok-tag', 'Tags and CSS selectors.'],
+			['attr', 'string', '--xd-tok-attr', 'Attribute names, object keys and CSS properties.'],
+			['number', 'string', '--xd-tok-number', 'Numbers, units and hex colors.'],
+			['fn', 'string', '--xd-tok-fn', 'Function names and expressions.'],
+			['text', 'string', '', 'Color of everything that is not highlighted. The theme text color by default.'],
+			['background', 'string', '', 'Background of the code block. The theme card color by default.'],
 		],
 	},
 	card: {
@@ -1198,7 +1321,7 @@ const props = {
 	},
 	table: {
 		Table: [
-			['columns', '{ key, header, render?(row), align? }[]', '', 'Column definitions.'],
+			['columns', 'TableColumn[]', '', 'Column definitions. See the [TableColumn](#tablecolumn) table below.'],
 			['rows', 'object[]', '', 'Row data.'],
 			['rowKey', 'string', "'id'", 'Field holding each row’s unique key.'],
 			['empty', 'ReactNode', "'No data'", 'Shown when there are no rows.'],
@@ -1218,10 +1341,21 @@ const props = {
 			],
 			className,
 		],
+		TableColumn: [
+			['key', 'string', '', 'Unique key; also the row field shown when there is no render.'],
+			['header', 'ReactNode', '', 'Column heading.'],
+			['render', '(row) => ReactNode', '', 'Custom cell content.'],
+			['align', "'left' | 'center' | 'right'", "'left'", 'Text alignment of the column.'],
+		],
 	},
 	nestedtable: {
 		NestedTable: [
-			['columns', '{ key, header, render?(row), align? }[]', '', 'Column definitions.'],
+			[
+				'columns',
+				'NestedTableColumn[]',
+				'',
+				'Column definitions. See the [NestedTableColumn](#nestedtablecolumn) table below.',
+			],
 			['rows', 'object[]', '', 'Rows; each row can include nested `children`.'],
 			[
 				'rowKey',
@@ -1256,14 +1390,20 @@ const props = {
 			['caption', 'string', '', 'Screen-reader caption.'],
 			className,
 		],
+		NestedTableColumn: [
+			['key', 'string', '', 'Unique key; also the row field shown when there is no render.'],
+			['header', 'ReactNode', '', 'Column heading.'],
+			['render', '(row) => ReactNode', '', 'Custom cell content.'],
+			['align', "'left' | 'center' | 'right'", "'left'", 'Text alignment of the column.'],
+		],
 	},
 	logviewer: {
 		LogViewer: [
 			[
 				'logs',
-				'{ id, level, message, timestamp?, source?, data?, stack? }[]',
+				'LogEntry[]',
 				'',
-				'Log entries in display order. `level` is debug, info, warn or error.',
+				'Log entries in display order. `level` is debug, info, warn or error. See the [LogEntry](#logentry) table below.',
 			],
 			['autoScroll', 'boolean', 'true', 'Follow the newest entry until the reader scrolls up.'],
 			['onAutoScrollChange', '(following: boolean) => void', '', 'Called when following stops or resumes.'],
@@ -1278,6 +1418,30 @@ const props = {
 			['emptyText', 'string', "'No logs yet'", 'Shown when there are no logs at all.'],
 			['label', 'string', "'Logs'", 'Accessible name for the log output.'],
 			className,
+		],
+		LogEntry: [
+			['id', 'string | number', '', 'Unique among the entries (used as the React key).'],
+			['level', "'debug' | 'info' | 'warn' | 'error'", '', 'Severity of the entry.'],
+			[
+				'message',
+				'string',
+				'',
+				'The message. A multi-line message shows its first line as the headline and the rest as a block under it.',
+			],
+			[
+				'timestamp',
+				'string | number | Date',
+				'',
+				'A time as an ISO string, milliseconds since the epoch or a Date; shown as HH:mm:ss.SSS.',
+			],
+			['source', 'string', '', 'Where it came from, e.g. "api" or "console".'],
+			[
+				'data',
+				'unknown',
+				'',
+				'Structured details (an object or text), shown under the message; long ones are cut with "Show all".',
+			],
+			['stack', 'string', '', 'A stack trace, shown as its own block with the "at ..." lines dimmed.'],
 		],
 	},
 	fileexplorer: {
@@ -1312,9 +1476,9 @@ const props = {
 		DataGrid: [
 			[
 				'columns',
-				'{ key, header, sortable?, render?(row), align?, accessor?(row), className?, headerClassName?, width?, minWidth?, hideBelow? }[]',
+				'DataGridColumn[]',
 				'',
-				'Column definitions; `accessor` supplies the sort and search value; `hideBelow` (`sm` | `md` | `lg`) hides the column on smaller screens.',
+				'Column definitions; `accessor` supplies the sort and search value; `hideBelow` (`sm` | `md` | `lg`) hides the column on smaller screens. See the [DataGridColumn](#datagridcolumn) table below.',
 			],
 			['rows', 'object[]', '', 'Row data.'],
 			['rowKey', 'string', "'id'", 'Field holding each row’s unique key.'],
@@ -1352,6 +1516,19 @@ const props = {
 			['caption', 'string', '', 'Screen-reader caption.'],
 			className,
 		],
+		DataGridColumn: [
+			['key', 'string', '', 'Unique key; also the row field shown when there is no render.'],
+			['header', 'ReactNode', '', 'Column heading.'],
+			['sortable', 'boolean', '', 'Let the user sort by this column.'],
+			['render', '(row) => ReactNode', '', 'Custom cell content.'],
+			['align', "'left' | 'center' | 'right'", "'left'", 'Text alignment of the column.'],
+			['accessor', '(row) => unknown', '', 'Supplies the value used for sorting and search.'],
+			['className', 'string', '', "Extra classes for this column's body cells."],
+			['headerClassName', 'string', '', "Extra classes for this column's header cell."],
+			['width', 'number | string', '', 'Column width: a number (px) or any CSS length.'],
+			['minWidth', 'number | string', '', 'Smallest width of the column.'],
+			['hideBelow', "'sm' | 'md' | 'lg'", '', 'Hide the column below this breakpoint, so wide tables fit on phones.'],
+		],
 	},
 	tree: {
 		Tree: [
@@ -1375,9 +1552,9 @@ const props = {
 		Timeline: [
 			[
 				'items',
-				'{ key, title, description?, time?, tone?, branch?, forkFrom?, mergeFrom? }[]',
+				'TimelineItem[]',
 				'',
-				'Events; `tone` is default | success | warning | danger. `branch` puts an event on a lane (default: the main lane), `forkFrom` names the lane a branch splits off, `mergeFrom` the branch id(s) that join here.',
+				'Events; `tone` is default | success | warning | danger. `branch` puts an event on a lane (default: the main lane), `forkFrom` names the lane a branch splits off, `mergeFrom` the branch id(s) that join here. See the [TimelineItem](#timelineitem) table below.',
 			],
 			[
 				'orientation',
@@ -1393,14 +1570,34 @@ const props = {
 			],
 			className,
 		],
+		TimelineItem: [
+			['key', 'string | number', '', 'Unique key of the event.'],
+			['title', 'ReactNode', '', 'Headline of the event.'],
+			['description', 'ReactNode', '', 'Text under the title.'],
+			['time', 'ReactNode', '', 'When it happened.'],
+			['tone', "'default' | 'success' | 'warning' | 'danger'", "'default'", 'Color of the marker.'],
+			['branch', 'string', '', 'The branch (lane) this event sits on. Events without one sit on the main lane.'],
+			[
+				'forkFrom',
+				'string',
+				'',
+				'On the first event of a branch: the branch it splits off from (default: the main lane).',
+			],
+			[
+				'mergeFrom',
+				'string | string[]',
+				'',
+				"Branch id(s) that join this event's branch here; each of them ends on this row.",
+			],
+		],
 	},
 	pipelinegraph: {
 		PipelineGraph: [
 			[
 				'nodes',
-				'{ id, label, status, duration?, needs?, icon?, description?, trailing?, className?, ariaLabel?, title?, disabled? }[]',
+				'PipelineNode[]',
 				'',
-				'Jobs; `status` is queued | running | success | failed | skipped | cancelled, `needs` lists the ids a job waits for. `label`, `duration`, `description`, `icon` and `trailing` take any React node; `className` styles one node, `ariaLabel` names it when the label is not text, `disabled` makes it unclickable.',
+				'Jobs; `status` is queued | running | success | failed | skipped | cancelled, `needs` lists the ids a job waits for. `label`, `duration`, `description`, `icon` and `trailing` take any React node; `className` styles one node, `ariaLabel` names it when the label is not text, `disabled` makes it unclickable. See the [PipelineNode](#pipelinenode) table below.',
 			],
 			['onNodeClick', '(node) => void', '', 'Called when a node is clicked (not after a drag).'],
 			['selectedId', 'string | null', '', 'Id of the highlighted node (sets aria-current).'],
@@ -1418,17 +1615,49 @@ const props = {
 			['aria-label', 'string', "'Pipeline'", 'Accessible name of the graph.'],
 			className,
 		],
+		PipelineNode: [
+			['id', 'string', '', 'Unique id of the job; other nodes name it in needs.'],
+			['label', 'ReactNode', '', 'Name of the job.'],
+			[
+				'status',
+				"'queued' | 'running' | 'success' | 'failed' | 'skipped' | 'cancelled'",
+				'',
+				'Sets the icon, the border and the accessible name.',
+			],
+			['duration', 'ReactNode', '', "Shown under the label, e.g. '2m 25s'."],
+			['needs', 'string[]', '', 'Ids of the nodes this one waits for. Unknown ids are ignored.'],
+			['icon', 'ReactNode', '', 'Replaces the status icon (the status still sets the border and the accessible name).'],
+			['description', 'ReactNode', '', 'A second line under the label, above the duration.'],
+			['trailing', 'ReactNode', '', 'Content at the right edge of the node, e.g. a badge or an avatar.'],
+			['className', 'string', '', "Extra classes for this node's button, e.g. to recolor its border or background."],
+			[
+				'ariaLabel',
+				'string',
+				'',
+				'Accessible name; by default the label (when it is text, else the id), the status and the duration.',
+			],
+			['title', 'string', '', 'Tooltip (default: the status).'],
+			['disabled', 'boolean', 'false', 'Not clickable, and skipped by the keyboard.'],
+		],
 	},
 	list: {
 		List: [
 			[
 				'items',
-				'{ key, primary, secondary?, leading?, trailing?, onClick? }[]',
+				'ListItem[]',
 				'',
-				'Rows; ones with `onClick` become buttons.',
+				'Rows; ones with `onClick` become buttons. See the [ListItem](#listitem) table below.',
 			],
 			['divided', 'boolean', 'true', 'Draw lines between rows.'],
 			className,
+		],
+		ListItem: [
+			['key', 'string | number', '', 'Unique key of the row.'],
+			['primary', 'ReactNode', '', 'Main text of the row.'],
+			['secondary', 'ReactNode', '', 'Smaller text under the primary text.'],
+			['leading', 'ReactNode', '', 'Content before the text, e.g. an icon or avatar.'],
+			['trailing', 'ReactNode', '', 'Content at the end of the row.'],
+			['onClick', '() => void', '', 'Makes the row a button.'],
 		],
 	},
 
@@ -1646,11 +1875,17 @@ const props = {
 	navbar: {
 		Navbar: [
 			['brand', 'ReactNode', '', 'Brand name or element.'],
-			['links', '{ href, label, active?, ...linkProps }[]', '[]', 'Navigation links.'],
+			['links', 'NavbarLink[]', '[]', 'Navigation links. See the [NavbarLink](#navbarlink) table below.'],
 			['actions', 'ReactNode', '', 'Controls on the right.'],
 			...link,
 			['label', 'string', "'Main'", 'Accessible name of the nav.'],
 			className,
+		],
+		NavbarLink: [
+			['href', 'string', '', 'Destination of the link.'],
+			['label', 'string', '', 'Text of the link.'],
+			['active', 'boolean', 'false', 'Marks the current page.'],
+			['...linkProps', '', '', 'Any other attribute is passed to the link element.'],
 		],
 	},
 	sidebar: {
@@ -1666,9 +1901,9 @@ const props = {
 			['listClassName', 'string', 'py-2', 'Replaces the default list padding.'],
 			[
 				'items',
-				'{ key, label?, icon?, href?, onClick?, badge?, section?, divider?, children? }[]',
+				'SidebarItem[]',
 				'',
-				'Navigation entries; `children` makes a group, `section: true` makes a caption and `divider: true` a plain rule.',
+				'Navigation entries; `children` makes a group, `section: true` makes a caption and `divider: true` a plain rule. See the [SidebarItem](#sidebaritem) table below.',
 			],
 			['activeKey', 'string', '', 'Key of the current item.'],
 			['onSelect', '(key: string) => void', '', 'Called when any item is clicked.'],
@@ -1678,6 +1913,22 @@ const props = {
 			...link,
 			['label', 'string', "'Sidebar'", 'Accessible name.'],
 			className,
+		],
+		SidebarItem: [
+			['key', 'string', '', 'Unique key of the item.'],
+			['label', 'string', '', 'Text of the item (optional for a divider).'],
+			['icon', 'ReactNode', '', 'Shown before the label.'],
+			['href', 'string', '', 'Makes the item a link.'],
+			['onClick', '() => void', '', 'Called when the item is chosen.'],
+			['badge', 'ReactNode', '', 'Short value at the end of the row, e.g. a count.'],
+			[
+				'section',
+				'boolean',
+				'false',
+				'A non-interactive caption that groups the items after it (only key and label are used).',
+			],
+			['divider', 'boolean', 'false', 'A plain rule between groups (only key is used).'],
+			['children', 'SidebarItem[]', '', 'Makes the item a group with an indented sub-list.'],
 		],
 	},
 	appshell: {
@@ -1759,9 +2010,17 @@ const props = {
 			['highlight', 'boolean', 'false', 'Wrap the matched text of each label and description in `<mark>`.'],
 			['open', 'boolean', '', 'Whether the palette is shown.'],
 			['onClose', '() => void', '', 'Called on Escape, backdrop click, and after a command runs.'],
-			['commands', '{ key, label, description?, group?, shortcut?, onSelect }[]', '', 'Commands to search.'],
+			['commands', 'Command[]', '', 'Commands to search. See the [Command](#command) table below.'],
 			['placeholder', 'string', "'Type a command…'", 'Search box placeholder.'],
 			['empty', 'string', "'No matching commands'", 'Shown when nothing matches.'],
+		],
+		Command: [
+			['key', 'string', '', 'Unique key of the command.'],
+			['label', 'string', '', 'Name of the command, searched as you type.'],
+			['description', 'string', '', 'Smaller text under the label, also searched.'],
+			['group', 'string', '', 'Heading the command is listed under, also searched.'],
+			['shortcut', 'string', '', 'A keyboard shortcut hint at the end (display only).'],
+			['onSelect', '() => void', '', 'Called when the command is chosen.'],
 		],
 	},
 	notfoundpage: {
@@ -1791,7 +2050,12 @@ const props = {
 	},
 	notificationcenter: {
 		NotificationCenter: [
-			['notifications', '{ id, title, body?, time?, read? }[]', '', 'Notifications, newest first.'],
+			[
+				'notifications',
+				'Notification[]',
+				'',
+				'Notifications, newest first. See the [Notification](#notification) table below.',
+			],
 			['onSelect', '(notification) => void', '', 'Called when one is clicked.'],
 			['onMarkRead', '(id) => void', '', 'Called when an unread one is clicked.'],
 			['onMarkAllRead', '() => void', '', 'Adds a "Mark all read" action.'],
@@ -1804,6 +2068,13 @@ const props = {
 			['maxItems', 'number', '', 'Show only the newest this many; "View all" then shows the total.'],
 			['empty', 'string', "'You are all caught up'", 'Shown when there are none.'],
 			['align', "'end' | 'start'", "'end'", 'Which edge of the bell the panel aligns to.'],
+		],
+		Notification: [
+			['id', 'string | number', '', 'Unique id of the notification.'],
+			['title', 'ReactNode', '', 'Headline of the notification.'],
+			['body', 'ReactNode', '', 'Text under the title.'],
+			['time', 'ReactNode', '', 'When it arrived.'],
+			['read', 'boolean', 'false', 'Whether it has been read; unread ones are counted and marked.'],
 		],
 	},
 	networkconnection: {

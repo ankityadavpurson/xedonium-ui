@@ -7,23 +7,25 @@ const slugOf = text =>
 		.replace(/[^a-z0-9]+/g, '-')
 		.replace(/^-|-$/g, '') || 'section'
 
-// Headings, bold lead-ins of a Markdown paragraph ("**Branched timeline.** ...") and, when there are several, the examples
+// Headings, the named tables of a props section, bold lead-ins of a Markdown paragraph ("**Branched timeline.** ...") and the examples
 const collect = (root, names = []) => {
 	const found = []
 	const used = new Set()
 	let examples = 0
-	root.querySelectorAll('h2, p > strong:first-child, [data-demo]').forEach(node => {
+	root.querySelectorAll('h2, h3[id], p > strong:first-child, [data-demo]').forEach(node => {
 		let el = node
 		let text = node.textContent.trim().replace(/[.:]$/, '')
 		if (node.matches('[data-demo]')) {
 			el = node.parentElement
-			text = names[examples] ?? `Example ${examples + 1}`
+			text = names[examples] ?? 'Example'
 			examples++
 		} else if (node.tagName === 'STRONG') {
 			// named examples already say what the text above them introduces
 			if (names.length || node.parentElement.firstChild !== node) return
 			el = node.parentElement
 		} else if (node.closest('[data-demo]')) return
+		// the first props table is the component's own: "Props" already stands for it
+		else if (node.tagName === 'H3' && node.parentElement.parentElement.querySelector('h3[id]') === node) return
 		if (!text || (node.tagName === 'STRONG' && text.length > 60)) return
 		if (!el.id) {
 			let id = slugOf(text)
@@ -32,10 +34,9 @@ const collect = (root, names = []) => {
 			el.classList.add('scroll-mt-4')
 		}
 		used.add(el.id)
-		found.push({ id: el.id, text, example: node.matches('[data-demo]') })
+		found.push({ id: el.id, text, sub: node.tagName === 'H3' })
 	})
-	// a single example needs no entry of its own
-	return examples > 1 ? found : found.filter(entry => !entry.example)
+	return found
 }
 
 /**
@@ -105,7 +106,7 @@ const OnThisPage = ({ rootRef, watch }) => {
 						type="button"
 						onClick={() => go(entry.id)}
 						aria-current={entry.id === active ? 'location' : undefined}
-						className={`-ml-px block w-full border-l py-1 pl-3 pr-2 text-left text-xs outline-none transition focus-visible:ring-2 focus-visible:ring-app-strong ${
+						className={`-ml-px block w-full border-l py-1 ${entry.sub ? 'pl-6' : 'pl-3'} pr-2 text-left text-xs outline-none transition focus-visible:ring-2 focus-visible:ring-app-strong ${
 							entry.id === active
 								? 'border-app-strong font-semibold text-app-text'
 								: 'border-app-border text-app-muted hover:border-app-soft hover:text-app-text'
