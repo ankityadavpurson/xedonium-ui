@@ -12,30 +12,42 @@ const STATIC = [
 	[
 		'/',
 		'Minimal, theme-aware React and Tailwind components with no runtime dependencies. Forms, charts, overlays and 160+ icons for light and dark themes.',
+		'',
 	],
 	[
 		'/getting-started',
 		'Install Xedonium, set up the Tailwind preset and styles, and wrap your app in the ThemeProvider.',
+		'Getting started',
 	],
-	['/foundations/theme', 'How Xedonium themes work: light, dark and system modes through the data-theme attribute.'],
-	['/foundations/colors', 'The semantic app-* color tokens and how to override them.'],
-	['/foundations/typography', 'Type scale and text styles used across Xedonium components.'],
-	['/foundations/icons', 'The full icon set, with names to import.'],
-	['/changelog', 'What changed in each release of Xedonium.'],
+	[
+		'/foundations/theme',
+		'How Xedonium themes work: light, dark and system modes through the data-theme attribute.',
+		'Theme',
+	],
+	['/foundations/colors', 'The semantic app-* color tokens and how to override them.', 'Colors & tokens'],
+	['/foundations/typography', 'Type scale and text styles used across Xedonium components.', 'Typography'],
+	['/foundations/icons', 'The full icon set, with names to import.', 'Icons'],
+	['/changelog', 'What changed in each release of Xedonium.', 'Changelog'],
 ]
 
-/** Every indexable page: { path, description }. */
+/** Every indexable page: { path, title, description }. The title is empty for the home page. */
 export const seoPages = () => [
-	...STATIC.map(([path, description]) => ({ path, description })),
-	...categories.map(category => ({ path: `/components/${category.slug}`, description: category.description })),
+	...STATIC.map(([path, description, title]) => ({ path, title, description })),
+	...categories.map(category => ({
+		path: `/components/${category.slug}`,
+		title: category.label,
+		description: category.description,
+	})),
 	...pages.map(({ category, component }) => ({
 		path: pathOf(category, component),
+		title: component.name,
 		description: `${component.name}: ${summaryOf(component)}`,
 	})),
 	...guideSections.flatMap(section => [
-		{ path: section.path, description: section.description },
+		{ path: section.path, title: section.label, description: section.description },
 		...section.items.map(entry => ({
 			path: guidePath(section, entry),
+			title: entry.name,
 			description: `${entry.name}: ${entry.summary}`,
 		})),
 	]),

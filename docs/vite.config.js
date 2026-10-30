@@ -11,7 +11,7 @@ const VENDOR = /node_modules[\\/](react|react-dom|react-router|react-router-dom|
 
 // Served from the site root on Firebase Hosting. The docs import the library straight from ../src,
 // one module per component (see xedoniumImports.js), so pages only load what they use.
-export default defineConfig(() => ({
+export default defineConfig(({ isSsrBuild }) => ({
 	root,
 	base: '/',
 	plugins: [xedoniumImports(), react(), seoPlugin()],
@@ -25,8 +25,11 @@ export default defineConfig(() => ({
 	build: {
 		outDir: 'dist',
 		emptyOutDir: true,
-		rollupOptions: { output: { manualChunks: id => (VENDOR.test(id) ? 'vendor' : undefined) } },
+		// the server build for the prerender is one file: no vendor chunk
+		rollupOptions: isSsrBuild ? {} : { output: { manualChunks: id => (VENDOR.test(id) ? 'vendor' : undefined) } },
 	},
+	// one copy of the router in the prerender bundle: StaticRouter and the app's own routes must share its context
+	ssr: { noExternal: [/^react-router/] },
 	server: { port: 3100 },
 	preview: { port: 3100 },
 }))

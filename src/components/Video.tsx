@@ -71,9 +71,11 @@ type Connection = { downlink?: number; saveData?: boolean }
 
 // Index (in `heights`, ascending) of the best fit for the player's pixel size and the connection's speed
 const autoIndex = (heights: number[], playerWidth: number) => {
-	const connection = (navigator as Navigator & { connection?: Connection }).connection
+	// no navigator / window while rendering on a server: assume an ordinary screen and link
+	const connection =
+		typeof navigator === 'undefined' ? undefined : (navigator as Navigator & { connection?: Connection }).connection
 	if (connection?.saveData) return 0
-	const wanted = ((playerWidth || 640) * (window.devicePixelRatio || 1) * 9) / 16
+	const wanted = ((playerWidth || 640) * ((typeof window !== 'undefined' && window.devicePixelRatio) || 1) * 9) / 16
 	let best = 0
 	heights.forEach((height, i) => {
 		const fitsScreen = height <= wanted * 1.15

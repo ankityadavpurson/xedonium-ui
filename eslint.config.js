@@ -24,7 +24,7 @@ export default [
 		},
 	},
 	{
-		files: ['scripts/**/*.{js,mjs}', '*.config.js', 'docs/*.config.js', 'tailwind-preset.js'],
+		files: ['scripts/**/*.{js,mjs}', '*.config.js', 'docs/*.config.js', 'docs/*.mjs', 'tailwind-preset.js'],
 		languageOptions: { globals: globals.node },
 	},
 ]

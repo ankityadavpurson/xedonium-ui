@@ -3,8 +3,7 @@ import { highlight } from './highlight'
 
 // Identical metrics for the highlighted <pre> and the transparent <textarea> laid over it
 // geometricPrecision: no per-glyph rounding, so both layers stay character for character the same at any display scaling or zoom
-const TEXT =
-	'm-0 p-4 font-code text-sm leading-[1.35] [tab-size:2] whitespace-pre [text-rendering:geometricPrecision]'
+const TEXT = 'm-0 p-4 font-code text-sm leading-[1.35] [tab-size:2] whitespace-pre [text-rendering:geometricPrecision]'
 
 const PAIRS = { '(': ')', '[': ']', '{': '}', '"': '"', "'": "'", '`': '`' }
 const CLOSERS = new Set(Object.values(PAIRS))

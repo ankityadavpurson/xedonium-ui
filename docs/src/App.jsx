@@ -40,7 +40,10 @@ const PlaygroundHome = lazy(() => import('./pages/PlaygroundHome'))
 
 // Cmd on Apple platforms, Ctrl elsewhere (matches what `mod` resolves to in useKeyboardShortcuts)
 const modKeyLabel = () =>
-	/Mac|iPhone|iPad|iPod/i.test(navigator.userAgentData?.platform || navigator.platform || '') ? '⌘' : 'Ctrl'
+	typeof navigator !== 'undefined' &&
+	/Mac|iPhone|iPad|iPod/i.test(navigator.userAgentData?.platform || navigator.platform || '')
+		? '⌘'
+		: 'Ctrl'
 
 const PageFallback = ({ label = 'Loading' }) => (
 	<div className="flex justify-center py-24">
