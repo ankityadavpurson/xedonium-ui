@@ -8,6 +8,39 @@ const link = [
 	['linkComponent', 'ElementType', "'a'", 'Component used for links, e.g. a router Link.'],
 	['linkProp', 'string', "'href'", 'Name of the destination prop on `linkComponent` (e.g. "to" for react-router).'],
 ]
+const menuItemRows = [
+	['key', 'string', '', 'Unique key of the item.'],
+	['label', 'ReactNode', '', 'Text of the item (not needed for a divider).'],
+	['icon', 'ReactNode', '', 'Shown before the label, hidden from screen readers.'],
+	['description', 'ReactNode', '', 'A smaller grey line under the label.'],
+	['badge', 'ReactNode', '', 'Short value at the end of the row, e.g. a count.'],
+	['shortcut', 'string', '', 'A keyboard shortcut hint at the end, e.g. "Ctrl+C" (display only).'],
+	['disabled', 'boolean', 'false', 'Dim the item and ignore it.'],
+	[
+		'tone',
+		"'default' | 'warning' | 'danger'",
+		"'default'",
+		'Color of the item; "danger" is red, for destructive actions.',
+	],
+	['hasDialog', 'boolean', 'false', 'Marks an item that opens a dialog (aria-haspopup="dialog").'],
+	['href', 'string', '', 'Makes the item a real link instead of a button; onClick is then optional.'],
+	[
+		'target',
+		'string',
+		'',
+		'For link items: where to open it. "_blank" opens a new tab and adds rel="noopener noreferrer".',
+	],
+	[
+		'external',
+		'boolean',
+		'',
+		'Show the external-link arrow. By default a link is external when it has target="_blank" or an absolute http(s) address.',
+	],
+	['onClick', '() => void', '', 'Called when the item is chosen.'],
+	['children', 'MenuItem[]', '', 'Makes the item open a submenu with these items.'],
+	['divider', 'boolean', 'false', 'A separator line instead of an item (only key is needed).'],
+]
+
 const gap = ['gap', '0 | 1 | 2 | 3 | 4 | 6 | 8', '', 'Spacing between children (Tailwind spacing steps).']
 const as = ['as', 'ElementType', "'div'", 'Element or component to render.']
 const fieldError = ['error', 'string', '', 'Error message shown below the control; sets the invalid style.']
@@ -369,23 +402,26 @@ const props = {
 				"'bottom-start'",
 				'Where the menu opens; it flips when there is no room.',
 			],
+			[
+				'look',
+				"'default' | 'actions'",
+				"'default'",
+				'The look of the menu: "actions" matches ActionMenu (uppercase labels, ruled rows, a fixed width); the default is the compact one.',
+			],
+			[
+				'linkComponent',
+				'ElementType',
+				"'a'",
+				'Component used for items with a site path as href (not absolute URLs), e.g. a router Link.',
+			],
+			['linkProp', 'string', "'href'", 'Prop that receives the href on linkComponent, e.g. "to".'],
 			['open', 'boolean', '', 'Open state (controlled).'],
 			['defaultOpen', 'boolean', 'false', 'Initial open state when uncontrolled.'],
 			['onOpenChange', '(open: boolean) => void', '', 'Called when it opens or closes.'],
 			['anchorRef', 'RefObject<HTMLElement>', '', 'Element the menu is placed next to when there is no `trigger`.'],
 			className,
 		],
-		MenuItem: [
-			['key', 'string', '', 'Unique key of the item.'],
-			['label', 'ReactNode', '', 'Text of the item (not needed for a divider).'],
-			['icon', 'ReactNode', '', 'Shown before the label, hidden from screen readers.'],
-			['shortcut', 'string', '', 'A keyboard shortcut hint at the end, e.g. "Ctrl+C" (display only).'],
-			['disabled', 'boolean', 'false', 'Dim the item and ignore it.'],
-			['tone', "'default' | 'danger'", "'default'", 'Color of the item; "danger" is red, for destructive actions.'],
-			['onClick', '() => void', '', 'Called when the item is chosen.'],
-			['children', 'MenuItem[]', '', 'Makes the item open a submenu with these items.'],
-			['divider', 'boolean', 'false', 'A separator line instead of an item (only key is needed).'],
-		],
+		MenuItem: menuItemRows,
 	},
 	'button-link': {
 		ButtonLink: [
@@ -979,20 +1015,23 @@ const props = {
 			],
 			['label', 'string', '', 'Accessible name of the menu.'],
 			['disabled', 'boolean', 'false', "Leave the browser's own context menu alone."],
+			[
+				'look',
+				"'default' | 'actions'",
+				"'default'",
+				'The look of the menu: "actions" matches ActionMenu (uppercase labels, ruled rows, a fixed width); the default is the compact one.',
+			],
+			[
+				'linkComponent',
+				'ElementType',
+				"'a'",
+				'Component used for items with a site path as href (not absolute URLs), e.g. a router Link.',
+			],
+			['linkProp', 'string', "'href'", 'Prop that receives the href on linkComponent, e.g. "to".'],
 			['onOpenChange', '(open: boolean) => void', '', 'Called when it opens or closes.'],
 			className,
 		],
-		MenuItem: [
-			['key', 'string', '', 'Unique key of the item.'],
-			['label', 'ReactNode', '', 'Text of the item (not needed for a divider).'],
-			['icon', 'ReactNode', '', 'Shown before the label, hidden from screen readers.'],
-			['shortcut', 'string', '', 'A keyboard shortcut hint at the end, e.g. "Ctrl+C" (display only).'],
-			['disabled', 'boolean', 'false', 'Dim the item and ignore it.'],
-			['tone', "'default' | 'danger'", "'default'", 'Color of the item; "danger" is red, for destructive actions.'],
-			['onClick', '() => void', '', 'Called when the item is chosen.'],
-			['children', 'MenuItem[]', '', 'Makes the item open a submenu with these items.'],
-			['divider', 'boolean', 'false', 'A separator line instead of an item (only key is needed).'],
-		],
+		MenuItem: menuItemRows,
 	},
 	actionmenu: {
 		ActionMenu: [

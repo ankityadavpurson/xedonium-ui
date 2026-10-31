@@ -1,5 +1,5 @@
-import { useRef, useState, type MouseEvent, type ReactNode } from 'react'
-import Menu, { type MenuItem } from './Menu'
+import { useRef, useState, type ElementType, type MouseEvent, type ReactNode } from 'react'
+import Menu, { type MenuItem, type MenuLook } from './Menu'
 
 export interface ContextMenuProps {
 	/** Same entries as Menu: icons, shortcuts, dividers, danger items and nested `children`. */
@@ -11,6 +11,11 @@ export interface ContextMenuProps {
 	/** Leave the browser's own menu alone. */
 	disabled?: boolean
 	onOpenChange?: (open: boolean) => void
+	/** `actions` gives the menu the look of ActionMenu (see Menu). */
+	look?: MenuLook
+	/** Router link for items with an `href` (see Menu). */
+	linkComponent?: ElementType
+	linkProp?: string
 	/** Classes of the wrapping element. */
 	className?: string
 }
@@ -20,7 +25,17 @@ export interface ContextMenuProps {
  * menu there. It is a Menu, so it has the same items, keyboard support (arrows, Home / End, Enter, Escape) and nested
  * submenus; it moves to the other side of the pointer when there is no room. Right-clicking again elsewhere moves it.
  */
-const ContextMenu = ({ items, children, label, disabled = false, onOpenChange, className = '' }: ContextMenuProps) => {
+const ContextMenu = ({
+	items,
+	children,
+	label,
+	disabled = false,
+	onOpenChange,
+	look,
+	linkComponent,
+	linkProp,
+	className = '',
+}: ContextMenuProps) => {
 	const [point, setPoint] = useState<{ x: number; y: number } | null>(null)
 	const anchorRef = useRef<HTMLSpanElement>(null)
 
@@ -55,6 +70,9 @@ const ContextMenu = ({ items, children, label, disabled = false, onOpenChange, c
 				placement="bottom-start"
 				open={point !== null}
 				onOpenChange={setOpen}
+				look={look}
+				linkComponent={linkComponent}
+				linkProp={linkProp}
 			/>
 		</div>
 	)

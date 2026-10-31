@@ -829,3 +829,96 @@ it('leaves no stray timers or portals behind', () => {
 	act(() => {})
 	expect(document.querySelectorAll('[role="menu"]')).toHaveLength(0)
 })
+
+describe('Menu items from ActionMenu', () => {
+	const open = props => {
+		render(<Menu label="File" trigger="File" {...props} />)
+		fireEvent.click(screen.getByRole('button', { name: 'File' }))
+	}
+	const item = name => screen.getByRole('menuitem', { name })
+
+	it('renders description, badge, warning tone and hasDialog', () => {
+		open({
+			items: [
+				{ key: 'a', label: 'Reset', description: 'Clears the counters', badge: 3, tone: 'warning', hasDialog: true },
+			],
+		})
+		const reset = item(/Reset/)
+		expect(reset).toHaveTextContent('Clears the counters')
+		expect(reset).toHaveTextContent('3')
+		expect(reset).toHaveClass('text-amber-700')
+		expect(reset).toHaveAttribute('aria-haspopup', 'dialog')
+	})
+
+	it('renders an href as a link that closes the menu and still calls onClick', () => {
+		const onClick = vi.fn()
+		open({ items: [{ key: 'a', label: 'Apps', href: '/apps', onClick }] })
+		const link = item('Apps')
+		expect(link.tagName).toBe('A')
+		expect(link).toHaveAttribute('href', '/apps')
+		fireEvent.click(link)
+		expect(onClick).toHaveBeenCalledTimes(1)
+		expect(screen.queryByRole('menu')).toBeNull()
+	})
+
+	it('sends site paths through linkComponent and leaves absolute URLs as plain anchors', () => {
+		const RouterLink = ({ to, children, ...rest }) => (
+			<a data-router="yes" data-to={to} {...rest}>
+				{children}
+			</a>
+		)
+		open({
+			linkComponent: RouterLink,
+			linkProp: 'to',
+			items: [
+				{ key: 'a', label: 'Health', href: '/health' },
+				{ key: 'b', label: 'Site', href: 'https://example.com', target: '_blank' },
+			],
+		})
+		expect(item('Health')).toHaveAttribute('data-to', '/health')
+		const site = item(/Site/)
+		expect(site).toHaveAttribute('href', 'https://example.com')
+		expect(site).not.toHaveAttribute('data-router')
+		expect(site).toHaveAttribute('rel', 'noopener noreferrer')
+		expect(site.querySelector('svg')).not.toBeNull() // the external arrow
+		expect(item('Health').querySelector('svg')).toBeNull()
+	})
+
+	it('skips a disabled link with the arrow keys and chooses a focused link with Space', () => {
+		const onClick = vi.fn()
+		open({
+			items: [
+				{ key: 'a', label: 'Alpha', onClick: () => {} },
+				{ key: 'b', label: 'Beta', href: '/beta', disabled: true },
+				{ key: 'c', label: 'Gamma', href: '/gamma', onClick },
+			],
+		})
+		expect(item('Beta')).not.toHaveAttribute('href')
+		expect(item('Beta')).toHaveAttribute('aria-disabled', 'true')
+		const menu = screen.getByRole('menu')
+		expect(item('Alpha')).toHaveFocus()
+		fireEvent.keyDown(menu, { key: 'ArrowDown' })
+		expect(item('Gamma')).toHaveFocus()
+		item('Gamma').addEventListener('click', event => event.preventDefault())
+		fireEvent.keyDown(menu, { key: ' ' })
+		expect(onClick).toHaveBeenCalledTimes(1)
+		expect(screen.queryByRole('menu')).toBeNull()
+	})
+
+	it('takes the ActionMenu look with look="actions", also in submenus, and keeps the compact one by default', () => {
+		const items = [{ key: 'r', label: 'Recent', children: [{ key: 'a', label: 'Report', description: 'PDF' }] }]
+		const { unmount } = render(<Menu label="File" trigger="File" items={items} look="actions" />)
+		fireEvent.click(screen.getByRole('button', { name: 'File' }))
+		expect(screen.getByRole('menu')).toHaveClass('w-60')
+		expect(screen.getByRole('menuitem', { name: /Recent/ })).toHaveClass('border-b')
+		fireEvent.click(screen.getByRole('menuitem', { name: /Recent/ }))
+		const sub = screen.getAllByRole('menu')[1]
+		expect(sub).toHaveClass('w-60')
+		expect(screen.getByText('Report')).toHaveClass('uppercase')
+		unmount()
+		render(<Menu label="File" trigger="File" items={items} />)
+		fireEvent.click(screen.getByRole('button', { name: 'File' }))
+		expect(screen.getByRole('menu')).not.toHaveClass('w-60')
+		expect(screen.getByRole('menuitem', { name: /Recent/ })).not.toHaveClass('border-b')
+	})
+})

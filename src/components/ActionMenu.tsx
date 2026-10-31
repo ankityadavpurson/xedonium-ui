@@ -3,7 +3,7 @@ import type { Placement } from '../types'
 import useDismissable from '../hooks/useDismissable'
 import Button from './Button'
 import FloatingPanel from './FloatingPanel'
-import ArrowUpRightIcon from './icons/ArrowUpRight'
+import { ABSOLUTE, ItemBody, isExternalLink } from './menuItemParts'
 import type { ButtonVariant } from './buttonClass'
 
 export interface ActionMenuItem {
@@ -39,9 +39,6 @@ export interface ActionMenuProps {
 	linkProp?: string
 	className?: string
 }
-
-// "https://...", "//host", "mailto:...": not a path inside the app
-const ABSOLUTE = /^(?:[a-z][a-z\d+.-]*:|\/\/)/i
 
 const TONES: Record<'default' | 'warning' | 'danger', string> = {
 	default: 'text-app-text hover:bg-app-bg',
@@ -153,27 +150,15 @@ const ActionMenu = ({
 				className="w-60 max-w-[calc(100vw-1rem)] overflow-hidden border border-app-border bg-app-card shadow-lg"
 			>
 				{items.map(item => {
-					const external =
-						item.href !== undefined &&
-						(item.external ?? (item.target === '_blank' || /^(?:https?:)?\/\//i.test(item.href)))
 					const content = (
-						<>
-							{item.icon && (
-								<span aria-hidden="true" className="shrink-0 [&>svg]:h-4 [&>svg]:w-4">
-									{item.icon}
-								</span>
-							)}
-							<span className="min-w-0 flex-1">
-								<span className="block text-xs font-medium uppercase tracking-widest">{item.label}</span>
-								{item.description && (
-									<span className="mt-0.5 block text-xs normal-case tracking-normal text-app-muted">
-										{item.description}
-									</span>
-								)}
-							</span>
-							{item.badge != null && <span className="font-mono text-xs">{item.badge}</span>}
-							{external && <ArrowUpRightIcon className="h-3.5 w-3.5 shrink-0" />}
-						</>
+						<ItemBody
+							icon={item.icon}
+							label={item.label}
+							description={item.description}
+							badge={item.badge}
+							external={isExternalLink(item)}
+							look="actions"
+						/>
 					)
 					const itemClass = `flex w-full items-center gap-2 border-b border-app-border bg-app-card px-3 py-2.5 text-left transition last:border-b-0 ${TONES[item.tone || 'default']}`
 					if (item.href === undefined) {
