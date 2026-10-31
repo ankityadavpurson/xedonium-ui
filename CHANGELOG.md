@@ -8,6 +8,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+## [1.25.0] - 2026-10-31
+
 ## [1.24.0] - 2026-10-31
 
 ## [1.23.0] - 2026-10-30
