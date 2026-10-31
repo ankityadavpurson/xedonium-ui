@@ -877,3 +877,45 @@ describe('Drawer sides and animation', () => {
 		}
 	})
 })
+
+describe('ActionMenu headings', () => {
+	it('groups items under a heading that is not a menu item', () => {
+		render(
+			<ActionMenu
+				label="Actions"
+				trigger="Actions"
+				items={[
+					{ key: 'h', heading: 'Page' },
+					{ key: 'a', label: 'Add site' },
+					{ key: 'h2', heading: 'Account' },
+					{ key: 'b', label: 'Sign out' },
+					{ key: 'c', label: 'Help' },
+				]}
+			/>
+		)
+		fireEvent.click(screen.getByRole('button', { name: 'Actions' }))
+		expect(screen.getAllByRole('menuitem')).toHaveLength(3)
+		expect(screen.getByRole('group', { name: 'Page' })).toHaveTextContent('Add site')
+		expect(screen.getByRole('group', { name: 'Account' })).toHaveTextContent('Sign out')
+		fireEvent.keyDown(screen.getByRole('menu'), { key: 'ArrowDown' })
+		expect(screen.getByRole('menuitem', { name: 'Sign out' })).toHaveFocus()
+	})
+})
+
+describe('ActionMenu groups with items', () => {
+	it('renders an item with items as a labelled group', () => {
+		render(
+			<ActionMenu
+				label="Actions"
+				trigger="Actions"
+				items={[
+					{ key: 'g', label: 'Page', items: [{ key: 'a', label: 'Add site' }] },
+					{ key: 'b', label: 'Help' },
+				]}
+			/>
+		)
+		fireEvent.click(screen.getByRole('button', { name: 'Actions' }))
+		expect(screen.getAllByRole('menuitem')).toHaveLength(2)
+		expect(screen.getByRole('group', { name: 'Page' })).toHaveTextContent('Add site')
+	})
+})

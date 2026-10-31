@@ -142,6 +142,12 @@ export default {
 				{
 					example: 4,
 				},
+				{
+					md: '**Headings:** an item with a `heading` is a group label, not an item. The items after it, up to the next heading or divider, are grouped under it for screen readers (`role="group"`), and arrow keys skip it. It works in both looks. Or nest them: an item with `items` is a group, its `label` is the heading, and the items go inside it (dividers and submenus work there too).',
+				},
+				{
+					example: 5,
+				},
 			],
 		},
 	],

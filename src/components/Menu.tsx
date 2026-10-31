@@ -1,5 +1,6 @@
 import {
 	useEffect,
+	useId,
 	useMemo,
 	useRef,
 	useState,
@@ -14,13 +15,17 @@ import Button from './Button'
 import FloatingPanel from './FloatingPanel'
 import type { ButtonVariant } from './buttonClass'
 import ChevronRightIcon from './icons/ChevronRight'
-import { ABSOLUTE, ItemBody, isExternalLink, type MenuLook } from './menuItemParts'
+import { ABSOLUTE, ItemBody, MenuGroup, flattenItems, groupItems, isExternalLink, type MenuLook } from './menuItemParts'
 
 export type { MenuLook }
 
 export interface MenuItem {
 	key: string
 	label?: ReactNode
+	/** Makes the item a group: its label is the heading and these are the items under it. Not an item itself. */
+	items?: MenuItem[]
+	/** A group label instead of an item: the items after it, up to the next heading or divider, are grouped under it. Not focusable and not counted as an item by screen readers. */
+	heading?: ReactNode
 	/** Shown before the label, hidden from screen readers. */
 	icon?: ReactNode
 	/** A keyboard shortcut hint shown at the end, e.g. `Ctrl+C` (display only). */
@@ -113,9 +118,7 @@ const ROWS: Record<MenuLook, string> = {
 
 const enabledItems = (panel: HTMLElement | null) =>
 	panel
-		? Array.from(panel.children).filter((el): el is HTMLElement =>
-				el.matches('[role="menuitem"]:not(:disabled):not([aria-disabled="true"])')
-			)
+		? Array.from(panel.querySelectorAll<HTMLElement>('[role="menuitem"]:not(:disabled):not([aria-disabled="true"])'))
 		: []
 
 const MenuPanel = ({
@@ -134,6 +137,8 @@ const MenuPanel = ({
 	linkProp,
 }: PanelProps) => {
 	const panelRef = useRef<HTMLDivElement>(null)
+	const idPrefix = useId()
+	const flat = useMemo(() => flattenItems(items), [items])
 	const [openKey, setOpenKey] = useState<string | null>(null)
 	const [openedByKeyboard, setOpenedByKeyboard] = useState(false)
 	const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
@@ -180,7 +185,7 @@ const MenuPanel = ({
 				focusAt(list.length - 1)
 				break
 			case 'ArrowRight': {
-				const item = items.find(i => i.key === document.activeElement?.getAttribute('data-key'))
+				const item = flat.find(i => i.key === document.activeElement?.getAttribute('data-key'))
 				if (!item?.children?.length) return
 				openSubmenu(item, document.activeElement as HTMLElement, true)
 				break
@@ -217,7 +222,103 @@ const MenuPanel = ({
 		onChoose()
 	}
 
-	const openItem = items.find(item => item.key === openKey)
+	const openItem = flat.find(item => item.key === openKey)
+
+	const renderItem = (item: MenuItem) => {
+		const hasChildren = !!item.children?.length
+		const body = (
+			<ItemBody
+				icon={item.icon}
+				label={item.label}
+				description={item.description}
+				badge={item.badge}
+				external={!hasChildren && isExternalLink(item)}
+				look={look}
+			>
+				{item.shortcut && <span className="shrink-0 text-xs text-app-muted">{item.shortcut}</span>}
+				{hasChildren && (
+					<span aria-hidden="true" className="shrink-0 text-app-muted">
+						<ChevronRightIcon />
+					</span>
+				)}
+			</ItemBody>
+		)
+		const className = `flex w-full items-center ${ROWS[look]} text-left outline-none transition focus:bg-app-bg ${
+			TONES[look][item.tone ?? 'default']
+		} ${openKey === item.key ? 'bg-app-bg' : ''}`
+		const shared = {
+			role: 'menuitem',
+			'data-key': item.key,
+			tabIndex: -1,
+			onClick: (event: MouseEvent<HTMLElement>) => activate(item, event),
+			onMouseEnter: (event: MouseEvent<HTMLElement>) => {
+				if (item.disabled) return
+				event.currentTarget.focus({ preventScroll: true })
+				if (hasChildren) openSubmenu(item, event.currentTarget, false)
+				else setOpenKey(null)
+			},
+		}
+		if (item.href === undefined || hasChildren) {
+			return (
+				<button
+					key={item.key}
+					type="button"
+					{...shared}
+					disabled={item.disabled}
+					aria-haspopup={hasChildren ? 'menu' : item.hasDialog ? 'dialog' : undefined}
+					aria-expanded={hasChildren ? openKey === item.key : undefined}
+					className={`${className} disabled:cursor-not-allowed disabled:opacity-50`}
+				>
+					{body}
+				</button>
+			)
+		}
+		// A disabled link has nowhere to go: a plain <a> without an href keeps the layout and is skipped by the keys
+		if (item.disabled) {
+			return (
+				<a key={item.key} role="menuitem" aria-disabled="true" className={`${className} cursor-not-allowed opacity-50`}>
+					{body}
+				</a>
+			)
+		}
+		// Only site paths go through the router link; other sites and mailto: / tel: stay plain anchors
+		const plain = ABSOLUTE.test(item.href)
+		const Anchor = plain ? 'a' : Link
+		return (
+			<Anchor
+				key={item.key}
+				{...{ [plain ? 'href' : linkProp]: item.href }}
+				target={item.target}
+				rel={item.target === '_blank' ? 'noopener noreferrer' : undefined}
+				{...shared}
+				aria-haspopup={item.hasDialog ? 'dialog' : undefined}
+				className={className}
+			>
+				{body}
+			</Anchor>
+		)
+	}
+
+	const renderList = (list: MenuItem[]): ReactNode =>
+		groupItems(list).map(group => {
+			if (group.kind === 'divider') {
+				return (
+					<div
+						key={group.item.key}
+						role="separator"
+						className={look === 'actions' ? 'h-2 border-b border-app-border bg-app-bg' : 'my-1 h-px bg-app-border'}
+					/>
+				)
+			}
+			const rows = group.nested ? renderList(group.items) : group.items.map(renderItem)
+			return group.title != null ? (
+				<MenuGroup key={group.key} heading={group.title} id={`${idPrefix}-${group.key}`} look={look}>
+					{rows}
+				</MenuGroup>
+			) : (
+				rows
+			)
+		})
 
 	return (
 		<>
@@ -232,94 +333,7 @@ const MenuPanel = ({
 				onKeyDown={handleKeyDown}
 				className={PANELS[look]}
 			>
-				{items.map(item => {
-					if (item.divider) {
-						return (
-							<div
-								key={item.key}
-								role="separator"
-								className={look === 'actions' ? 'h-2 border-b border-app-border bg-app-bg' : 'my-1 h-px bg-app-border'}
-							/>
-						)
-					}
-					const hasChildren = !!item.children?.length
-					const body = (
-						<ItemBody
-							icon={item.icon}
-							label={item.label}
-							description={item.description}
-							badge={item.badge}
-							external={!hasChildren && isExternalLink(item)}
-							look={look}
-						>
-							{item.shortcut && <span className="shrink-0 text-xs text-app-muted">{item.shortcut}</span>}
-							{hasChildren && (
-								<span aria-hidden="true" className="shrink-0 text-app-muted">
-									<ChevronRightIcon />
-								</span>
-							)}
-						</ItemBody>
-					)
-					const className = `flex w-full items-center ${ROWS[look]} text-left outline-none transition focus:bg-app-bg ${
-						TONES[look][item.tone ?? 'default']
-					} ${openKey === item.key ? 'bg-app-bg' : ''}`
-					const shared = {
-						role: 'menuitem',
-						'data-key': item.key,
-						tabIndex: -1,
-						onClick: (event: MouseEvent<HTMLElement>) => activate(item, event),
-						onMouseEnter: (event: MouseEvent<HTMLElement>) => {
-							if (item.disabled) return
-							event.currentTarget.focus({ preventScroll: true })
-							if (hasChildren) openSubmenu(item, event.currentTarget, false)
-							else setOpenKey(null)
-						},
-					}
-					if (item.href === undefined || hasChildren) {
-						return (
-							<button
-								key={item.key}
-								type="button"
-								{...shared}
-								disabled={item.disabled}
-								aria-haspopup={hasChildren ? 'menu' : item.hasDialog ? 'dialog' : undefined}
-								aria-expanded={hasChildren ? openKey === item.key : undefined}
-								className={`${className} disabled:cursor-not-allowed disabled:opacity-50`}
-							>
-								{body}
-							</button>
-						)
-					}
-					// A disabled link has nowhere to go: a plain <a> without an href keeps the layout and is skipped by the keys
-					if (item.disabled) {
-						return (
-							<a
-								key={item.key}
-								role="menuitem"
-								aria-disabled="true"
-								className={`${className} cursor-not-allowed opacity-50`}
-							>
-								{body}
-							</a>
-						)
-					}
-					// Only site paths go through the router link; other sites and mailto: / tel: stay plain anchors
-					const plain = ABSOLUTE.test(item.href)
-					const Anchor = plain ? 'a' : Link
-					return (
-						<Anchor
-							key={item.key}
-							{...{ [plain ? 'href' : linkProp]: item.href }}
-							target={item.target}
-							rel={item.target === '_blank' ? 'noopener noreferrer' : undefined}
-							{...shared}
-							aria-haspopup={item.hasDialog ? 'dialog' : undefined}
-							className={className}
-						>
-							{body}
-						</Anchor>
-					)
-				})}
+				{renderList(items)}
 			</FloatingPanel>
 			{openItem?.children && (
 				<MenuPanel

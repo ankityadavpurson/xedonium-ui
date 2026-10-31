@@ -922,3 +922,94 @@ describe('Menu items from ActionMenu', () => {
 		expect(screen.getByRole('menuitem', { name: /Recent/ })).not.toHaveClass('border-b')
 	})
 })
+
+describe('Menu headings', () => {
+	const items = [
+		{ key: 'h1', heading: 'Page' },
+		{ key: 'a', label: 'Add site' },
+		{ key: 'h2', heading: 'Account' },
+		{ key: 'b', label: 'Sign out' },
+		{ key: 'd', divider: true },
+		{ key: 'c', label: 'Help' },
+	]
+	const open = props => {
+		render(<Menu label="File" trigger="File" items={items} {...props} />)
+		fireEvent.click(screen.getByRole('button', { name: 'File' }))
+	}
+
+	it('groups the items under a heading that is not a menu item', () => {
+		open()
+		expect(screen.getAllByRole('menuitem').map(el => el.textContent)).toEqual(['Add site', 'Sign out', 'Help'])
+		const page = screen.getByRole('group', { name: 'Page' })
+		expect(page).toHaveTextContent('Add site')
+		expect(page).not.toHaveTextContent('Sign out')
+		expect(screen.getByRole('group', { name: 'Account' })).toHaveTextContent('Sign out')
+		// the divider ends a group: the item after it is not in one
+		expect(screen.getByRole('menuitem', { name: 'Help' }).closest('[role="group"]')).toBeNull()
+	})
+
+	it('keeps arrow keys, Home and End on the items only', () => {
+		open()
+		const menu = screen.getByRole('menu')
+		expect(screen.getByRole('menuitem', { name: 'Add site' })).toHaveFocus()
+		fireEvent.keyDown(menu, { key: 'ArrowDown' })
+		expect(screen.getByRole('menuitem', { name: 'Sign out' })).toHaveFocus()
+		fireEvent.keyDown(menu, { key: 'End' })
+		expect(screen.getByRole('menuitem', { name: 'Help' })).toHaveFocus()
+		fireEvent.keyDown(menu, { key: 'Home' })
+		expect(screen.getByRole('menuitem', { name: 'Add site' })).toHaveFocus()
+	})
+
+	it('works in the actions look and in a submenu', () => {
+		open({
+			look: 'actions',
+			items: [
+				{
+					key: 'more',
+					label: 'More',
+					children: [
+						{ key: 'h', heading: 'Inner' },
+						{ key: 'x', label: 'Deep' },
+					],
+				},
+			],
+		})
+		fireEvent.click(screen.getByRole('menuitem', { name: 'More' }))
+		const group = screen.getByRole('group', { name: 'Inner' })
+		expect(group).toHaveTextContent('Deep')
+		expect(group).toHaveClass('first:border-t-0')
+	})
+})
+
+describe('Menu groups with items', () => {
+	it('renders an item with items as a labelled group, with dividers and submenus inside', () => {
+		render(
+			<Menu
+				label="File"
+				trigger="File"
+				items={[
+					{
+						key: 'page',
+						label: 'Page',
+						items: [
+							{ key: 'a', label: 'Add site' },
+							{ key: 'd', divider: true },
+							{ key: 'more', label: 'More', children: [{ key: 'x', label: 'Deep' }] },
+						],
+					},
+					{ key: 'b', label: 'Help' },
+				]}
+			/>
+		)
+		fireEvent.click(screen.getByRole('button', { name: 'File' }))
+		expect(screen.getAllByRole('menuitem').map(el => el.textContent)).toEqual(['Add site', 'More', 'Help'])
+		const group = screen.getByRole('group', { name: 'Page' })
+		expect(group).toHaveTextContent('Add site')
+		expect(group).not.toHaveTextContent('Help')
+		expect(group.querySelector('[role="separator"]')).not.toBeNull()
+		// a submenu opened from inside a group still works with the keyboard
+		screen.getByRole('menuitem', { name: 'More' }).focus()
+		fireEvent.keyDown(screen.getByRole('menu'), { key: 'ArrowRight' })
+		expect(screen.getByRole('menuitem', { name: 'Deep' })).toBeInTheDocument()
+	})
+})

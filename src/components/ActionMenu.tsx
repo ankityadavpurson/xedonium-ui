@@ -3,12 +3,16 @@ import type { Placement } from '../types'
 import useDismissable from '../hooks/useDismissable'
 import Button from './Button'
 import FloatingPanel from './FloatingPanel'
-import { ABSOLUTE, ItemBody, isExternalLink } from './menuItemParts'
+import { ABSOLUTE, ItemBody, MenuGroup, groupItems, isExternalLink } from './menuItemParts'
 import type { ButtonVariant } from './buttonClass'
 
 export interface ActionMenuItem {
 	key: string
-	label: ReactNode
+	label?: ReactNode
+	/** Makes the item a group: its label is the heading and these are the items under it. Not an item itself. */
+	items?: ActionMenuItem[]
+	/** A group label instead of an item: the items after it, up to the next heading, are grouped under it. Not focusable and not counted as an item by screen readers. */
+	heading?: ReactNode
 	/** A decorative icon before the label (hidden from screen readers). */
 	icon?: ReactNode
 	description?: ReactNode
@@ -71,6 +75,7 @@ const ActionMenu = ({
 	const rootRef = useRef<HTMLDivElement>(null)
 	const panelRef = useRef<HTMLDivElement>(null)
 	const menuId = useId()
+	const idPrefix = useId()
 
 	useDismissable(open, [rootRef, panelRef], reason => {
 		setOpen(false)
@@ -120,10 +125,76 @@ const ActionMenu = ({
 		event.preventDefault()
 	}
 
+	const renderItem = (item: ActionMenuItem) => {
+		const content = (
+			<ItemBody
+				icon={item.icon}
+				label={item.label}
+				description={item.description}
+				badge={item.badge}
+				external={isExternalLink(item)}
+				look="actions"
+			/>
+		)
+		const itemClass = `flex w-full items-center gap-2 border-b border-app-border bg-app-card px-3 py-2.5 text-left transition last:border-b-0 ${TONES[item.tone || 'default']}`
+		if (item.href === undefined) {
+			return (
+				<button
+					key={item.key}
+					type="button"
+					role="menuitem"
+					disabled={item.disabled}
+					aria-haspopup={item.hasDialog ? 'dialog' : undefined}
+					onClick={() => run(item)}
+					className={`${itemClass} disabled:cursor-not-allowed disabled:opacity-50`}
+				>
+					{content}
+				</button>
+			)
+		}
+		// A disabled link has nowhere to go: a plain <a> without an href keeps the layout and is skipped by Tab
+		if (item.disabled) {
+			return (
+				<a key={item.key} role="menuitem" aria-disabled="true" className={`${itemClass} cursor-not-allowed opacity-50`}>
+					{content}
+				</a>
+			)
+		}
+		// Only site paths go through the router link; other sites and mailto: / tel: stay plain anchors
+		const plain = ABSOLUTE.test(item.href)
+		const Anchor = plain ? 'a' : Link
+		return (
+			<Anchor
+				key={item.key}
+				{...{ [plain ? 'href' : linkProp]: item.href }}
+				target={item.target}
+				rel={item.target === '_blank' ? 'noopener noreferrer' : undefined}
+				role="menuitem"
+				onClick={() => run(item)}
+				className={itemClass}
+			>
+				{content}
+			</Anchor>
+		)
+	}
+
 	const run = (item: ActionMenuItem) => {
 		setOpen(false)
 		item.onClick?.()
 	}
+
+	const renderList = (list: ActionMenuItem[]): ReactNode =>
+		groupItems(list).map(group => {
+			if (group.kind === 'divider') return null
+			const rows = group.nested ? renderList(group.items) : group.items.map(renderItem)
+			return group.title != null ? (
+				<MenuGroup key={group.key} heading={group.title} id={`${idPrefix}-${group.key}`} look="actions">
+					{rows}
+				</MenuGroup>
+			) : (
+				rows
+			)
+		})
 
 	return (
 		<div ref={rootRef} className={`relative inline-block ${className}`}>
@@ -149,63 +220,7 @@ const ActionMenu = ({
 				aria-label={label}
 				className="w-60 max-w-[calc(100vw-1rem)] overflow-hidden border border-app-border bg-app-card shadow-lg"
 			>
-				{items.map(item => {
-					const content = (
-						<ItemBody
-							icon={item.icon}
-							label={item.label}
-							description={item.description}
-							badge={item.badge}
-							external={isExternalLink(item)}
-							look="actions"
-						/>
-					)
-					const itemClass = `flex w-full items-center gap-2 border-b border-app-border bg-app-card px-3 py-2.5 text-left transition last:border-b-0 ${TONES[item.tone || 'default']}`
-					if (item.href === undefined) {
-						return (
-							<button
-								key={item.key}
-								type="button"
-								role="menuitem"
-								disabled={item.disabled}
-								aria-haspopup={item.hasDialog ? 'dialog' : undefined}
-								onClick={() => run(item)}
-								className={`${itemClass} disabled:cursor-not-allowed disabled:opacity-50`}
-							>
-								{content}
-							</button>
-						)
-					}
-					// A disabled link has nowhere to go: a plain <a> without an href keeps the layout and is skipped by Tab
-					if (item.disabled) {
-						return (
-							<a
-								key={item.key}
-								role="menuitem"
-								aria-disabled="true"
-								className={`${itemClass} cursor-not-allowed opacity-50`}
-							>
-								{content}
-							</a>
-						)
-					}
-					// Only site paths go through the router link; other sites and mailto: / tel: stay plain anchors
-					const plain = ABSOLUTE.test(item.href)
-					const Anchor = plain ? 'a' : Link
-					return (
-						<Anchor
-							key={item.key}
-							{...{ [plain ? 'href' : linkProp]: item.href }}
-							target={item.target}
-							rel={item.target === '_blank' ? 'noopener noreferrer' : undefined}
-							role="menuitem"
-							onClick={() => run(item)}
-							className={itemClass}
-						>
-							{content}
-						</Anchor>
-					)
-				})}
+				{renderList(items)}
 			</FloatingPanel>
 		</div>
 	)

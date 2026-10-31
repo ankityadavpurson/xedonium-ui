@@ -31,6 +31,12 @@ export default {
 				{
 					example: 2,
 				},
+				{
+					md: '**Headings:** an item with a `heading` is a label, not an action. The items after it, up to the next heading, are grouped under it for screen readers (`role="group"`), and arrow keys skip it. Or nest them: an item with `items` is a group, its `label` is the heading, and the items go inside it.',
+				},
+				{
+					example: 3,
+				},
 			],
 		},
 		{

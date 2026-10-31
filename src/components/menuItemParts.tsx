@@ -47,3 +47,75 @@ export const ItemBody = ({ icon, label, description, badge, external, look, chil
 		{children}
 	</>
 )
+
+interface GroupableItem<T> {
+	key: string
+	label?: ReactNode
+	heading?: ReactNode
+	divider?: boolean
+	/** A group: the label is its heading and these are its items. */
+	items?: T[]
+}
+
+export type ItemGroup<T> =
+	{ kind: 'divider'; item: T } | { kind: 'items'; key?: string; title?: ReactNode; items: T[]; nested?: boolean }
+
+/**
+ * Splits an item list into the pieces a menu renders: dividers and groups. A group is either an item with `items`, or the
+ * run of items that follows a `heading` item (up to the next heading or divider). Items before the first heading are loose.
+ */
+export const groupItems = <T extends GroupableItem<T>>(items: T[]): ItemGroup<T>[] => {
+	const groups: ItemGroup<T>[] = []
+	let current: Extract<ItemGroup<T>, { kind: 'items' }> | null = null
+	for (const item of items) {
+		if (item.divider) {
+			current = null
+			groups.push({ kind: 'divider', item })
+		} else if (item.items) {
+			current = null
+			groups.push({ kind: 'items', key: item.key, title: item.heading ?? item.label, items: item.items, nested: true })
+		} else if (item.heading != null) {
+			current = { kind: 'items', key: item.key, title: item.heading, items: [] }
+			groups.push(current)
+		} else {
+			if (!current) {
+				current = { kind: 'items', items: [] }
+				groups.push(current)
+			}
+			current.items.push(item)
+		}
+	}
+	return groups
+}
+
+/** Every item that can be focused or opened, with the items of groups pulled up to one list. */
+export const flattenItems = <T extends GroupableItem<T>>(items: T[]): T[] =>
+	items.flatMap(item => (item.items ? flattenItems(item.items) : [item]))
+
+const GROUP_CLASS: Record<MenuLook, string> = {
+	default: '',
+	actions: 'border-t border-app-border first:border-t-0',
+}
+
+const HEADING_CLASS: Record<MenuLook, string> = {
+	default: 'px-3 pb-1 pt-2 text-xs font-medium uppercase tracking-wider text-app-muted',
+	actions:
+		'border-b border-app-border bg-app-bg px-3 py-1.5 text-xs font-medium uppercase tracking-widest text-app-muted',
+}
+
+interface ItemGroupProps {
+	heading: ReactNode
+	id: string
+	look: MenuLook
+	children: ReactNode
+}
+
+/** A labelled run of items: the heading is plain text for assistive technology, not a menu item. */
+export const MenuGroup = ({ heading, id, look, children }: ItemGroupProps) => (
+	<div role="group" aria-labelledby={id} className={GROUP_CLASS[look]}>
+		<div id={id} role="presentation" className={HEADING_CLASS[look]}>
+			{heading}
+		</div>
+		{children}
+	</div>
+)
