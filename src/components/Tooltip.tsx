@@ -31,7 +31,9 @@ export interface TooltipProps {
 
 // A display utility in `className` (flex, block, ...) replaces the wrapper's default inline-flex
 const hasDisplay = (className: string) =>
-	className.split(/\s+/).some(token => /^(block|inline|inline-block|flex|inline-flex|grid|inline-grid|contents|hidden)$/.test(token))
+	className
+		.split(/\s+/)
+		.some(token => /^(block|inline|inline-block|flex|inline-flex|grid|inline-grid|contents|hidden)$/.test(token))
 
 const GAP = 6 // px between trigger and tooltip
 

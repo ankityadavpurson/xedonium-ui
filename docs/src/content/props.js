@@ -10,7 +10,19 @@ const link = [
 ]
 const menuItemRows = [
 	['key', 'string', '', 'Unique key of the item.'],
-	['label', 'ReactNode', '', 'Text of the item (not needed for a divider).'],
+	['label', 'ReactNode', '', 'Text of the item (not needed for a divider or heading).'],
+	[
+		'heading',
+		'ReactNode',
+		'',
+		'A group label instead of an item; the items after it, up to the next heading or divider, are grouped under it.',
+	],
+	[
+		'items',
+		'MenuItem[]',
+		'',
+		'Makes the item a group: its label is the heading and these are the items under it (dividers and submenus work inside).',
+	],
 	['icon', 'ReactNode', '', 'Shown before the label, hidden from screen readers.'],
 	['description', 'ReactNode', '', 'A smaller grey line under the label.'],
 	['badge', 'ReactNode', '', 'Short value at the end of the row, e.g. a count.'],
@@ -1056,7 +1068,14 @@ const props = {
 		],
 		ActionMenuItem: [
 			['key', 'string', '', 'Unique key of the item.'],
-			['label', 'ReactNode', '', 'Text of the item.'],
+			['label', 'ReactNode', '', 'Text of the item (not needed for a heading).'],
+			['heading', 'ReactNode', '', 'A group label instead of an item; the items after it are grouped under it.'],
+			[
+				'items',
+				'ActionMenuItem[]',
+				'',
+				'Makes the item a group: its label is the heading and these are the items under it.',
+			],
 			['icon', 'ReactNode', '', 'Decorative icon before the label (hidden from screen readers).'],
 			['description', 'ReactNode', '', 'Smaller line under the label.'],
 			['badge', 'ReactNode', '', 'Short value shown at the end of the row, e.g. a count.'],

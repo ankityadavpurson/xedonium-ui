@@ -22,7 +22,8 @@ describe('highlight', () => {
 	})
 
 	it('colors yaml keys, scalars, comments and actions expressions', () => {
-		const code = '# ci\non: push\njobs:\n  - name: "Build"\n    run: echo ${{ github.ref }} # now\n    retries: 3\n    url: http://a#b\n'
+		const code =
+			'# ci\non: push\njobs:\n  - name: "Build"\n    run: echo ${{ github.ref }} # now\n    retries: 3\n    url: http://a#b\n'
 		expect(colored(code, 'yml')).toEqual([
 			['comment', '# ci'],
 			['attr', 'on'],

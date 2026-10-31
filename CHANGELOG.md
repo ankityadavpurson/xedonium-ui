@@ -14,6 +14,7 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `Menu`, `ContextMenu` and `ActionMenu` items accept `heading`: a group label that is not a menu item for screen readers. The items after it are grouped under it (`role="group"`), and arrow keys skip it. It works in both looks. An item with `items` is also a group, with its `label` as the heading (#109).
 - `Menu` and `ContextMenu` items accept `description`, `badge`, `href` (a real link, with `target` and `external`), `tone: 'warning'` and `hasDialog`, as in `ActionMenu`; `linkComponent` and `linkProp` swap in a router link for site paths. The new `look="actions"` prop gives the menu the look of `ActionMenu` (uppercase labels, ruled rows, a fixed width), also in submenus; the default look is unchanged (#107).
 
 ### Added
