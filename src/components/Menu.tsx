@@ -3,6 +3,7 @@ import {
 	useMemo,
 	useRef,
 	useState,
+	type ElementType,
 	type KeyboardEvent,
 	type MouseEvent,
 	type ReactNode,
@@ -13,6 +14,9 @@ import Button from './Button'
 import FloatingPanel from './FloatingPanel'
 import type { ButtonVariant } from './buttonClass'
 import ChevronRightIcon from './icons/ChevronRight'
+import { ABSOLUTE, ItemBody, isExternalLink, type MenuLook } from './menuItemParts'
+
+export type { MenuLook }
 
 export interface MenuItem {
 	key: string
@@ -22,7 +26,19 @@ export interface MenuItem {
 	/** A keyboard shortcut hint shown at the end, e.g. `Ctrl+C` (display only). */
 	shortcut?: string
 	disabled?: boolean
-	tone?: 'default' | 'danger'
+	tone?: 'default' | 'warning' | 'danger'
+	/** A smaller grey line under the label. */
+	description?: ReactNode
+	/** A short value at the end of the row, e.g. a count. */
+	badge?: ReactNode
+	/** Marks an item that opens a dialog (`aria-haspopup="dialog"`). */
+	hasDialog?: boolean
+	/** Makes the item a link (`<a href>`, or your `linkComponent`) instead of a button; `onClick` is then optional. Ignored when the item has `children`. */
+	href?: string
+	/** For link items: where to open it, e.g. `_blank` (which also adds `rel="noopener noreferrer"`). */
+	target?: string
+	/** Shows the external-link arrow. By default a link is external when it has `target="_blank"` or an absolute `http(s)://` address. */
+	external?: boolean
 	onClick?: () => void
 	/** Makes the item open a submenu with these items. */
 	children?: MenuItem[]
@@ -44,6 +60,11 @@ export interface MenuProps {
 	onOpenChange?: (open: boolean) => void
 	/** Element the menu is placed next to when there is no trigger (a context menu, a custom button). */
 	anchorRef?: RefObject<HTMLElement>
+	/** `actions` gives the menu the look of ActionMenu (uppercase labels, ruled rows, a fixed width); `default` is the compact one. */
+	look?: MenuLook
+	/** Swap in a router link for items with an `href`, e.g. `linkComponent={Link} linkProp="to"` (as in Breadcrumb). */
+	linkComponent?: ElementType
+	linkProp?: string
 	className?: string
 }
 
@@ -62,16 +83,39 @@ interface PanelProps {
 	/** Escape / ArrowLeft: close this level only (the root closes the whole menu). */
 	onCloseLevel: () => void
 	onCloseAll: () => void
+	look: MenuLook
+	linkComponent: ElementType
+	linkProp: string
 }
 
-const TONES = {
-	default: 'text-app-text',
-	danger: 'text-red-700 dark:text-red-400',
+const TONES: Record<MenuLook, Record<'default' | 'warning' | 'danger', string>> = {
+	default: {
+		default: 'text-app-text',
+		warning: 'text-amber-700 dark:text-amber-400',
+		danger: 'text-red-700 dark:text-red-400',
+	},
+	actions: {
+		default: 'text-app-text hover:bg-app-bg',
+		warning: 'text-amber-700 hover:bg-amber-400/10 dark:text-amber-400',
+		danger: 'text-red-700 hover:bg-red-500/10 focus-visible:bg-red-500/10 dark:text-red-400',
+	},
+}
+
+const PANELS: Record<MenuLook, string> = {
+	default: 'min-w-[12rem] max-w-[calc(100vw-1rem)] border border-app-border bg-app-card py-1 shadow-xl',
+	actions: 'w-60 max-w-[calc(100vw-1rem)] overflow-hidden border border-app-border bg-app-card shadow-xl',
+}
+
+const ROWS: Record<MenuLook, string> = {
+	default: 'gap-3 px-3 py-2 text-sm',
+	actions: 'gap-2 border-b border-app-border bg-app-card px-3 py-2.5 last:border-b-0',
 }
 
 const enabledItems = (panel: HTMLElement | null) =>
 	panel
-		? Array.from(panel.children).filter((el): el is HTMLElement => el.matches('[role="menuitem"]:not(:disabled)'))
+		? Array.from(panel.children).filter((el): el is HTMLElement =>
+				el.matches('[role="menuitem"]:not(:disabled):not([aria-disabled="true"])')
+			)
 		: []
 
 const MenuPanel = ({
@@ -85,6 +129,9 @@ const MenuPanel = ({
 	onChoose,
 	onCloseLevel,
 	onCloseAll,
+	look,
+	linkComponent: Link,
+	linkProp,
 }: PanelProps) => {
 	const panelRef = useRef<HTMLDivElement>(null)
 	const [openKey, setOpenKey] = useState<string | null>(null)
@@ -145,6 +192,11 @@ const MenuPanel = ({
 			case 'Escape':
 				onCloseLevel()
 				break
+			case ' ':
+				// buttons choose on Space natively; links only on Enter
+				if (!(document.activeElement instanceof HTMLAnchorElement)) return
+				document.activeElement.click()
+				break
 			case 'Tab':
 				onCloseAll()
 				return
@@ -156,7 +208,7 @@ const MenuPanel = ({
 		event.nativeEvent.stopPropagation()
 	}
 
-	const activate = (item: MenuItem, event: MouseEvent<HTMLButtonElement>) => {
+	const activate = (item: MenuItem, event: MouseEvent<HTMLElement>) => {
 		if (item.children?.length) {
 			openSubmenu(item, event.currentTarget, event.detail === 0)
 			return
@@ -178,45 +230,94 @@ const MenuPanel = ({
 				role="menu"
 				aria-label={label}
 				onKeyDown={handleKeyDown}
-				className="min-w-[12rem] max-w-[calc(100vw-1rem)] border border-app-border bg-app-card py-1 shadow-xl"
+				className={PANELS[look]}
 			>
 				{items.map(item => {
-					if (item.divider) return <div key={item.key} role="separator" className="my-1 h-px bg-app-border" />
+					if (item.divider) {
+						return (
+							<div
+								key={item.key}
+								role="separator"
+								className={look === 'actions' ? 'h-2 border-b border-app-border bg-app-bg' : 'my-1 h-px bg-app-border'}
+							/>
+						)
+					}
 					const hasChildren = !!item.children?.length
-					return (
-						<button
-							key={item.key}
-							type="button"
-							role="menuitem"
-							data-key={item.key}
-							disabled={item.disabled}
-							tabIndex={-1}
-							aria-haspopup={hasChildren ? 'menu' : undefined}
-							aria-expanded={hasChildren ? openKey === item.key : undefined}
-							onClick={event => activate(item, event)}
-							onMouseEnter={event => {
-								if (item.disabled) return
-								event.currentTarget.focus({ preventScroll: true })
-								if (hasChildren) openSubmenu(item, event.currentTarget, false)
-								else setOpenKey(null)
-							}}
-							className={`flex w-full items-center gap-3 px-3 py-2 text-left text-sm outline-none transition focus:bg-app-bg disabled:cursor-not-allowed disabled:opacity-50 ${
-								TONES[item.tone ?? 'default']
-							} ${openKey === item.key ? 'bg-app-bg' : ''}`}
+					const body = (
+						<ItemBody
+							icon={item.icon}
+							label={item.label}
+							description={item.description}
+							badge={item.badge}
+							external={!hasChildren && isExternalLink(item)}
+							look={look}
 						>
-							{item.icon && (
-								<span aria-hidden="true" className="shrink-0 [&>svg]:h-4 [&>svg]:w-4">
-									{item.icon}
-								</span>
-							)}
-							<span className="min-w-0 flex-1 truncate">{item.label}</span>
 							{item.shortcut && <span className="shrink-0 text-xs text-app-muted">{item.shortcut}</span>}
 							{hasChildren && (
 								<span aria-hidden="true" className="shrink-0 text-app-muted">
 									<ChevronRightIcon />
 								</span>
 							)}
-						</button>
+						</ItemBody>
+					)
+					const className = `flex w-full items-center ${ROWS[look]} text-left outline-none transition focus:bg-app-bg ${
+						TONES[look][item.tone ?? 'default']
+					} ${openKey === item.key ? 'bg-app-bg' : ''}`
+					const shared = {
+						role: 'menuitem',
+						'data-key': item.key,
+						tabIndex: -1,
+						onClick: (event: MouseEvent<HTMLElement>) => activate(item, event),
+						onMouseEnter: (event: MouseEvent<HTMLElement>) => {
+							if (item.disabled) return
+							event.currentTarget.focus({ preventScroll: true })
+							if (hasChildren) openSubmenu(item, event.currentTarget, false)
+							else setOpenKey(null)
+						},
+					}
+					if (item.href === undefined || hasChildren) {
+						return (
+							<button
+								key={item.key}
+								type="button"
+								{...shared}
+								disabled={item.disabled}
+								aria-haspopup={hasChildren ? 'menu' : item.hasDialog ? 'dialog' : undefined}
+								aria-expanded={hasChildren ? openKey === item.key : undefined}
+								className={`${className} disabled:cursor-not-allowed disabled:opacity-50`}
+							>
+								{body}
+							</button>
+						)
+					}
+					// A disabled link has nowhere to go: a plain <a> without an href keeps the layout and is skipped by the keys
+					if (item.disabled) {
+						return (
+							<a
+								key={item.key}
+								role="menuitem"
+								aria-disabled="true"
+								className={`${className} cursor-not-allowed opacity-50`}
+							>
+								{body}
+							</a>
+						)
+					}
+					// Only site paths go through the router link; other sites and mailto: / tel: stay plain anchors
+					const plain = ABSOLUTE.test(item.href)
+					const Anchor = plain ? 'a' : Link
+					return (
+						<Anchor
+							key={item.key}
+							{...{ [plain ? 'href' : linkProp]: item.href }}
+							target={item.target}
+							rel={item.target === '_blank' ? 'noopener noreferrer' : undefined}
+							{...shared}
+							aria-haspopup={item.hasDialog ? 'dialog' : undefined}
+							className={className}
+						>
+							{body}
+						</Anchor>
 					)
 				})}
 			</FloatingPanel>
@@ -232,6 +333,9 @@ const MenuPanel = ({
 					onChoose={onChoose}
 					onCloseLevel={closeSubmenu}
 					onCloseAll={onCloseAll}
+					look={look}
+					linkComponent={Link}
+					linkProp={linkProp}
 				/>
 			)}
 		</>
@@ -243,7 +347,9 @@ const MenuPanel = ({
  * item `children`). Arrow keys move, Home / End jump, Enter or Space chooses, Right opens a submenu and Left or Escape
  * closes it (Escape on the top level closes the menu and returns focus to the trigger). Hovering an item with a submenu
  * opens it. Outside clicks close everything. Without a `trigger`, pass `anchorRef` and control `open` yourself
- * (a context menu, a custom button). Use ActionMenu for a plain, flat list of page actions.
+ * (a context menu, a custom button). Items take the same fields as ActionMenu (`description`, `badge`, `href`,
+ * `tone`, `hasDialog`); `look="actions"` gives the menu ActionMenu's appearance, so the two can sit side by side.
+ * Use ActionMenu for a plain, flat list of page actions.
  */
 const Menu = ({
 	items,
@@ -255,6 +361,9 @@ const Menu = ({
 	defaultOpen = false,
 	onOpenChange,
 	anchorRef,
+	look = 'default',
+	linkComponent = 'a',
+	linkProp = 'href',
 	className = '',
 }: MenuProps) => {
 	const [inner, setInner] = useState(defaultOpen)
@@ -312,6 +421,9 @@ const Menu = ({
 					onChoose={() => close(true)}
 					onCloseLevel={() => close(true)}
 					onCloseAll={() => close(false)}
+					look={look}
+					linkComponent={linkComponent}
+					linkProp={linkProp}
 				/>
 			)}
 		</div>

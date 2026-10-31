@@ -119,7 +119,7 @@ export default {
 			name: 'Menu',
 			blocks: [
 				{
-					md: 'A menu of actions that opens from a trigger button, with icons, `shortcut` hints, dividers (`{ key, divider: true }`) and `tone="danger"` items. Arrow keys move, Home / End jump, Enter or Space chooses, and Escape closes the menu and returns focus to the trigger. Outside clicks close it. For a plain, flat list of page actions, [ActionMenu](/components/overlay/actionmenu) is lighter.',
+					md: 'A menu of actions that opens from a trigger button, with icons, `shortcut` hints, dividers (`{ key, divider: true }`) and `tone="danger"` items. Arrow keys move, Home / End jump, Enter or Space chooses, and Escape closes the menu and returns focus to the trigger. Outside clicks close it. Items take the same fields as [ActionMenu](/components/overlay/actionmenu): `description`, `badge`, `href` (a real link, with `linkComponent` / `linkProp` for router links), `tone="warning"` and `hasDialog`. For a plain, flat list of page actions, ActionMenu is lighter.',
 				},
 				{
 					example: 1,
@@ -135,6 +135,12 @@ export default {
 				},
 				{
 					example: 3,
+				},
+				{
+					md: '**Same look as ActionMenu:** `look="actions"` gives the menu ActionMenu\'s appearance (uppercase labels, ruled rows, a fixed width), also in submenus. Use it when the app shows both menus, or when an action menu needs a submenu.',
+				},
+				{
+					example: 4,
 				},
 			],
 		},

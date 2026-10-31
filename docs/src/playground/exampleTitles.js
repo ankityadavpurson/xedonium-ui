@@ -37,7 +37,7 @@ export default {
 	'media/carousel': ['Basic', 'Image slides', 'Custom labels'],
 	'media/image': ['Ratios', 'Fallback'],
 	'navigation/backtotop': ['Basic', 'Corners and shapes'],
-	'navigation/menu': ['Actions', 'Nested menus', 'Custom anchor'],
+	'navigation/menu': ['Actions', 'Nested menus', 'Custom anchor', 'Same look as ActionMenu'],
 	'navigation/scrollprogress': ['Bar', 'Button'],
 	'overlay/confirmdialog': ['Confirm', 'Typed confirmation'],
 	'overlay/dialog': ['Basic', 'Form', 'Full screen'],
