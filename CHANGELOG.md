@@ -8,6 +8,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+## [1.25.1] - 2026-11-01
+
 ### Fixed
 
 - `Sidebar` shows each entry's label in a `Tooltip` when `collapsed`, instead of the browser's native `title`; the entry keeps its `aria-label` (#112).
