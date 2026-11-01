@@ -57,7 +57,7 @@ export interface SidebarProps {
  * Vertical navigation. items: [{ key, label, icon?, href?, onClick?, badge?, children? }]; `children` makes a group
  * with an indented sub-list. `activeKey` marks the current item; `onSelect(key)` fires on any item click.
  * `collapsed` shows icons only (give every item an `icon`). `linkComponent` / `linkProp` swap in a router link.
- * `section: true` makes an item a caption (a thin divider when collapsed). Labels cut off by the width get a tooltip.
+ * `section: true` makes an item a caption (a thin divider when collapsed). Labels cut off by the width get a tooltip, and collapsed entries show their label in one.
  * `bordered={false}` removes the separators; `density` sets the item height; `headerClassName` / `listClassName` replace
  * the header and list padding. `divider: true` adds a plain rule; `borderRight` and `bordered` can differ;
  * `width`, `textCase`, `iconSize` and `itemClassName` adjust the size and look of the rows.
@@ -129,15 +129,12 @@ const Sidebar = ({
 			onSelect?.(item.key)
 		}
 		const hasChildren = !!item.children?.length
-		// Collapsed items already carry the label as `title`; expanded ones get a tooltip if the label is truncated
-		const withTip = (node: ReactElement<{ 'aria-label'?: string }>) =>
-			collapsed ? (
-				node
-			) : (
-				<Tooltip text={item.label} placement="right" onlyIfTruncated className="flex w-full">
-					{node}
-				</Tooltip>
-			)
+		// Collapsed items show only an icon, so the label is always their tooltip; expanded ones get one if the label is truncated
+		const withTip = (node: ReactElement<{ 'aria-label'?: string }>) => (
+			<Tooltip text={item.label} placement="right" onlyIfTruncated={!collapsed} className="flex w-full">
+				{node}
+			</Tooltip>
+		)
 
 		return (
 			<li key={item.key}>
@@ -147,7 +144,6 @@ const Sidebar = ({
 								{...{ [linkProp]: item.href }}
 								aria-current={active ? 'page' : undefined}
 								aria-label={collapsed ? item.label : undefined}
-								title={collapsed ? item.label : undefined}
 								onClick={handle}
 								className={classes}
 								style={style}
@@ -160,7 +156,6 @@ const Sidebar = ({
 								type="button"
 								aria-current={active ? 'page' : undefined}
 								aria-label={collapsed ? item.label : undefined}
-								title={collapsed ? item.label : undefined}
 								onClick={handle}
 								className={classes}
 								style={style}
