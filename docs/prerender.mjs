@@ -12,7 +12,7 @@ import { pathToFileURL } from 'node:url'
 const root = import.meta.dirname
 const dist = path.join(root, 'dist')
 const ssrDir = path.join(root, 'dist-ssr')
-const SITE = 'https://xedonium-ui.web.app'
+const SITE = 'https://xedonium.web.app'
 
 const { render, routes } = await import(pathToFileURL(path.join(ssrDir, 'entry-server.js')).href)
 const template = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')

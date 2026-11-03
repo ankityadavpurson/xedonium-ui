@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /preview/
 
-Sitemap: https://xedonium-ui.web.app/sitemap.xml
+Sitemap: https://xedonium.web.app/sitemap.xml

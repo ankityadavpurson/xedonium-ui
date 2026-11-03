@@ -2,14 +2,14 @@
 	"specVersion": "1.0",
 	"host": {
 		"displayName": "Xedonium",
-		"documentationUrl": "https://xedonium-ui.web.app/getting-started"
+		"documentationUrl": "https://xedonium.web.app/getting-started"
 	},
 	"entries": [
 		{
-			"identifier": "urn:air:xedonium-ui.web.app:docs:llms-txt",
+			"identifier": "urn:air:xedonium.web.app:docs:llms-txt",
 			"displayName": "Xedonium documentation index",
 			"type": "text/plain",
-			"url": "https://xedonium-ui.web.app/llms.txt",
+			"url": "https://xedonium.web.app/llms.txt",
 			"description": "Every Xedonium component and guide, one link each, for LLMs.",
 			"representativeQueries": [
 				"Which React components does Xedonium have?",
