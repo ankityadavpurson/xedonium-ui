@@ -4,7 +4,7 @@ import { categories, pages, pathOf } from './content'
 import { guidePath, guideSections } from './guides/hooks'
 import summaryOf from './summaryOf'
 
-export const SITE = 'https://xedonium-ui.web.app'
+export const SITE = 'https://xedonium.web.app'
 export const DEFAULT_DESCRIPTION = 'Minimal, theme-aware React + Tailwind UI components.'
 
 // Foundation pages live in foundations/index.js (lazy imports, so not importable here); check-docs keeps this in sync
