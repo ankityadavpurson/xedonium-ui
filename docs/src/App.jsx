@@ -12,7 +12,6 @@ import {
 	Tooltip,
 	buildFaviconHref,
 	useKeyboardShortcuts,
-	useTheme,
 } from 'xedonium'
 import DocsNav from './components/DocsNav'
 import OnThisPage from './components/OnThisPage'
@@ -58,16 +57,18 @@ const GitHubIcon = () => (
 	</svg>
 )
 
-const Logo = () => {
-	const { activeTheme } = useTheme()
-	// the prerendered page cannot know the visitor's theme, so the first (hydrating) render shows the light icon
-	const hydrated = useHydrated()
-	return <img src={buildFaviconHref(hydrated ? activeTheme : 'light')} alt="" width={22} height={22} />
-}
+// Both icons are in the page and CSS shows the one for <html data-theme>, which is set before the first paint: the
+// prerendered page cannot know the visitor's theme, and this way the logo is right without waiting for hydration
+const Logo = () => (
+	<>
+		<img src={buildFaviconHref('light')} alt="" width={22} height={22} className="dark:hidden" />
+		<img src={buildFaviconHref('dark')} alt="" width={22} height={22} className="hidden dark:block" />
+	</>
+)
 
 // Same for the toggle: its label and icon follow the stored choice
 const HeaderThemeToggle = () =>
-	useHydrated() ? <ThemeToggle /> : <span aria-hidden="true" className="block h-9 w-9" />
+	useHydrated() ? <ThemeToggle /> : <span aria-hidden="true" className="block h-[34px] w-[42px]" />
 
 // Top-level entries are groups (key = their page) or plain links; `target` is where a group opens
 const useNavItems = () =>

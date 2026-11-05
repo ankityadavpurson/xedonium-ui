@@ -7,7 +7,7 @@ export default {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['Archivo', 'Helvetica', 'Arial', 'sans-serif'],
+				sans: ['Archivo Variable', 'Helvetica', 'Arial', 'sans-serif'],
 				// what VS Code uses for code: Consolas on Windows, Menlo on macOS, Droid Sans Mono on Linux
 				code: ['Consolas', 'Menlo', 'Monaco', '"Droid Sans Mono"', '"Courier New"', 'monospace'],
 			},
