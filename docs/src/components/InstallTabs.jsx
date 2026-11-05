@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Tabs } from 'xedonium'
 import CodeBlock from './CodeBlock'
 
@@ -21,7 +21,9 @@ const readChoice = () => {
 
 /** Install command for npm, yarn or pnpm; the last choice is remembered between visits. */
 const InstallTabs = () => {
-	const [manager, setManager] = useState(readChoice)
+	// the prerendered page shows npm; the remembered choice is applied right after hydration
+	const [manager, setManager] = useState('npm')
+	useEffect(() => setManager(readChoice()), [])
 
 	const choose = key => {
 		setManager(key)

@@ -1,4 +1,5 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import { renderToString } from 'react-dom/server'
 import Carousel from '../../src/components/Carousel'
 import CommandPalette from '../../src/components/CommandPalette'
 import DataGrid from '../../src/components/DataGrid'
@@ -674,13 +675,14 @@ describe('Carousel', () => {
 })
 
 describe('RackServer', () => {
-	it('injects styles once and spins the fans', () => {
+	it('ships its styles with the drawing and spins the fans', () => {
 		const frames = []
 		vi.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => frames.push(cb))
 		const cancel = vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(() => {})
 		const first = render(<RackServer />)
 		const second = render(<RackServer />)
-		expect(document.querySelectorAll('#rack-server-styles')).toHaveLength(1)
+		expect(first.container.querySelector('svg > style')?.textContent).toContain('.rs-chassis')
+		expect(document.head.querySelector('#rack-server-styles')).toBeNull()
 		const t0 = performance.now()
 		act(() => frames[0](t0))
 		act(() => frames[0] && frames.shift()(t0 + 10000))
@@ -691,6 +693,12 @@ describe('RackServer', () => {
 		first.unmount()
 		second.unmount()
 		expect(cancel).toHaveBeenCalled()
+	})
+
+	it('renders its styles into the server markup, so nothing is unstyled before hydration', () => {
+		const html = renderToString(<RackServer />)
+		expect(html).toContain('<style>')
+		expect(html).toContain('.rs-chassis')
 	})
 })
 

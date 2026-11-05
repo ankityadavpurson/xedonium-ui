@@ -43,13 +43,6 @@ const RackServer = () => {
 	const fanBotRef = useRef<SVGGElement>(null)
 
 	useEffect(() => {
-		if (!document.getElementById('rack-server-styles')) {
-			const tag = document.createElement('style')
-			tag.id = 'rack-server-styles'
-			tag.textContent = styles
-			document.head.appendChild(tag)
-		}
-
 		let topAngle = 0
 		let botAngle = 0
 		let raf = 0
@@ -90,6 +83,8 @@ const RackServer = () => {
 			aria-hidden="true"
 			focusable="false"
 		>
+			{/* Rendered with the drawing, not added to <head> by an effect: the server-rendered page is styled from the first paint */}
+			<style>{styles}</style>
 			<defs>
 				<linearGradient id="rs-sg" x1="0" y1="0" x2="0" y2="1">
 					<stop offset="0%" stopColor="rgb(var(--color-app-strong))" stopOpacity="0" />

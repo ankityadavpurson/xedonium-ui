@@ -3,6 +3,7 @@ import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import {
 	AppShell,
 	Button,
+	ButtonLink,
 	CodeIcon,
 	CommandPalette,
 	FanFavicon,
@@ -12,11 +13,11 @@ import {
 	Tooltip,
 	buildFaviconHref,
 	useKeyboardShortcuts,
-	useTheme,
 } from 'xedonium'
 import DocsNav from './components/DocsNav'
 import OnThisPage from './components/OnThisPage'
 import RouteBoundary from './components/RouteBoundary'
+import Signature from './components/Signature'
 import VersionBadge from './components/VersionBadge'
 import { categories, pages, pathOf } from './content'
 import { guidePath, guideSections } from './guides/hooks'
@@ -40,6 +41,14 @@ const Playground = lazy(() => import('./views/Playground'))
 const PlaygroundHome = lazy(() => import('./views/PlaygroundHome'))
 
 // Cmd on Apple platforms, Ctrl elsewhere (matches what `mod` resolves to in useKeyboardShortcuts)
+// Header links on the landing page, which has no sidebar: [label, route]
+const HOME_LINKS = [
+	['Docs', '/getting-started'],
+	['Components', '/components/layout'],
+	['Playground', '/playground'],
+	['Changelog', '/changelog'],
+]
+
 const modKeyLabel = () =>
 	typeof navigator !== 'undefined' &&
 	/Mac|iPhone|iPad|iPod/i.test(navigator.userAgentData?.platform || navigator.platform || '')
@@ -58,16 +67,18 @@ const GitHubIcon = () => (
 	</svg>
 )
 
-const Logo = () => {
-	const { activeTheme } = useTheme()
-	// the prerendered page cannot know the visitor's theme, so the first (hydrating) render shows the light icon
-	const hydrated = useHydrated()
-	return <img src={buildFaviconHref(hydrated ? activeTheme : 'light')} alt="" width={22} height={22} />
-}
+// Both icons are in the page and CSS shows the one for <html data-theme>, which is set before the first paint: the
+// prerendered page cannot know the visitor's theme, and this way the logo is right without waiting for hydration
+const Logo = () => (
+	<>
+		<img src={buildFaviconHref('light')} alt="" width={22} height={22} className="dark:hidden" />
+		<img src={buildFaviconHref('dark')} alt="" width={22} height={22} className="hidden dark:block" />
+	</>
+)
 
 // Same for the toggle: its label and icon follow the stored choice
 const HeaderThemeToggle = () =>
-	useHydrated() ? <ThemeToggle /> : <span aria-hidden="true" className="block h-9 w-9" />
+	useHydrated() ? <ThemeToggle /> : <span aria-hidden="true" className="block h-[34px] w-[42px]" />
 
 // Top-level entries are groups (key = their page) or plain links; `target` is where a group opens
 const useNavItems = () =>
@@ -112,6 +123,8 @@ const App = () => {
 	const modKey = useMemo(modKeyLabel, [])
 	const contentRef = useRef(null)
 	const items = useNavItems()
+	// the landing page has sections of its own: no sidebar, a wider column and no "On this page" list
+	const isHome = pathname === '/'
 
 	useSeo(pathname)
 
@@ -158,6 +171,16 @@ const App = () => {
 				<span className="hidden min-[360px]:inline">Xedonium</span>
 			</Link>
 			<VersionBadge className="hidden sm:inline-block border-none" />
+			{isHome && (
+				// the landing page has no sidebar, so the way into the docs is here
+				<nav aria-label="Main" className="ml-3 hidden items-center gap-1 md:flex">
+					{HOME_LINKS.map(([label, to]) => (
+						<ButtonLink key={to} linkComponent={Link} linkProp="to" href={to} variant="flat">
+							{label}
+						</ButtonLink>
+					))}
+				</nav>
+			)}
 			<span className="flex-1" />
 			<Button
 				variant="secondary"
@@ -199,34 +222,30 @@ const App = () => {
 			<AppShell
 				header={header}
 				sidebarTitle="Docs"
-				sidebar={close => (
-					<DocsNav
-						items={items}
-						activePath={pathname}
-						onNavigate={(target, node) => {
-							navigate(target)
-							if (!node.children) close()
-						}}
-						onSelect={close}
-						className="w-64"
-						footer={
-							<div className="flex items-center justify-end px-3">
-								<Link
-									to="https://ankityadav.net.in"
-									target="_blank"
-									rel="noopener noreferrer"
-									className="font-extrabold tracking-[-0.02em] text-app-text transition-colors hover:text-[#d97757]"
-								>
-									ankit
-									<span className="text-[#d97757]">.</span>
-								</Link>
-							</div>
-						}
-					/>
-				)}
+				sidebar={
+					isHome
+						? undefined
+						: close => (
+								<DocsNav
+									items={items}
+									activePath={pathname}
+									onNavigate={(target, node) => {
+										navigate(target)
+										if (!node.children) close()
+									}}
+									onSelect={close}
+									className="w-64"
+									footer={
+										<div className="flex items-center justify-end px-3">
+											<Signature />
+										</div>
+									}
+								/>
+							)
+				}
 			>
-				<div className="mx-auto flex w-full max-w-4xl xl:gap-8 xl:max-w-[71rem]">
-					<div ref={contentRef} className="min-w-0 max-w-4xl flex-1">
+				<div className={`mx-auto flex w-full ${isHome ? 'max-w-6xl' : 'max-w-4xl xl:max-w-[71rem] xl:gap-8'}`}>
+					<div ref={contentRef} className={`min-w-0 flex-1 ${isHome ? 'max-w-6xl' : 'max-w-4xl'}`}>
 						<RouteBoundary key={pathname}>
 							<Suspense fallback={<PageFallback />}>
 								<Routes>
@@ -254,7 +273,7 @@ const App = () => {
 							</Suspense>
 						</RouteBoundary>
 					</div>
-					<OnThisPage rootRef={contentRef} watch={pathname} />
+					{!isHome && <OnThisPage rootRef={contentRef} watch={pathname} />}
 				</div>
 			</AppShell>
 			<CommandPalette
