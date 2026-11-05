@@ -8,6 +8,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+## [1.26.2] - 2026-11-05
+
 ### Fixed
 
 - Keyboard focus is no longer clipped or missing: `Sidebar` entries and `AppBar` links draw their focus outline inside the element (a scrolling parent cut it off), and `Tree` items show a focus outline on the focused row (there was none).
