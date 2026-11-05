@@ -8,6 +8,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+## [1.26.0] - 2026-11-05
+
 ### Added
 
 - `DataGrid` has a `density` prop: `compact` tightens the padding of the cells, header, selection column and loading skeletons (and lowers the default `rowHeight` to 32 when `virtualized`). The default `comfortable` is unchanged (#114).
