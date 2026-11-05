@@ -16,10 +16,10 @@ export default function Demo() {
 				<div
 					ref={ref}
 					role="dialog"
-					aria-label="Rename"
+					aria-label="Rename Minion"
 					className="flex max-w-xs flex-col gap-3 border border-app-border bg-app-card p-4"
 				>
-					<Field label="Name" value={name} onChange={setName} data-autofocus />
+					<Field label="Minion name" value={name} onChange={setName} data-autofocus />
 					<div className="flex gap-2">
 						<Button onClick={() => setOpen(false)}>Save</Button>
 						<Button variant="flat" onClick={() => setOpen(false)}>

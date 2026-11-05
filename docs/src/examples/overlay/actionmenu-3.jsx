@@ -3,14 +3,14 @@ import { ActionMenu } from 'xedonium'
 export default function Demo() {
 	return (
 		<ActionMenu
-			label="Site actions"
+			label="Lair actions"
 			trigger="Grouped"
 			items={[
-				{ key: 'page', heading: 'Page' },
-				{ key: 'add', label: 'Add site', onClick: () => {} },
-				{ key: 'edit', label: 'Edit page', onClick: () => {} },
-				{ key: 'account', heading: 'Account' },
-				{ key: 'sign-out', label: 'Sign out', onClick: () => {} },
+				{ key: 'page', heading: 'Minions' },
+				{ key: 'add', label: 'Add Minion', onClick: () => {} },
+				{ key: 'edit', label: 'Edit Minion', onClick: () => {} },
+				{ key: 'account', heading: 'Gru' },
+				{ key: 'sign-out', label: 'Leave the lair', onClick: () => {} },
 			]}
 		/>
 	)

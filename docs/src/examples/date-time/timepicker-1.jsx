@@ -5,7 +5,7 @@ export default function Demo() {
 	const [time, setTime] = useState('09:30')
 	return (
 		<div className="w-40 max-w-full">
-			<TimePicker label="Start" value={time} onChange={setTime} />
+			<TimePicker label="Banana time" value={time} onChange={setTime} />
 		</div>
 	)
 }

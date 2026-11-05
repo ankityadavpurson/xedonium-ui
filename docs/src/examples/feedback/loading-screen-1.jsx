@@ -16,7 +16,7 @@ export default function Demo() {
 				<Select label="Variant" value={variant} onChange={setVariant} options={VARIANTS} />
 			</div>
 			<div className="flex h-64 flex-col border border-app-border">
-				<LoadingScreen variant={variant} description="Fetching your data" />
+				<LoadingScreen variant={variant} description="Fetching bananas" />
 			</div>
 		</div>
 	)

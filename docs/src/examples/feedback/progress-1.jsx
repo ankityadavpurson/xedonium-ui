@@ -14,8 +14,8 @@ export default function Demo() {
 					+10
 				</Button>
 			</div>
-			<Progress label="Uploading" value={value} showValue />
-			<Progress label="Working" />
+			<Progress label="Loading bananas" value={value} showValue />
+			<Progress label="Minions working" />
 		</Stack>
 	)
 }

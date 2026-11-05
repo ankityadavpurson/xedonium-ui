@@ -4,10 +4,10 @@ export default function Demo() {
 	return (
 		<div className="flex flex-wrap items-start gap-3">
 			<ActionMenu
-				label="Page actions"
+				label="Lair actions"
 				trigger="ActionMenu"
 				items={[
-					{ key: 'new', label: 'New item', icon: <PlusIcon />, description: 'Starts empty', onClick: () => {} },
+					{ key: 'new', label: 'New Minion', icon: <PlusIcon />, description: 'Starts hungry', onClick: () => {} },
 					{ key: 'settings', label: 'Settings', icon: <SettingsIcon />, badge: 2, onClick: () => {} },
 				]}
 			/>
@@ -16,7 +16,7 @@ export default function Demo() {
 				trigger="Menu"
 				look="actions"
 				items={[
-					{ key: 'new', label: 'New item', icon: <PlusIcon />, description: 'Starts empty', onClick: () => {} },
+					{ key: 'new', label: 'New Minion', icon: <PlusIcon />, description: 'Starts hungry', onClick: () => {} },
 					{
 						key: 'more',
 						label: 'More',
@@ -31,7 +31,13 @@ export default function Demo() {
 							},
 						],
 					},
-					{ key: 'reset', label: 'Reset stats', description: 'Clears the counters', tone: 'warning', hasDialog: true },
+					{
+						key: 'reset',
+						label: 'Reset banana count',
+						description: 'Starts over at zero',
+						tone: 'warning',
+						hasDialog: true,
+					},
 					{ key: 'delete', label: 'Delete', icon: <Trash2Icon />, tone: 'danger', onClick: () => {} },
 				]}
 			/>

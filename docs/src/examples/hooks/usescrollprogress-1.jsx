@@ -16,7 +16,7 @@ export default function Demo() {
 			<div ref={panel} className="h-40 overflow-y-auto border border-app-border p-4">
 				{Array.from({ length: 12 }, (_, i) => (
 					<BodyText key={i} className="mb-3">
-						Paragraph {i + 1}. Scroll this box.
+						Banana fact {i + 1}. Scroll this box.
 					</BodyText>
 				))}
 			</div>

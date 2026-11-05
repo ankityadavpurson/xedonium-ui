@@ -6,7 +6,7 @@ const rules = [
 	passwordRules.minLength(10),
 	passwordRules.digit,
 	passwordRules.noSpaces,
-	passwordRules.notContaining(['xedonium', 'password'], 'Not "password" or the product name'),
+	passwordRules.notContaining(['banana', 'password'], 'Not "password" or "banana"'),
 	{ label: 'A symbol such as ! or ?', test: password => /[!?@#$%&*]/.test(password), required: false },
 ]
 
@@ -18,7 +18,7 @@ export default function Demo() {
 		<div className="flex max-w-sm flex-col gap-3">
 			<PasswordInput label="New password" value={password} onChange={setPassword} autoComplete="new-password" />
 			<PasswordStrengthInfo password={password} rules={rules} onResult={result => setValid(result.valid)} />
-			<Button disabled={!valid}>Create account</Button>
+			<Button disabled={!valid}>Join the Minions</Button>
 		</div>
 	)
 }

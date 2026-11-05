@@ -14,11 +14,11 @@ export default function Demo() {
 	}
 	return (
 		<>
-			<Button onClick={() => setOpen(true)}>Edit profile</Button>
+			<Button onClick={() => setOpen(true)}>Edit Minion</Button>
 			<Drawer
 				open={open}
 				onClose={() => setOpen(false)}
-				title="Edit profile"
+				title="Edit Minion"
 				busy={busy}
 				busyOverlay
 				footer={

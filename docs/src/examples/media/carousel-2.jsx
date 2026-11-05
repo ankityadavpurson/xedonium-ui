@@ -9,7 +9,7 @@ const scene = (top, bottom, shapes) =>
 
 const photos = [
 	{
-		title: 'Mountains at dawn',
+		title: 'Banana grove at dawn',
 		src: scene(
 			'#bfdbfe',
 			'#eff6ff',
@@ -17,7 +17,7 @@ const photos = [
 		),
 	},
 	{
-		title: 'Calm sea',
+		title: 'Calm sea near the lair',
 		src: scene(
 			'#93c5fd',
 			'#1d4ed8',
@@ -25,7 +25,7 @@ const photos = [
 		),
 	},
 	{
-		title: 'Night sky',
+		title: 'Night sky over the moon heist',
 		src: scene(
 			'#1e3a8a',
 			'#0f172a',
@@ -36,7 +36,7 @@ const photos = [
 
 export default function Demo() {
 	return (
-		<Carousel label="Photo gallery" className="max-w-xl">
+		<Carousel label="Minion gallery" className="max-w-xl">
 			{photos.map(photo => (
 				<figure key={photo.title} className="relative m-0">
 					<Image src={photo.src} alt={photo.title} ratio="video" />

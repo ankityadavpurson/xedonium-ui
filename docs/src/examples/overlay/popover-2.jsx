@@ -12,9 +12,9 @@ export default function Demo() {
 				label="Actions"
 				trigger="Menu"
 				items={[
-					{ key: 'a', label: 'Rename', onClick: () => {} },
-					{ key: 'b', label: 'Duplicate', description: 'Make a copy', onClick: () => {} },
-					{ key: 'c', label: 'Delete', tone: 'warning', onClick: () => {} },
+					{ key: 'a', label: 'Rename Minion', onClick: () => {} },
+					{ key: 'b', label: 'Clone Minion', description: 'Now there are two', onClick: () => {} },
+					{ key: 'c', label: 'Banish', tone: 'warning', onClick: () => {} },
 				]}
 			/>
 			<Popover trigger="Popover" label="Popover" placement="bottom-start">
@@ -30,11 +30,11 @@ export default function Demo() {
 				<Select
 					value={color}
 					onChange={setColor}
-					placeholder="Pick a color"
+					placeholder="Pick a banana"
 					options={[
-						{ value: 'red', label: 'Red' },
-						{ value: 'green', label: 'Green' },
-						{ value: 'blue', label: 'Blue' },
+						{ value: 'green', label: 'Green (unripe)' },
+						{ value: 'yellow', label: 'Yellow' },
+						{ value: 'brown', label: 'Spotted' },
 					]}
 				/>
 			</div>

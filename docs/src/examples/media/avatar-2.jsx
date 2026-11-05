@@ -11,9 +11,9 @@ export default function Demo() {
 	return (
 		<Flex align="center" wrap gap={4}>
 			{/* any image URL */}
-			<Avatar src="https://i.pravatar.cc/120?img=12" name="Ada Lovelace" size="lg" />
+			<Avatar src="https://i.pravatar.cc/120?img=12" name="Kevin Minion" size="lg" />
 			{/* your own content instead of initials */}
-			<Avatar name="Guest" size="lg">
+			<Avatar name="Gru" size="lg">
 				<PersonIcon />
 			</Avatar>
 			{/* a link to a profile, here opening in a new tab */}
@@ -26,7 +26,7 @@ export default function Demo() {
 				size="lg"
 			/>
 			{/* a link whose image failed to load falls back to initials */}
-			<Avatar href="#profile" src="/missing.png" name="Linus Torvalds" size="lg" />
+			<Avatar href="#profile" src="/missing.png" name="Bob Minion" size="lg" />
 		</Flex>
 	)
 }

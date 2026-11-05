@@ -4,13 +4,13 @@ export default function Demo() {
 	return (
 		<Timeline
 			orientation="horizontal"
-			branches={[{ id: 'main' }, { id: 'login', label: 'feature/login' }]}
+			branches={[{ id: 'main' }, { id: 'login', label: 'feature/freeze-ray' }]}
 			items={[
-				{ key: 1, title: 'Release 1.4.0', time: 'Mon', tone: 'success' },
-				{ key: 2, title: 'Start login work', description: 'Branched from main', time: 'Tue', branch: 'login' },
-				{ key: 3, title: 'Payment bug reported', time: 'Tue', tone: 'danger' },
-				{ key: 4, title: 'Login form done', time: 'Wed', branch: 'login' },
-				{ key: 5, title: 'Login merged', description: 'Review approved', time: 'Thu', mergeFrom: 'login' },
+				{ key: 1, title: 'Lair opened', time: 'Mon', tone: 'success' },
+				{ key: 2, title: 'Start freeze ray', description: 'Branched from main', time: 'Tue', branch: 'login' },
+				{ key: 3, title: 'Banana bug reported', time: 'Tue', tone: 'danger' },
+				{ key: 4, title: 'Freeze ray done', time: 'Wed', branch: 'login' },
+				{ key: 5, title: 'Freeze ray merged', description: 'Gru approved', time: 'Thu', mergeFrom: 'login' },
 			]}
 		/>
 	)

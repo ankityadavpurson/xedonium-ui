@@ -5,20 +5,20 @@ export default function Demo() {
 	const [selected, setSelected] = useState('button')
 	return (
 		<Tree
-			label="Files"
+			label="Lair files"
 			selected={selected}
 			onSelect={setSelected}
 			defaultExpanded={['src']}
 			nodes={[
 				{
 					key: 'src',
-					label: 'src',
+					label: 'lair',
 					children: [
-						{ key: 'button', label: 'Button.jsx' },
-						{ key: 'hooks', label: 'hooks', children: [{ key: 'esc', label: 'useEscapeKey.js' }] },
+						{ key: 'button', label: 'Banana.jsx' },
+						{ key: 'hooks', label: 'gadgets', children: [{ key: 'esc', label: 'useFreezeRay.js' }] },
 					],
 				},
-				{ key: 'readme', label: 'README.md' },
+				{ key: 'readme', label: 'plans.md' },
 			]}
 		/>
 	)

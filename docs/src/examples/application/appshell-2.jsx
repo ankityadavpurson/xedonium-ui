@@ -7,7 +7,7 @@ export default function Demo() {
 	return (
 		<AppShell
 			className="!h-96 border border-app-border"
-			header={<AppBar embedded brand="Acme" />}
+			header={<AppBar embedded brand="Minion HQ" />}
 			menuButtonVariant="flat"
 			menuButtonProps={{ 'aria-label': 'Navigation' }}
 			sidebarCollapsedBelow="lg"
@@ -20,8 +20,8 @@ export default function Demo() {
 						close()
 					}}
 					items={[
-						{ key: 'home', label: 'Home', icon: <HomeIcon /> },
-						{ key: 'settings', label: 'Settings', icon: <SettingsIcon /> },
+						{ key: 'home', label: 'Lair', icon: <HomeIcon /> },
+						{ key: 'settings', label: 'Gadgets', icon: <SettingsIcon /> },
 					]}
 				/>
 			)}

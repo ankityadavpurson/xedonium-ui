@@ -8,7 +8,7 @@ export default function Demo() {
 	return (
 		<div className="flex flex-col gap-3">
 			<NetworkConnection
-				name="Your connection"
+				name="Lair connection"
 				probeUrl="https://www.gstatic.com/generate_204"
 				interval={30000}
 				showConnectionInfo

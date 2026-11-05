@@ -3,23 +3,27 @@ import { Card, Dashboard, LineChart, PieChart } from 'xedonium'
 export default function Demo() {
 	return (
 		<Dashboard
-			title="Overview"
+			title="Lair overview"
 			subtitle="Last 30 days"
 			stats={[
-				{ label: 'Revenue', value: '$48k', delta: '12%', trend: 'up' },
-				{ label: 'Churn', value: '2.1%', delta: '0.4%', trend: 'down' },
-				{ label: 'Users', value: '3,204', hint: 'active' },
+				{ label: 'Bananas', value: '48k', delta: '12%', trend: 'up' },
+				{ label: 'Slips', value: '2.1%', delta: '0.4%', trend: 'down' },
+				{ label: 'Minions', value: '3,204', hint: 'on duty' },
 			]}
 		>
-			<Card title="Traffic">
-				<LineChart labels={['A', 'B', 'C', 'D']} series={[{ name: 'Hits', values: [3, 7, 5, 9] }]} height={200} />
+			<Card title="Mischief">
+				<LineChart
+					labels={['Kevin', 'Stuart', 'Bob', 'Dave']}
+					series={[{ name: 'Pranks', values: [3, 7, 5, 9] }]}
+					height={200}
+				/>
 			</Card>
-			<Card title="Share">
+			<Card title="Banana share">
 				<PieChart
 					donut
 					data={[
-						{ label: 'A', value: 3 },
-						{ label: 'B', value: 2 },
+						{ label: 'Kevin', value: 3 },
+						{ label: 'Stuart', value: 2 },
 					]}
 				/>
 			</Card>

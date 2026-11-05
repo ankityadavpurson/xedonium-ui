@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import { Button, CommandPalette } from 'xedonium'
 
 const ALL = [
-	{ key: 'a', label: 'Alpha release notes', group: 'Docs' },
-	{ key: 'b', label: 'Alpha API reference', group: 'Docs' },
-	{ key: 'c', label: 'Alpha team', group: 'People' },
-	{ key: 'd', label: 'Beta program', group: 'Docs' },
+	{ key: 'a', label: 'Banana recipes', group: 'Docs' },
+	{ key: 'b', label: 'Banana peeling manual', group: 'Docs' },
+	{ key: 'c', label: 'Banana tasting team', group: 'People' },
+	{ key: 'd', label: "Gru's evil plans", group: 'Docs' },
 ]
 
 // Async search: `onQueryChange` fetches, `loading` shows the busy row, `highlight` marks the match.
@@ -39,7 +39,7 @@ export default function Demo() {
 				onQueryChange={setQuery}
 				loading={loading}
 				highlight
-				placeholder="Search docs and people…"
+				placeholder="Search plans and Minions…"
 				empty="Type to search"
 			/>
 		</>

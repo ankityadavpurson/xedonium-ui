@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { Button, PieChart } from 'xedonium'
 
 const random = () => [
-	{ label: 'Chrome', value: Math.round(20 + Math.random() * 60) },
-	{ label: 'Safari', value: Math.round(10 + Math.random() * 40) },
-	{ label: 'Firefox', value: Math.round(5 + Math.random() * 30) },
+	{ label: 'Kevin', value: Math.round(20 + Math.random() * 60) },
+	{ label: 'Stuart', value: Math.round(10 + Math.random() * 40) },
+	{ label: 'Bob', value: Math.round(5 + Math.random() * 30) },
 ]
 
 export default function Demo() {
@@ -16,7 +16,7 @@ export default function Demo() {
 					New data
 				</Button>
 			</div>
-			<PieChart label="Browser share" data={data} />
+			<PieChart label="Favourite Minion" data={data} />
 		</div>
 	)
 }

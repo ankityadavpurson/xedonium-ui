@@ -10,7 +10,7 @@ export default function Demo() {
 			<div ref={panel} className="h-64 overflow-y-auto p-4">
 				{Array.from({ length: 14 }, (_, i) => (
 					<BodyText key={i} className="mb-3">
-						Paragraph {i + 1}. The ring around the button shows how far down you are.
+						Banana fact {i + 1}. The ring around the button shows how far down you are.
 					</BodyText>
 				))}
 			</div>

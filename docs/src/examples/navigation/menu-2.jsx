@@ -17,15 +17,15 @@ export default function Demo() {
 						label: 'Open recent',
 						icon: <FolderOpenIcon />,
 						children: [
-							{ key: 'r1', label: 'Quarterly report.md', onClick: pick('Quarterly report.md') },
-							{ key: 'r2', label: 'Roadmap.md', onClick: pick('Roadmap.md') },
+							{ key: 'r1', label: 'Moon heist plan.md', onClick: pick('Moon heist plan.md') },
+							{ key: 'r2', label: 'Banana roadmap.md', onClick: pick('Banana roadmap.md') },
 							{ key: 'r3', divider: true },
 							{
 								key: 'older',
 								label: 'Older',
 								children: [
-									{ key: 'o1', label: 'Notes 2023.md', onClick: pick('Notes 2023.md') },
-									{ key: 'o2', label: 'Notes 2022.md', onClick: pick('Notes 2022.md') },
+									{ key: 'o1', label: 'Evil plans 2023.md', onClick: pick('Evil plans 2023.md') },
+									{ key: 'o2', label: 'Evil plans 2022.md', onClick: pick('Evil plans 2022.md') },
 								],
 							},
 						],

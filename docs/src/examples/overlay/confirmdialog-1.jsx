@@ -19,11 +19,11 @@ export default function Demo() {
 				onClose={() => setOpen(false)}
 				onConfirm={confirm}
 				busy={busy}
-				title="Confirm action"
+				title="Feed the Minions"
 				confirmLabel="Confirm"
-				busyLabel="Working..."
+				busyLabel="Peeling..."
 			>
-				<p>Are you sure you want to continue?</p>
+				<p>Are you sure you want to give them all the bananas?</p>
 			</ConfirmDialog>
 		</>
 	)

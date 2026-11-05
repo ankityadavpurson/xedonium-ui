@@ -4,9 +4,9 @@ import { NetworkConnection } from 'xedonium'
 export default function Demo() {
 	return (
 		<div className="flex flex-col gap-3">
-			<NetworkConnection name="Production API" status="connected" details="api.example.com" latency={42} />
-			<NetworkConnection name="Log server" status="connecting" />
-			<NetworkConnection name="Payments" status="error" details="503 Service Unavailable" onRetry={() => {}} />
+			<NetworkConnection name="Freeze ray" status="connected" details="freeze.gru-lair.example" latency={42} />
+			<NetworkConnection name="Banana server" status="connecting" />
+			<NetworkConnection name="Shrink ray" status="error" details="503 Service Unavailable" onRetry={() => {}} />
 		</div>
 	)
 }

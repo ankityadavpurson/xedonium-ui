@@ -2,17 +2,17 @@ import { useState } from 'react'
 import { Select } from 'xedonium'
 
 export default function Demo() {
-	const [fruit, setFruit] = useState('apple')
+	const [banana, setBanana] = useState('cavendish')
 	return (
 		<div className="max-w-sm">
 			<Select
-				label="Fruit"
-				value={fruit}
-				onChange={setFruit}
+				label="Banana"
+				value={banana}
+				onChange={setBanana}
 				options={[
-					{ value: 'apple', label: 'Apple' },
-					{ value: 'pear', label: 'Pear' },
-					{ value: 'plum', label: 'Plum', disabled: true },
+					{ value: 'cavendish', label: 'Cavendish' },
+					{ value: 'plantain', label: 'Plantain' },
+					{ value: 'red', label: 'Red banana (sold out)', disabled: true },
 				]}
 			/>
 		</div>

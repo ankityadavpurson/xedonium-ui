@@ -14,10 +14,10 @@ export default function Demo() {
 					<Button>Save</Button>
 				</ButtonGroup>
 			</div>
-			<ButtonGroup fullWidth aria-label="Plan">
-				<Button variant="secondary">Monthly</Button>
-				<Button>Yearly</Button>
-				<Button variant="secondary">Lifetime</Button>
+			<ButtonGroup fullWidth aria-label="Banana plan">
+				<Button variant="secondary">Weekly</Button>
+				<Button>Monthly</Button>
+				<Button variant="secondary">Forever</Button>
 			</ButtonGroup>
 		</div>
 	)

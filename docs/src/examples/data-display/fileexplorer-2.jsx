@@ -4,18 +4,18 @@ import { CodeDisplay, FileExplorer, Modal, languageOf } from 'xedonium'
 // A folder's entries come from a server one folder at a time; opening a file shows it in a full screen dialog
 const server = {
 	'': [
-		{ id: 'src', name: 'src', type: 'folder', itemCount: 2 },
-		{ id: 'notes', name: 'notes.txt', type: 'file', size: 64 },
+		{ id: 'gadgets', name: 'gadgets', type: 'folder', itemCount: 2 },
+		{ id: 'todo', name: 'to-do.txt', type: 'file', size: 64 },
 	],
-	src: [
-		{ id: 'src/index.js', name: 'index.js', type: 'file', size: 96 },
-		{ id: 'src/util.js', name: 'util.js', type: 'file', size: 71 },
+	gadgets: [
+		{ id: 'gadgets/freeze-ray.js', name: 'freeze-ray.js', type: 'file', size: 96 },
+		{ id: 'gadgets/battery.js', name: 'battery.js', type: 'file', size: 71 },
 	],
 }
 const contents = {
-	notes: 'Remember to rotate the API keys.\nReview the pull request.',
-	'src/index.js': "import { sum } from './util'\n\nconsole.log(sum(1, 2))",
-	'src/util.js': 'export const sum = (a, b) => a + b',
+	todo: 'Buy more bananas.\nTeach Kevin to stop giggling.',
+	'gadgets/freeze-ray.js': "import { charge } from './battery'\n\nconsole.log(charge(1, 2))",
+	'gadgets/battery.js': 'export const charge = (a, b) => a + b',
 }
 
 export default function Demo() {

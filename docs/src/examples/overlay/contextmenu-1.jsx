@@ -8,7 +8,7 @@ export default function Demo() {
 	return (
 		<div className="flex flex-col gap-2">
 			<ContextMenu
-				label="Item actions"
+				label="Minion actions"
 				items={[
 					{ key: 'open', label: 'Open', icon: <FileIcon />, onClick: pick('Open') },
 					{ key: 'copy', label: 'Copy', icon: <CopyIcon />, shortcut: 'Ctrl+C', onClick: pick('Copy') },
@@ -26,7 +26,7 @@ export default function Demo() {
 				]}
 			>
 				<div className="flex h-32 items-center justify-center border border-dashed border-app-border text-sm text-app-muted">
-					Right-click anywhere in this box
+					Right-click anywhere in the lair 🌕
 				</div>
 			</ContextMenu>
 			<p className="m-0 text-xs text-app-muted">Last action: {last}</p>

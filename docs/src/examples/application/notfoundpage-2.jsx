@@ -5,13 +5,13 @@ export default function Demo() {
 	return (
 		<NotFoundPage
 			code="403"
-			title="You do not have access"
-			description="Ask an admin to add you to this workspace, or search for something else."
-			homeHref="#dashboard"
-			homeLabel="Back to the dashboard"
+			title="Only Gru can go in here"
+			description="Ask Gru to add you to the Minion crew, or go and look for bananas instead."
+			homeHref="#lair"
+			homeLabel="Back to the lair"
 		>
 			<div className="mt-2 w-full max-w-xs">
-				<Input value="" onChange={() => {}} placeholder="Search the docs" aria-label="Search" />
+				<Input value="" onChange={() => {}} placeholder="Search for bananas" aria-label="Search" />
 			</div>
 		</NotFoundPage>
 	)

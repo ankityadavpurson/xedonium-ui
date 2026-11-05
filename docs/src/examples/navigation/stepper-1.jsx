@@ -5,9 +5,9 @@ export default function Demo() {
 		<Stepper
 			current={1}
 			steps={[
-				{ label: 'Account', description: 'Create login' },
-				{ label: 'Profile', description: 'Tell us more' },
-				{ label: 'Done' },
+				{ label: 'Recruit', description: 'Pick a Minion' },
+				{ label: 'Gear up', description: 'Goggles and overalls' },
+				{ label: 'Mission ready' },
 			]}
 		/>
 	)

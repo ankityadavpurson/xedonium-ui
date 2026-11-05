@@ -4,11 +4,11 @@ import { AccordionSection } from 'xedonium'
 export default function Demo() {
 	return (
 		<div className="flex max-w-md flex-col gap-3">
-			<AccordionSection title="Account" defaultOpen>
-				Name, email and password.
+			<AccordionSection title="Minion profile" defaultOpen>
+				Name, goggles and overall size.
 			</AccordionSection>
 			<p className="m-0 text-sm text-app-muted">Any other content can sit between the sections.</p>
-			<AccordionSection title="Notifications">Choose what you get emailed about.</AccordionSection>
+			<AccordionSection title="Banana alerts">Choose what you get a banana-gram about.</AccordionSection>
 		</div>
 	)
 }

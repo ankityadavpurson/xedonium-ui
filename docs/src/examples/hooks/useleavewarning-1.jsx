@@ -10,7 +10,7 @@ export default function Demo() {
 
 	return (
 		<div className="flex flex-col gap-3">
-			<Field label="Name" value={name} onChange={setName} />
+			<Field label="Minion name" value={name} onChange={setName} />
 			<p className="m-0 text-sm text-app-muted">
 				{name !== ''
 					? 'Unsaved changes: try to close this tab, reload it or press the back button.'

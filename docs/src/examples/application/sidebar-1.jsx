@@ -12,17 +12,17 @@ export default function Demo() {
 					collapsed={collapsed}
 					activeKey={active}
 					onSelect={setActive}
-					header={<strong className="text-sm">Acme</strong>}
+					header={<strong className="text-sm">Minion HQ</strong>}
 					items={[
-						{ key: 'home', label: 'Home', icon: <HomeIcon /> },
-						{ key: 'grid', label: 'Projects', icon: <GridIcon />, badge: 3 },
+						{ key: 'home', label: 'Lair', icon: <HomeIcon /> },
+						{ key: 'grid', label: 'Missions', icon: <GridIcon />, badge: 3 },
 						{
 							key: 'settings',
-							label: 'Settings',
+							label: 'Gadgets',
 							icon: <SettingsIcon />,
 							children: [
-								{ key: 'profile', label: 'Profile' },
-								{ key: 'security', label: 'Security' },
+								{ key: 'profile', label: 'Goggles' },
+								{ key: 'security', label: 'Overalls' },
 							],
 						},
 					]}

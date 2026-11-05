@@ -6,10 +6,10 @@ export default function Demo() {
 	return (
 		<div className="w-72 max-w-full">
 			<Field
-				label="Name"
+				label="Minion name"
 				value={name}
 				onChange={setName}
-				placeholder="Type here"
+				placeholder="Kevin, Stuart, Bob…"
 				helperText="Shown until there is an error"
 				error={name === 'x' ? 'Too short' : ''}
 			/>

@@ -8,7 +8,7 @@ export default function Demo() {
 			{VARIANTS.map(variant => (
 				<div key={variant} className="flex min-h-32 flex-col items-center gap-3 border border-app-border bg-app-bg p-4">
 					<div className="flex w-full flex-1 items-center justify-center">
-						<Loader variant={variant} description="Fetching your data" />
+						<Loader variant={variant} description="Fetching bananas" />
 					</div>
 					<code className="text-xs text-app-muted">{variant}</code>
 				</div>

@@ -2,8 +2,8 @@ import { Popover } from 'xedonium'
 
 export default function Demo() {
 	return (
-		<Popover trigger="Details" label="Details">
-			<p className="m-0">Popover content goes here.</p>
+		<Popover trigger="Banana facts" label="Banana facts">
+			<p className="m-0">Bananas are berries. Bello!</p>
 		</Popover>
 	)
 }

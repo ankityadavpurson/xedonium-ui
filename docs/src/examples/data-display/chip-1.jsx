@@ -3,11 +3,11 @@ import { Chip } from 'xedonium'
 
 export default function Demo() {
 	const [filter, setFilter] = useState('all')
-	const [tags, setTags] = useState(['react', 'tailwind', 'vite'])
+	const [tags, setTags] = useState(['banana', 'goggles', 'overalls'])
 	return (
 		<div className="flex flex-col gap-3">
 			<div className="flex flex-wrap gap-2">
-				{['all', 'open', 'closed'].map(name => (
+				{['all', 'awake', 'asleep'].map(name => (
 					<Chip key={name} selected={filter === name} onClick={() => setFilter(name)}>
 						{name}
 					</Chip>

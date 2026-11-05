@@ -28,22 +28,22 @@ export default function Demo() {
 					/>
 				</div>
 				<div className="flex flex-wrap gap-3">
-					<Button onClick={() => showToast('Saved')}>Success</Button>
-					<Button variant="danger" onClick={() => showToast('Something failed', 'danger')}>
+					<Button onClick={() => showToast('Banana saved')}>Success</Button>
+					<Button variant="danger" onClick={() => showToast('Banana slipped', 'danger')}>
 						Danger
 					</Button>
-					<Button variant="warning" onClick={() => showToast('Disk almost full', 'warning')}>
+					<Button variant="warning" onClick={() => showToast('Banana stock low', 'warning')}>
 						Warning
 					</Button>
-					<Button variant="secondary" onClick={() => showToast('Update available', 'info')}>
+					<Button variant="secondary" onClick={() => showToast('New Minion available', 'info')}>
 						Info
 					</Button>
 					<Button
 						variant="secondary"
 						onClick={() =>
-							showToast('Item deleted', 'info', {
+							showToast('Banana eaten', 'info', {
 								duration: 0,
-								actions: [{ label: 'Undo', onClick: () => showToast('Restored') }],
+								actions: [{ label: 'Undo', onClick: () => showToast('Banana restored') }],
 							})
 						}
 					>

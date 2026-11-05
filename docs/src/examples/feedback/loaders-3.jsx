@@ -11,7 +11,7 @@ export default function Demo() {
 		<div className="flex flex-wrap items-center gap-10">
 			<Loader variant="stacked" icon="🚀" iconMotion="bounce" label="Launching" />
 			<Loader variant="inline" icon={SVG} label="Image or SVG URL" />
-			<Loader variant="card" icon="⏳" iconMotion="pulse" label="Crunching" description="Emoji with pulse" />
+			<Loader variant="card" icon="🌕" iconMotion="pulse" label="Stealing the moon" description="Emoji with pulse" />
 			<Loader
 				icon={
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">

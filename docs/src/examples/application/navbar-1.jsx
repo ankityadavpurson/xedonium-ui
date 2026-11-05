@@ -3,10 +3,10 @@ import { Button, Navbar } from 'xedonium'
 export default function Demo() {
 	return (
 		<Navbar
-			brand="Acme"
+			brand="Minion HQ"
 			links={[
-				{ href: '#', label: 'Home', active: true },
-				{ href: '#docs', label: 'Docs' },
+				{ href: '#', label: 'Lair', active: true },
+				{ href: '#docs', label: 'Missions' },
 			]}
 			actions={<Button variant="secondary">Sign in</Button>}
 		/>

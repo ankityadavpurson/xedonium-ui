@@ -16,9 +16,9 @@ export default function Demo() {
 			</div>
 			<div className="flex flex-wrap items-end gap-8">
 				<Progress variant="circular" size="sm" value={value} />
-				<Progress variant="circular" value={value} showValue label="Upload" />
+				<Progress variant="circular" value={value} showValue label="Bananas" />
 				<Progress variant="circular" size="lg" value={value} showValue label="Large" />
-				<Progress variant="circular" label="Working" />
+				<Progress variant="circular" label="Minions working" />
 			</div>
 		</div>
 	)

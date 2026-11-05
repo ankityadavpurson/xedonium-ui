@@ -13,7 +13,7 @@ export default function Demo() {
 				<PasswordInput label="New password" value={password} onChange={setPassword} autoComplete="new-password" />
 				<PasswordStrengthInfo password={password} showOn="focus" onResult={result => setValid(result.valid)} />
 			</div>
-			<Button disabled={!valid}>Create account</Button>
+			<Button disabled={!valid}>Join the Minions</Button>
 		</div>
 	)
 }

@@ -7,7 +7,14 @@ export default function Demo() {
 	const [position, setPosition] = useState(75)
 	return (
 		<div className="max-w-sm pt-10">
-			<Slider label="Position" value={position} max={300} showValue={false} valueLabel={clock} onChange={setPosition} />
+			<Slider
+				label="Banana song"
+				value={position}
+				max={300}
+				showValue={false}
+				valueLabel={clock}
+				onChange={setPosition}
+			/>
 		</div>
 	)
 }

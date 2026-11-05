@@ -9,12 +9,12 @@ export default function Demo() {
 
 	return (
 		<div className="flex flex-col gap-4">
-			<Field label="Name" value={name} onChange={setName} />
+			<Field label="Minion name" value={name} onChange={setName} />
 			<div className="flex flex-wrap items-center gap-4">
 				<Button disabled={name === saved} onClick={() => setSaved(name)}>
 					Save
 				</Button>
-				<TextLink href="/">Leave this page</TextLink>
+				<TextLink href="/">Leave the lair</TextLink>
 			</div>
 			<ConfirmDialog
 				open={blocked}
