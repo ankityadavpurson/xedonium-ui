@@ -3,10 +3,10 @@ import { AppBar } from 'xedonium'
 export default function Demo() {
 	return (
 		<AppBar
-			brand="Xedonium"
+			brand="Minion HQ"
 			links={[
-				{ href: '#', label: 'Apps', active: true },
-				{ href: '#admin', label: 'Admin' },
+				{ href: '#', label: 'Missions', active: true },
+				{ href: '#admin', label: 'Gadgets' },
 			]}
 		/>
 	)

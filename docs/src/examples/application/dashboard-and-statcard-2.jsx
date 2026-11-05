@@ -6,10 +6,17 @@ export default function Demo() {
 	const [clicks, setClicks] = useState(0)
 	return (
 		<div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-			<StatCard label="Users" value="3,204" icon={<UsersIcon />} href="#users" status="Healthy" statusTone="success" />
-			<StatCard label="Clicks" value={clicks} hint="Click the tile" onClick={() => setClicks(n => n + 1)} />
-			<StatCard label="Billing" value="$48k" status="Restricted" statusTone="warning" disabled href="#billing" />
-			<StatCard label="Revenue" value="$0" delta="12%" trend="up" loading />
+			<StatCard
+				label="Minions"
+				value="3,204"
+				icon={<UsersIcon />}
+				href="#minions"
+				status="Happy"
+				statusTone="success"
+			/>
+			<StatCard label="Bananas" value={clicks} hint="Click to peel" onClick={() => setClicks(n => n + 1)} />
+			<StatCard label="Gru's vault" value="$1B" status="Restricted" statusTone="warning" disabled href="#vault" />
+			<StatCard label="Loot" value="$0" delta="12%" trend="up" loading />
 		</div>
 	)
 }

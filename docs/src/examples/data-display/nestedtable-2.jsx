@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button, NestedTable } from 'xedonium'
 
-// Customer bills that open to the items bought, loaded when a bill is first opened
+// Gru banana bills that open to the items bought, loaded when a bill is first opened
 const bills = [
 	{ id: 'B-1042', date: '12 Mar 2026', items: 3, total: 1840 },
 	{ id: 'B-1051', date: '19 Mar 2026', items: 1, total: 420 },
@@ -9,9 +9,9 @@ const bills = [
 ]
 const itemsOf = id =>
 	[
-		{ id: `${id}-1`, name: 'Basmati rice 5 kg', qty: 1, price: 620 },
-		{ id: `${id}-2`, name: 'Sunflower oil 1 L', qty: 2, price: 180 },
-		{ id: `${id}-3`, name: 'Tea 500 g', qty: 1, price: 860 },
+		{ id: `${id}-1`, name: 'Bananas 5 kg', qty: 1, price: 620 },
+		{ id: `${id}-2`, name: 'Banana bread 1 loaf', qty: 2, price: 180 },
+		{ id: `${id}-3`, name: 'Goggle polish 500 ml', qty: 1, price: 860 },
 	].slice(0, bills.find(bill => bill.id === id).items)
 
 export default function Demo() {
@@ -29,7 +29,7 @@ export default function Demo() {
 
 	return (
 		<NestedTable
-			caption="Purchases"
+			caption="Banana orders"
 			expandPosition="end"
 			exclusive
 			onExpand={load}

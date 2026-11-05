@@ -1,8 +1,8 @@
 import { CodeDisplay } from 'xedonium'
 
 const code = `// Custom palette
-const answer = 42
-export const greet = name => \`Hello \${name}\``
+const bananas = 42
+export const greet = name => \`Bello \${name}\``
 
 export default function Demo() {
 	return (

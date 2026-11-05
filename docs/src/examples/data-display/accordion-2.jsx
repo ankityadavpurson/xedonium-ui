@@ -8,9 +8,9 @@ export default function Demo() {
 			multiple
 			defaultValue={['a']}
 			items={[
-				{ key: 'a', title: 'Shipping', content: 'Orders leave the warehouse within two days.' },
-				{ key: 'b', title: 'Returns', content: 'Send anything back within thirty days.' },
-				{ key: 'c', title: 'Support', content: 'We answer every message.' },
+				{ key: 'a', title: 'Bananas', content: 'Fresh bunches reach the lair within two days.' },
+				{ key: 'b', title: 'Returns', content: 'Send any green banana back within thirty days.' },
+				{ key: 'c', title: 'Support', content: 'A Minion answers every message. Bello!' },
 			]}
 		/>
 	)

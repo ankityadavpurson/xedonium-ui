@@ -13,8 +13,8 @@ export default function Demo() {
 				open={open}
 				onClose={() => setOpen(false)}
 				commands={[
-					{ key: 'new', label: 'New project', group: 'Create', shortcut: 'N', onSelect: () => setLast('new') },
-					{ key: 'invite', label: 'Invite teammate', group: 'Create', onSelect: () => setLast('invite') },
+					{ key: 'new', label: 'New mission', group: 'Create', shortcut: 'N', onSelect: () => setLast('new') },
+					{ key: 'invite', label: 'Recruit a Minion', group: 'Create', onSelect: () => setLast('invite') },
 					{
 						key: 'theme',
 						label: 'Toggle theme',

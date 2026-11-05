@@ -1,32 +1,32 @@
 import { Markdown } from 'xedonium'
 
-const source = `# Release notes
+const source = `# Minion report
 
-Xedonium **0.11** adds a *Markdown* component. It is ~~heavy~~ small, has no dependencies, and shows \`code\` inline.
+Kevin found **3** *bananas*. They are ~~heavy~~ small, have no seeds, and a \`peel\` shows inline.
 
-## What you get
+## What the Minions got
 
-- Headings, paragraphs and **emphasis**
+- Bananas, banana bread and **banana smoothies**
 - Lists, including nested ones:
-  - an inner item
+  - a nested banana
   - another one
-- [x] Task lists
-- [ ] with unchecked items
+- [x] Peel the bananas
+- [ ] Steal the moon
 
-1. Ordered lists
-2. count for you
+1. Wake up
+2. Eat a banana
 
-> Quotes are indented with a rule, and can hold *any* Markdown.
+> Bello! Quotes are indented with a rule, and can hold *any* Markdown.
 
-| Part | Status | Size |
-|:-----|:------:|-----:|
-| Parser | done | 4 kB |
-| Styles | done | 1 kB |
+| Minion | Mood | Bananas |
+|:-------|:----:|--------:|
+| Kevin | happy | 4 |
+| Stuart | hungry | 1 |
 
 \`\`\`jsx
 import { Markdown } from 'xedonium'
 
-export default () => <Markdown>{'# Hello'}</Markdown>
+export default () => <Markdown>{'# Bello!'}</Markdown>
 \`\`\`
 
 ---

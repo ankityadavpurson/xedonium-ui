@@ -8,16 +8,16 @@ export default function Demo() {
 	return (
 		<div className="flex max-w-xs flex-col gap-4">
 			<NumberField
-				label="Age"
+				label="Bananas per day"
 				value={age}
 				onChange={setAge}
 				min={18}
 				max={99}
-				placeholder="18 or older"
-				error={age !== null && age < 18 ? 'You must be at least 18' : undefined}
+				placeholder="18 or more"
+				error={age !== null && age < 18 ? 'A Minion needs at least 18 a day' : undefined}
 			/>
 			<NumberField
-				label="Volume (steps of 10, no buttons)"
+				label="Giggle volume (steps of 10, no buttons)"
 				value={volume}
 				onChange={setVolume}
 				step={10}

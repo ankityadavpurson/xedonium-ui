@@ -3,8 +3,8 @@ import { DataGrid } from 'xedonium'
 export default function Demo() {
 	const rows = Array.from({ length: 8 }, (_, i) => ({
 		id: i + 1,
-		name: ['Ada', 'Linus', 'Grace', 'Alan', 'Margaret'][i % 5] + ' ' + (i + 1),
-		team: ['Core', 'Web', 'Infra'][i % 3],
+		name: ['Kevin', 'Stuart', 'Bob', 'Dave', 'Carl'][i % 5] + ' ' + (i + 1),
+		team: ['Bananas', 'Gadgets', 'Pranks'][i % 3],
 		score: (i * 37) % 100,
 	}))
 	return (

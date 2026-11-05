@@ -2,28 +2,28 @@ import { useState } from 'react'
 import { TransferList } from 'xedonium'
 
 const items = [
-	{ key: 'read', label: 'Read' },
-	{ key: 'write', label: 'Write' },
-	{ key: 'delete', label: 'Delete' },
-	{ key: 'share', label: 'Share' },
-	{ key: 'admin', label: 'Admin (locked)', disabled: true },
-	{ key: 'export', label: 'Export' },
+	{ key: 'freeze', label: 'Freeze ray' },
+	{ key: 'shrink', label: 'Shrink ray' },
+	{ key: 'fart', label: 'Fart gun' },
+	{ key: 'jelly', label: 'Jelly grenade' },
+	{ key: 'rocket', label: 'Rocket (locked)', disabled: true },
+	{ key: 'cannon', label: 'Banana cannon' },
 ]
 
 export default function Demo() {
-	const [granted, setGranted] = useState(['read'])
+	const [granted, setGranted] = useState(['freeze'])
 
 	return (
 		<div className="flex flex-col gap-3">
 			<TransferList
-				label="Permissions"
-				titles={['Available', 'Granted']}
+				label="Gadgets"
+				titles={['Available', 'Equipped']}
 				items={items}
 				value={granted}
 				onChange={setGranted}
 				height={180}
 			/>
-			<p className="m-0 text-xs text-app-muted">Granted: {granted.join(', ') || 'nothing'}</p>
+			<p className="m-0 text-xs text-app-muted">Equipped: {granted.join(', ') || 'nothing'}</p>
 		</div>
 	)
 }

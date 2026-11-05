@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Markdown, TextArea } from 'xedonium'
 
-const start = `## Live editor
+const start = `## Minion editor
 
 Type **Markdown** here and see it rendered beside it.
 

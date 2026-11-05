@@ -10,7 +10,9 @@ export default function Demo() {
 			<Button variant="secondary" onClick={() => setOpen(true)}>
 				Show banner
 			</Button>
-			{open && <div className="border border-app-border bg-app-card p-3 text-sm">Press Escape to dismiss me</div>}
+			{open && (
+				<div className="border border-app-border bg-app-card p-3 text-sm">Press Escape to dismiss me. Bello!</div>
+			)}
 		</div>
 	)
 }

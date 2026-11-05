@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import { LogViewer, NetworkConnection } from 'xedonium'
 
 const MESSAGES = [
-	['info', 'api', 'GET /customers 200'],
-	['info', 'api', 'POST /bills 201'],
-	['warn', 'cache', 'Cache miss for /products'],
-	['error', 'db', 'Connection timed out after 5000ms'],
-	['debug', 'queue', 'Job 42 picked up'],
+	['info', 'minions', 'Kevin said "Bello!"'],
+	['info', 'minions', 'Stuart peeled a banana'],
+	['warn', 'fridge', 'Banana stock running low'],
+	['error', 'freeze-ray', 'Overheated after 5000ms'],
+	['debug', 'queue', 'Minion 42 picked up the mop'],
 ]
 
 // A live stream: a new entry every second, kept to the newest 200
@@ -30,7 +30,7 @@ export default function Demo() {
 			logs={logs}
 			height="20rem"
 			appearance="dark"
-			emptyText="Connected. New log messages appear here."
+			emptyText="Connected to the lair. New log messages appear here."
 			onClear={() => setLogs([])}
 			toolbarStart={
 				<button type="button" className="inline-flex" onClick={() => setLive(l => !l)} aria-pressed={live}>

@@ -16,14 +16,14 @@ export default function Demo() {
 			}}
 		>
 			<RichTextEditor
-				label="Comment"
+				label="Note"
 				toolbar={['bold', 'italic', '|', 'ul', 'ol', '|', 'link', 'image']}
 				value={html}
 				onChange={value => {
 					setHtml(value)
 					setPosted(false)
 				}}
-				placeholder="Write a comment..."
+				placeholder="Write a note to the Minions..."
 				minHeight="8rem"
 				maxHeight="16rem"
 				helperText="Paste or choose an image to add it."

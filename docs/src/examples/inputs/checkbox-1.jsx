@@ -6,8 +6,13 @@ export default function Demo() {
 	const [admin, setAdmin] = useState(true)
 	return (
 		<div className="flex flex-col gap-3">
-			<Checkbox label="I agree" checked={agree} onChange={setAgree} />
-			<Checkbox label="Administrator" description="Can manage users and billing" checked={admin} onChange={setAdmin} />
+			<Checkbox label="I agree to love bananas" checked={agree} onChange={setAgree} />
+			<Checkbox
+				label="Boss Minion"
+				description="Can command Minions and manage the banana budget"
+				checked={admin}
+				onChange={setAdmin}
+			/>
 		</div>
 	)
 }

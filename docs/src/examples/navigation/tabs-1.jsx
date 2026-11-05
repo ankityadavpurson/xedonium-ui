@@ -4,8 +4,8 @@ export default function Demo() {
 	return (
 		<Tabs
 			items={[
-				{ key: 'a', label: 'Overview', content: 'Overview content' },
-				{ key: 'b', label: 'Activity', content: 'Activity content' },
+				{ key: 'a', label: 'Lair', content: 'Welcome to the lair.' },
+				{ key: 'b', label: 'Bananas', content: 'Bananas eaten today: plenty.' },
 				{ key: 'c', label: 'Disabled', disabled: true },
 			]}
 		/>

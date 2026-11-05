@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { LogViewer, TextArea, parseLogFile } from 'xedonium'
 
 // Paste the content of a log file: JSON lines and console text (like a printed Error) both work
-const sample = `{"level":"info","message":"Server started","timestamp":"2026-04-02T10:00:00.000Z","port":3000}
-{"level":"warn","message":"Slow query","timestamp":"2026-04-02T10:00:03.200Z","ms":1280}
+const sample = `{"level":"info","message":"Lair opened","timestamp":"2026-04-02T10:00:00.000Z","minions":3000}
+{"level":"warn","message":"Slow banana peeling","timestamp":"2026-04-02T10:00:03.200Z","ms":1280}
 TypeError: Cannot read properties of undefined (reading 'id')
-    at getCustomer (customers.js:21:18)
-    at handler (routes.js:8:5)
-{"level":"error","message":"Request failed","timestamp":"2026-04-02T10:00:04.100Z","url":"/customers/9"}`
+    at getMinion (minions.js:21:18)
+    at handler (lair.js:8:5)
+{"level":"error","message":"Prank failed","timestamp":"2026-04-02T10:00:04.100Z","url":"/minions/9"}`
 
 export default function Demo() {
 	const [text, setText] = useState(sample)

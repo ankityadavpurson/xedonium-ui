@@ -13,9 +13,9 @@ export default function Demo() {
 				</Button>
 			</div>
 			<BarChart
-				label="Orders per month"
+				label="Banana orders per month"
 				labels={['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']}
-				series={[{ name: 'Orders', values }]}
+				series={[{ name: 'Bananas', values }]}
 			/>
 		</div>
 	)

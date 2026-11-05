@@ -32,13 +32,13 @@ export default function Demo() {
 					<Mail />
 				</Badge>
 				<Badge variant="dot" color="warning" overlap="circular">
-					<Avatar name="Ada Lovelace" />
+					<Avatar name="Kevin Minion" />
 				</Badge>
 			</div>
 			<div className="flex items-center gap-3">
 				<Badge badgeContent={count} color="danger">
 					<Button variant="secondary" onClick={() => setCount(c => c + 1)}>
-						Notify
+						Bello!
 					</Button>
 				</Badge>
 				<Button variant="secondary" onClick={() => setCount(0)}>

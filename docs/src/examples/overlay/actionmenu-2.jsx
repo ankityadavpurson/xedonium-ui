@@ -15,7 +15,7 @@ export default function Demo() {
 			linkComponent={RouterLink}
 			linkProp="to"
 			items={[
-				{ key: 'apps', label: 'Apps', icon: <SettingsIcon />, href: '/apps' },
+				{ key: 'apps', label: 'Lair', icon: <SettingsIcon />, href: '/apps' },
 				{
 					key: 'docs',
 					label: 'Documentation',
@@ -24,8 +24,8 @@ export default function Demo() {
 				},
 				{
 					key: 'billing',
-					label: 'Billing',
-					description: 'Not available on this plan',
+					label: 'Banana vault',
+					description: 'Gru only',
 					href: '/billing',
 					disabled: true,
 				},

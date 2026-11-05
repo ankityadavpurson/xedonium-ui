@@ -6,12 +6,18 @@ export default function Demo() {
 			items={[
 				{
 					key: 'a',
-					leading: <Avatar name="Ada Lovelace" />,
-					primary: 'Ada Lovelace',
-					secondary: 'Admin',
-					trailing: 'Online',
+					leading: <Avatar name="Kevin Minion" />,
+					primary: 'Kevin',
+					secondary: 'Banana boss',
+					trailing: 'Awake',
 				},
-				{ key: 'b', leading: <Avatar name="Linus T" />, primary: 'Linus T', secondary: 'Editor', onClick: () => {} },
+				{
+					key: 'b',
+					leading: <Avatar name="Stuart Minion" />,
+					primary: 'Stuart',
+					secondary: 'Goggle polisher',
+					onClick: () => {},
+				},
 			]}
 		/>
 	)

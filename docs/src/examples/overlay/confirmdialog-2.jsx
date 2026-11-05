@@ -13,19 +13,19 @@ export default function Demo() {
 	return (
 		<>
 			<Button variant="danger" onClick={() => setOpen(true)}>
-				Delete project
+				Delete lair
 			</Button>
 			<ConfirmDialog
 				open={open}
 				onClose={close}
 				onConfirm={close}
 				tone="danger"
-				title="Delete project"
+				title="Delete lair"
 				confirmLabel="Delete"
 				confirmDisabled={typed !== 'delete'}
 				maxWidth="max-w-lg"
 			>
-				<p className="m-0">This removes the project and everything in it. Type delete to confirm.</p>
+				<p className="m-0">This removes the lair and every Minion in it. Type delete to confirm.</p>
 				<Input aria-label="Type delete" placeholder="delete" value={typed} onChange={setTyped} />
 			</ConfirmDialog>
 		</>

@@ -20,9 +20,9 @@ export default function Demo() {
 				onOpenChange={setOpen}
 				placement="bottom-start"
 				items={[
-					{ key: 'profile', label: 'Profile', onClick: () => setLast('Profile') },
+					{ key: 'profile', label: 'Minion profile', onClick: () => setLast('Minion profile') },
 					{ key: 'settings', label: 'Settings', onClick: () => setLast('Settings') },
-					{ key: 'out', label: 'Sign out', tone: 'danger', onClick: () => setLast('Sign out') },
+					{ key: 'out', label: 'Leave the lair', tone: 'danger', onClick: () => setLast('Leave the lair') },
 				]}
 			/>
 			<p className="m-0 text-xs text-app-muted">

@@ -8,11 +8,11 @@ export default function Demo() {
 	const nameRef = useRef(null)
 	return (
 		<>
-			<Button onClick={() => setOpen(true)}>New project</Button>
+			<Button onClick={() => setOpen(true)}>New mission</Button>
 			<Modal
 				open={open}
 				onClose={() => setOpen(false)}
-				title="New project"
+				title="New mission"
 				as="form"
 				noValidate
 				fullScreenBelow="sm"
@@ -24,7 +24,7 @@ export default function Demo() {
 				footer={<Button type="submit">Create</Button>}
 			>
 				<div className="px-6 py-4">
-					<Input ref={nameRef} aria-label="Project name" placeholder="Project name" value={name} onChange={setName} />
+					<Input ref={nameRef} aria-label="Mission name" placeholder="Mission name" value={name} onChange={setName} />
 				</div>
 			</Modal>
 		</>

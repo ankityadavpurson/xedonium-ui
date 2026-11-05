@@ -2,7 +2,7 @@ import { Carousel } from 'xedonium'
 
 // Custom wording: the arrows use it for the aria-label and the tooltip, the dots for their aria-label
 export default function Demo() {
-	const orders = ['Order #1042', 'Order #1043', 'Order #1044']
+	const orders = ['Banana order #1042', 'Banana order #1043', 'Banana order #1044']
 	return (
 		<Carousel
 			label="Current orders"

@@ -5,7 +5,13 @@ export default function Demo() {
 	const [bio, setBio] = useState('')
 	return (
 		<div className="max-w-sm">
-			<TextArea label="Bio" value={bio} onChange={setBio} maxLength={120} placeholder="Tell us about yourself" />
+			<TextArea
+				label="Minion bio"
+				value={bio}
+				onChange={setBio}
+				maxLength={120}
+				placeholder="Tell Gru about yourself"
+			/>
 		</div>
 	)
 }

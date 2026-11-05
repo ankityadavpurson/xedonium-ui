@@ -15,11 +15,11 @@ export default function Demo() {
 					activeKey={active}
 					onSelect={setActive}
 					items={[
-						{ key: 'main', label: 'Main Menu', section: true },
-						{ key: 'home', label: 'Home', icon: <HomeIcon /> },
-						{ key: 'projects', label: 'Projects with a very long name', icon: <GridIcon /> },
-						{ key: 'admin', label: 'Administration', section: true },
-						{ key: 'settings', label: 'Settings', icon: <SettingsIcon /> },
+						{ key: 'main', label: 'Lair', section: true },
+						{ key: 'home', label: 'Entrance', icon: <HomeIcon /> },
+						{ key: 'projects', label: 'Operation Steal the Moon and other villainous schemes', icon: <GridIcon /> },
+						{ key: 'admin', label: "Gru's office", section: true },
+						{ key: 'settings', label: 'Gadgets', icon: <SettingsIcon /> },
 					]}
 				/>
 			</div>

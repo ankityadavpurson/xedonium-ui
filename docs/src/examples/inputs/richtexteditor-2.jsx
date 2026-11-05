@@ -5,7 +5,7 @@ import { Markdown, RichTextEditor } from 'xedonium'
 // Markdown has no underline, colors or alignment, so those buttons are left out.
 export default function Demo() {
 	const [source, setSource] = useState(
-		'## Release notes\n\n- **Faster** search\n- A new *dark* theme\n\nRead more in the [docs](https://example.com).'
+		'## Banana report\n\n- **Faster** peeling\n- A new *golden* peel\n\nRead more in the [docs](https://example.com).'
 	)
 
 	return (

@@ -2,20 +2,20 @@ import { useState } from 'react'
 import { MultiSelect } from 'xedonium'
 
 export default function Demo() {
-	const [fruits, setFruits] = useState(['apple'])
+	const [minions, setMinions] = useState(['kevin'])
 	return (
 		<div className="max-w-sm">
 			<MultiSelect
-				label="Fruit"
+				label="Minions"
 				searchable
-				value={fruits}
-				onChange={setFruits}
+				value={minions}
+				onChange={setMinions}
 				placeholder="Pick some…"
 				options={[
-					{ value: 'apple', label: 'Apple' },
-					{ value: 'pear', label: 'Pear' },
-					{ value: 'plum', label: 'Plum', disabled: true },
-					{ value: 'fig', label: 'Fig' },
+					{ value: 'kevin', label: 'Kevin' },
+					{ value: 'stuart', label: 'Stuart' },
+					{ value: 'bob', label: 'Bob (napping)', disabled: true },
+					{ value: 'dave', label: 'Dave' },
 				]}
 			/>
 		</div>

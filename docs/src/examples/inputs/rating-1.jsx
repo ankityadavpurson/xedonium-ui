@@ -8,14 +8,14 @@ export default function Demo() {
 	return (
 		<div className="flex flex-col gap-4">
 			<div className="flex items-center gap-3">
-				<Rating label="Your rating" value={stars} onChange={setStars} />
+				<Rating label="Rate the Minions" value={stars} onChange={setStars} />
 				<span className="text-xs text-app-muted">{stars} of 5</span>
 			</div>
 			<div className="flex items-center gap-3">
-				<Rating label="Half stars" value={half} onChange={setHalf} precision={0.5} size="lg" />
+				<Rating label="Half bananas" value={half} onChange={setHalf} precision={0.5} size="lg" />
 				<span className="text-xs text-app-muted">{half} of 5</span>
 			</div>
-			<Rating label="Average review" value={4.5} precision={0.5} readOnly size="sm" />
+			<Rating label="Average banana review" value={4.5} precision={0.5} readOnly size="sm" />
 			<Rating label="Out of ten" defaultValue={7} max={10} />
 			<div className="flex flex-wrap items-center gap-3">
 				<Rating label="Gold" value={4} color="warning" readOnly />

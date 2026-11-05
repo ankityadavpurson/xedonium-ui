@@ -8,8 +8,8 @@ export default function Demo() {
 				<Button variant="secondary">Right</Button>
 			</Flex>
 			<Stack direction="row" gap={2}>
-				<Button>One</Button>
-				<Button>Two</Button>
+				<Button>Kevin</Button>
+				<Button>Stuart</Button>
 			</Stack>
 		</Stack>
 	)

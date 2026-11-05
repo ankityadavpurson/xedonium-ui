@@ -5,24 +5,24 @@ export default function Demo() {
 	return (
 		<div className="flex flex-col gap-3">
 			<div className="flex flex-wrap gap-2">
-				<Chip>Default</Chip>
-				<Chip tone="success">Active</Chip>
-				<Chip tone="warning">Pending</Chip>
-				<Chip tone="danger">Failed</Chip>
-				<Chip tone="info">Info</Chip>
+				<Chip>Minion</Chip>
+				<Chip tone="success">Happy</Chip>
+				<Chip tone="warning">Hungry</Chip>
+				<Chip tone="danger">Caught</Chip>
+				<Chip tone="info">Bello</Chip>
 			</div>
 			<div className="flex flex-wrap gap-2">
 				<Chip tone="success" filled>
-					Active
+					Happy
 				</Chip>
 				<Chip tone="warning" filled>
-					Pending
+					Hungry
 				</Chip>
 				<Chip tone="danger" filled>
-					Failed
+					Caught
 				</Chip>
 				<Chip tone="info" filled>
-					Info
+					Bello
 				</Chip>
 			</div>
 		</div>

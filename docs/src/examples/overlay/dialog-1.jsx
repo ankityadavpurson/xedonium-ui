@@ -9,7 +9,7 @@ export default function Demo() {
 			<Modal
 				open={open}
 				onClose={() => setOpen(false)}
-				title="Release notes"
+				title="Mission briefing"
 				footer={<Button onClick={() => setOpen(false)}>Done</Button>}
 			>
 				<p className="m-0 px-6 py-5 text-sm text-app-text">

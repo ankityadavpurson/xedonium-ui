@@ -5,7 +5,7 @@ export default function Demo() {
 	const [size, setSize] = useState('m')
 	return (
 		<RadioGroup
-			label="Size"
+			label="Goggles size"
 			value={size}
 			onChange={setSize}
 			direction="row"

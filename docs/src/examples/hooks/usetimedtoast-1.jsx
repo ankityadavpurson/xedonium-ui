@@ -5,8 +5,8 @@ export default function Demo() {
 	return (
 		<>
 			<div className="flex flex-wrap gap-3">
-				<Button onClick={() => showToast('Saved')}>Show toast</Button>
-				<Button variant="secondary" onClick={() => showToast('Heads up', 'warning')}>
+				<Button onClick={() => showToast('Banana saved')}>Show toast</Button>
+				<Button variant="secondary" onClick={() => showToast('Bello!', 'warning')}>
 					Warning
 				</Button>
 				<Button variant="flat" onClick={() => hideToast()}>

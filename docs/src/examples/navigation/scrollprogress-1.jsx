@@ -12,7 +12,7 @@ export default function Demo() {
 			<div ref={panel} className="h-64 overflow-y-auto p-4 pt-5">
 				{Array.from({ length: 14 }, (_, i) => (
 					<BodyText key={i} className="mb-3">
-						Paragraph {i + 1}. Scroll down and watch the bar at the top of the box.
+						Banana fact {i + 1}. Scroll down and watch the bar at the top of the box.
 					</BodyText>
 				))}
 			</div>

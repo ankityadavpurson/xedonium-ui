@@ -10,12 +10,18 @@ export default function Demo() {
 				items={[
 					{
 						key: 'a',
-						label: 'First',
+						label: 'Peel a banana',
 						icon: <PlusIcon />,
-						description: 'Does a thing',
-						onClick: () => showToast('First'),
+						description: 'Mind the slip',
+						onClick: () => showToast('Peeled'),
 					},
-					{ key: 'b', label: 'Second', icon: <Trash2Icon />, badge: 3, onClick: () => showToast('Second', 'error') },
+					{
+						key: 'b',
+						label: 'Throw a banana',
+						icon: <Trash2Icon />,
+						badge: 3,
+						onClick: () => showToast('Thrown', 'error'),
+					},
 					{
 						key: 'c',
 						label: 'Source on GitHub',

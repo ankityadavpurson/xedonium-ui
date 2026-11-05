@@ -14,13 +14,13 @@ export default function Demo() {
 
 	return (
 		<div className="flex flex-wrap items-center gap-3">
-			<Button onClick={() => setLoading(true)}>Save with a spinner</Button>
+			<Button onClick={() => setLoading(true)}>Peel with a spinner</Button>
 			<Button variant="secondary" onClick={() => setPreview(true)}>
 				Preview (click away to close)
 			</Button>
 			<Backdrop open={loading}>
 				<div className="bg-app-card p-6">
-					<Loader variant="inline" label="Saving…" />
+					<Loader variant="inline" label="Peeling…" />
 				</div>
 			</Backdrop>
 			<Backdrop open={preview} onClose={() => setPreview(false)}>

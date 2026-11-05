@@ -14,9 +14,9 @@ export default function Demo() {
 			</div>
 			<LineChart
 				smooth
-				label="Response time"
+				label="Giggles per day"
 				labels={['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']}
-				series={[{ name: 'ms', values }]}
+				series={[{ name: 'giggles', values }]}
 			/>
 		</div>
 	)

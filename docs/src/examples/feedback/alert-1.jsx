@@ -2,10 +2,10 @@ import { useState } from 'react'
 import { Alert, Button, Stack } from 'xedonium'
 
 const TONES = [
-	{ tone: 'info', variant: 'secondary', title: 'Heads up', text: 'Something you should know.' },
-	{ tone: 'success', variant: 'success', title: 'Saved', text: 'Your changes were saved.' },
-	{ tone: 'warning', variant: 'warning', title: 'Careful', text: 'This cannot be undone.' },
-	{ tone: 'danger', variant: 'danger', title: 'Failed', text: 'Could not reach the server.' },
+	{ tone: 'info', variant: 'secondary', title: 'Bello!', text: 'A Minion has something to tell you.' },
+	{ tone: 'success', variant: 'success', title: 'Banana secured', text: 'The bananas are safe in the vault.' },
+	{ tone: 'warning', variant: 'warning', title: 'Careful', text: 'Gru will not like this.' },
+	{ tone: 'danger', variant: 'danger', title: 'Oh no', text: 'Could not reach the lair.' },
 ]
 
 export default function Demo() {

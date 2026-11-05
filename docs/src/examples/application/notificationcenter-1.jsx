@@ -4,11 +4,11 @@ import { NotificationCenter } from 'xedonium'
 export default function Demo() {
 	const [opened, setOpened] = useState(false)
 	const [items, setItems] = useState([
-		{ id: 1, title: 'Build finished', body: 'main passed all checks', time: '2 min ago' },
-		{ id: 2, title: 'New comment', body: 'Ada replied to your review', time: '1 h ago' },
-		{ id: 3, title: 'Deploy started', body: 'production, v1.9.0', time: '3 h ago' },
-		{ id: 4, title: 'Welcome', time: 'Yesterday', read: true },
-		{ id: 5, title: 'Invoice ready', body: 'March invoice', time: '2 days ago', read: true },
+		{ id: 1, title: 'Banana delivery', body: 'Fresh bananas reached the lair', time: '2 min ago' },
+		{ id: 2, title: 'New message', body: 'Kevin replied to your plan', time: '1 h ago' },
+		{ id: 3, title: 'Mission started', body: 'Moon heist, step 3 of 9', time: '3 h ago' },
+		{ id: 4, title: 'Bello!', time: 'Yesterday', read: true },
+		{ id: 5, title: 'Banana bill ready', body: 'March bananas', time: '2 days ago', read: true },
 	])
 
 	return (

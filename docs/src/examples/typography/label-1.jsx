@@ -6,7 +6,7 @@ export default function Demo() {
 			<Label>Plain label (a span)</Label>
 			<div className="flex flex-col gap-1">
 				<Label htmlFor="email-example">Email</Label>
-				<Input id="email-example" type="email" placeholder="you@example.com" />
+				<Input id="email-example" type="email" placeholder="kevin@minions.example" />
 			</div>
 		</div>
 	)

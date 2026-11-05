@@ -7,12 +7,12 @@ export default function Demo() {
 				label="Grouped"
 				trigger="Default look"
 				items={[
-					{ key: 'page', heading: 'Page' },
-					{ key: 'add', label: 'Add site', onClick: () => {} },
-					{ key: 'edit', label: 'Edit page', onClick: () => {} },
+					{ key: 'page', heading: 'Minions' },
+					{ key: 'add', label: 'Add Minion', onClick: () => {} },
+					{ key: 'edit', label: 'Edit Minion', onClick: () => {} },
 					{ key: 'd', divider: true },
-					{ key: 'account', heading: 'Account' },
-					{ key: 'sign-out', label: 'Sign out', onClick: () => {} },
+					{ key: 'account', heading: 'Gru' },
+					{ key: 'sign-out', label: 'Leave the lair', onClick: () => {} },
 				]}
 			/>
 			<Menu
@@ -20,10 +20,10 @@ export default function Demo() {
 				trigger="look=actions"
 				look="actions"
 				items={[
-					{ key: 'page', heading: 'Page' },
-					{ key: 'add', label: 'Add site', onClick: () => {} },
-					{ key: 'account', heading: 'Account' },
-					{ key: 'sign-out', label: 'Sign out', onClick: () => {} },
+					{ key: 'page', heading: 'Minions' },
+					{ key: 'add', label: 'Add Minion', onClick: () => {} },
+					{ key: 'account', heading: 'Gru' },
+					{ key: 'sign-out', label: 'Leave the lair', onClick: () => {} },
 				]}
 			/>
 		</div>

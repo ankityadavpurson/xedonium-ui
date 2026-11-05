@@ -10,8 +10,8 @@ export default function Demo() {
 			<Input
 				value={query}
 				onChange={setQuery}
-				placeholder="Search"
-				aria-label="Search"
+				placeholder="Search bananas"
+				aria-label="Search bananas"
 				startAdornment={<SearchIcon />}
 				endAdornment={
 					query && (

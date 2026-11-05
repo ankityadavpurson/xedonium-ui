@@ -3,16 +3,16 @@ import { Field, useDocumentTitle } from 'xedonium'
 
 // The browser tab title follows the field. (The demo puts the page's own title back when it goes away.)
 export default function Demo() {
-	const [title, setTitle] = useState('Settings')
+	const [title, setTitle] = useState('Banana vault')
 	const original = useRef(typeof document === 'undefined' ? '' : document.title)
-	useDocumentTitle(title, 'My App')
+	useDocumentTitle(title, 'Minion HQ')
 	useEffect(() => () => void (document.title = original.current), [])
 
 	return (
 		<div className="flex flex-col gap-3">
 			<Field label="Page title" value={title} onChange={setTitle} />
 			<p className="m-0 text-sm text-app-muted">
-				The tab now reads: <strong className="text-app-text">{[title, 'My App'].filter(Boolean).join(' · ')}</strong>
+				The tab now reads: <strong className="text-app-text">{[title, 'Minion HQ'].filter(Boolean).join(' · ')}</strong>
 			</p>
 		</div>
 	)

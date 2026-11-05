@@ -1,17 +1,17 @@
 import { useState } from 'react'
 import { SearchSelect } from 'xedonium'
 
-const countries = ['Australia', 'Brazil', 'Canada', 'Denmark', 'Egypt', 'France', 'Germany', 'India', 'Japan']
+const minions = ['Kevin', 'Stuart', 'Bob', 'Dave', 'Carl', 'Phil', 'Jerry', 'Tim', 'Mark']
 
 export default function Demo() {
-	const [country, setCountry] = useState('')
+	const [minion, setMinion] = useState('')
 	return (
 		<div className="max-w-sm">
 			<SearchSelect
-				label="Country"
-				value={country}
-				onChange={setCountry}
-				options={countries.map(name => ({ value: name, label: name }))}
+				label="Minion"
+				value={minion}
+				onChange={setMinion}
+				options={minions.map(name => ({ value: name, label: name }))}
 			/>
 		</div>
 	)
