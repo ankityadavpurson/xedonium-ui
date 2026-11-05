@@ -1369,6 +1369,12 @@ const props = {
 	card: {
 		Card: [
 			['title', 'ReactNode', '', 'Header title.'],
+			[
+				'headingLevel',
+				'2 | 3 | 4 | 5 | 6',
+				'3',
+				"Level of the title's heading (h2 to h6), so it follows the heading above the card without skipping a level.",
+			],
 			['subtitle', 'ReactNode', '', 'Text under the title.'],
 			['actions', 'ReactNode', '', 'Header actions.'],
 			['footer', 'ReactNode', '', 'Footer content.'],
@@ -1553,10 +1559,16 @@ const props = {
 				'Render only the rows in view, for thousands of rows. Needs a fixed row height; all rows scroll in one list with a sticky header.',
 			],
 			[
+				'density',
+				"'comfortable' | 'compact'",
+				"'comfortable'",
+				'Row spacing: "compact" tightens the padding of the cells, header, selection column and loading skeletons for dense tables.',
+			],
+			[
 				'rowHeight',
 				'number',
 				'40',
-				'Row height in px when `virtualized`. Cell content must fit in it; it is not wrapped.',
+				'Row height in px when `virtualized` (32 when `density="compact"`). Cell content must fit in it; it is not wrapped.',
 			],
 			[
 				'height',

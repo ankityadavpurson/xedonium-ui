@@ -8,6 +8,16 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+### Added
+
+- `DataGrid` has a `density` prop: `compact` tightens the padding of the cells, header, selection column and loading skeletons (and lowers the default `rowHeight` to 32 when `virtualized`). The default `comfortable` is unchanged (#114).
+- `Card` has a `headingLevel` prop (2 to 6, default 3) so its title can follow the heading above it without skipping a level (#116).
+
+### Fixed
+
+- `Badge` `success` and `info` use darker backgrounds (emerald-700, sky-700) so the white text passes WCAG AA contrast (#117).
+- The `Copy` button of `CodeDisplay` has a hit area of at least 24 x 24 px (larger on touch screens) without changing how the caption looks (#115).
+
 ## [1.25.2] - 2026-11-03
 
 ## [1.25.1] - 2026-11-01

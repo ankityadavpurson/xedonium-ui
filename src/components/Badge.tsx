@@ -27,10 +27,10 @@ export interface BadgeProps extends ComponentPropsWithoutRef<'span'> {
 const colorClasses: Record<BadgeColor, string> = {
 	default: 'bg-app-strong text-app-bg',
 	secondary: 'bg-app-muted text-app-bg',
-	success: 'bg-emerald-600 text-white',
+	success: 'bg-emerald-700 text-white',
 	danger: 'bg-red-600 text-white',
 	warning: 'bg-amber-400 text-black',
-	info: 'bg-sky-600 text-white',
+	info: 'bg-sky-700 text-white',
 }
 
 const shapeClasses: Record<BadgeShape, string> = { square: '', rounded: 'rounded', pill: 'rounded-full' }

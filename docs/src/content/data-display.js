@@ -74,7 +74,7 @@ export default {
 			name: 'Card',
 			blocks: [
 				{
-					md: 'On narrow screens the header wraps, so `actions` drop below a long title or subtitle instead of squeezing it.',
+					md: "On narrow screens the header wraps, so `actions` drop below a long title or subtitle instead of squeezing it.\n\nThe title is an `h3` by default. Set `headingLevel` (2 to 6) so it follows the heading above the card without skipping a level, for example `headingLevel={2}` under the page's `h1`.",
 				},
 				{
 					example: 1,
@@ -177,6 +177,12 @@ export default {
 				},
 				{
 					example: 3,
+				},
+				{
+					md: '**Dense tables.** `density="compact"` tightens the padding of the cells, the header, the selection column and the loading skeletons, so more rows fit on screen. With `virtualized` the default `rowHeight` drops from 40 to 32; an explicit `rowHeight` still wins.',
+				},
+				{
+					example: 4,
 				},
 			],
 		},

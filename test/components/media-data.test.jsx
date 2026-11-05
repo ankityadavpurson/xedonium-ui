@@ -1137,3 +1137,33 @@ describe('DataGrid', () => {
 		expect(screen.getByLabelText('Select row a')).toBeInTheDocument()
 	})
 })
+
+describe('DataGrid density', () => {
+	const columns = [{ key: 'name', header: 'Name', sortable: true }]
+	const rows = [{ id: 1, name: 'Abe' }]
+
+	it('keeps the comfortable padding by default and tightens it when compact', () => {
+		const { rerender } = render(<DataGrid columns={columns} rows={rows} selectable />)
+		expect(screen.getByRole('columnheader', { name: /Name/ })).toHaveClass('px-4', 'py-2.5')
+		expect(screen.getByText('Abe').closest('td')).toHaveClass('px-4', 'py-2.5')
+		rerender(<DataGrid columns={columns} rows={rows} selectable density="compact" />)
+		expect(screen.getByRole('columnheader', { name: /Name/ })).toHaveClass('px-3', 'py-2')
+		expect(screen.getByText('Abe').closest('td')).toHaveClass('px-3', 'py-1.5')
+		expect(screen.getByRole('columnheader', { name: 'Select all rows on this page' })).toHaveClass('px-3', 'py-2')
+	})
+
+	it('uses the same padding for loading skeletons', () => {
+		const { container } = render(<DataGrid columns={columns} rows={rows} loading density="compact" />)
+		expect(container.querySelector('tbody td')).toHaveClass('px-3', 'py-1.5')
+	})
+
+	it('lowers the default virtualized row height to 32, unless rowHeight is given', () => {
+		const many = Array.from({ length: 50 }, (_, i) => ({ id: i + 1, name: `Row ${i + 1}` }))
+		const { container, rerender } = render(<DataGrid columns={columns} rows={many} virtualized density="compact" />)
+		expect(container.querySelector('tbody tr[aria-rowindex]')).toHaveStyle({ height: '32px' })
+		rerender(<DataGrid columns={columns} rows={many} virtualized density="compact" rowHeight={50} />)
+		expect(container.querySelector('tbody tr[aria-rowindex]')).toHaveStyle({ height: '50px' })
+		rerender(<DataGrid columns={columns} rows={many} virtualized />)
+		expect(container.querySelector('tbody tr[aria-rowindex]')).toHaveStyle({ height: '40px' })
+	})
+})

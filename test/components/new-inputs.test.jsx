@@ -767,3 +767,21 @@ describe('Chip', () => {
 		for (const button of screen.getAllByRole('button')) expect(button).toBeDisabled()
 	})
 })
+
+describe('Badge colour contrast', () => {
+	it('uses backgrounds dark enough for white text on success and info', () => {
+		const { container, rerender } = render(<Badge color="success" badgeContent="Verified" />)
+		expect(indicatorOf(container)).toHaveClass('bg-emerald-700', 'text-white')
+		rerender(<Badge color="info" badgeContent="New" />)
+		expect(indicatorOf(container)).toHaveClass('bg-sky-700', 'text-white')
+	})
+})
+
+const indicatorOf = container => container.querySelector('[data-hidden]')
+
+describe('CodeDisplay copy button target', () => {
+	it('pads the button so its hit area is at least 24px without moving the caption', () => {
+		render(<CodeDisplay code="yarn install" language="bash" />)
+		expect(screen.getByRole('button', { name: 'Copy' })).toHaveClass('-mx-2', '-my-1', 'px-2', 'py-1')
+	})
+})

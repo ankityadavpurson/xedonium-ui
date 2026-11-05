@@ -724,3 +724,18 @@ describe('Timeline horizontal', () => {
 		expect(container.querySelector('ol')).not.toHaveClass('flex')
 	})
 })
+
+describe('Card headingLevel', () => {
+	it('renders the title as an h3 by default and as the level asked for', () => {
+		const { rerender } = render(<Card title="Title">body</Card>)
+		expect(screen.getByRole('heading', { level: 3, name: 'Title' })).toBeInTheDocument()
+		for (const level of [2, 4, 5, 6]) {
+			rerender(
+				<Card title="Title" headingLevel={level}>
+					body
+				</Card>
+			)
+			expect(screen.getByRole('heading', { level, name: 'Title' })).toBeInTheDocument()
+		}
+	})
+})

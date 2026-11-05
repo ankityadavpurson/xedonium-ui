@@ -88,7 +88,7 @@ const CodeDisplay = ({
 						<button
 							type="button"
 							onClick={copy}
-							className="text-xs font-semibold uppercase tracking-widest text-app-muted outline-none transition hover:text-app-text focus-visible:ring-2 focus-visible:ring-app-strong"
+							className="-mx-2 -my-1 px-2 py-1 text-xs font-semibold uppercase tracking-widest text-app-muted outline-none transition hover:text-app-text focus-visible:ring-2 focus-visible:ring-app-strong [@media(pointer:coarse)]:-my-2.5 [@media(pointer:coarse)]:py-2.5"
 						>
 							{copied ? 'Copied' : 'Copy'}
 						</button>
