@@ -50,7 +50,9 @@ export interface DataGridProps<Row extends object = Record<string, unknown>> {
 	 * fixed height (`rowHeight`). All rows then scroll in one list with a sticky header; pass `pageSize` to page them too.
 	 */
 	virtualized?: boolean
-	/** Row height in px when `virtualized` (default 40). Cell content must fit in it; it is not wrapped. */
+	/** Row spacing: `compact` tightens the cell padding for dense tables, and the default `rowHeight` when `virtualized`. */
+	density?: 'comfortable' | 'compact'
+	/** Row height in px when `virtualized` (default 40, or 32 when `density="compact"`). Cell content must fit in it; it is not wrapped. */
 	rowHeight?: number
 	/** Height in px of the scrolling area when `virtualized` (default 400); it is shorter when there are few rows. */
 	height?: number
@@ -86,6 +88,29 @@ const columnStyle = <Row extends object>(column: DataGridColumn<Row>): CSSProper
 
 // Extra rows rendered above and below the visible window when virtualized
 const OVERSCAN = 6
+
+// Cell padding per density: `x` horizontal (cells), `head` header cells, `body` vertical (cells), `skeleton` loading cells
+const DENSITY = {
+	comfortable: {
+		x: 'px-4',
+		head: 'px-4 py-2.5',
+		body: 'py-2.5',
+		skeleton: 'px-4 py-3',
+		sortButton: '-my-2 min-h-8',
+		checkbox: '',
+		rowHeight: 40,
+	},
+	compact: {
+		x: 'px-3',
+		head: 'px-3 py-2',
+		body: 'py-1.5',
+		skeleton: 'px-3 py-1.5',
+		sortButton: '-my-1.5 min-h-6',
+		// the checkbox's 32px hit area would keep the rows tall: pull it in to a 24px box
+		checkbox: '-my-1',
+		rowHeight: 32,
+	},
+}
 
 // Sticky header cells (the bar stays while the rows scroll); the inset shadow draws the line a collapsed border can't
 const STICKY = 'sticky top-0 z-10 bg-app-bg shadow-[inset_0_-1px_0_0_rgb(var(--color-app-border))]'
@@ -131,12 +156,15 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 	loading = false,
 	hideFooterWhenSinglePage = false,
 	virtualized = false,
-	rowHeight = 40,
+	rowHeight: rowHeightProp,
+	density = 'comfortable',
 	height = 400,
 	empty = 'No results',
 	caption,
 	className = '',
 }: DataGridProps<Row>) => {
+	const d = DENSITY[density]
+	const rowHeight = rowHeightProp ?? d.rowHeight
 	const [sort, setSort] = useState<Sort | null>(null)
 	const [query, setQuery] = useState('')
 	const [page, setPage] = useState(1)
@@ -192,7 +220,7 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 	const rendered = virtualized ? visible.slice(windowStart, windowEnd) : visible
 	const columnCount = columns.length + (selectable ? 1 : 0)
 	// Fixed-height rows: no vertical padding, one line, ellipsis
-	const cellY = virtualized ? 'py-0 whitespace-nowrap overflow-hidden text-ellipsis' : 'py-2.5'
+	const cellY = virtualized ? 'py-0 whitespace-nowrap overflow-hidden text-ellipsis' : d.body
 
 	const toggleSort = (column: DataGridColumn<Row>) => {
 		setPage(1)
@@ -236,8 +264,9 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 					<thead>
 						<tr className="border-b border-app-border bg-app-bg">
 							{selectable && (
-								<th scope="col" className={`w-10 px-4 py-2.5 ${virtualized ? STICKY : ''}`}>
+								<th scope="col" className={`w-10 ${d.head} ${virtualized ? STICKY : ''}`}>
 									<Checkbox
+										className={d.checkbox}
 										aria-label={paged ? 'Select all rows on this page' : 'Select all rows'}
 										checked={allChecked}
 										indeterminate={!allChecked && someChecked}
@@ -261,13 +290,13 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 											active ? (sort?.dir === 'asc' ? 'ascending' : 'descending') : column.sortable ? 'none' : undefined
 										}
 										style={columnStyle(column)}
-										className={`px-4 py-2.5 text-xs font-semibold uppercase tracking-widest text-app-muted ${virtualized ? STICKY : ''} ${columnClass(column, column.headerClassName)}`}
+										className={`${d.head} text-xs font-semibold uppercase tracking-widest text-app-muted ${virtualized ? STICKY : ''} ${columnClass(column, column.headerClassName)}`}
 									>
 										{column.sortable ? (
 											<button
 												type="button"
 												onClick={() => toggleSort(column)}
-												className="-my-2 inline-flex min-h-8 items-center gap-1 uppercase tracking-widest transition hover:text-app-text"
+												className={`${d.sortButton} inline-flex items-center gap-1 uppercase tracking-widest transition hover:text-app-text`}
 											>
 												{column.header}
 												<SortIcon direction={active ? sort?.dir : undefined} />
@@ -285,7 +314,7 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 							Array.from({ length: Math.min(size, 5) }, (_, index) => (
 								<tr key={index} className="border-b border-app-border last:border-b-0">
 									{Array.from({ length: columnCount }, (_, cell) => (
-										<td key={cell} className="px-4 py-3">
+										<td key={cell} className={d.skeleton}>
 											<Skeleton className="h-4 w-full" />
 										</td>
 									))}
@@ -312,8 +341,9 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 											className={`border-b border-app-border last:border-b-0 hover:bg-app-bg ${checked ? 'bg-app-soft/10' : ''}`}
 										>
 											{selectable && (
-												<td className={`px-4 ${cellY}`}>
+												<td className={`${d.x} ${cellY}`}>
 													<Checkbox
+														className={d.checkbox}
 														aria-label={`Select row ${key}`}
 														checked={checked}
 														onChange={on => setSelection(on ? [...selection, key] : selection.filter(k => k !== key))}
@@ -324,7 +354,7 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 												<td
 													key={column.key}
 													style={columnStyle(column)}
-													className={`px-4 ${cellY} ${columnClass(column, column.className)}`}
+													className={`${d.x} ${cellY} ${columnClass(column, column.className)}`}
 												>
 													{column.render ? column.render(row) : (row[column.key as keyof Row] as ReactNode)}
 												</td>

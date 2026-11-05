@@ -14,7 +14,7 @@ export default {
 	'data-display/accordion': ['Items', 'Spaced apart', 'Single section'],
 	'data-display/chip': ['Filters and tags', 'Tones'],
 	'data-display/codedisplay': ['Basic', 'Custom palette'],
-	'data-display/datagrid': ['Sorting and paging', 'Loading and responsive', 'Large data set'],
+	'data-display/datagrid': ['Sorting and paging', 'Loading and responsive', 'Large data set', 'Compact density'],
 	'data-display/fileexplorer': ['Browse', 'Load on demand'],
 	'data-display/logviewer': ['Filter and search', 'Live logs', 'Log files'],
 	'data-display/nestedtable': ['Tree rows', 'Master and detail'],
