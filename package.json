@@ -64,13 +64,13 @@
 		}
 	},
 	"scripts": {
-		"docs": "vite --config docs/vite.config.js",
+		"docs": "astro dev --root docs",
 		"build": "vite build && tsc -p tsconfig.build.json && node scripts/copy-css.js",
 		"build:types": "tsc -p tsconfig.build.json",
 		"lint": "eslint .",
 		"typecheck": "tsc --noEmit",
-		"docs:build": "vite build --config docs/vite.config.js && vite build --ssr src/entry-server.jsx --outDir dist-ssr --config docs/vite.config.js && node docs/prerender.mjs",
-		"docs:preview": "yarn docs:build && vite preview --config docs/vite.config.js",
+		"docs:build": "astro build --root docs",
+		"docs:preview": "astro preview --root docs",
 		"docs:check": "node scripts/check-docs.mjs",
 		"docs:deploy:preview": "yarn docs:build && firebase hosting:channel:deploy preview",
 		"prepublishOnly": "npm run lint && npm run typecheck && npm run build && npm run check:exports",
@@ -87,6 +87,7 @@
 		"tailwindcss": "^3.4.0 || ^4.0.0"
 	},
 	"devDependencies": {
+		"@astrojs/react": "^7.1.2",
 		"@eslint/js": "^9",
 		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/react": "^14",
@@ -94,6 +95,7 @@
 		"@types/react": "^18.2.0",
 		"@vitejs/plugin-react": "^4.2.1",
 		"@vitest/coverage-v8": "^2",
+		"astro": "^7.4.5",
 		"autoprefixer": "^10.4.19",
 		"eslint": "^9",
 		"eslint-plugin-react": "^7.37.5",

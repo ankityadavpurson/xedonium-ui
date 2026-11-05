@@ -1,7 +1,7 @@
 import { Table } from 'xedonium'
 import { Code } from '../components/Markdown'
 import Markdown from '../components/Markdown'
-import Page from '../pages/Page'
+import Page from '../views/Page'
 
 const TOKENS = [
 	['bg', 'Page background, input fill'],

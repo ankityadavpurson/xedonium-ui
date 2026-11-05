@@ -3,7 +3,7 @@ import * as Xedonium from 'xedonium'
 import { Button, Field, Label, Modal } from 'xedonium'
 import CodeBlock from '../components/CodeBlock'
 import Markdown from '../components/Markdown'
-import Page, { H2 } from '../pages/Page'
+import Page, { H2 } from '../views/Page'
 
 const ICONS = Object.entries(Xedonium)
 	.filter(([name]) => name.endsWith('Icon'))

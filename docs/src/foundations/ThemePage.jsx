@@ -1,7 +1,8 @@
 import { Select, useTheme } from 'xedonium'
 import CodeBlock from '../components/CodeBlock'
 import Markdown from '../components/Markdown'
-import Page, { H2 } from '../pages/Page'
+import useHydrated from '../useHydrated'
+import Page, { H2 } from '../views/Page'
 
 const modes = [
 	'- `light`: always the light theme.',
@@ -11,7 +12,11 @@ const modes = [
 
 // Live picker: the docs site runs its ThemeProvider with `allowSystem`
 const ModePicker = () => {
-	const { themeMode, setThemeMode, activeTheme } = useTheme()
+	const { themeMode: stored, setThemeMode, activeTheme: current } = useTheme()
+	// the prerendered page cannot know the visitor's theme: the first (hydrating) render shows the defaults
+	const hydrated = useHydrated()
+	const themeMode = hydrated ? stored : 'system'
+	const activeTheme = hydrated ? current : 'light'
 	return (
 		<div className="flex max-w-xs flex-col gap-2">
 			<Select
