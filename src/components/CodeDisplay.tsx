@@ -65,6 +65,9 @@ const CodeDisplay = ({
 		timer.current = setTimeout(() => setCopied(false), 1500)
 	}
 
+	// With a custom palette the caption, button and line numbers use its text color, as the theme's muted gray may not suit its background
+	const ink = colors?.text ? { color: colors.text } : undefined
+
 	// Overrides become CSS variables on the block, so the same spans pick them up
 	const style: Record<string, string | number> = { ...(maxHeight ? { maxHeight } : {}) }
 	if (colors) {
@@ -81,13 +84,14 @@ const CodeDisplay = ({
 		>
 			{(title || language || copyable) && (
 				<figcaption className="flex items-center justify-between gap-2 border-b border-app-border px-3 py-1.5">
-					<span className="min-w-0 truncate text-xs font-semibold uppercase tracking-widest text-app-muted">
+					<span style={ink} className="min-w-0 truncate text-xs font-semibold uppercase tracking-widest text-app-muted">
 						{title ?? language}
 					</span>
 					{copyable && (
 						<button
 							type="button"
 							onClick={copy}
+							style={ink}
 							className="-mx-2 -my-1 px-2 py-1 text-xs font-semibold uppercase tracking-widest text-app-muted outline-none transition hover:text-app-text focus-visible:ring-2 focus-visible:ring-app-strong [@media(pointer:coarse)]:-my-2.5 [@media(pointer:coarse)]:py-2.5"
 						>
 							{copied ? 'Copied' : 'Copy'}
@@ -109,6 +113,7 @@ const CodeDisplay = ({
 							{lineNumbers && (
 								<span
 									aria-hidden="true"
+									style={ink}
 									className="mr-3 inline-block w-8 shrink-0 select-none text-right text-app-muted"
 								>
 									{index + 1}

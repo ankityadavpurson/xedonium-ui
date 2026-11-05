@@ -463,7 +463,7 @@ describe('VirtualList', () => {
 			/>
 		)
 		const list = screen.getByRole('list', { name: 'Big' })
-		expect(list).toHaveAttribute('aria-rowcount', '1000')
+		expect(list).not.toHaveAttribute('aria-rowcount')
 		expect(screen.getAllByRole('listitem').length).toBeLessThan(20)
 		expect(screen.getByText('row 0')).toBeInTheDocument()
 		expect(screen.queryByText('row 500')).toBeNull()

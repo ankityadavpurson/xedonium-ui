@@ -137,7 +137,8 @@ const NestedTable = <Row extends object = Record<string, unknown>>({
 				type="button"
 				aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${rowLabel ? rowLabel(row) : key}`}
 				aria-expanded={isOpen}
-				aria-controls={isOpen ? `${baseId}-${key}` : undefined}
+				// only the details row has an id: child rows are not one element
+				aria-controls={isOpen && renderDetails ? `${baseId}-${key}` : undefined}
 				disabled={loading}
 				onClick={() => toggle(row)}
 				className="inline-flex h-6 w-6 shrink-0 items-center justify-center text-app-muted outline-none transition hover:text-app-text focus-visible:ring-2 focus-visible:ring-app-strong disabled:cursor-wait"

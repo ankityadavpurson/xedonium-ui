@@ -8,7 +8,7 @@ export default {
 			name: 'Accordion',
 			blocks: [
 				{
-					md: '`items: [{ key, title, content, disabled? }]`. One section is open at a time unless `multiple` is set. Control it with `value` (array of open keys) and `onChange`, or use `defaultValue`.',
+					md: '`items: [{ key, title, content, disabled? }]`. One section is open at a time unless `multiple` is set. Control it with `value` (array of open keys) and `onChange`, or use `defaultValue`. The headers are `h3` headings; set `headingLevel` (2 to 6) so they follow the heading above without skipping a level.',
 				},
 				{
 					example: 1,

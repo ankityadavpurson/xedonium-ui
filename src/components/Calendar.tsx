@@ -390,7 +390,12 @@ const Calendar = ({
 											type="button"
 											tabIndex={isSameDay(day, focused) ? 0 : -1}
 											disabled={disabled}
-											aria-label={day.toDateString()}
+											aria-label={day.toLocaleDateString(locale, {
+												weekday: 'long',
+												day: 'numeric',
+												month: 'long',
+												year: 'numeric',
+											})}
 											aria-current={isSameDay(day, today) ? 'date' : undefined}
 											onClick={() => {
 												setFocused(day)

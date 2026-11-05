@@ -339,9 +339,10 @@ const PipelineGraph = ({
 							disabled={node.disabled}
 							aria-label={
 								node.ariaLabel ??
-								`${text}, ${STATUS_TEXT[node.status]}${
-									typeof node.duration === 'string' || typeof node.duration === 'number' ? `, ${node.duration}` : ''
-								}`
+								// the visible text first, in the order shown and without punctuation between, so the name contains it
+								`${[text, node.description, node.duration]
+									.filter(part => typeof part === 'string' || typeof part === 'number')
+									.join(' ')}, ${STATUS_TEXT[node.status]}`
 							}
 							title={node.title ?? STATUS_TEXT[node.status]}
 							style={{ left: left(col), top: top(row), width: nodeWidth, height: nodeHeight }}
@@ -358,11 +359,18 @@ const PipelineGraph = ({
 									{icon}
 									<span className="min-w-0 flex-1">
 										<span className="block truncate text-sm font-semibold">{node.label}</span>
+										{/* the spaces keep the lines apart in the text a speech user can read */}
 										{node.description != null && (
-											<span className="block truncate text-xs text-app-soft">{node.description}</span>
+											<>
+												{' '}
+												<span className="block truncate text-xs text-app-soft">{node.description}</span>
+											</>
 										)}
 										{node.duration != null && (
-											<span className="block truncate text-xs text-app-muted">{node.duration}</span>
+											<>
+												{' '}
+												<span className="block truncate text-xs text-app-muted">{node.duration}</span>
+											</>
 										)}
 									</span>
 									{node.trailing != null && <span className="shrink-0">{node.trailing}</span>}

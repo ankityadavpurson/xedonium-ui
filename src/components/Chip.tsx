@@ -35,7 +35,7 @@ const toneClasses: Record<ChipTone, { outline: string; filled: string }> = {
 	},
 	success: {
 		outline: 'border-emerald-500/50 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300',
-		filled: 'border-emerald-600 bg-emerald-600 text-white dark:border-emerald-500 dark:bg-emerald-500 dark:text-black',
+		filled: 'border-emerald-700 bg-emerald-700 text-white dark:border-emerald-500 dark:bg-emerald-500 dark:text-black',
 	},
 	warning: {
 		outline: 'border-amber-500/50 bg-amber-400/15 text-amber-900 dark:text-amber-200',
@@ -43,11 +43,11 @@ const toneClasses: Record<ChipTone, { outline: string; filled: string }> = {
 	},
 	danger: {
 		outline: 'border-red-500/40 bg-red-500/10 text-red-800 dark:text-red-300',
-		filled: 'border-red-600 bg-red-600 text-white dark:border-red-500 dark:bg-red-500',
+		filled: 'border-red-600 bg-red-600 text-white dark:border-red-500 dark:bg-red-500 dark:text-black',
 	},
 	info: {
 		outline: 'border-sky-500/40 bg-sky-500/10 text-sky-800 dark:text-sky-300',
-		filled: 'border-sky-600 bg-sky-600 text-white dark:border-sky-500 dark:bg-sky-500 dark:text-black',
+		filled: 'border-sky-700 bg-sky-700 text-white dark:border-sky-500 dark:bg-sky-500 dark:text-black',
 	},
 }
 

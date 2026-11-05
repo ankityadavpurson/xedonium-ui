@@ -14,11 +14,17 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 - `DataGrid` has a `density` prop: `compact` tightens the padding of the cells, header, selection column and loading skeletons (and lowers the default `rowHeight` to 32 when `virtualized`). The default `comfortable` is unchanged (#114).
 - `Card` has a `headingLevel` prop (2 to 6, default 3) so its title can follow the heading above it without skipping a level (#116).
+- `Accordion` and `AccordionSection` have a `headingLevel` prop (2 to 6, default 3) so their headers can follow the heading above without skipping a level.
 
 ### Fixed
 
 - `Badge` `success` and `info` use darker backgrounds (emerald-700, sky-700) so the white text passes WCAG AA contrast (#117).
 - The `Copy` button of `CodeDisplay` has a hit area of at least 24 x 24 px (larger on touch screens) without changing how the caption looks (#115).
+- Accessibility fixes from an axe audit of every component:
+  - `VirtualList` no longer puts `aria-rowcount` on its list role, and `NestedTable` only sets `aria-controls` when the details row it points to exists.
+  - `TransferList` is a plain list of checkboxes, not a listbox of options that contain checkboxes; a `Sidebar` section caption is a plain list item; a horizontal `Timeline` can be focused to scroll it with the keyboard.
+  - Text contrast: `Button` and `Chip` success / info (and `Chip` danger in dark mode) pass WCAG AA, `CodeDisplay` uses the custom `colors.text` for its caption, Copy button and line numbers, and `LogViewer` no longer fades stack-trace lines.
+  - Label in Name: calendar days are named with the weekday, day, month and year (for example "Sunday, November 1, 2026"), `PipelineGraph` nodes put their visible text first (for example "build main 2m, success").
 
 ## [1.25.2] - 2026-11-03
 
