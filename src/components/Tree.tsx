@@ -131,11 +131,12 @@ const Tree = ({
 						tabIndex={node.key === activeKey ? 0 : -1}
 						onKeyDown={event => handleKeyDown(event, index)}
 						onFocus={() => setFocusKey(node.key)}
-						className="list-none outline-none"
+						// the focus ring goes on the row, inside the list so nothing can clip it
+						className="group list-none outline-none"
 					>
 						<div
 							style={{ paddingLeft: `${depth * 1.25 + 0.5}rem` }}
-							className={`flex cursor-pointer items-center gap-1 py-1.5 pr-3 transition hover:bg-app-bg ${
+							className={`flex cursor-pointer items-center gap-1 py-1.5 pr-3 transition hover:bg-app-bg group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:-outline-offset-2 group-focus-visible:outline-app-strong ${
 								isSelected ? 'bg-app-soft/20 font-semibold' : ''
 							}`}
 							onClick={() => {

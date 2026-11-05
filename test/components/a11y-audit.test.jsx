@@ -1,5 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import Accordion, { AccordionSection } from '../../src/components/Accordion'
+import AppBar from '../../src/components/AppBar'
+import Tree from '../../src/components/Tree'
 import Button from '../../src/components/Button'
 import Calendar from '../../src/components/Calendar'
 import Chip from '../../src/components/Chip'
@@ -124,5 +126,20 @@ describe('accessibility fixes from the audit', () => {
 		)
 		fireEvent.click(screen.getByRole('button', { name: 'S' }))
 		expect(screen.getByRole('heading', { level: 4 })).toBeInTheDocument()
+	})
+
+	it('draws the focus outline inside Sidebar entries and AppBar links, where a scrolling parent would clip it', () => {
+		const { unmount } = render(<Sidebar items={[{ key: 'a', label: 'A', onClick: () => {} }]} />)
+		expect(screen.getByRole('button', { name: 'A' })).toHaveClass('focus-visible:-outline-offset-2')
+		unmount()
+		render(<AppBar brand="B" links={[{ label: 'Home', href: '/' }]} />)
+		expect(screen.getByRole('link', { name: 'Home' })).toHaveClass('focus-visible:-outline-offset-2')
+	})
+
+	it('shows keyboard focus on the row of a Tree item', () => {
+		render(<Tree nodes={[{ key: 'a', label: 'Alpha' }]} />)
+		const item = screen.getByRole('treeitem')
+		expect(item).toHaveClass('group')
+		expect(item.firstElementChild).toHaveClass('group-focus-visible:outline')
 	})
 })

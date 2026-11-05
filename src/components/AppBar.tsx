@@ -29,7 +29,7 @@ export interface AppBarProps {
 }
 
 const linkClass = (active: boolean) =>
-	`flex min-h-9 items-center px-2.5 py-1.5 text-xs font-semibold uppercase tracking-widest transition sm:px-3 ${
+	`flex min-h-9 items-center px-2.5 py-1.5 text-xs font-semibold uppercase tracking-widest transition focus-visible:-outline-offset-2 sm:px-3 ${
 		active ? 'bg-app-card text-app-text' : 'text-app-muted hover:text-app-text'
 	}`
 

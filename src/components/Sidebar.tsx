@@ -119,7 +119,7 @@ const Sidebar = ({
 		)
 		const classes = `flex w-full items-center gap-3 ${DENSITY[density]} ${
 			textCase === 'none' ? 'text-sm font-medium' : 'text-xs font-semibold uppercase tracking-widest'
-		} transition ${
+		} transition focus-visible:-outline-offset-2 ${
 			active ? 'bg-app-strong text-app-bg' : 'text-app-muted hover:bg-app-bg hover:text-app-text'
 		} ${collapsed ? 'justify-center px-2' : 'pr-3'} ${itemClassName}`
 		const style = collapsed ? undefined : { paddingLeft: `${0.75 + depth * 1}rem` }
