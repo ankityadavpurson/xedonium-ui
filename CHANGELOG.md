@@ -8,6 +8,11 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+### Fixed
+
+- Keyboard focus is no longer clipped or missing: `Sidebar` entries and `AppBar` links draw their focus outline inside the element (a scrolling parent cut it off), and `Tree` items show a focus outline on the focused row (there was none).
+- `Tabs` show a clean inset focus ring around the focused tab when you use the keyboard, instead of the browser's default outline, which was clipped by the tab list.
+
 ## [1.26.1] - 2026-11-05
 
 ### Added

@@ -147,7 +147,7 @@ const Tabs = ({ items, value, defaultValue, onChange, scrollButtons = 'auto', cl
 								tabIndex={selected ? 0 : -1}
 								disabled={item.disabled}
 								onClick={() => select(item.key)}
-								className={`whitespace-nowrap border-b-2 px-4 py-2 text-xs font-semibold uppercase tracking-widest transition disabled:cursor-not-allowed disabled:opacity-50 ${
+								className={`whitespace-nowrap border-b-2 px-4 py-2 text-xs font-semibold uppercase tracking-widest outline-none transition focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-app-strong disabled:cursor-not-allowed disabled:opacity-50 ${
 									selected ? 'border-app-strong text-app-text' : 'border-transparent text-app-muted hover:text-app-text'
 								}`}
 							>
