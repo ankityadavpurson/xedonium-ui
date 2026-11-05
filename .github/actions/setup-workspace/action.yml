@@ -1,0 +1,25 @@
+name: Set up workspace
+description: Node 22 and the workspace's dependencies, with node_modules cached on yarn.lock.
+
+# Restoring node_modules is faster than restoring yarn's download cache and then
+# running `yarn install` over it. On a cache miss (yarn.lock or package.json
+# changed) the install runs and the result is saved for the next run. Run
+# actions/checkout first.
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v7
+      with:
+        node-version: 22
+
+    - name: Restore node_modules
+      id: modules
+      uses: actions/cache@v6
+      with:
+        path: node_modules
+        key: node-modules-${{ runner.os }}-${{ runner.arch }}-node22-${{ hashFiles('yarn.lock', 'package.json') }}
+
+    - name: Install dependencies
+      if: steps.modules.outputs.cache-hit != 'true'
+      shell: bash
+      run: yarn install --frozen-lockfile

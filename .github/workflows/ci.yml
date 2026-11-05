@@ -17,11 +17,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          cache: yarn
-      - run: yarn install --frozen-lockfile
+      - uses: ./.github/actions/setup-workspace
       - run: yarn lint
       - run: yarn typecheck
       - run: yarn test:coverage # fails if any test fails or coverage is below 90%
