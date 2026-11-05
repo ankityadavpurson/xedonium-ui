@@ -60,11 +60,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          cache: yarn
-      - run: yarn install --frozen-lockfile
+      - uses: ./.github/actions/setup-workspace
       - run: yarn lint
       - run: yarn typecheck
       - run: yarn test:coverage # fails below 90% coverage (thresholds in vitest.config.js)
@@ -90,11 +86,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           ref: main # includes the "chore(release)" commit publish just pushed
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          cache: yarn
-      - run: yarn install --frozen-lockfile
+      - uses: ./.github/actions/setup-workspace
       - run: yarn docs:check
       - run: yarn docs:build # static site in docs/dist; firebase.json rewrites deep links to index.html
       - uses: FirebaseExtended/action-hosting-deploy@v0
