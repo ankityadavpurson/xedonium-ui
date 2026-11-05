@@ -1,5 +1,5 @@
 // Each deploy renames every hashed chunk, so a tab opened before the latest deploy asks for files that no longer
-// exist. Reloading once picks up the new index.html; the sessionStorage flag stops a reload loop if the cause is
+// exist. Reloading once picks up the current page; the sessionStorage flag stops a reload loop if the cause is
 // something else (e.g. a real network outage).
 const KEY = 'xedonium-docs-chunk-reload'
 const STALE =

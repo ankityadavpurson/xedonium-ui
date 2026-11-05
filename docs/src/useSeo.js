@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { seoFor } from './seo'
 
-// Finds the head element or adds it, so the static tags in index.html and the ones set here never double up
+// Finds the head element or adds it, so the static tags from layouts/Docs.astro and the ones set here never double up
 const headTag = (selector, tag, attributes) => {
 	let element = document.head.querySelector(selector)
 	if (!element) {

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Select } from 'xedonium'
 import { LOADER_VARIANTS } from '../loaderVariants'
 
-/** Docs-only block: pick a variant and open LoadingScreen as a whole page (see pages/LoadingScreenPreview.jsx). */
+/** Docs-only block: pick a variant and open LoadingScreen as a whole page (see views/LoadingScreenPreview.jsx). */
 const FullPagePreview = () => {
 	const [variant, setVariant] = useState('fan')
 	return (

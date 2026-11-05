@@ -1,5 +1,5 @@
 // What search engines should know about each docs route. Pure data (no React), shared by the runtime hook (useSeo)
-// and the build-time sitemap (../seoPlugin.js).
+// and the build-time pages, sitemap.xml and llms.txt (pages/).
 import { categories, pages, pathOf } from './content'
 import { guidePath, guideSections } from './guides/hooks'
 import summaryOf from './summaryOf'
@@ -59,8 +59,8 @@ const byPath = new Map(seoPages().map(page => [page.path, page]))
 export const normalizePath = pathname => (pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname) || '/'
 
 /**
- * { description, canonical, indexable } for a route. Unknown paths (the hosting rewrites every URL to index.html, so
- * they answer 200) and tools like the Playground and full-page previews are not indexable.
+ * { description, canonical, indexable } for a route. Unknown paths (the hosting answers them with pages/404.astro, so
+ * the SPA still renders them) and tools like the Playground and full-page previews are not indexable.
  */
 export const seoFor = pathname => {
 	const path = normalizePath(pathname)

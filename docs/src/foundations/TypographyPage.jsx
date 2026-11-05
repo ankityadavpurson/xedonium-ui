@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { BodyText, HelperText, Label, PageTitle, TextLink } from 'xedonium'
 import CodeBlock from '../components/CodeBlock'
 import Markdown from '../components/Markdown'
-import Page, { H2 } from '../pages/Page'
+import Page, { H2 } from '../views/Page'
 
 // Each style is a library component: preview, the JSX to copy, and the page that documents it
 const TYPE_STYLES = [

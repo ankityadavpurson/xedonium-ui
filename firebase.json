@@ -3,7 +3,6 @@
 		"public": "docs/dist",
 		"cleanUrls": true,
 		"ignore": ["firebase.json", "**/.DS_Store", "**/node_modules/**"],
-		"rewrites": [{ "source": "**", "destination": "/index.html" }],
 		"headers": [
 			{
 				"source": "**",

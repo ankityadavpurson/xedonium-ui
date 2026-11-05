@@ -1,0 +1,38 @@
+---
+// One static page per docs route. The indexable ones (listed in seo.js) are prerendered with their content, title and
+// description before any JavaScript runs (search engines, link previews, slow connections). The tools (the Playground
+// and full-page previews) have the same shell but render in the browser only and are kept out of search results.
+import DocsRoot from '../DocsRoot.jsx'
+import { categories, pages } from '../content'
+import Docs from '../layouts/Docs.astro'
+import { playgroundPath } from '../playground'
+import { SITE, seoPages } from '../seo.js'
+
+// getStaticPaths runs on its own: it cannot use anything else declared in this file
+export const getStaticPaths = () => {
+	const toSlug = path => (path === '/' ? undefined : path.slice(1))
+	return [
+		...seoPages().map(page => ({ params: { slug: toSlug(page.path) }, props: { page } })),
+		...[
+			'/playground',
+			'/preview/loading-screen',
+			...categories.map(category => `/playground/${category.slug}`),
+			...pages.map(({ category, component }) => playgroundPath(category, component)),
+		].map(path => ({ params: { slug: toSlug(path) }, props: { page: null } })),
+	]
+}
+
+const { page } = Astro.props
+---
+
+{
+	page ? (
+		<Docs title={page.title} description={page.description} canonical={SITE + page.path}>
+			<DocsRoot client:load url={page.path} />
+		</Docs>
+	) : (
+		<Docs>
+			<DocsRoot client:only="react" />
+		</Docs>
+	)
+}

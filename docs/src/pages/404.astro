@@ -1,0 +1,10 @@
+---
+// Firebase Hosting serves this page, with the 404 status, for any URL that has no page of its own. The app starts in
+// the browser and shows its Not Found view for the address. Not indexable.
+import DocsRoot from '../DocsRoot.jsx'
+import Docs from '../layouts/Docs.astro'
+---
+
+<Docs>
+	<DocsRoot client:only="react" />
+</Docs>

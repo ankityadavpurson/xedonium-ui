@@ -22,7 +22,7 @@ yarn docs           # run the docs site / component playground locally
 
 | Command              | What it does                                         |
 | -------------------- | ---------------------------------------------------- |
-| `yarn docs`          | Start the docs site (Vite dev server)                |
+| `yarn docs`          | Start the docs site (Astro dev server)               |
 | `yarn lint`          | ESLint                                               |
 | `yarn format`        | Prettier                                             |
 | `yarn test`          | Run the unit tests once                              |

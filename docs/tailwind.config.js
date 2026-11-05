@@ -13,5 +13,5 @@ export default {
 			},
 		},
 	},
-	content: [`${root}/index.html`, `${root}/src/**/*.{js,jsx,ts,tsx}`, `${root}/../src/**/*.{js,jsx,ts,tsx}`],
+	content: [`${root}/src/**/*.astro`, `${root}/src/**/*.{js,jsx,ts,tsx}`, `${root}/../src/**/*.{js,jsx,ts,tsx}`],
 }

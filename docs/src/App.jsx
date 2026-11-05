@@ -21,22 +21,23 @@ import VersionBadge from './components/VersionBadge'
 import { categories, pages, pathOf } from './content'
 import { guidePath, guideSections } from './guides/hooks'
 import { foundations } from './foundations'
-import NotFound from './pages/NotFound'
+import NotFound from './views/NotFound'
+import useHydrated from './useHydrated'
 import useSeo from './useSeo'
 
 // Every page is its own chunk, fetched when it is first opened (the Playground alone is large: it compiles JSX in the
 // browser with react-live). The shell, navigation data and NotFound stay in the main chunk.
-const Home = lazy(() => import('./pages/Home'))
-const GettingStarted = lazy(() => import('./pages/GettingStarted'))
-const CategoryPage = lazy(() => import('./pages/CategoryPage'))
-const ComponentPage = lazy(() => import('./pages/ComponentPage'))
-const GuideIndex = lazy(() => import('./pages/GuidePage').then(module => ({ default: module.GuideIndex })))
-const GuideEntry = lazy(() => import('./pages/GuidePage').then(module => ({ default: module.GuideEntry })))
-const LoadingScreenPreview = lazy(() => import('./pages/LoadingScreenPreview'))
-const Changelog = lazy(() => import('./pages/Changelog'))
-const ComponentPlayground = lazy(() => import('./pages/ComponentPlayground'))
-const Playground = lazy(() => import('./pages/Playground'))
-const PlaygroundHome = lazy(() => import('./pages/PlaygroundHome'))
+const Home = lazy(() => import('./views/Home'))
+const GettingStarted = lazy(() => import('./views/GettingStarted'))
+const CategoryPage = lazy(() => import('./views/CategoryPage'))
+const ComponentPage = lazy(() => import('./views/ComponentPage'))
+const GuideIndex = lazy(() => import('./views/GuidePage').then(module => ({ default: module.GuideIndex })))
+const GuideEntry = lazy(() => import('./views/GuidePage').then(module => ({ default: module.GuideEntry })))
+const LoadingScreenPreview = lazy(() => import('./views/LoadingScreenPreview'))
+const Changelog = lazy(() => import('./views/Changelog'))
+const ComponentPlayground = lazy(() => import('./views/ComponentPlayground'))
+const Playground = lazy(() => import('./views/Playground'))
+const PlaygroundHome = lazy(() => import('./views/PlaygroundHome'))
 
 // Cmd on Apple platforms, Ctrl elsewhere (matches what `mod` resolves to in useKeyboardShortcuts)
 const modKeyLabel = () =>
@@ -59,8 +60,14 @@ const GitHubIcon = () => (
 
 const Logo = () => {
 	const { activeTheme } = useTheme()
-	return <img src={buildFaviconHref(activeTheme)} alt="" width={22} height={22} />
+	// the prerendered page cannot know the visitor's theme, so the first (hydrating) render shows the light icon
+	const hydrated = useHydrated()
+	return <img src={buildFaviconHref(hydrated ? activeTheme : 'light')} alt="" width={22} height={22} />
 }
+
+// Same for the toggle: its label and icon follow the stored choice
+const HeaderThemeToggle = () =>
+	useHydrated() ? <ThemeToggle /> : <span aria-hidden="true" className="block h-9 w-9" />
 
 // Top-level entries are groups (key = their page) or plain links; `target` is where a group opens
 const useNavItems = () =>
@@ -169,7 +176,7 @@ const App = () => {
 					<GitHubIcon />
 				</a>
 			</Tooltip>
-			<ThemeToggle />
+			<HeaderThemeToggle />
 		</div>
 	)
 
