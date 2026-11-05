@@ -12,7 +12,7 @@ export default function Demo() {
 			colors={{
 				background: '#0f172a',
 				text: '#e2e8f0',
-				comment: '#64748b',
+				comment: '#94a3b8',
 				keyword: '#f472b6',
 				string: '#fbbf24',
 				number: '#38bdf8',

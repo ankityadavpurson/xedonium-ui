@@ -1302,6 +1302,12 @@ const props = {
 				"'none'",
 				'Space between items (0.5 / 1 / 1.5rem). Any gap gives each item its own border.',
 			],
+			[
+				'headingLevel',
+				'2 | 3 | 4 | 5 | 6',
+				'3',
+				"Level of the headers' headings (h2 to h6), so they follow the heading above without skipping a level.",
+			],
 			className,
 		],
 		AccordionItem: [
@@ -1316,6 +1322,12 @@ const props = {
 			['defaultOpen', 'boolean', 'false', 'Initially open (uncontrolled).'],
 			['onChange', '(open: boolean) => void', '', 'Called with the new open state.'],
 			['disabled', 'boolean', 'false', 'Disable the header.'],
+			[
+				'headingLevel',
+				'2 | 3 | 4 | 5 | 6',
+				'3',
+				"Level of the header's heading (h2 to h6), so it follows the heading above without skipping a level.",
+			],
 			[
 				'className',
 				'string',

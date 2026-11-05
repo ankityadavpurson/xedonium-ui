@@ -32,7 +32,7 @@ describe('FloatingActionButton', () => {
 		const button = screen.getByRole('button', { name: 'Create' })
 		expect(button).toHaveClass('h-12', '!px-5')
 		expect(button).not.toHaveClass('w-14')
-		expect(button.className).toContain('bg-emerald-600')
+		expect(button.className).toContain('bg-emerald-700')
 	})
 
 	it('takes a variant name or any CSS color through `color`, with readable text', () => {
@@ -460,8 +460,8 @@ describe('TransferList', () => {
 	it('moves ticked items to the right and back, keeping the original order', () => {
 		const onChange = vi.fn()
 		render(<TransferList items={items} onChange={onChange} />)
-		const [left, right] = screen.getAllByRole('listbox')
-		expect(within(left).getAllByRole('option')).toHaveLength(4)
+		const [left, right] = screen.getAllByRole('list')
+		expect(within(left).getAllByRole('listitem')).toHaveLength(4)
 		expect(screen.getByRole('button', { name: 'Move selected to the right' })).toBeDisabled()
 		tick('Gamma')
 		tick('Alpha')
@@ -469,7 +469,7 @@ describe('TransferList', () => {
 		expect(onChange).toHaveBeenLastCalledWith(['a', 'c'])
 		expect(
 			within(right)
-				.getAllByRole('option')
+				.getAllByRole('listitem')
 				.map(o => o.textContent)
 		).toEqual(['Alpha', 'Gamma'])
 		tick('Alpha')
@@ -509,7 +509,8 @@ describe('TransferList', () => {
 		tick('Alpha')
 		fireEvent.click(screen.getByRole('button', { name: 'Move selected to the left' }))
 		expect(onChange).toHaveBeenLastCalledWith(['b'])
-		expect(screen.getAllByRole('option')).toHaveLength(2)
+		// Beta on the right, and Alpha back on the left next to the other list's empty note
+		expect(screen.getAllByRole('listitem')).toHaveLength(3)
 	})
 
 	it('has no select-all for a list with only disabled items', () => {

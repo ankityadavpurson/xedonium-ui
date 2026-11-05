@@ -62,16 +62,11 @@ const Column = ({ title, items, checked, onToggle, onToggleAll, height }: Column
 					{ticked}/{items.length} selected
 				</div>
 			</div>
-			<ul
-				role="listbox"
-				aria-multiselectable="true"
-				aria-label={title}
-				style={{ height }}
-				className="m-0 list-none overflow-y-auto p-0"
-			>
+			{/* a plain list of checkboxes: options with a checkbox inside would nest interactive controls */}
+			<ul aria-label={title} style={{ height }} className="m-0 list-none overflow-y-auto p-0">
 				{items.length === 0 && <li className="px-3 py-4 text-center text-xs text-app-muted">Nothing here</li>}
 				{items.map(item => (
-					<li key={item.key} role="option" aria-selected={checked.includes(item.key)} className="px-3 py-0.5">
+					<li key={item.key} className="px-3 py-0.5">
 						<Checkbox
 							label={item.label}
 							checked={checked.includes(item.key)}

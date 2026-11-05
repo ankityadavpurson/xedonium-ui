@@ -439,7 +439,7 @@ describe('LogViewer', () => {
 		expect(screen.queryByText(/frame13/)).toBeNull()
 		fireEvent.click(screen.getByRole('button', { name: /Show all \(\d+ more lines\)/ }))
 		expect(screen.getByText(/frame13/)).toBeInTheDocument()
-		expect(screen.getByText(/frame0/).closest('div')).toHaveClass('opacity-60')
+		expect(screen.getByText(/frame0/).closest('div')).not.toHaveClass('text-app-text')
 		fireEvent.click(screen.getByRole('button', { name: 'Show less' }))
 		expect(screen.queryByText(/frame13/)).toBeNull()
 	})

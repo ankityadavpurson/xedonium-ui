@@ -141,7 +141,7 @@ const Row = ({ log, query, dark }: { log: LogEntry; query: string; dark: boolean
 			{shownLines.length > 0 && (
 				<pre className="m-0 mt-1 overflow-x-auto whitespace-pre-wrap break-words text-app-muted">
 					{shownLines.map((line, index) => (
-						<div key={index} className={/^\s+at\s/.test(line) ? 'opacity-60' : undefined}>
+						<div key={index} className={/^\s+at\s/.test(line) ? undefined : 'text-app-text'}>
 							{highlight(line || ' ', query)}
 						</div>
 					))}

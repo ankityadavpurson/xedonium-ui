@@ -104,7 +104,11 @@ const Timeline = ({ items, branches, orientation = 'vertical', className = '' }:
 	const lineColor = (lane: number) => (branched ? LANES[lane % LANES.length] : 'bg-app-border')
 
 	return (
-		<ol className={`m-0 list-none p-0 ${horizontal ? 'flex overflow-x-auto' : ''} ${className}`}>
+		// a horizontal timeline scrolls sideways, so keyboard users need to focus it to scroll
+		<ol
+			tabIndex={horizontal ? 0 : undefined}
+			className={`m-0 list-none p-0 ${horizontal ? 'flex overflow-x-auto outline-none focus-visible:ring-2 focus-visible:ring-app-strong' : ''} ${className}`}
+		>
 			{items.map((item, row) => {
 				const lane = laneIndex(laneOf(item))
 				const firstOfLane = start[lane] === row

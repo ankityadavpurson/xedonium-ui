@@ -37,7 +37,6 @@ const VirtualList = <Item,>({
 		<div
 			role="list"
 			aria-label={label}
-			aria-rowcount={items.length}
 			tabIndex={0}
 			onScroll={event => setScrollTop(event.currentTarget.scrollTop)}
 			style={{ height }}

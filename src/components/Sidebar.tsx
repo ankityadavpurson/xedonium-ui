@@ -98,7 +98,6 @@ const Sidebar = ({
 			) : (
 				<li
 					key={item.key}
-					role="presentation"
 					className="truncate px-3 pb-1 pt-3 text-[10px] font-semibold uppercase tracking-widest text-app-muted"
 				>
 					{item.label}

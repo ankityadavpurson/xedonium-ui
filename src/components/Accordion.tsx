@@ -7,6 +7,8 @@ export interface AccordionItem {
 	disabled?: boolean
 }
 
+export type HeadingLevel = 2 | 3 | 4 | 5 | 6
+
 export type AccordionGap = 'none' | 'sm' | 'md' | 'lg'
 
 export interface AccordionProps {
@@ -21,6 +23,8 @@ export interface AccordionProps {
 	multiple?: boolean
 	/** Space between items; any gap gives each item its own border. */
 	gap?: AccordionGap
+	/** Level of the headers' headings (`h2`–`h6`), so they follow the heading above without skipping a level (default 3). */
+	headingLevel?: HeadingLevel
 	className?: string
 }
 
@@ -44,6 +48,7 @@ interface SectionViewProps {
 	title: ReactNode
 	open: boolean
 	disabled?: boolean
+	headingLevel: HeadingLevel
 	onToggle: () => void
 	onKeyDown?: (event: KeyboardEvent) => void
 	buttonRef?: (el: HTMLButtonElement | null) => void
@@ -58,40 +63,44 @@ const SectionView = ({
 	title,
 	open,
 	disabled,
+	headingLevel,
 	onToggle,
 	onKeyDown,
 	buttonRef,
 	className,
 	children,
-}: SectionViewProps) => (
-	<div className={className}>
-		<h3 className="m-0">
-			<button
-				ref={buttonRef}
-				id={`${baseId}-header-${itemKey}`}
-				type="button"
-				aria-expanded={open}
-				aria-controls={`${baseId}-panel-${itemKey}`}
-				disabled={disabled}
-				onClick={onToggle}
-				onKeyDown={onKeyDown}
-				className="flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm font-semibold text-app-text outline-none transition hover:bg-app-card focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-app-strong disabled:cursor-not-allowed disabled:opacity-50"
+}: SectionViewProps) => {
+	const Heading = `h${headingLevel}` as const
+	return (
+		<div className={className}>
+			<Heading className="m-0">
+				<button
+					ref={buttonRef}
+					id={`${baseId}-header-${itemKey}`}
+					type="button"
+					aria-expanded={open}
+					aria-controls={`${baseId}-panel-${itemKey}`}
+					disabled={disabled}
+					onClick={onToggle}
+					onKeyDown={onKeyDown}
+					className="flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm font-semibold text-app-text outline-none transition hover:bg-app-card focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-app-strong disabled:cursor-not-allowed disabled:opacity-50"
+				>
+					<span className="min-w-0">{title}</span>
+					<Chevron open={open} />
+				</button>
+			</Heading>
+			<div
+				id={`${baseId}-panel-${itemKey}`}
+				role="region"
+				aria-labelledby={`${baseId}-header-${itemKey}`}
+				hidden={!open}
+				className="px-4 pb-4 pt-1 text-sm text-app-text"
 			>
-				<span className="min-w-0">{title}</span>
-				<Chevron open={open} />
-			</button>
-		</h3>
-		<div
-			id={`${baseId}-panel-${itemKey}`}
-			role="region"
-			aria-labelledby={`${baseId}-header-${itemKey}`}
-			hidden={!open}
-			className="px-4 pb-4 pt-1 text-sm text-app-text"
-		>
-			{children}
+				{children}
+			</div>
 		</div>
-	</div>
-)
+	)
+}
 
 // Space between items; with any gap each item gets its own border instead of sharing one
 const GAPS: Record<AccordionGap, string> = { none: '', sm: 'gap-2', md: 'gap-4', lg: 'gap-6' }
@@ -108,6 +117,7 @@ const Accordion = ({
 	onChange,
 	multiple = false,
 	gap = 'none',
+	headingLevel = 3,
 	className = '',
 }: AccordionProps) => {
 	const baseId = useId()
@@ -152,6 +162,7 @@ const Accordion = ({
 						title={item.title}
 						open={isOpen}
 						disabled={item.disabled}
+						headingLevel={headingLevel}
 						onToggle={() => toggle(item.key)}
 						onKeyDown={event => handleKeyDown(event, item.key)}
 						buttonRef={el => {
@@ -176,6 +187,8 @@ export interface AccordionSectionProps {
 	/** Called with the new open state. */
 	onChange?: (open: boolean) => void
 	disabled?: boolean
+	/** Level of the header's heading (`h2`–`h6`), so it follows the heading above without skipping a level (default 3). */
+	headingLevel?: HeadingLevel
 	/** Classes for the section's frame; it has a border by default. */
 	className?: string
 	children?: ReactNode
@@ -191,6 +204,7 @@ export const AccordionSection = ({
 	defaultOpen = false,
 	onChange,
 	disabled,
+	headingLevel = 3,
 	className = 'border border-app-border',
 	children,
 }: AccordionSectionProps) => {
@@ -205,6 +219,7 @@ export const AccordionSection = ({
 			title={title}
 			open={isOpen}
 			disabled={disabled}
+			headingLevel={headingLevel}
 			onToggle={() => {
 				if (open === undefined) setInner(!isOpen)
 				onChange?.(!isOpen)

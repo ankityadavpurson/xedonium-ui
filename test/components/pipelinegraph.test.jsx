@@ -15,9 +15,9 @@ describe('PipelineGraph', () => {
 		render(<PipelineGraph nodes={nodes} aria-label="Publish run" />)
 		expect(screen.getByRole('region', { name: 'Publish run' })).toBeInTheDocument()
 		expect(screen.getAllByRole('button')).toHaveLength(6)
-		expect(screen.getByRole('button', { name: 'changes, success, 3s' })).toBeInTheDocument()
+		expect(screen.getByRole('button', { name: 'changes 3s, success' })).toBeInTheDocument()
 		expect(screen.getByRole('button', { name: 'verify, running' })).toBeInTheDocument()
-		expect(screen.getByRole('button', { name: 'build, failed, 1m' })).toHaveClass('border-red-500')
+		expect(screen.getByRole('button', { name: 'build 1m, failed' })).toHaveClass('border-red-500')
 	})
 
 	it('defaults the region name to Pipeline and draws a connector per dependency', () => {

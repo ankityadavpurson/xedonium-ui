@@ -6,7 +6,9 @@ import DateTimePicker from '../../src/components/DateTimePicker'
 import DateRangePicker from '../../src/components/DateRangePicker'
 import TimePicker from '../../src/components/TimePicker'
 
-const day = (y, m, d) => screen.getByRole('button', { name: new Date(y, m, d).toDateString() })
+const dayName = date =>
+	date.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+const day = (y, m, d) => screen.getByRole('button', { name: dayName(new Date(y, m, d)) })
 
 describe('Calendar', () => {
 	const value = new Date(2024, 4, 15)
@@ -375,7 +377,7 @@ describe('DateRangePicker', () => {
 		render(<DateRangePicker value={{ start: new Date(2024, 4, 1), end: null }} />)
 		const trigger = screen.getByRole('button')
 		fireEvent.click(trigger)
-		fireEvent.click(screen.getByRole('button', { name: new Date(2024, 4, 3).toDateString() }))
+		fireEvent.click(screen.getByRole('button', { name: dayName(new Date(2024, 4, 3)) }))
 		fireEvent.keyDown(document, { key: 'Escape' })
 		expect(screen.queryByRole('dialog')).toBeNull()
 		expect(trigger).toHaveFocus()
