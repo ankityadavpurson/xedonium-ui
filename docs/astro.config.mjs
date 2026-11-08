@@ -9,7 +9,7 @@ const root = import.meta.dirname
 // component (see xedoniumImports.js), so pages only load what they use.
 export default defineConfig({
 	root,
-	site: 'https://xedonium.web.app',
+	site: 'https://xedonium.com',
 	// /components/inputs/select -> components/inputs/select.html, which Firebase serves at the clean URL (`cleanUrls` in firebase.json)
 	trailingSlash: 'never',
 	build: { format: 'file', assets: 'assets' },
