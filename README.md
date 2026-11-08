@@ -9,7 +9,7 @@
 Forms, charts, overlays and 160+ icons with light and dark themes,</br>
 each one a separate module you can import on its own.
 
-[Live docs](https://xedonium.web.app/)
+[Live docs](https://xedonium.com/)
 
 </div>
 
