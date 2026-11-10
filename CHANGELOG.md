@@ -8,6 +8,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+## [1.27.0] - 2026-11-10
+
 ### Added
 
 - 226 new outline icons in the same 2px square style (each also importable as `xedonium/icons/<Name>`), grouped by theme:
