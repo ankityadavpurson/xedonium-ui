@@ -10,6 +10,22 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [1.27.1] - 2026-11-10
 
+### Added
+
+- `Progress` has an `aria-label` prop, for an accessible name when there is no visible `label`.
+
+### Changed
+
+- `Menu`, `ActionMenu` and `Popover`: a trigger that shows text is now named by that text, unless `label` contains it (for example `trigger="Bananas"` with `label="Lair actions"` is announced as "Bananas"). Icon and symbol-only triggers are still named by `label`, and so is the menu or panel. Tests that find such a trigger by its `label` need to use the visible text instead.
+
+### Fixed
+
+- Accessibility fixes from a second axe audit of every component, with menus, dropdowns and dialogs opened:
+  - Label in Name: the `Menu`, `ActionMenu` and `Popover` trigger change above, and the `Calendar` year switcher includes its visible text in its name (for example "2026, choose year").
+  - `Progress` always has an accessible name: without a `label` or `aria-label` it is named "Loading" (indeterminate) or "Progress".
+  - `Drawer` renders its dialog on a `<div>` instead of an `<aside>`, which does not allow the dialog role.
+  - `CommandPalette` keeps its empty message out of the listbox children, so the listbox only holds options.
+
 ## [1.27.0] - 2026-11-10
 
 ### Added
