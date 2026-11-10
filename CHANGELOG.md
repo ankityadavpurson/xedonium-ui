@@ -32,6 +32,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 - Icons that shared a drawing now differ. `GridIcon` is a square split in nine, and `LayoutGridIcon` keeps the four separate tiles. `MaximizeIcon` and `MinimizeIcon` are diagonal arrows, and `FullscreenIcon` and `FullscreenExitIcon` keep the corner brackets. `HouseIcon` has a chimney, so it differs from `HomeIcon`.
 - `LaptopMinimalIcon` is now a laptop with a base (it used to match `LaptopIcon`), and `ClockIcon` shows ten past ten so it no longer matches `Clock4Icon`.
 
+## [1.26.2] - 2026-11-05
+
 ### Fixed
 
 - Keyboard focus is no longer clipped or missing: `Sidebar` entries and `AppBar` links draw their focus outline inside the element (a scrolling parent cut it off), and `Tree` items show a focus outline on the focused row (there was none).
