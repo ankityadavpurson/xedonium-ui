@@ -14,7 +14,7 @@ const ClockIcon = ({ className }: IconProps) => (
 		strokeMiterlimit={10}
 	>
 		<circle cx="12" cy="12" r="10" />
-		<path d="M12 7v5l3 2" />
+		<path d="M8.5 10L12 12l5-3" />
 	</svg>
 )
 
