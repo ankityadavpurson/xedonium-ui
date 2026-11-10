@@ -13,8 +13,8 @@ const LockIcon = ({ className }: IconProps) => (
 		strokeLinejoin="miter"
 		strokeMiterlimit={10}
 	>
-		<rect x="4" y="11" width="16" height="10" />
-		<path d="M8 11V6h8v5" />
+		<rect x="3" y="11" width="18" height="11" />
+		<path d="M7 11V7a5 5 0 0 1 10 0v4" />
 	</svg>
 )
 

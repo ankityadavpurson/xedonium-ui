@@ -15,7 +15,7 @@ const BanknoteIcon = ({ className }: IconProps) => (
 	>
 		<rect x="2" y="6" width="20" height="12" />
 		<circle cx="12" cy="12" r="2" />
-		<path d="M6 12h.01M18 12h.01" />
+		<path d="M5.5 6A3.5 3.5 0 0 1 2 9.5M22 9.5A3.5 3.5 0 0 1 18.5 6M18.5 18a3.5 3.5 0 0 1 3.5-3.5M2 14.5A3.5 3.5 0 0 1 5.5 18" />
 	</svg>
 )
 

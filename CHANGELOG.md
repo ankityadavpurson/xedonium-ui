@@ -8,6 +8,30 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+### Added
+
+- 226 new outline icons in the same 2px square style (each also importable as `xedonium/icons/<Name>`), grouped by theme:
+  - Animals: `CatIcon`, `DogIcon`, `FishIcon`, `BirdIcon`, `RabbitIcon`, `TurtleIcon`, `SquirrelIcon`, `BugIcon`, `BeefIcon`, `PiggyBankIcon`, `ButterflyIcon`, `ShellIcon`, `WavesIcon`, `PawPrintIcon`, `FootprintsIcon`, `BoneIcon`.
+  - Home: `HouseIcon`, `BuildingIcon`, `Building2Icon`, `CastleIcon`, `BedIcon`, `BathIcon`, `SofaIcon`, `ArmchairIcon`, `CookingPotIcon`, `RefrigeratorIcon`, `MicrowaveIcon`, `UtensilsIcon`, `LampIcon`, `LampFloorIcon`, `ChairIcon`, `DoorOpenIcon`, `LightbulbIcon`, `PlugIcon`, `FanIcon`, `HeaterIcon`, `WashingMachineIcon`, `BrushIcon`, `SprayCanIcon`.
+  - Computer and technology: `LaptopMinimalIcon`, `PcCaseIcon`, `WatchIcon`, `HeadphonesIcon`, `WebcamIcon`, `RouterIcon`, `BluetoothIcon`, `RadioIcon`, `AntennaIcon`, `UsbIcon`, `BracesIcon`, `FileCodeIcon`, `BatteryIcon`, `BatteryChargingIcon`, `CableIcon`, `ScanFaceIcon`.
+  - Roads and traffic: `RoadIcon`, `RouteIcon`, `SignpostIcon`, `MapIcon`, `TrafficConeIcon`, `ConstructionIcon`, `TrafficLightIcon`, `CircleSlashIcon`, `OctagonAlertIcon`, `TriangleAlertIcon`, `ParkingCircleIcon`, `ParkingSquareIcon`, `NavigationIcon`, `CompassIcon`, `LocateFixedIcon`, `BridgeIcon`, `MilestoneIcon`, `FuelIcon`, `GaugeIcon`.
+  - Food and beverages: `CherryIcon`, `GrapeIcon`, `CitrusIcon`, `CarrotIcon`, `BeanIcon`, `SaladIcon`, `WheatIcon`, `SandwichIcon`, `PizzaIcon`, `SoupIcon`, `HamburgerIcon`, `CroissantIcon`, `CakeIcon`, `DonutIcon`, `CoffeeIcon`, `CupSodaIcon`, `GlassWaterIcon`, `MilkIcon`, `ChefHatIcon`, `ForkKnifeIcon`, `WineIcon`, `BeerIcon`, `IceCreamBowlIcon`.
+  - Clocks and time: `Clock1Icon`, `Clock2Icon`, `Clock4Icon` to `Clock12Icon` (every hour face; `Clock3Icon` already existed), `AlarmClockIcon`, `TimerIcon`, `TimerResetIcon`, `HourglassIcon`, `StopwatchIcon`, `CalendarDaysIcon`, `CalendarClockIcon`, `CalendarCheckIcon`, `CalendarPlusIcon`, `CalendarXIcon`, `BellRingIcon`, `BellDotIcon`.
+  - Science: `FlaskConicalIcon`, `FlaskRoundIcon`, `TestTubeIcon`, `TestTubesIcon`, `BeakerIcon`, `DnaIcon`, `MicroscopeIcon`, `AtomIcon`, `MagnetIcon`, `OrbitIcon`, `TelescopeIcon`, `SatelliteIcon`, `PipetteIcon`, `CalculatorIcon`, `SigmaIcon`, `PiIcon`, `RadicalIcon`, `CloudRainIcon`, `CloudSnowIcon`, `CloudLightningIcon`, `ThermometerIcon`, `ChartLineIcon`, `FileSearchIcon`.
+  - Plants and nature: `SproutIcon`, `FlowerIcon`, `Flower2Icon`, `TreeDeciduousIcon`, `TreePineIcon`, `TreePalmIcon`, `TreesIcon`, `ShovelIcon`, `LeafIcon`, `DropletsIcon`, `SnowflakeIcon`, `MountainIcon`, `MountainSnowIcon`, `FlameIcon`, `EarthIcon`, `RecycleIcon`, `WindIcon`, `SunsetIcon`.
+  - People: `UserRoundIcon`, `UsersRoundIcon`, `ContactRoundIcon`, `BabyIcon`, `HeartHandshakeIcon`, `HandshakeIcon`, `SmileIcon`, `LaughIcon`, `FrownIcon`, `AngryIcon`, `MehIcon`, `HandIcon`, `EarIcon`, `BrainIcon`, `VideoIcon`, `PersonStandingIcon`, `AccessibilityIcon`, `BikeIcon`, `GraduationCapIcon`, `BriefcaseBusinessIcon`, `StethoscopeIcon`.
+  - Sports and games: `VolleyballIcon`, `DribbbleIcon`, `CircleDotIcon`, `DumbbellIcon`, `TentIcon`, `SailboatIcon`, `ShipIcon`, `TrophyIcon`, `MedalIcon`, `ChessIcon`, `Dice1Icon` to `Dice6Icon` (every die face), `PuzzleIcon`, `GoalIcon`, `FlagIcon`.
+  - Clothing and accessories: `ShirtIcon`, `GlassesIcon`, `GemIcon`, `ShoppingBagIcon`, `BackpackIcon`, `BriefcaseIcon`, `CrownIcon`.
+  - Vehicles: `CarIcon`, `CarFrontIcon`, `CarTaxiFrontIcon`, `ScooterIcon`, `BusIcon`, `TrainIcon`, `TramIcon`, `TrainFrontIcon`, `PlaneIcon`, `HelicopterIcon`, `AnchorIcon`, `TruckIcon`, `TractorIcon`, `ForkliftIcon`, `LuggageIcon`, `MapPinnedIcon`, `PlugZapIcon`, `WheelIcon`.
+  - Same drawing under a newer name: `TriangleAlertIcon` is `AlertTriangleIcon`.
+
+### Changed
+
+- Redrew icons that did not read clearly: `BabyIcon`, `BackpackIcon`, `BeanIcon`, `BeefIcon`, `BirdIcon`, `BoneIcon`, `BridgeIcon`, `CableIcon`, `CastleIcon`, `CatIcon`, `CherryIcon`, `CroissantIcon`, `DnaIcon`, `DogIcon`, `DonutIcon`, `DoorOpenIcon`, `EarthIcon`, `FlameIcon`, `FootprintsIcon`, `GoalIcon`, `HandIcon`, `HelicopterIcon`, `MilkIcon`, `OrbitIcon`, `PiIcon`, `PipetteIcon` (now with a drop), `PiggyBankIcon` (now with a coin), `SandwichIcon`, `SatelliteIcon`, `ShellIcon`, `ShovelIcon`, `SprayCanIcon`, `SquirrelIcon`, `TurtleIcon`, `VolleyballIcon`, `ButterflyIcon`, `CarrotIcon`, `CookingPotIcon`, `HandshakeIcon`, `HeartHandshakeIcon`, `IceCreamBowlIcon`, `RecycleIcon`, `UsbIcon`, `ArmchairIcon`, `BrainIcon`, `ForkliftIcon`, `SofaIcon`, `TractorIcon`, `AtomIcon`, `BrushIcon`, `ChefHatIcon`, `ChessIcon` (now a knight), `CitrusIcon` (now a wedge), `DribbbleIcon`, `ForkKnifeIcon`, `PizzaIcon`, `PuzzleIcon`, `ShirtIcon`, `ThermometerIcon`, `TrafficLightIcon`, `TrainIcon`, `TramIcon`, `TreeDeciduousIcon`, `AngryIcon`, `FrownIcon` and `LaughIcon`. `FileCodeIcon` and `FileSearchIcon` use the same full-width page as the other file icons.
+- Redrew older icons to the standard shapes: `LinkIcon` and `UnlinkIcon` are chain links, `LockIcon` and `UnlockIcon` have a rounded shackle, `QrCodeIcon` has three finder squares with code marks, `FingerprintIcon` has more ridges, `BanknoteIcon` has corner marks, and `ShapesIcon` puts the triangle on top.
+- Icons that shared a drawing now differ. `GridIcon` is a square split in nine, and `LayoutGridIcon` keeps the four separate tiles. `MaximizeIcon` and `MinimizeIcon` are diagonal arrows, and `FullscreenIcon` and `FullscreenExitIcon` keep the corner brackets. `HouseIcon` has a chimney, so it differs from `HomeIcon`.
+- `LaptopMinimalIcon` is now a laptop with a base (it used to match `LaptopIcon`), and `ClockIcon` shows ten past ten so it no longer matches `Clock4Icon`.
+
 ## [1.26.2] - 2026-11-05
 
 ### Fixed

@@ -209,6 +209,232 @@ const EXTRA = [
 	'mouse',
 	'memory-stick',
 	'tablet',
+	'clock5',
+	'clock6',
+	'clock7',
+	'clock8',
+	'clock9',
+	'clock10',
+	'clock11',
+	'clock12',
+	'dice1',
+	'dice2',
+	'dice3',
+	'dice4',
+	'dice6',
+	'wheel',
+	'accessibility',
+	'alarm-clock',
+	'anchor',
+	'angry',
+	'antenna',
+	'armchair',
+	'atom',
+	'baby',
+	'backpack',
+	'bath',
+	'battery',
+	'battery-charging',
+	'beaker',
+	'bean',
+	'bed',
+	'beef',
+	'beer',
+	'bell-dot',
+	'bell-ring',
+	'bike',
+	'bird',
+	'bluetooth',
+	'bone',
+	'braces',
+	'brain',
+	'bridge',
+	'briefcase',
+	'briefcase-business',
+	'brush',
+	'bug',
+	'building',
+	'building2',
+	'bus',
+	'butterfly',
+	'cable',
+	'cake',
+	'calculator',
+	'calendar-check',
+	'calendar-clock',
+	'calendar-days',
+	'calendar-plus',
+	'calendar-x',
+	'car',
+	'car-front',
+	'car-taxi-front',
+	'carrot',
+	'castle',
+	'cat',
+	'chair',
+	'chart-line',
+	'chef-hat',
+	'cherry',
+	'chess',
+	'circle-dot',
+	'circle-slash',
+	'citrus',
+	'clock1',
+	'clock2',
+	'clock4',
+	'cloud-lightning',
+	'cloud-rain',
+	'cloud-snow',
+	'coffee',
+	'compass',
+	'construction',
+	'contact-round',
+	'cooking-pot',
+	'croissant',
+	'crown',
+	'cup-soda',
+	'dice5',
+	'dna',
+	'dog',
+	'donut',
+	'door-open',
+	'dribbble',
+	'droplets',
+	'dumbbell',
+	'ear',
+	'earth',
+	'fan',
+	'file-code',
+	'file-search',
+	'fish',
+	'flag',
+	'flame',
+	'flask-conical',
+	'flask-round',
+	'flower',
+	'flower2',
+	'footprints',
+	'fork-knife',
+	'forklift',
+	'frown',
+	'fuel',
+	'gauge',
+	'gem',
+	'glass-water',
+	'glasses',
+	'goal',
+	'graduation-cap',
+	'grape',
+	'hamburger',
+	'hand',
+	'handshake',
+	'headphones',
+	'heart-handshake',
+	'heater',
+	'helicopter',
+	'hourglass',
+	'house',
+	'ice-cream-bowl',
+	'lamp',
+	'lamp-floor',
+	'laptop-minimal',
+	'laugh',
+	'leaf',
+	'lightbulb',
+	'locate-fixed',
+	'luggage',
+	'magnet',
+	'map',
+	'map-pinned',
+	'medal',
+	'meh',
+	'microscope',
+	'microwave',
+	'milestone',
+	'milk',
+	'mountain',
+	'mountain-snow',
+	'navigation',
+	'octagon-alert',
+	'orbit',
+	'parking-circle',
+	'parking-square',
+	'paw-print',
+	'pc-case',
+	'person-standing',
+	'pi',
+	'piggy-bank',
+	'pipette',
+	'pizza',
+	'plane',
+	'plug',
+	'plug-zap',
+	'puzzle',
+	'rabbit',
+	'radical',
+	'radio',
+	'recycle',
+	'refrigerator',
+	'road',
+	'route',
+	'router',
+	'sailboat',
+	'salad',
+	'sandwich',
+	'satellite',
+	'scan-face',
+	'scooter',
+	'shell',
+	'ship',
+	'shirt',
+	'shopping-bag',
+	'shovel',
+	'sigma',
+	'signpost',
+	'smile',
+	'snowflake',
+	'sofa',
+	'soup',
+	'spray-can',
+	'sprout',
+	'squirrel',
+	'stethoscope',
+	'stopwatch',
+	'sunset',
+	'telescope',
+	'tent',
+	'test-tube',
+	'test-tubes',
+	'thermometer',
+	'timer',
+	'timer-reset',
+	'tractor',
+	'traffic-cone',
+	'traffic-light',
+	'train',
+	'train-front',
+	'tram',
+	'tree-deciduous',
+	'tree-palm',
+	'tree-pine',
+	'trees',
+	'triangle-alert',
+	'trophy',
+	'truck',
+	'turtle',
+	'usb',
+	'user-round',
+	'users-round',
+	'utensils',
+	'video',
+	'volleyball',
+	'washing-machine',
+	'watch',
+	'waves',
+	'webcam',
+	'wheat',
+	'wind',
+	'wine',
 ]
 
 const ROUNDED = ['whatsapp', 'eye', 'eye-off', 'map-pin', 'rocket', 'shield', 'shield-check', 'shield-alert', 'github']
@@ -261,17 +487,19 @@ describe('icon inventory', () => {
 		}
 	})
 
-	it('draws Grid2x2 (one square split in four) differently from Grid (four separate squares)', () => {
+	it('draws Grid2x2 (split in four), Grid (split in nine) and LayoutGrid (four separate tiles) differently', () => {
 		const { container } = render(
 			<>
 				<api.Grid2x2Icon />
 				<api.GridIcon />
+				<api.LayoutGridIcon />
 			</>
 		)
-		const [grid2x2, grid] = [...container.querySelectorAll('svg')]
+		const [grid2x2, grid, layoutGrid] = [...container.querySelectorAll('svg')]
 		expect(grid2x2.querySelectorAll('rect')).toHaveLength(1)
-		expect(grid.querySelectorAll('rect')).toHaveLength(4)
-		expect(grid2x2.innerHTML).not.toBe(grid.innerHTML)
+		expect(grid.querySelectorAll('rect')).toHaveLength(1)
+		expect(layoutGrid.querySelectorAll('rect')).toHaveLength(4)
+		expect(new Set([grid2x2.innerHTML, grid.innerHTML, layoutGrid.innerHTML]).size).toBe(3)
 	})
 
 	it('keeps eye, eye-off, map-pin, rocket and the shields rounded', () => {
@@ -311,28 +539,29 @@ describe('icon inventory', () => {
 	it('aliases draw the icon they are named after and pass props through', () => {
 		const { container } = render(
 			<>
-				<api.MaximizeIcon className="alias" />
-				<api.FullscreenIcon />
-				<api.CircleHelpIcon />
+				<api.CircleHelpIcon className="alias" />
 				<api.HelpCircleIcon />
-				<api.MinimizeIcon />
-				<api.FullscreenExitIcon />
 			</>
 		)
 		const svgs = [...container.querySelectorAll('svg')]
 		expect(svgs[0]).toHaveClass('alias')
-		const shape = svg => svg.innerHTML
-		expect(shape(svgs[0])).toBe(shape(svgs[1]))
-		expect(shape(svgs[2])).toBe(shape(svgs[3]))
-		expect(shape(svgs[4])).toBe(shape(svgs[5]))
+		expect(svgs[0].innerHTML).toBe(svgs[1].innerHTML)
 	})
 
-	it('LayoutGrid is the same drawing as Grid', () => {
-		const { container } = render(
-			createElement('div', null, createElement(api.LayoutGridIcon), createElement(api.GridIcon))
-		)
-		const [a, b] = [...container.querySelectorAll('svg')]
-		expect(a.innerHTML).toBe(b.innerHTML)
+	it('draws the look-alike pairs differently', () => {
+		const pairs = [
+			['MaximizeIcon', 'FullscreenIcon'],
+			['MinimizeIcon', 'FullscreenExitIcon'],
+			['HouseIcon', 'HomeIcon'],
+			['LaptopMinimalIcon', 'LaptopIcon'],
+			['ClockIcon', 'Clock4Icon'],
+		]
+		for (const [a, b] of pairs) {
+			const { container, unmount } = render(createElement('div', null, createElement(api[a]), createElement(api[b])))
+			const [first, second] = [...container.querySelectorAll('svg')]
+			expect(first.innerHTML, `${a} and ${b}`).not.toBe(second.innerHTML)
+			unmount()
+		}
 	})
 
 	it('CheckSquare is the same drawing as SquareCheck', () => {
@@ -392,7 +621,7 @@ describe('brand logos', () => {
 
 describe('icons', () => {
 	it('exports every icon', () => {
-		expect(icons.length).toBe(249)
+		expect(icons.length).toBe(475)
 	})
 
 	it.each(icons)('%s renders a decorative svg with default and custom classes', (_, Icon) => {
