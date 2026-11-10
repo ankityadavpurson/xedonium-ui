@@ -28,6 +28,7 @@ export default function Demo() {
 			</div>
 			<div className="w-40 max-w-full">
 				<Select
+					aria-label="Banana ripeness"
 					value={color}
 					onChange={setColor}
 					placeholder="Pick a banana"

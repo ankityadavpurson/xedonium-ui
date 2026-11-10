@@ -401,7 +401,7 @@ const props = {
 				'The entries. `children` makes a submenu; `{ key, divider: true }` is a separator. See the [MenuItem](#menuitem) table below.',
 			],
 			['trigger', 'ReactNode', '', 'Content of the trigger button; leave it out to use `anchorRef`.'],
-			['label', 'string', '', 'Accessible name of the trigger and the menu.'],
+			['label', 'string', '', 'Accessible name of the menu, and of the trigger unless it shows other text of its own.'],
 			[
 				'variant',
 				"'default' | 'secondary' | 'flat' | 'success' | 'danger' | 'warning'",
@@ -933,6 +933,7 @@ const props = {
 		Progress: [
 			['value', 'number', '', '0-100. Omit for an indeterminate bar or spinning ring.'],
 			['label', 'string', '', 'Label and accessible name.'],
+			['aria-label', 'string', "'Loading' | 'Progress'", 'Accessible name when there is no visible `label`.'],
 			['showValue', 'boolean', 'false', 'Show the percentage (beside the label, or inside the ring).'],
 			['variant', "'linear' | 'circular'", "'linear'", 'A bar or a ring.'],
 			['size', "'sm' | 'md' | 'lg'", "'md'", 'Ring size (32 / 64 / 96 px). Ignored by the linear bar.'],
@@ -1133,7 +1134,12 @@ const props = {
 	popover: {
 		Popover: [
 			['trigger', 'ReactNode', '', 'Trigger button content.'],
-			['label', 'string', '', 'Accessible label for the trigger and panel.'],
+			[
+				'label',
+				'string',
+				'',
+				'Accessible name of the panel, and of the trigger unless it shows other text of its own.',
+			],
 			['variant', 'string', "'secondary'", 'Button variant of the trigger.'],
 			['align', "'start' | 'end'", "'start'", 'Shorthand for placement bottom-start / bottom-end.'],
 			[

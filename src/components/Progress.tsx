@@ -5,6 +5,8 @@ export interface ProgressProps {
 	/** 0-100; omit for an indeterminate indicator. */
 	value?: number
 	label?: string
+	/** Accessible name when there is no visible `label`. Without either, it is named "Loading" or "Progress". */
+	'aria-label'?: string
 	/** Print the percentage. */
 	showValue?: boolean
 	variant?: 'linear' | 'circular'
@@ -54,6 +56,7 @@ const Ring = ({ size, value }: { size: number; value?: number }) => (
 const Progress = ({
 	value,
 	label,
+	'aria-label': ariaLabel,
 	showValue = false,
 	variant = 'linear',
 	size = 'md',
@@ -61,9 +64,10 @@ const Progress = ({
 }: ProgressProps) => {
 	const indeterminate = value === undefined
 	const clamped = indeterminate ? 0 : Math.min(100, Math.max(0, value))
+	// a progressbar must have a name: fall back to one that says what the indicator is doing
 	const aria = {
 		role: 'progressbar',
-		'aria-label': label,
+		'aria-label': label ?? ariaLabel ?? (indeterminate ? 'Loading' : 'Progress'),
 		'aria-valuemin': 0,
 		'aria-valuemax': 100,
 		'aria-valuenow': indeterminate ? undefined : Math.round(clamped),

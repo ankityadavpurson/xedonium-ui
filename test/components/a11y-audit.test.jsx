@@ -1,5 +1,11 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import Accordion, { AccordionSection } from '../../src/components/Accordion'
+import ActionMenu from '../../src/components/ActionMenu'
+import CommandPalette from '../../src/components/CommandPalette'
+import Drawer from '../../src/components/Drawer'
+import Menu from '../../src/components/Menu'
+import Popover from '../../src/components/Popover'
+import Progress from '../../src/components/Progress'
 import AppBar from '../../src/components/AppBar'
 import Tree from '../../src/components/Tree'
 import Button from '../../src/components/Button'
@@ -134,6 +140,63 @@ describe('accessibility fixes from the audit', () => {
 		unmount()
 		render(<AppBar brand="B" links={[{ label: 'Home', href: '/' }]} />)
 		expect(screen.getByRole('link', { name: 'Home' })).toHaveClass('focus-visible:-outline-offset-2')
+	})
+
+	it('names a text trigger by its visible text unless the label contains it', () => {
+		const items = [{ key: 'a', label: 'Peel', onClick: () => {} }]
+		const { rerender } = render(<Menu items={items} label="Lair actions" trigger="Bananas" />)
+		expect(screen.getByRole('button', { name: 'Bananas' })).not.toHaveAttribute('aria-label')
+		rerender(<Menu items={items} label="Banana actions" trigger="Banana" />)
+		expect(screen.getByRole('button', { name: 'Banana actions' })).toBeInTheDocument()
+		rerender(<Menu items={items} label="Lair actions" trigger="⋮" />)
+		expect(screen.getByRole('button', { name: 'Lair actions' })).toBeInTheDocument()
+		rerender(<Menu items={items} label="Lair actions" trigger={<svg />} />)
+		expect(screen.getByRole('button', { name: 'Lair actions' })).toBeInTheDocument()
+		rerender(<ActionMenu items={items} label="Lair actions" trigger="Bananas" />)
+		expect(screen.getByRole('button', { name: 'Bananas' })).not.toHaveAttribute('aria-label')
+		rerender(
+			<Popover label="Banana facts" trigger="Kevin">
+				x
+			</Popover>
+		)
+		expect(screen.getByRole('button', { name: 'Kevin' })).not.toHaveAttribute('aria-label')
+	})
+
+	it('still names the open menu by its label when the trigger is named by its text', () => {
+		render(<Menu items={[{ key: 'a', label: 'Peel', onClick: () => {} }]} label="Lair actions" trigger="Bananas" />)
+		fireEvent.click(screen.getByRole('button', { name: 'Bananas' }))
+		expect(screen.getByRole('menu', { name: 'Lair actions' })).toBeInTheDocument()
+	})
+
+	it('always gives a Progress indicator an accessible name', () => {
+		const { rerender } = render(<Progress value={40} />)
+		expect(screen.getByRole('progressbar', { name: 'Progress' })).toBeInTheDocument()
+		rerender(<Progress variant="circular" />)
+		expect(screen.getByRole('progressbar', { name: 'Loading' })).toBeInTheDocument()
+		rerender(<Progress value={40} aria-label="Bananas peeled" />)
+		expect(screen.getByRole('progressbar', { name: 'Bananas peeled' })).toBeInTheDocument()
+		rerender(<Progress value={40} label="Upload" />)
+		expect(screen.getByRole('progressbar', { name: 'Upload' })).toBeInTheDocument()
+	})
+
+	it('renders the Drawer dialog on a div, since a landmark element cannot take the dialog role', () => {
+		render(
+			<Drawer open title="Gadgets" onClose={() => {}}>
+				x
+			</Drawer>
+		)
+		expect(screen.getByRole('dialog', { name: 'Gadgets' }).tagName).toBe('DIV')
+	})
+
+	it('puts the visible year in the name of the Calendar year button', () => {
+		render(<Calendar value={new Date(2024, 4, 15)} jumpMode="dropdown" />)
+		fireEvent.click(screen.getByRole('button', { name: /choose month and year/ }))
+		expect(screen.getByRole('button', { name: '2024, choose year' })).toHaveTextContent('2024')
+	})
+
+	it('keeps the empty message of CommandPalette out of the listbox children', () => {
+		render(<CommandPalette open commands={[]} onClose={() => {}} />)
+		expect(screen.getByRole('listbox').querySelector('li')).toHaveAttribute('role', 'presentation')
 	})
 
 	it('shows keyboard focus on the row of a Tree item', () => {

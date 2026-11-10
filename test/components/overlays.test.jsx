@@ -114,7 +114,7 @@ describe('Popover', () => {
 				<p>inside</p>
 			</Popover>
 		)
-		const trigger = screen.getByRole('button', { name: 'Details' })
+		const trigger = screen.getByRole('button', { name: 'Open' })
 		expect(trigger).toHaveAttribute('aria-expanded', 'false')
 		fireEvent.click(trigger)
 		expect(screen.getByRole('dialog', { name: 'Details' })).toHaveTextContent('inside')
@@ -139,11 +139,11 @@ describe('Popover', () => {
 				</Popover>
 			</>
 		)
-		fireEvent.click(screen.getByRole('button', { name: 'One' }))
+		fireEvent.click(screen.getByRole('button', { name: 'A' }))
 		fireEvent.keyDown(document, { key: 'Escape' })
 		expect(screen.queryByText('a')).toBeNull()
-		expect(screen.getByRole('button', { name: 'One' })).toHaveFocus()
-		fireEvent.click(screen.getByRole('button', { name: 'Two' }))
+		expect(screen.getByRole('button', { name: 'A' })).toHaveFocus()
+		fireEvent.click(screen.getByRole('button', { name: 'B' }))
 		expect(screen.getByText('b')).toBeInTheDocument()
 	})
 })
@@ -153,7 +153,7 @@ describe('ActionMenu danger tone', () => {
 		render(
 			<ActionMenu
 				label="Actions"
-				trigger="Menu"
+				trigger="Actions"
 				items={[{ key: 'd', label: 'Delete', tone: 'danger', onClick: () => {} }]}
 			/>
 		)
@@ -173,7 +173,7 @@ describe('ActionMenu', () => {
 		render(
 			<ActionMenu
 				label="Actions"
-				trigger="Menu"
+				trigger="Actions"
 				items={[{ key: 'a', label: 'Alpha', icon: <svg data-testid="icon" />, onClick: () => {} }]}
 			/>
 		)
@@ -184,7 +184,7 @@ describe('ActionMenu', () => {
 
 	it('opens, runs an item and closes', () => {
 		const onClick = vi.fn()
-		render(<ActionMenu label="Actions" trigger="Menu" items={makeItems(onClick)} />)
+		render(<ActionMenu label="Actions" trigger="Actions" items={makeItems(onClick)} />)
 		fireEvent.click(screen.getByRole('button', { name: 'Actions' }))
 		expect(screen.getByRole('menu')).toBeInTheDocument()
 		expect(screen.getByText('first')).toBeInTheDocument()
@@ -200,7 +200,7 @@ describe('ActionMenu', () => {
 		render(
 			<ActionMenu
 				label="Actions"
-				trigger="Menu"
+				trigger="Actions"
 				items={makeItems()}
 				variant="warning"
 				placement="bottom-end"
@@ -223,7 +223,7 @@ describe('ActionMenu', () => {
 
 describe('ActionMenu link items', () => {
 	const open = props => {
-		render(<ActionMenu label="Actions" trigger="Menu" {...props} />)
+		render(<ActionMenu label="Actions" trigger="Actions" {...props} />)
 		fireEvent.click(screen.getByRole('button', { name: 'Actions' }))
 	}
 
@@ -288,7 +288,7 @@ describe('ActionMenu keyboard and link target', () => {
 	const open = (extra = {}) => {
 		render(
 			<>
-				<ActionMenu label="Actions" trigger="Menu" items={items} {...extra} />
+				<ActionMenu label="Actions" trigger="Actions" items={items} {...extra} />
 				<button>after</button>
 			</>
 		)
@@ -337,7 +337,7 @@ describe('ActionMenu keyboard and link target', () => {
 		render(
 			<ActionMenu
 				label="Actions"
-				trigger="Menu"
+				trigger="Actions"
 				items={[
 					{ key: 'a', label: 'Absolute', href: 'https://example.com' },
 					{ key: 'b', label: 'Blank', href: '/docs', target: '_blank' },
@@ -359,7 +359,7 @@ describe('ActionMenu keyboard and link target', () => {
 		render(
 			<ActionMenu
 				label="Actions"
-				trigger="Menu"
+				trigger="Actions"
 				items={[
 					{ key: 'a', label: 'External', href: 'https://example.com', target: '_blank' },
 					{ key: 'b', label: 'Internal', href: '/inside' },

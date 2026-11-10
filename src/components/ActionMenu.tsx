@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState, type ElementType, type KeyboardEvent, type ReactNode } from 'react'
 import type { Placement } from '../types'
 import useDismissable from '../hooks/useDismissable'
+import triggerLabel from '../utils/triggerLabel'
 import Button from './Button'
 import FloatingPanel from './FloatingPanel'
 import { ABSOLUTE, ItemBody, MenuGroup, groupItems, isExternalLink } from './menuItemParts'
@@ -31,7 +32,7 @@ export interface ActionMenuItem {
 }
 
 export interface ActionMenuProps {
-	/** Accessible name of the trigger and the menu. */
+	/** Accessible name of the menu, and of the trigger unless it shows other text of its own. */
 	label?: string
 	/** Content of the trigger button. */
 	trigger: ReactNode
@@ -201,7 +202,7 @@ const ActionMenu = ({
 			<Button
 				onClick={() => setOpen(prev => !prev)}
 				variant={variant}
-				aria-label={label}
+				aria-label={triggerLabel(trigger, label)}
 				aria-haspopup="menu"
 				aria-expanded={open}
 				aria-controls={open ? menuId : undefined}

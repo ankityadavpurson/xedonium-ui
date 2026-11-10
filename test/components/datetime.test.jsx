@@ -216,7 +216,7 @@ describe('Calendar', () => {
 			render(<Calendar value={new Date(2024, 4, 10)} jumpMode="dropdown" locale="en-US" />)
 			expect(screen.queryByLabelText('Day')).not.toBeInTheDocument()
 			fireEvent.click(screen.getByRole('button', { name: /choose month and year/ }))
-			fireEvent.click(screen.getByRole('button', { name: 'Choose year' }))
+			fireEvent.click(screen.getByRole('button', { name: '2024, choose year' }))
 			fireEvent.click(screen.getByRole('button', { name: '2026' }))
 			fireEvent.click(screen.getByRole('button', { name: 'Dec' }))
 			expect(screen.getByRole('button', { name: /December 2026/ })).toBeInTheDocument()
