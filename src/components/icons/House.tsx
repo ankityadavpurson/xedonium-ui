@@ -13,8 +13,8 @@ const HouseIcon = ({ className }: IconProps) => (
 		strokeLinejoin="miter"
 		strokeMiterlimit={10}
 	>
-		<path d="M3 11l9-8 9 8" />
-		<path d="M5 10v11h14V10" />
+		<path d="M4 10l8-7 8 7v11H4z" />
+		<path d="M16 6.5V3h3v6" />
 		<path d="M10 21v-6h4v6" />
 	</svg>
 )

@@ -13,11 +13,10 @@ const TrainIcon = ({ className }: IconProps) => (
 		strokeLinejoin="miter"
 		strokeMiterlimit={10}
 	>
-		<path d="M2 5h16l4 6v6H2z" />
-		<path d="M5 8h3v3H5zM10 8h3v3h-3z" />
-		<circle cx="7" cy="19" r="2" />
-		<circle cx="17" cy="19" r="2" />
-		<path d="M2 22h20" />
+		<path d="M2 6h10c5 0 10 5 10 9v2H2z" />
+		<path d="M15 9.5c2 1 3.5 2.5 4.5 4.5H15z" />
+		<path d="M5 10h2M10 10h2" />
+		<path d="M2 21h20" />
 	</svg>
 )
 

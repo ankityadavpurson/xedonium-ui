@@ -13,11 +13,12 @@ const ButterflyIcon = ({ className }: IconProps) => (
 		strokeLinejoin="miter"
 		strokeMiterlimit={10}
 	>
-		<path d="M12 12C11 5 4 3 3 7c-1 3 3 5 9 5z" />
-		<path d="M12 12c-5 0-8 2-7 6 1 3 6 2 7-2" />
-		<path d="M12 12c1-7 8-9 9-5 1 3-3 5-9 5z" />
-		<path d="M12 12c5 0 8 2 7 6-1 3-6 2-7-2" />
-		<path d="M10 3l2 5 2-5" />
+		<path d="M12 8v12" />
+		<path d="M12 8L10 3M12 8l2-5" />
+		<path d="M12 11C10 6 3 4 3 8c0 3 3 5 9 4" />
+		<path d="M12 11c2-5 9-7 9-3 0 3-3 5-9 4" />
+		<path d="M12 13c-4 0-7 2-6 5 1 3 5 2 6-2" />
+		<path d="M12 13c4 0 7 2 6 5-1 3-5 2-6-2" />
 	</svg>
 )
 

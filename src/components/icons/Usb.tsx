@@ -13,13 +13,13 @@ const UsbIcon = ({ className }: IconProps) => (
 		strokeLinejoin="miter"
 		strokeMiterlimit={10}
 	>
-		<circle cx="12" cy="20" r="2" />
-		<path d="M12 18V6" />
-		<path d="M9.5 7L12 2l2.5 5z" />
-		<path d="M12 14l-4.5-2.5V9" />
-		<circle cx="7.5" cy="7.5" r="1.5" />
-		<path d="M12 11l4.5-2V8" />
-		<rect x="15" y="5" width="3" height="3" />
+		<circle cx="10" cy="7" r="1" />
+		<circle cx="4" cy="20" r="1" />
+		<path d="M4.7 19.3L19 5" />
+		<path d="M21 3l-3 1 2 2z" />
+		<path d="M9.26 7.68L5 12l2 5" />
+		<path d="M10 14l5 2 3.5-3.5" />
+		<path d="M18 12l1-1 1 1-1 1z" />
 	</svg>
 )
 

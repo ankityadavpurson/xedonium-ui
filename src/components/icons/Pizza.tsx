@@ -13,11 +13,11 @@ const PizzaIcon = ({ className }: IconProps) => (
 		strokeLinejoin="miter"
 		strokeMiterlimit={10}
 	>
-		<path d="M3 6l9 16 9-16" />
-		<path d="M3 6a20 20 0 0 1 18 0" />
-		<circle cx="10" cy="10" r="1.5" />
-		<circle cx="14" cy="12" r="1.5" />
-		<circle cx="12" cy="16" r="1" />
+		<path d="M12 14l-1 1" />
+		<path d="M13.75 18.25l-1.25 1.42" />
+		<path d="M17.775 5.654a15.68 15.68 0 0 0-12.121 12.12" />
+		<path d="M18.8 9.3a1 1 0 0 0 2.1 7.7" />
+		<path d="M21.964 20.732a1 1 0 0 1-1.232 1.232l-18-5a1 1 0 0 1-.695-1.232A19.68 19.68 0 0 1 15.732 2.037a1 1 0 0 1 1.232.695z" />
 	</svg>
 )
 

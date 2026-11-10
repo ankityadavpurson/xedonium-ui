@@ -14,9 +14,9 @@ const DribbbleIcon = ({ className }: IconProps) => (
 		strokeMiterlimit={10}
 	>
 		<circle cx="12" cy="12" r="10" />
-		<path d="M18.5 4.5C14 9 9 10.5 2.5 11" />
-		<path d="M21.5 13c-6-1-11 1-14.5 6.5" />
-		<path d="M8 2.5C12 8 14 12 16 21" />
+		<path d="M19.13 5.09C15.22 9.14 10 10.44 2.25 10.94" />
+		<path d="M21.75 12.84c-6.62-1.41-12.14 1-16.38 6.32" />
+		<path d="M8.56 2.75c4.37 6 6 9.42 8 17.72" />
 	</svg>
 )
 

@@ -13,11 +13,10 @@ const ForkliftIcon = ({ className }: IconProps) => (
 		strokeLinejoin="miter"
 		strokeMiterlimit={10}
 	>
-		<path d="M4 16V6h6l3 5v5H4z" />
-		<circle cx="6" cy="19" r="2" />
-		<circle cx="12" cy="19" r="2" />
-		<path d="M17 3v17" />
-		<path d="M17 18h5M17 14h5" />
+		<path d="M12 12H5a2 2 0 0 0-2 2v5" />
+		<circle cx="13" cy="19" r="2" />
+		<circle cx="5" cy="19" r="2" />
+		<path d="M8 19h3m5-17v17h6M6 12V7c0-1.1.9-2 2-2h3l5 5" />
 	</svg>
 )
 

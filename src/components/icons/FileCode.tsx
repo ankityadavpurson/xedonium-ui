@@ -13,9 +13,9 @@ const FileCodeIcon = ({ className }: IconProps) => (
 		strokeLinejoin="miter"
 		strokeMiterlimit={10}
 	>
-		<path d="M14 2H6v20h12V8z" />
-		<path d="M14 2v6h4" />
-		<path d="M10 13l-2 2 2 2M14 13l2 2-2 2" />
+		<path d="M4 2h10l6 6v14H4z" />
+		<path d="M14 2v6h6" />
+		<path d="M10 12.5L7.5 15l2.5 2.5M14 12.5l2.5 2.5-2.5 2.5" />
 	</svg>
 )
 

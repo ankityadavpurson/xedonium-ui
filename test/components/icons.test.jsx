@@ -487,17 +487,19 @@ describe('icon inventory', () => {
 		}
 	})
 
-	it('draws Grid2x2 (one square split in four) differently from Grid (four separate squares)', () => {
+	it('draws Grid2x2 (split in four), Grid (split in nine) and LayoutGrid (four separate tiles) differently', () => {
 		const { container } = render(
 			<>
 				<api.Grid2x2Icon />
 				<api.GridIcon />
+				<api.LayoutGridIcon />
 			</>
 		)
-		const [grid2x2, grid] = [...container.querySelectorAll('svg')]
+		const [grid2x2, grid, layoutGrid] = [...container.querySelectorAll('svg')]
 		expect(grid2x2.querySelectorAll('rect')).toHaveLength(1)
-		expect(grid.querySelectorAll('rect')).toHaveLength(4)
-		expect(grid2x2.innerHTML).not.toBe(grid.innerHTML)
+		expect(grid.querySelectorAll('rect')).toHaveLength(1)
+		expect(layoutGrid.querySelectorAll('rect')).toHaveLength(4)
+		expect(new Set([grid2x2.innerHTML, grid.innerHTML, layoutGrid.innerHTML]).size).toBe(3)
 	})
 
 	it('keeps eye, eye-off, map-pin, rocket and the shields rounded', () => {
@@ -537,28 +539,29 @@ describe('icon inventory', () => {
 	it('aliases draw the icon they are named after and pass props through', () => {
 		const { container } = render(
 			<>
-				<api.MaximizeIcon className="alias" />
-				<api.FullscreenIcon />
-				<api.CircleHelpIcon />
+				<api.CircleHelpIcon className="alias" />
 				<api.HelpCircleIcon />
-				<api.MinimizeIcon />
-				<api.FullscreenExitIcon />
 			</>
 		)
 		const svgs = [...container.querySelectorAll('svg')]
 		expect(svgs[0]).toHaveClass('alias')
-		const shape = svg => svg.innerHTML
-		expect(shape(svgs[0])).toBe(shape(svgs[1]))
-		expect(shape(svgs[2])).toBe(shape(svgs[3]))
-		expect(shape(svgs[4])).toBe(shape(svgs[5]))
+		expect(svgs[0].innerHTML).toBe(svgs[1].innerHTML)
 	})
 
-	it('LayoutGrid is the same drawing as Grid', () => {
-		const { container } = render(
-			createElement('div', null, createElement(api.LayoutGridIcon), createElement(api.GridIcon))
-		)
-		const [a, b] = [...container.querySelectorAll('svg')]
-		expect(a.innerHTML).toBe(b.innerHTML)
+	it('draws the look-alike pairs differently', () => {
+		const pairs = [
+			['MaximizeIcon', 'FullscreenIcon'],
+			['MinimizeIcon', 'FullscreenExitIcon'],
+			['HouseIcon', 'HomeIcon'],
+			['LaptopMinimalIcon', 'LaptopIcon'],
+			['ClockIcon', 'Clock4Icon'],
+		]
+		for (const [a, b] of pairs) {
+			const { container, unmount } = render(createElement('div', null, createElement(api[a]), createElement(api[b])))
+			const [first, second] = [...container.querySelectorAll('svg')]
+			expect(first.innerHTML, `${a} and ${b}`).not.toBe(second.innerHTML)
+			unmount()
+		}
 	})
 
 	it('CheckSquare is the same drawing as SquareCheck', () => {

@@ -13,10 +13,10 @@ const FileSearchIcon = ({ className }: IconProps) => (
 		strokeLinejoin="miter"
 		strokeMiterlimit={10}
 	>
-		<path d="M14 2H6v20h12V8z" />
-		<path d="M14 2v6h4" />
-		<circle cx="11" cy="14" r="3" />
-		<path d="M13.2 16.2L16 19" />
+		<path d="M4 2h10l6 6v14H4z" />
+		<path d="M14 2v6h6" />
+		<circle cx="11" cy="14" r="2.5" />
+		<path d="M13 16l3 3" />
 	</svg>
 )
 

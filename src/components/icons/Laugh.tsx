@@ -14,7 +14,7 @@ const LaughIcon = ({ className }: IconProps) => (
 		strokeMiterlimit={10}
 	>
 		<circle cx="12" cy="12" r="10" />
-		<path d="M8 13h8a4 4 0 0 1-8 0z" />
+		<path d="M18 13a6 6 0 0 1-6 5 6 6 0 0 1-6-5z" />
 		<path d="M9 9h.01M15 9h.01" />
 	</svg>
 )

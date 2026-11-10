@@ -13,9 +13,9 @@ const BrushIcon = ({ className }: IconProps) => (
 		strokeLinejoin="miter"
 		strokeMiterlimit={10}
 	>
-		<path d="M19 3l2 2-9.5 9.5-2-2z" />
-		<path d="M9.5 12.5L11.5 14.5" />
-		<path d="M9.5 14.5C6 14 5 16.5 4 18.5c-.5 1.5-2 2.5-2 2.5 4 1.5 8 .5 8.5-3z" />
+		<path d="M11 10l3 3" />
+		<path d="M6.5 21A3.5 3.5 0 1 0 3 17.5a2.62 2.62 0 0 1-.708 1.792A1 1 0 0 0 3 21z" />
+		<path d="M9.969 17.031L21.378 5.624a1 1 0 0 0-3.002-3.002L6.967 14.031" />
 	</svg>
 )
 

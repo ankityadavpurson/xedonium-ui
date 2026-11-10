@@ -1,13 +1,16 @@
-import { useState } from 'react'
+import { memo, useDeferredValue, useMemo, useState } from 'react'
 import * as Xedonium from 'xedonium'
 import { Button, Field, Label, Modal } from 'xedonium'
 import CodeBlock from '../components/CodeBlock'
 import Markdown from '../components/Markdown'
 import Page, { H2 } from '../views/Page'
 
+// LogoutIcon is the old spelling of LogOutIcon (the same component), so the grid shows it once
 const ICONS = Object.entries(Xedonium)
-	.filter(([name]) => name.endsWith('Icon'))
+	.filter(([name]) => name.endsWith('Icon') && name !== 'LogoutIcon')
 	.sort(([a], [b]) => a.localeCompare(b))
+// Lowercased once, in the same order as ICONS, for the filter
+const NAMES = ICONS.map(([name]) => name.toLowerCase())
 
 // Tailwind classes written out in full so they are generated; the label is the pixel size
 const SIZES = [
@@ -18,8 +21,8 @@ const SIZES = [
 	['h-12 w-12', '48'],
 ]
 
-// The module an icon lives in: its export name without "Icon" (the old LogoutIcon is the LogOut module)
-const moduleOf = name => (name === 'LogoutIcon' ? 'LogOut' : name.replace(/Icon$/, ''))
+// The module an icon lives in: its export name without "Icon"
+const moduleOf = name => name.replace(/Icon$/, '')
 
 const IconDialog = ({ name, Icon, onClose }) => (
 	<Modal open onClose={onClose} title={<span className="normal-case tracking-normal">{name}</span>} maxWidth="max-w-xl">
@@ -52,11 +55,31 @@ const IconDialog = ({ name, Icon, onClose }) => (
 	</Modal>
 )
 
+// One tile of the grid. Memoized, and hidden instead of unmounted when the filter excludes it, so typing only flips
+// the `hidden` attribute on the tiles whose match changed instead of rebuilding hundreds of buttons and SVGs.
+const IconTile = memo(({ name, Icon, hidden, onSelect }) => (
+	<li hidden={hidden}>
+		<Button
+			variant="secondary"
+			onClick={() => onSelect(name)}
+			aria-haspopup="dialog"
+			className="flex h-full w-full flex-col items-center gap-2 !px-2 !py-3 !normal-case !tracking-normal"
+		>
+			<Icon className="h-6 w-6" />
+			<span className="max-w-full break-all text-[11px] font-medium leading-tight">{name}</span>
+		</Button>
+	</li>
+))
+IconTile.displayName = 'IconTile'
+
 const IconsPage = () => {
 	const [query, setQuery] = useState('')
 	const [selected, setSelected] = useState(null)
-	const needle = query.trim().toLowerCase().replace(/icon$/, '')
-	const shown = needle ? ICONS.filter(([name]) => name.toLowerCase().includes(needle)) : ICONS
+	// The input updates at once; the grid follows with the deferred value, so fast typing never waits for the grid
+	const deferredQuery = useDeferredValue(query)
+	const needle = deferredQuery.trim().toLowerCase().replace(/icon$/, '')
+	const matches = useMemo(() => NAMES.map(name => !needle || name.includes(needle)), [needle])
+	const count = useMemo(() => matches.filter(Boolean).length, [matches])
 	const chosen = ICONS.find(([name]) => name === selected)
 
 	return (
@@ -67,23 +90,18 @@ const IconsPage = () => {
 				}
 			</Markdown>
 			<H2>All icons</H2>
-			<div className="max-w-xs">
-				<Field label="Filter" value={query} onChange={setQuery} placeholder="search, arrow, user…" required={false} />
+			<div className="flex flex-wrap items-end gap-x-4 gap-y-2">
+				<div className="w-full max-w-xs">
+					<Field label="Filter" value={query} onChange={setQuery} placeholder="search, arrow, user…" required={false} />
+				</div>
+				<p role="status" className="m-0 pb-2 text-sm tabular-nums text-app-muted">
+					{needle ? `${count} of ${ICONS.length} icons` : `${ICONS.length} icons`}
+				</p>
 			</div>
-			{shown.length === 0 && <p className="m-0 text-sm text-app-muted">No icon matches “{query}”.</p>}
+			{count === 0 && <p className="m-0 text-sm text-app-muted">No icon matches “{deferredQuery}”.</p>}
 			<ul className="m-0 grid list-none grid-cols-2 gap-2 p-0 sm:grid-cols-3 md:grid-cols-5">
-				{shown.map(([name, Icon]) => (
-					<li key={name}>
-						<Button
-							variant="secondary"
-							onClick={() => setSelected(name)}
-							aria-haspopup="dialog"
-							className="flex h-full w-full flex-col items-center gap-2 !px-2 !py-3 !normal-case !tracking-normal"
-						>
-							<Icon className="h-6 w-6" />
-							<span className="max-w-full break-all text-[11px] font-medium leading-tight">{name}</span>
-						</Button>
-					</li>
+				{ICONS.map(([name, Icon], index) => (
+					<IconTile key={name} name={name} Icon={Icon} hidden={!matches[index]} onSelect={setSelected} />
 				))}
 			</ul>
 			{chosen && <IconDialog name={chosen[0]} Icon={chosen[1]} onClose={() => setSelected(null)} />}

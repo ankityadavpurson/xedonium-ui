@@ -14,9 +14,8 @@ const AngryIcon = ({ className }: IconProps) => (
 		strokeMiterlimit={10}
 	>
 		<circle cx="12" cy="12" r="10" />
-		<path d="M8 17a5 5 0 0 1 8 0" />
-		<path d="M7.5 8L10 9.5M16.5 8L14 9.5" />
-		<path d="M9 12h.01M15 12h.01" />
+		<path d="M16 17s-1.5-2-4-2-4 2-4 2" />
+		<path d="M6.5 7.5l4 2.5M17.5 7.5l-4 2.5" />
 	</svg>
 )
 

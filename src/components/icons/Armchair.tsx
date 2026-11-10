@@ -13,9 +13,9 @@ const ArmchairIcon = ({ className }: IconProps) => (
 		strokeLinejoin="miter"
 		strokeMiterlimit={10}
 	>
-		<path d="M5 11V7a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4" />
-		<path d="M3 13a2 2 0 0 1 4 0v2h10v-2a2 2 0 0 1 4 0v5H3z" />
-		<path d="M6 18v3M18 18v3" />
+		<path d="M17 10V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v5" />
+		<path d="M5 17a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H9v-2a2 2 0 0 0-4 0z" />
+		<path d="M7 19v2M17 19v2" />
 	</svg>
 )
 

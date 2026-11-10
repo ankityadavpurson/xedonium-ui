@@ -13,11 +13,11 @@ const SandwichIcon = ({ className }: IconProps) => (
 		strokeLinejoin="miter"
 		strokeMiterlimit={10}
 	>
-		<path d="M12 2v6" />
-		<path d="M12 2h4l-1 1.5L16 5h-4" />
-		<path d="M3 10a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2H3z" />
-		<path d="M3 15c1.5 1.5 3 1.5 4.5 0s3-1.5 4.5 0 3 1.5 4.5 0 3 1.5 4.5 0" />
-		<path d="M3 19h18v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+		<path d="M2.37 11.223l8.372-6.777a2 2 0 0 1 2.516 0l8.371 6.777" />
+		<path d="M21 15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-5.25" />
+		<path d="M3 15a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h9" />
+		<path d="M6.67 15l6.13 4.6a2 2 0 0 0 2.8-.4l3.15-4.2" />
+		<rect x="2" y="11" width="20" height="4" />
 	</svg>
 )
 

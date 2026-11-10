@@ -13,11 +13,11 @@ const TramIcon = ({ className }: IconProps) => (
 		strokeLinejoin="miter"
 		strokeMiterlimit={10}
 	>
-		<path d="M12 2v4M5 2h14" />
-		<path d="M6 6h12v12H6z" />
-		<path d="M6 12h12" />
-		<path d="M9 15h.01M15 15h.01" />
-		<path d="M8 18l-2 4M16 18l2 4" />
+		<rect x="4" y="6" width="16" height="13" />
+		<path d="M8 6l4-4 4 4" />
+		<path d="M4 12h16" />
+		<path d="M8 15.5h.01M16 15.5h.01" />
+		<path d="M8 19l-2 3M16 19l2 3" />
 	</svg>
 )
 

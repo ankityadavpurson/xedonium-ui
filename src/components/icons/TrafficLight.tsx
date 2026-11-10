@@ -13,10 +13,12 @@ const TrafficLightIcon = ({ className }: IconProps) => (
 		strokeLinejoin="miter"
 		strokeMiterlimit={10}
 	>
-		<rect x="7" y="2" width="10" height="20" />
-		<circle cx="12" cy="7" r="1.5" />
-		<circle cx="12" cy="12" r="1.5" />
-		<circle cx="12" cy="17" r="1.5" />
+		<rect x="7" y="2" width="10" height="17" />
+		<circle cx="12" cy="6" r="1" />
+		<circle cx="12" cy="10.5" r="1" />
+		<circle cx="12" cy="15" r="1" />
+		<path d="M12 19v3" />
+		<path d="M7 6H4M7 10.5H4M7 15H4M17 6h3M17 10.5h3M17 15h3" />
 	</svg>
 )
 

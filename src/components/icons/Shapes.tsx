@@ -13,9 +13,9 @@ const ShapesIcon = ({ className }: IconProps) => (
 		strokeLinejoin="miter"
 		strokeMiterlimit={10}
 	>
-		<path d="M8 3l5 9H3z" />
-		<rect x="14" y="14" width="7" height="7" />
-		<circle cx="7.5" cy="17.5" r="3.5" />
+		<path d="M12 2.5l4.5 7.5h-9z" />
+		<rect x="3" y="14" width="7" height="7" />
+		<circle cx="17.5" cy="17.5" r="3.5" />
 	</svg>
 )
 

@@ -13,9 +13,7 @@ const ThermometerIcon = ({ className }: IconProps) => (
 		strokeLinejoin="miter"
 		strokeMiterlimit={10}
 	>
-		<path d="M10 14V4h4v10a4 4 0 1 1-4 0z" />
-		<path d="M10 7h2M10 10h2" />
-		<circle cx="12" cy="17" r="1" />
+		<path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0z" />
 	</svg>
 )
 
