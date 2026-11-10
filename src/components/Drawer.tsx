@@ -73,7 +73,7 @@ const Drawer = ({
 	busyOverlay = false,
 	children,
 }: DrawerProps) => {
-	const ref = useRef<HTMLElement>(null)
+	const ref = useRef<HTMLDivElement>(null)
 	const titleId = useId()
 	// Keep the latest onClose without re-binding the Escape listener every render
 	const onCloseRef = useRef(onClose)
@@ -141,7 +141,8 @@ const Drawer = ({
 				}`}
 				onClick={requestClose}
 			/>
-			<aside
+			{/* a div, not an <aside>: the dialog role is not allowed on a landmark element */}
+			<div
 				ref={ref}
 				role="dialog"
 				aria-modal="true"
@@ -173,7 +174,7 @@ const Drawer = ({
 						{footer}
 					</div>
 				)}
-			</aside>
+			</div>
 		</div>,
 		document.body
 	)

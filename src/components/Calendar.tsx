@@ -251,7 +251,11 @@ const Calendar = ({
 						</button>
 						<button
 							type="button"
-							aria-label={pickerView === 'months' ? 'Choose year' : 'Choose month'}
+							aria-label={
+								pickerView === 'months'
+									? `${browseYear}, choose year`
+									: `${yearPageStart} – ${yearPageStart + 11}, choose month`
+							}
 							onClick={() => setPickerView(pickerView === 'months' ? 'years' : 'months')}
 							className="flex items-center gap-1 border border-app-border px-2 py-1 text-xs font-semibold uppercase tracking-widest transition hover:border-app-strong"
 						>

@@ -11,6 +11,7 @@ import {
 	type RefObject,
 } from 'react'
 import type { Placement } from '../types'
+import triggerLabel from '../utils/triggerLabel'
 import Button from './Button'
 import FloatingPanel from './FloatingPanel'
 import type { ButtonVariant } from './buttonClass'
@@ -55,7 +56,7 @@ export interface MenuProps {
 	items: MenuItem[]
 	/** Content of the trigger button. Leave it out to anchor the menu to `anchorRef` instead. */
 	trigger?: ReactNode
-	/** Accessible name of the trigger and the menu. */
+	/** Accessible name of the menu, and of the trigger unless it shows other text of its own. */
 	label?: string
 	variant?: ButtonVariant
 	placement?: Placement
@@ -415,7 +416,7 @@ const Menu = ({
 			{trigger !== undefined && (
 				<Button
 					variant={variant}
-					aria-label={label}
+					aria-label={triggerLabel(trigger, label)}
 					aria-haspopup="menu"
 					aria-expanded={isOpen}
 					onClick={() => setOpen(!isOpen)}

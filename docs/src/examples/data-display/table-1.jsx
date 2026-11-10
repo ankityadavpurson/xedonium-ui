@@ -7,7 +7,11 @@ export default function Demo() {
 				{ key: 'name', header: 'Name' },
 				{ key: 'role', header: 'Role' },
 				{ key: 'seats', header: 'Bananas', align: 'right' },
-				{ key: 'actions', header: '', render: row => <Button variant="secondary">View {row.name}</Button> },
+				{
+					key: 'actions',
+					header: <span className="sr-only">Actions</span>,
+					render: row => <Button variant="secondary">View {row.name}</Button>,
+				},
 			]}
 			rows={[
 				{ id: 1, name: 'Kevin', role: 'Banana boss', seats: 3 },

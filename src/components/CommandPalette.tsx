@@ -167,7 +167,9 @@ const CommandPalette = ({
 						</li>
 					)}
 					{!loading && results.length === 0 && (
-						<li className="px-4 py-6 text-center text-sm text-app-muted">{empty}</li>
+						<li role="presentation" className="px-4 py-6 text-center text-sm text-app-muted">
+							{empty}
+						</li>
 					)}
 					{results.map((command, index) => {
 						const showGroup = command.group && command.group !== results[index - 1]?.group

@@ -1,6 +1,7 @@
 import { useId, useRef, useState, type ReactNode } from 'react'
 import type { Placement } from '../types'
 import useDismissable from '../hooks/useDismissable'
+import triggerLabel from '../utils/triggerLabel'
 import Button from './Button'
 import FloatingPanel from './FloatingPanel'
 import type { ButtonVariant } from './buttonClass'
@@ -8,7 +9,7 @@ import type { ButtonVariant } from './buttonClass'
 export interface PopoverProps {
 	/** Content of the trigger button. */
 	trigger: ReactNode
-	/** Accessible name of the trigger and the panel. */
+	/** Accessible name of the panel, and of the trigger unless it shows other text of its own. */
 	label?: string
 	variant?: ButtonVariant
 	/** Shorthand for `bottom-start` / `bottom-end`. */
@@ -48,7 +49,7 @@ const Popover = ({
 		<div ref={rootRef} className="relative inline-block">
 			<Button
 				variant={variant}
-				aria-label={label}
+				aria-label={triggerLabel(trigger, label)}
 				aria-haspopup="dialog"
 				aria-expanded={open}
 				aria-controls={open ? panelId : undefined}
