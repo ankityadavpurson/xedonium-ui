@@ -137,7 +137,7 @@ const Home = () => {
 						Minimal UI that follows your theme.
 					</h1>
 					<p className="m-0 max-w-xl text-base text-app-soft sm:text-lg">
-						{pages.length} square-cornered React components, 160+ icons and semantic color tokens. Light and dark with
+						{pages.length} square-cornered React components, 470+ icons and semantic color tokens. Light and dark with
 						one attribute, and no runtime dependencies.
 					</p>
 					<div className="max-w-md">
@@ -167,7 +167,7 @@ const Home = () => {
 				className="grid grid-cols-2 gap-px border border-app-border bg-app-border sm:grid-cols-4"
 			>
 				<Stat value={pages.length} label="Components" />
-				<Stat value="160+" label="Icons" />
+				<Stat value="470+" label="Icons" />
 				<Stat value="0" label="Runtime dependencies" />
 				<Stat value={categories.length} label="Categories" />
 			</section>

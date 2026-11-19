@@ -11,7 +11,7 @@ export const DEFAULT_DESCRIPTION = 'Minimal, theme-aware React + Tailwind UI com
 const STATIC = [
 	[
 		'/',
-		'Minimal, theme-aware React and Tailwind components with no runtime dependencies. Forms, charts, overlays and 160+ icons for light and dark themes.',
+		'Minimal, theme-aware React and Tailwind components with no runtime dependencies. Forms, charts, overlays and 470+ icons for light and dark themes.',
 		'',
 	],
 	[

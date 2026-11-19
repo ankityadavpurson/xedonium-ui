@@ -133,6 +133,15 @@ for (const entry of catalog.entries ?? []) {
 		problems.push(`${where}: representativeQueries takes 2 to 5 items`)
 }
 
+// "N+ icons" in the landing page, README and meta description must stay true: N at most the real count, and close to it
+const iconCount = fs.readdirSync(path.join(root, 'src/components/icons')).filter(name => name.endsWith('.tsx')).length
+for (const file of ['docs/src/views/Home.jsx', 'docs/src/seo.js', 'README.md']) {
+	for (const [, claimed] of fs.readFileSync(path.join(root, file), 'utf8').matchAll(/(\d+)\+ icons/gi)) {
+		if (Number(claimed) > iconCount || iconCount - Number(claimed) >= 50)
+			problems.push(`${file}: says "${claimed}+ icons" but there are ${iconCount}; update it to the nearest 10 below`)
+	}
+}
+
 if (problems.length) {
 	console.error(problems.join('\n'))
 	process.exit(1)

@@ -1,7 +1,7 @@
 {
 	"name": "xedonium",
 	"version": "1.28.0",
-	"description": "Minimal, theme-aware React UI components styled with Tailwind CSS. Light/dark themes, TypeScript types included.",
+	"description": "Minimal, theme-aware React and Tailwind components with no runtime dependencies. Forms, charts, overlays and 470+ icons for light and dark themes.",
 	"type": "module",
 	"license": "MIT",
 	"author": "Ankit Yadav",
