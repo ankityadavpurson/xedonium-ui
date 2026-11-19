@@ -8,6 +8,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+## [1.28.0] - 2026-11-19
+
 ### Added
 
 - `Alert` has a `variant` prop: `soft` (the default, unchanged) or `solid`, an opaque style with the same colors as `Toast`, so an alert stays readable over an image or a pattern.
