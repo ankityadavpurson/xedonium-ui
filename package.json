@@ -1,6 +1,6 @@
 {
 	"name": "xedonium",
-	"version": "1.28.0",
+	"version": "1.28.1",
 	"description": "Minimal, theme-aware React and Tailwind components with no runtime dependencies. Forms, charts, overlays and 470+ icons for light and dark themes.",
 	"type": "module",
 	"license": "MIT",
