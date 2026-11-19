@@ -6,7 +6,7 @@
 
 ### Minimal, theme-aware React UI
 
-Forms, charts, overlays and 160+ icons with light and dark themes,</br>
+Forms, charts, overlays and 470+ icons with light and dark themes,</br>
 each one a separate module you can import on its own.
 
 [Live docs](https://xedonium.com/)
