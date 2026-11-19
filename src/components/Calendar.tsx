@@ -64,7 +64,11 @@ const Calendar = ({
 	jumpMode = 'none',
 	className = '',
 }: CalendarProps) => {
-	const today = startOfDay(new Date())
+	// The same day on every render. A server (or the hydrating first render) and the browser can be in different time
+	// zones, so the day is read again once mounted
+	const [todayTime, setTodayTime] = useState(() => startOfDay(new Date()).getTime())
+	useEffect(() => setTodayTime(startOfDay(new Date()).getTime()), [])
+	const today = new Date(todayTime)
 	// min / max limit whole days: a time on them does not disable their own day
 	const lo = min ? startOfDay(min) : null
 	const hi = max ? startOfDay(max) : null

@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
-import { createPortal } from 'react-dom'
-import portalTarget from '../utils/portalTarget'
+import { portal, usePortalReady } from '../utils/portalTarget'
 
 /**
  * Renders children into `container` (default <body>, or the fullscreen element while something is fullscreen),
@@ -12,6 +11,10 @@ export interface PortalProps {
 	container?: Element | DocumentFragment | null
 }
 
-const Portal = ({ children, container }: PortalProps) => createPortal(children, container ?? portalTarget())
+// Renders nothing on a server and while hydrating (see `usePortalReady`), so a Portal can sit in a server-rendered tree
+const Portal = ({ children, container }: PortalProps) => {
+	const ready = usePortalReady()
+	return portal(children, ready, container ? () => container : undefined)
+}
 
 export default Portal

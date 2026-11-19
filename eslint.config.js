@@ -21,6 +21,8 @@ export default [
 			...react.configs['jsx-runtime'].rules,
 			...reactHooks.configs.recommended.rules,
 			'react/prop-types': 'off',
+			// useIsomorphicLayoutEffect is useLayoutEffect, so its dependency list is checked the same way
+			'react-hooks/exhaustive-deps': ['warn', { additionalHooks: 'useIsomorphicLayoutEffect' }],
 		},
 	},
 	{

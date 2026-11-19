@@ -9,7 +9,7 @@ import {
 	type ReactNode,
 	type RefObject,
 } from 'react'
-import { createPortal } from 'react-dom'
+import { portal, usePortalReady } from '../utils/portalTarget'
 import useDialogFocus from '../hooks/useDialogFocus'
 import useEscapeKey from '../hooks/useEscapeKey'
 import Button from './Button'
@@ -133,7 +133,8 @@ const Modal = ({
 			document.body.style.overflow = previous
 		}
 	}, [open, fullScreen])
-	useDialogFocus(open, dialogRef, initialFocusRef)
+	const ready = usePortalReady()
+	useDialogFocus(open && ready, dialogRef, initialFocusRef) // the dialog exists once the portal does
 
 	if (!open) return null
 
@@ -142,7 +143,7 @@ const Modal = ({
 
 	// Portalled to <body> so no ancestor (e.g. the app bar's backdrop-blur, which creates a
 	// containing block for fixed elements) can trap the full-screen overlay
-	return createPortal(
+	return portal(
 		<div
 			className={`fixed inset-0 z-[var(--xd-z-modal,80)] flex items-center justify-center ${fullScreen ? 'px-0' : 'px-4'} ${fullscreenClasses?.wrapper ?? ''}`}
 		>
@@ -202,7 +203,8 @@ const Modal = ({
 				)}
 			</Container>
 		</div>,
-		document.body
+		ready,
+		() => document.body
 	)
 }
 

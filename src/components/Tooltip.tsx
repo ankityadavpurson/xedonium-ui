@@ -2,7 +2,6 @@ import {
 	cloneElement,
 	useEffect,
 	useId,
-	useLayoutEffect,
 	useRef,
 	useState,
 	type ElementType,
@@ -13,6 +12,7 @@ import {
 import { createPortal } from 'react-dom'
 import { computePosition } from '../utils/position'
 import portalTarget from '../utils/portalTarget'
+import useIsomorphicLayoutEffect from '../utils/useIsomorphicLayoutEffect'
 import type { Placement } from '../types'
 
 export interface TooltipProps {
@@ -78,7 +78,7 @@ const Tooltip = ({
 		setPosition(null)
 	}
 
-	useLayoutEffect(() => {
+	useIsomorphicLayoutEffect(() => {
 		if (!open || !triggerRef.current || !tipRef.current) return
 		const trigger =
 			followPointer && pointer

@@ -1,7 +1,6 @@
 import type { ComponentPropsWithoutRef, MouseEvent, ReactNode } from 'react'
-import { createPortal } from 'react-dom'
 import useEscapeKey from '../hooks/useEscapeKey'
-import portalTarget from '../utils/portalTarget'
+import { portal, usePortalReady } from '../utils/portalTarget'
 
 export interface BackdropProps extends ComponentPropsWithoutRef<'div'> {
 	open: boolean
@@ -29,6 +28,7 @@ const Backdrop = ({
 	onClick,
 	...rest
 }: BackdropProps) => {
+	const ready = usePortalReady()
 	useEscapeKey(open && !!onClose, () => onClose?.())
 
 	if (!open) return null
@@ -51,7 +51,7 @@ const Backdrop = ({
 		</div>
 	)
 
-	return fullScreen ? createPortal(layer, portalTarget()) : layer
+	return fullScreen ? portal(layer, ready) : layer
 }
 
 export default Backdrop

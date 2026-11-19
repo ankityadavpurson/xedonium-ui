@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import useClientValue from '../utils/useClientValue'
 
 /**
  * - `online`: the browser reports a network and (when you give a `probeUrl`) the internet is reachable.
@@ -75,8 +76,10 @@ const useNetworkStatus = ({
 	timeout = 5000,
 	enabled = true,
 }: UseNetworkStatusOptions): NetworkState => {
-	const [online, setOnline] = useState(readOnline)
-	const [connection, setConnection] = useState(readConnection)
+	// `true` and no connection info while rendering on a server and hydrating it; the effect below reads the real ones
+	const initialOnline = useClientValue(readOnline, true)
+	const [online, setOnline] = useState(initialOnline)
+	const [connection, setConnection] = useState<ConnectionInfo>({})
 	const [probe, setProbe] = useState<Probe>({ state: 'idle' })
 	const mounted = useRef(true)
 
@@ -116,6 +119,7 @@ const useNetworkStatus = ({
 		const onChange = () => setConnection(readConnection())
 		source?.addEventListener?.('change', onChange)
 		setOnline(readOnline())
+		setConnection(readConnection())
 		void check()
 		const timer = interval > 0 ? setInterval(() => void check(), interval) : undefined
 		return () => {

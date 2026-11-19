@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useId, useRef, useState, type ReactNode, type RefObject } from 'react'
-import { createPortal } from 'react-dom'
+import { portal, usePortalReady } from '../utils/portalTarget'
 import useDialogFocus from '../hooks/useDialogFocus'
 import useEscapeKey from '../hooks/useEscapeKey'
 import Button from './Button'
@@ -116,7 +116,8 @@ const Drawer = ({
 	const shown = !animated || (open && entered)
 
 	useEscapeKey(open, requestClose)
-	useDialogFocus(open, ref, initialFocusRef)
+	const ready = usePortalReady()
+	useDialogFocus(open && ready, ref, initialFocusRef) // the dialog exists once the portal does
 
 	// Lock page scroll while open
 	useEffect(() => {
@@ -132,7 +133,7 @@ const Drawer = ({
 
 	const vertical = side === 'top' || side === 'bottom'
 
-	return createPortal(
+	return portal(
 		<div className={`fixed inset-0 z-[var(--xd-z-modal,80)] ${open ? '' : 'pointer-events-none'}`}>
 			<div
 				aria-hidden="true"
@@ -176,7 +177,8 @@ const Drawer = ({
 				)}
 			</div>
 		</div>,
-		document.body
+		ready,
+		() => document.body
 	)
 }
 

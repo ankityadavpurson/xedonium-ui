@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
-import { createPortal } from 'react-dom'
+import { portal, usePortalReady } from '../utils/portalTarget'
 import useDialogFocus from '../hooks/useDialogFocus'
 import useEscapeKey from '../hooks/useEscapeKey'
 
@@ -77,7 +77,8 @@ const CommandPalette = ({
 	const listId = useId()
 
 	useEscapeKey(open, onClose)
-	useDialogFocus(open, dialogRef)
+	const ready = usePortalReady()
+	useDialogFocus(open && ready, dialogRef) // the dialog exists once the portal does
 
 	useEffect(() => {
 		if (open) {
@@ -124,7 +125,7 @@ const CommandPalette = ({
 		}
 	}
 
-	return createPortal(
+	return portal(
 		<div className="fixed inset-0 z-[var(--xd-z-modal,80)] flex items-start justify-center px-4 pt-[15vh]">
 			<div aria-hidden="true" className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={onClose} />
 			<div
@@ -214,7 +215,8 @@ const CommandPalette = ({
 				</ul>
 			</div>
 		</div>,
-		document.body
+		ready,
+		() => document.body
 	)
 }
 
