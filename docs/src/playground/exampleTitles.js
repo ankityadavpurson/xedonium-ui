@@ -24,6 +24,7 @@ export default {
 	'date-time/calendar': ['Default', 'Jump modes'],
 	'date-time/datepicker': ['Date', 'Date and time'],
 	'date-time/timepicker': ['24-hour', '12-hour'],
+	'feedback/alert': ['Tones', 'Solid variant'],
 	'feedback/loaders': ['Variants', 'Sizes', 'Custom icon'],
 	'feedback/progress': ['Linear', 'Circular'],
 	'inputs/button-group': ['Active button', 'Vertical and attached'],

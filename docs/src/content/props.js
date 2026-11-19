@@ -922,6 +922,12 @@ const props = {
 	alert: {
 		Alert: [
 			['tone', "'info' | 'success' | 'warning' | 'danger'", "'info'", 'Color and ARIA role.'],
+			[
+				'variant',
+				"'soft' | 'solid'",
+				"'soft'",
+				'`soft` is a translucent tint; `solid` is opaque, with the same colors as Toast.',
+			],
 			['title', 'ReactNode', '', 'Bold heading.'],
 			['onClose', '() => void', '', 'Makes the alert dismissible.'],
 			['icon', 'ReactNode', 'InfoIcon', 'Leading icon.'],
@@ -2195,6 +2201,12 @@ const props = {
 				'Adds a retry action while disconnected or in error (detecting: also checks again).',
 			],
 			['alwaysShow', 'boolean', 'false', 'Keep the banner visible while connected.'],
+			[
+				'solid',
+				'boolean',
+				'false',
+				'Banner only: an opaque fill (the same colors as `Alert` `variant="solid"`) instead of a translucent tint.',
+			],
 			className,
 		],
 	},

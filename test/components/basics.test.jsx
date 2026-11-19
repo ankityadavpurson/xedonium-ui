@@ -232,6 +232,37 @@ describe('Alert', () => {
 		rerender(<Alert tone="success">ok</Alert>)
 		expect(screen.getByRole('status')).toHaveTextContent('ok')
 	})
+
+	it('is a translucent tint by default and opaque with variant="solid"', () => {
+		const { rerender } = render(<Alert tone="danger">soft</Alert>)
+		expect(screen.getByRole('alert')).toHaveClass('bg-red-500/10')
+		expect(screen.getByRole('alert')).not.toHaveClass('bg-red-700')
+		const solid = {
+			info: ['bg-sky-700', 'text-white'],
+			success: ['bg-emerald-700', 'text-white'],
+			warning: ['bg-amber-400', 'text-black'],
+			danger: ['bg-red-700', 'text-white'],
+		}
+		for (const [tone, classes] of Object.entries(solid)) {
+			rerender(
+				<Alert tone={tone} variant="solid">
+					{tone}
+				</Alert>
+			)
+			const alert = screen.getByText(tone).closest('[role]')
+			expect(alert).toHaveClass('border-transparent', ...classes)
+			expect(alert.className).not.toMatch(/bg-\w+-\d+\/\d+/)
+		}
+	})
+
+	it('keeps the role and the custom className on the solid variant', () => {
+		render(
+			<Alert tone="warning" variant="solid" className="mt-4">
+				careful
+			</Alert>
+		)
+		expect(screen.getByRole('alert')).toHaveClass('bg-amber-400', 'mt-4')
+	})
 })
 
 describe('Avatar shape', () => {

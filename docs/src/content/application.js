@@ -119,7 +119,7 @@ export default {
 					example: 2,
 				},
 				{
-					md: '**As a banner.** `variant="banner"` shows a bar only while the connection is down, so put it under your `AppBar` (`className="sticky top-0 z-50"` keeps it in view). The check runs when the page loads, when the browser reports it is back online, every `interval` ms and when someone presses Retry, so recovery shows within a moment.\n\nNot sure how to see it? The Playground section for NetworkConnection has a **?** button at the top right of each example that explains four ways to test it, and the Simulate buttons below show each state without touching your network.',
+					md: '**As a banner.** `variant="banner"` shows a bar only while the connection is down, so put it under your `AppBar` (`className="sticky top-0 z-50"` keeps it in view). The check runs when the page loads, when the browser reports it is back online, every `interval` ms and when someone presses Retry, so recovery shows within a moment. The tint is translucent; add `solid` for an opaque bar that stays readable over an image or a pattern.\n\nNot sure how to see it? The Playground section for NetworkConnection has a **?** button at the top right of each example that explains four ways to test it, and the Simulate buttons below show each state without touching your network.',
 				},
 				{
 					example: 3,

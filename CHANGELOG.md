@@ -8,6 +8,11 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+### Added
+
+- `Alert` has a `variant` prop: `soft` (the default, unchanged) or `solid`, an opaque style with the same colors as `Toast`, so an alert stays readable over an image or a pattern.
+- `NetworkConnection` has a `solid` prop for the `banner` variant: an opaque bar with the same colors as `Alert` `variant="solid"`.
+
 ## [1.27.1] - 2026-11-10
 
 ### Added

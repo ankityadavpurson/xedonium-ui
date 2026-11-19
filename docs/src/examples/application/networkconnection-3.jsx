@@ -12,6 +12,7 @@ const MODES = [
 
 export default function Demo() {
 	const [mode, setMode] = useState('detect')
+	const [solid, setSolid] = useState(false)
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -28,12 +29,16 @@ export default function Demo() {
 						</ToggleButton>
 					))}
 				</ToggleButtonGroup>
+				<ToggleButton selected={solid} onChange={setSolid}>
+					Solid
+				</ToggleButton>
 			</div>
 
 			{/* in an app, put the banner right under the AppBar: className="sticky top-0 z-50" keeps it in view */}
 			<div className="border border-app-border">
 				<NetworkConnection
 					variant="banner"
+					solid={solid}
 					probeUrl="https://www.gstatic.com/generate_204"
 					interval={15000}
 					status={mode === 'detect' ? undefined : mode}

@@ -1,5 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react'
 import useNetworkStatus, { type NetworkState, type UseNetworkStatusOptions } from '../hooks/useNetworkStatus'
+import type { Tone } from '../types'
+import SOLID_TONES from '../utils/solidTones'
 
 export type NetworkConnectionStatus = 'connected' | 'connecting' | 'disconnected' | 'error'
 
@@ -27,6 +29,8 @@ export interface NetworkConnectionProps extends Omit<UseNetworkStatusOptions, 'e
 	onRetry?: () => void
 	/** For the `banner`: keep it visible while connected too (default `false`). */
 	alwaysShow?: boolean
+	/** For the `banner`: an opaque fill (the same colors as `Alert` `variant="solid"`), readable over images and patterns. */
+	solid?: boolean
 	className?: string
 }
 
@@ -68,6 +72,14 @@ const describeConnection = ({ connection }: NetworkState) =>
 		.filter(Boolean)
 		.join(' · ')
 
+// The Alert tone each status uses in the banner (connecting and disconnected are both a warning)
+const BANNER_TONE: Record<NetworkConnectionStatus, Tone> = {
+	connected: 'success',
+	connecting: 'warning',
+	disconnected: 'warning',
+	error: 'danger',
+}
+
 const BANNER_TEXT: Record<NetworkConnectionStatus, string> = {
 	connected: 'You are back online.',
 	connecting: 'Checking your connection…',
@@ -93,6 +105,7 @@ const NetworkConnection = ({
 	onStatusChange,
 	onRetry,
 	alwaysShow = false,
+	solid = false,
 	probeUrl,
 	interval,
 	timeout,
@@ -121,12 +134,17 @@ const NetworkConnection = ({
 					if (detecting) void network.check()
 				}
 			: undefined
+	const solidBanner = solid && variant === 'banner'
 	const canRetry = !!retry && (status === 'disconnected' || status === 'error')
 	const retryButton = canRetry && (
 		<button
 			type="button"
 			onClick={retry}
-			className="text-xs font-semibold uppercase tracking-widest text-app-muted underline underline-offset-2 outline-none hover:text-app-text focus-visible:ring-2 focus-visible:ring-app-strong"
+			className={`text-xs font-semibold uppercase tracking-widest underline underline-offset-2 outline-none focus-visible:ring-2 ${
+				solidBanner
+					? 'text-current hover:opacity-80 focus-visible:ring-current'
+					: 'text-app-muted hover:text-app-text focus-visible:ring-app-strong'
+			}`}
 		>
 			Retry
 		</button>
@@ -160,15 +178,17 @@ const NetworkConnection = ({
 			<div
 				role={status === 'connected' ? 'status' : 'alert'}
 				className={`flex flex-wrap items-center justify-between gap-3 border px-4 py-2.5 text-sm ${
-					status === 'error'
-						? 'border-red-500/40 bg-red-500/10 text-red-800 dark:text-red-300'
-						: status === 'connected'
-							? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300'
-							: 'border-amber-500/50 bg-amber-400/15 text-amber-900 dark:text-amber-200'
+					solid
+						? `border-transparent ${SOLID_TONES[BANNER_TONE[status]]}`
+						: status === 'error'
+							? 'border-red-500/40 bg-red-500/10 text-red-800 dark:text-red-300'
+							: status === 'connected'
+								? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300'
+								: 'border-amber-500/50 bg-amber-400/15 text-amber-900 dark:text-amber-200'
 				} ${className}`}
 			>
 				<span className="flex min-w-0 items-center gap-2">
-					<span aria-hidden="true" className={`h-2.5 w-2.5 shrink-0 ${current.dot}`} />
+					<span aria-hidden="true" className={`h-2.5 w-2.5 shrink-0 ${solid ? 'bg-current' : current.dot}`} />
 					<span>
 						<strong className="font-semibold">{text[status]}.</strong> {details ?? BANNER_TEXT[status]}
 					</span>
