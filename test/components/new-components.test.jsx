@@ -825,6 +825,31 @@ describe('NetworkConnection', () => {
 		expect(screen.getByRole('status')).toHaveTextContent('You are back online')
 	})
 
+	it('has an opaque banner with `solid`', () => {
+		const { rerender } = render(<NetworkConnection status="error" variant="banner" />)
+		expect(screen.getByRole('alert')).toHaveClass('bg-red-500/10')
+		const expected = {
+			error: ['bg-red-700', 'text-white'],
+			disconnected: ['bg-amber-400', 'text-black'],
+			connecting: ['bg-amber-400', 'text-black'],
+			connected: ['bg-emerald-700', 'text-white'],
+		}
+		for (const [status, classes] of Object.entries(expected)) {
+			rerender(<NetworkConnection status={status} variant="banner" solid alwaysShow onRetry={() => {}} />)
+			const banner = screen.getByText(/\./, { selector: 'strong' }).closest('[role]')
+			expect(banner).toHaveClass('border-transparent', ...classes)
+			expect(banner.className).not.toMatch(/bg-\w+-\d+\/\d+/)
+		}
+		rerender(<NetworkConnection status="error" variant="banner" solid onRetry={() => {}} />)
+		expect(screen.getByRole('alert')).toHaveClass('bg-red-700')
+		expect(screen.getByRole('button', { name: 'Retry' })).toHaveClass('text-current')
+	})
+
+	it('ignores `solid` outside the banner', () => {
+		const { container } = render(<NetworkConnection status="error" variant="badge" solid />)
+		expect(container.innerHTML).not.toContain('bg-red-700')
+	})
+
 	it('does not report the status it starts with, only changes', () => {
 		const onStatusChange = vi.fn()
 		const { rerender } = render(<NetworkConnection status="connected" onStatusChange={onStatusChange} />)

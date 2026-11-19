@@ -1,5 +1,7 @@
 import type { ScreenPosition } from '../types'
 import type { ToastItem, ToastType } from '../hooks/useTimedToast'
+import type { Tone } from '../types'
+import SOLID_TONES from '../utils/solidTones'
 import CheckIcon from './icons/Check'
 import CloseIcon from './icons/Close'
 import InfoIcon from './icons/Info'
@@ -16,15 +18,8 @@ export interface ToastProps {
 	position?: ScreenPosition
 }
 
-type Tone = 'success' | 'danger' | 'warning' | 'info'
-
 // `error` is an alias of `danger`, kept for older callers
-const TONES: Record<Tone, string> = {
-	success: 'bg-emerald-700 text-white',
-	danger: 'bg-red-700 text-white',
-	warning: 'bg-amber-400 text-black',
-	info: 'bg-sky-700 text-white',
-}
+const TONES = SOLID_TONES
 
 // Where the stack sits; top positions put the newest toast nearest the edge, like the bottom ones do
 const POSITIONS: Record<ScreenPosition, string> = {

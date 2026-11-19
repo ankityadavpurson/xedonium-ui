@@ -13,6 +13,12 @@ export default {
 				{
 					example: 1,
 				},
+				{
+					md: '**Solid.** The default `variant="soft"` tints the background, so whatever is behind the alert shows through. `variant="solid"` is opaque (the same colors as `Toast`), which keeps it readable over an image or a pattern.',
+				},
+				{
+					example: 2,
+				},
 			],
 		},
 		{
