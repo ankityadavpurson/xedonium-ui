@@ -722,8 +722,11 @@ describe('AppShell', () => {
 		const seen = []
 		const listeners = []
 		const original = window.matchMedia
+		let matches = false // like a real MediaQueryList, `matches` follows the change
 		window.matchMedia = query => ({
-			matches: false,
+			get matches() {
+				return matches
+			},
 			media: query,
 			addEventListener: (_, cb) => listeners.push(cb),
 			removeEventListener: () => {},
@@ -743,6 +746,7 @@ describe('AppShell', () => {
 		expect(seen).toContainEqual({ inDrawer: false, collapsed: true })
 		fireEvent.click(screen.getByRole('button', { name: 'Open menu' }))
 		expect(seen).toContainEqual({ inDrawer: true, collapsed: false })
+		matches = true
 		act(() => listeners.forEach(cb => cb({ matches: true })))
 		expect(seen).toContainEqual({ inDrawer: false, collapsed: false })
 		window.matchMedia = original

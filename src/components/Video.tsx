@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ComponentPropsWithoutRef, type ReactNode } from 'react'
+import useClientValue from '../utils/useClientValue'
 import Button from './Button'
 import Loader from './Loader'
 import FullscreenExitIcon from './icons/FullscreenExit'
@@ -69,17 +70,24 @@ const neededMbps = (height: number) =>
 
 type Connection = { downlink?: number; saveData?: boolean }
 
+const connectionOf = () =>
+	typeof navigator === 'undefined' ? undefined : (navigator as Navigator & { connection?: Connection }).connection
+
+// What the screen and the link allow; on a server (and while hydrating) an ordinary screen and link are assumed
+interface Environment {
+	pixelRatio: number
+	downlink: number
+	saveData: boolean
+}
+
 // Index (in `heights`, ascending) of the best fit for the player's pixel size and the connection's speed
-const autoIndex = (heights: number[], playerWidth: number) => {
-	// no navigator / window while rendering on a server: assume an ordinary screen and link
-	const connection =
-		typeof navigator === 'undefined' ? undefined : (navigator as Navigator & { connection?: Connection }).connection
-	if (connection?.saveData) return 0
-	const wanted = ((playerWidth || 640) * ((typeof window !== 'undefined' && window.devicePixelRatio) || 1) * 9) / 16
+const autoIndex = (heights: number[], playerWidth: number, { pixelRatio, downlink, saveData }: Environment) => {
+	if (saveData) return 0
+	const wanted = ((playerWidth || 640) * pixelRatio * 9) / 16
 	let best = 0
 	heights.forEach((height, i) => {
 		const fitsScreen = height <= wanted * 1.15
-		const fitsLink = !connection?.downlink || neededMbps(height) <= connection.downlink * 0.8
+		const fitsLink = !downlink || neededMbps(height) <= downlink * 0.8
 		if (fitsScreen && fitsLink) best = i
 	})
 	return best
@@ -140,6 +148,9 @@ const Video = ({
 	)
 	const [autoDrop, setAutoDrop] = useState(0) // levels Auto has stepped down after stalls
 	const [playerWidth, setPlayerWidth] = useState(0)
+	const pixelRatio = useClientValue(() => window.devicePixelRatio || 1, 1)
+	const downlink = useClientValue(() => connectionOf()?.downlink ?? 0, 0)
+	const saveData = useClientValue(() => !!connectionOf()?.saveData, false)
 	const resume = useRef<{ time: number; play: boolean } | null>(null) // where to continue after a quality switch reloads the video
 	const [fullscreen, setFullscreen] = useState(false)
 	const [awake, setAwake] = useState(true)
@@ -213,7 +224,8 @@ const Video = ({
 	const autoBase = levels.length
 		? autoIndex(
 				levels.map(level => level.height),
-				playerWidth
+				playerWidth,
+				{ pixelRatio, downlink, saveData }
 			)
 		: 0
 	const autoPick = levels[Math.max(0, autoBase - autoDrop)]

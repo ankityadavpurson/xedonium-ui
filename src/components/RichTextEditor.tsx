@@ -2,7 +2,6 @@ import {
 	useCallback,
 	useEffect,
 	useId,
-	useLayoutEffect,
 	useRef,
 	useState,
 	type ClipboardEvent,
@@ -15,6 +14,7 @@ import {
 import useDismissable from '../hooks/useDismissable'
 import useEscapeKey from '../hooks/useEscapeKey'
 import type { SelectOption } from '../types'
+import useIsomorphicLayoutEffect from '../utils/useIsomorphicLayoutEffect'
 import {
 	applyStyle,
 	caretIn,
@@ -734,7 +734,7 @@ const RichTextEditor = ({
 		setFlags({ undo: false, redo: false })
 	}, [])
 
-	useLayoutEffect(() => {
+	useIsomorphicLayoutEffect(() => {
 		try {
 			document.execCommand('defaultParagraphSeparator', false, 'p')
 		} catch {

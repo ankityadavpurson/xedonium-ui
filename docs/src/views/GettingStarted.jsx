@@ -38,6 +38,20 @@ import { ThemeProvider, useTheme } from 'xedonium/theme'
 // the named imports above still work and are tree-shaken too
 import { Button, Select } from 'xedonium'`
 
+const server = `// Works with renderToString, Next.js, Remix and Astro: nothing here needs a browser to render.
+// (In the Next.js App Router, import xedonium from a file that starts with "use client".)
+import { Alert, Modal, Button, ThemeProvider } from 'xedonium'
+
+export default function Lair({ open, onClose }) {
+	return (
+		<ThemeProvider>
+			<Alert tone="success" title="Banana secured">Kevin is on guard.</Alert>
+			{/* an open Modal renders nothing in the server's HTML, and appears right after hydration */}
+			<Modal open={open} onClose={onClose} title="Gru's orders">Fetch more bananas.</Modal>
+		</ThemeProvider>
+	)
+}`
+
 // Where to go after setup: [label, description, destination]. Paths starting with / are in-app routes.
 const NEXT = [
 	['Browse components', 'Layout, inputs, navigation, charts and more, each with live examples.', '/components/layout'],
@@ -107,6 +121,13 @@ const GettingStarted = () => {
 				}
 			</Markdown>
 			<CodeBlock code={subpaths} />
+			<H2>5. Server rendering</H2>
+			<Markdown>
+				{
+					'Every component renders to a string on the server (`renderToString`, Next.js, Remix, Astro) without `window` or `document`, and without React warnings. A test renders each export in plain Node to keep it that way.\n\nOverlays that live in `<body>` (`Modal`, `Drawer`, `ConfirmDialog`, `CommandPalette`, `Portal`, a full screen `Backdrop` and the panels of `Menu`, `Select` and the pickers) render nothing in the server HTML, as in most UI libraries, and appear right after hydration. Without server rendering they show on the first render, as before.\n\nA few values only the browser knows are read after hydration, so the first paint matches the server HTML: `useMediaQuery` is `false` until then (so `AppShell` starts in its collapsed layout), `Calendar` takes today from the browser, `NetworkConnection` assumes it is online, and `Video` picks the `Auto` resolution for an ordinary screen and link. Pass `value` (or `min` / `max`) to a `Calendar` if the server and your visitors can be in different days.'
+				}
+			</Markdown>
+			<CodeBlock code={server} />
 			<H2>Next steps</H2>
 			<Grid cols={2} gap={4}>
 				{NEXT.map(([title, text, to]) => (

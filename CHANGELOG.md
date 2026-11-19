@@ -8,7 +8,13 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
-## [1.28.0] - 2026-11-19
+### Fixed
+
+- Server rendering: every component now renders to a string in plain Node (no `window` or `document`) without throwing or React warnings, and hydrates without a mismatch.
+  - `Modal`, `Drawer`, `ConfirmDialog`, `CommandPalette`, `Portal`, a full screen `Backdrop` and the panels of `Menu`, `Select`, `Popover` and the pickers no longer throw `document is not defined`. They render nothing in the server HTML and appear right after hydration, like the overlays of other UI libraries. Without server rendering they appear on the first render, as before.
+  - `Tooltip`, `AppBar`, the pickers, `Select`, `Sound`, `Video`, `RichTextEditor` and others no longer print "useLayoutEffect does nothing on the server".
+  - `useMediaQuery` (and so `AppShell`) is `false` on the server and while hydrating, then follows the query. It used to read the browser during the first render, so a narrow screen mismatched the server HTML.
+  - `Calendar` reads today's date once and again after mount, `useNetworkStatus` and `NetworkConnection` assume online until mounted, and `Video` picks its `Auto` resolution for an ordinary screen and link until mounted, so none of them differ from the server HTML.
 
 ### Added
 

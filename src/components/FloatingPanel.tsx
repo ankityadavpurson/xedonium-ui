@@ -1,7 +1,7 @@
-import { useLayoutEffect, useRef, useState, type ComponentPropsWithoutRef, type RefObject } from 'react'
-import { createPortal } from 'react-dom'
+import { useRef, useState, type ComponentPropsWithoutRef, type RefObject } from 'react'
 import { computePosition, isClipped } from '../utils/position'
-import portalTarget from '../utils/portalTarget'
+import { portal, usePortalReady } from '../utils/portalTarget'
+import useIsomorphicLayoutEffect from '../utils/useIsomorphicLayoutEffect'
 import type { Placement } from '../types'
 
 export interface FloatingPanelProps extends ComponentPropsWithoutRef<'div'> {
@@ -50,7 +50,7 @@ const FloatingPanel = ({
 	const updateRef = useRef<(() => void) | null>(null)
 	const lastPosition = useRef<PanelPosition | null>(null)
 
-	useLayoutEffect(() => {
+	useIsomorphicLayoutEffect(() => {
 		if (!open) {
 			lastPosition.current = null
 			setPosition(null)
@@ -95,13 +95,15 @@ const FloatingPanel = ({
 	}, [open, anchorRef, ref, placement, gap, matchWidth])
 
 	// The anchor can move without a scroll or resize (e.g. a slider thumb), so re-measure after every render
-	useLayoutEffect(() => {
+	useIsomorphicLayoutEffect(() => {
 		updateRef.current?.()
 	})
 
+	const ready = usePortalReady()
+
 	if (!open) return null
 
-	return createPortal(
+	return portal(
 		<div
 			ref={ref}
 			{...rest}
@@ -119,7 +121,7 @@ const FloatingPanel = ({
 		>
 			{children}
 		</div>,
-		portalTarget()
+		ready
 	)
 }
 

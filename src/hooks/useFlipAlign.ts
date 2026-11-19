@@ -1,4 +1,5 @@
-import { useLayoutEffect, useState, type RefObject } from 'react'
+import { useState, type RefObject } from 'react'
+import useIsomorphicLayoutEffect from '../utils/useIsomorphicLayoutEffect'
 
 const EDGE = 8 // px kept clear of the viewport edge
 
@@ -11,7 +12,7 @@ const useFlipAlign = (
 ): 'start' | 'end' => {
 	const [flipped, setFlipped] = useState(false)
 
-	useLayoutEffect(() => {
+	useIsomorphicLayoutEffect(() => {
 		if (!open) {
 			setFlipped(false)
 			return
