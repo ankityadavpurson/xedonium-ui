@@ -7,4 +7,5 @@ const MongodbIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MongodbIcon }
 export default MongodbIcon

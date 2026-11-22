@@ -19,4 +19,5 @@ const SignpostIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SignpostIcon }
 export default SignpostIcon

@@ -18,4 +18,5 @@ const TreeDeciduousIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TreeDeciduousIcon }
 export default TreeDeciduousIcon

@@ -17,4 +17,5 @@ const HeartIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { HeartIcon }
 export default HeartIcon

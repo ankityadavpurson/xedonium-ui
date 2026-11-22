@@ -20,4 +20,5 @@ const UsersRoundIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { UsersRoundIcon }
 export default UsersRoundIcon

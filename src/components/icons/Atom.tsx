@@ -19,4 +19,5 @@ const AtomIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { AtomIcon }
 export default AtomIcon

@@ -406,4 +406,5 @@ const MultiSelect = ({
 	)
 }
 
+export { MultiSelect }
 export default MultiSelect

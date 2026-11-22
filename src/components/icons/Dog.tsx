@@ -21,4 +21,5 @@ const DogIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { DogIcon }
 export default DogIcon

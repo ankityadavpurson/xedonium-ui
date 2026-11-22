@@ -20,4 +20,5 @@ const BedIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BedIcon }
 export default BedIcon

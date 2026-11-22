@@ -224,4 +224,5 @@ const Sound = ({
 	)
 }
 
+export { Sound }
 export default Sound

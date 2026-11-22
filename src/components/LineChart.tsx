@@ -147,4 +147,5 @@ const LineChart = ({
 	)
 }
 
+export { LineChart }
 export default LineChart

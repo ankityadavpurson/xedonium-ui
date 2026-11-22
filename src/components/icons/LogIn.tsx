@@ -17,4 +17,5 @@ const LogInIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { LogInIcon }
 export default LogInIcon

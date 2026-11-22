@@ -19,4 +19,5 @@ const WavesIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { WavesIcon }
 export default WavesIcon

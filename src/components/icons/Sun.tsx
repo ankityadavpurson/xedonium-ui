@@ -18,4 +18,5 @@ const SunIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SunIcon }
 export default SunIcon

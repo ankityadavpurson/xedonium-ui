@@ -17,4 +17,5 @@ const RotateCwIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { RotateCwIcon }
 export default RotateCwIcon

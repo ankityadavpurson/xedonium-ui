@@ -24,4 +24,5 @@ const GrapeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { GrapeIcon }
 export default GrapeIcon

@@ -20,4 +20,5 @@ const ShipIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ShipIcon }
 export default ShipIcon

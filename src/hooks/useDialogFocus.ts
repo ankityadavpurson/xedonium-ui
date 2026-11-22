@@ -49,4 +49,5 @@ const useDialogFocus = (
 	}, [open, containerRef, initialFocusRef])
 }
 
+export { useDialogFocus }
 export default useDialogFocus

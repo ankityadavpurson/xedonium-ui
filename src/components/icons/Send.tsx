@@ -17,4 +17,5 @@ const SendIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SendIcon }
 export default SendIcon

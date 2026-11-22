@@ -21,4 +21,5 @@ const CircleUsersIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CircleUsersIcon }
 export default CircleUsersIcon

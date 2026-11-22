@@ -18,4 +18,5 @@ const MonitorIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MonitorIcon }
 export default MonitorIcon

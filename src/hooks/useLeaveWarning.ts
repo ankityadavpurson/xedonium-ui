@@ -75,4 +75,5 @@ const useLeaveWarning = (
 	}, [when, backButton])
 }
 
+export { useLeaveWarning }
 export default useLeaveWarning

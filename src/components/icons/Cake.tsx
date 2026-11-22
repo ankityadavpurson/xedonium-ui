@@ -21,4 +21,5 @@ const CakeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CakeIcon }
 export default CakeIcon

@@ -20,4 +20,5 @@ const CalendarClockIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CalendarClockIcon }
 export default CalendarClockIcon

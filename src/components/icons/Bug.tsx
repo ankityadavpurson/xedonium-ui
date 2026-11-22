@@ -21,4 +21,5 @@ const BugIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BugIcon }
 export default BugIcon

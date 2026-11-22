@@ -20,4 +20,5 @@ const MaximizeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MaximizeIcon }
 export default MaximizeIcon

@@ -229,4 +229,5 @@ const PasswordStrengthInfo = ({
 	)
 }
 
+export { PasswordStrengthInfo }
 export default PasswordStrengthInfo

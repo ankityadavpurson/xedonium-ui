@@ -18,4 +18,5 @@ const XCircleIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { XCircleIcon }
 export default XCircleIcon

@@ -47,6 +47,11 @@
 			"import": "./dist/theme/index.js",
 			"require": "./dist/theme/index.cjs"
 		},
+		"./theme/initScript": {
+			"types": "./dist/theme/initScript.d.ts",
+			"import": "./dist/theme/initScript.js",
+			"require": "./dist/theme/initScript.cjs"
+		},
 		"./hooks/*": {
 			"types": "./dist/hooks/*.d.ts",
 			"import": "./dist/hooks/*.js",

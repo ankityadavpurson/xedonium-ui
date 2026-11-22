@@ -18,4 +18,5 @@ const TabletIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TabletIcon }
 export default TabletIcon

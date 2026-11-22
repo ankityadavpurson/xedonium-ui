@@ -22,4 +22,5 @@ const ButterflyIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ButterflyIcon }
 export default ButterflyIcon

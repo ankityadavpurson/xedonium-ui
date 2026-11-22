@@ -17,4 +17,5 @@ const PlaneIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PlaneIcon }
 export default PlaneIcon

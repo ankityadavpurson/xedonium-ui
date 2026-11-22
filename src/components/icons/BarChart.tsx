@@ -17,4 +17,5 @@ const BarChartIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BarChartIcon }
 export default BarChartIcon

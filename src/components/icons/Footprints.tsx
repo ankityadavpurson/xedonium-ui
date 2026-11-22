@@ -19,4 +19,5 @@ const FootprintsIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FootprintsIcon }
 export default FootprintsIcon

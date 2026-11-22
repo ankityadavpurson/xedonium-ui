@@ -17,4 +17,5 @@ const TerminalIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TerminalIcon }
 export default TerminalIcon

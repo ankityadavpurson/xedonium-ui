@@ -18,4 +18,5 @@ const GlassWaterIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { GlassWaterIcon }
 export default GlassWaterIcon

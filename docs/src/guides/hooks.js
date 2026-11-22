@@ -411,7 +411,7 @@ function Root({ children }) {
 		summary: 'Set the theme before the first paint, to avoid a flash.',
 		name: 'getThemeInitScript',
 		signature: 'getThemeInitScript({ storageKey, defaultTheme })',
-		md: 'Returns JavaScript source that sets `<html data-theme>` before the page paints, with the same rules as [`ThemeProvider`](/theme/themeprovider): the saved choice, otherwise `defaultTheme`, with `system` resolved from the device. `ThemeProvider` only applies the theme after the app has hydrated, so without this a visitor whose saved or default theme differs from the browser default can see the wrong theme for a moment. Put the result in an inline script in the document head, and pass the same `storageKey` and `defaultTheme` as the provider. The values are JSON-encoded, so any key is safe.',
+		md: 'Returns JavaScript source that sets `<html data-theme>` before the page paints, with the same rules as [`ThemeProvider`](/theme/themeprovider): the saved choice, otherwise `defaultTheme`, with `system` resolved from the device. `ThemeProvider` only applies the theme after the app has hydrated, so without this a visitor whose saved or default theme differs from the browser default can see the wrong theme for a moment. Put the result in an inline script in the document head, and pass the same `storageKey` and `defaultTheme` as the provider. The values are JSON-encoded, so any key is safe.\n\nIt is also exported from `xedonium/theme/initScript`, a module without React, for code that only runs on the server, such as a Next.js App Router layout. See [Server rendering](/foundations/server-rendering) for each framework.',
 		api: {
 			Parameters: [
 				['storageKey', 'string', "'xedonium-theme-override'", 'Must match the ThemeProvider.'],
@@ -428,7 +428,10 @@ function Root({ children }) {
 
 // Vite / plain HTML: build the string once and paste it into index.html
 // <script>…the returned source…</script>`,
-		see: [['Foundations: Theme', '/foundations/theme']],
+		see: [
+			['Foundations: Theme', '/foundations/theme'],
+			['Foundations: Server rendering', '/foundations/server-rendering'],
+		],
 	},
 	{
 		id: 'theme-constants',

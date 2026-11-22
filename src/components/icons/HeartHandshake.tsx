@@ -20,4 +20,5 @@ const HeartHandshakeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { HeartHandshakeIcon }
 export default HeartHandshakeIcon

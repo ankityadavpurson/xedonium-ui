@@ -227,4 +227,5 @@ const ActionMenu = ({
 	)
 }
 
+export { ActionMenu }
 export default ActionMenu

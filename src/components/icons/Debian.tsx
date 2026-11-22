@@ -7,4 +7,5 @@ const DebianIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { DebianIcon }
 export default DebianIcon

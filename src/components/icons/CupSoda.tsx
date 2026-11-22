@@ -20,4 +20,5 @@ const CupSodaIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CupSodaIcon }
 export default CupSodaIcon

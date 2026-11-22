@@ -6,4 +6,5 @@ const PlayIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PlayIcon }
 export default PlayIcon

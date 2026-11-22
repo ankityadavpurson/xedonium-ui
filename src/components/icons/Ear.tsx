@@ -18,4 +18,5 @@ const EarIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { EarIcon }
 export default EarIcon

@@ -19,4 +19,5 @@ const MehIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MehIcon }
 export default MehIcon

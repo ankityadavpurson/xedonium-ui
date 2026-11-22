@@ -19,4 +19,5 @@ const PlugZapIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PlugZapIcon }
 export default PlugZapIcon

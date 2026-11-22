@@ -18,4 +18,5 @@ const LightbulbIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { LightbulbIcon }
 export default LightbulbIcon

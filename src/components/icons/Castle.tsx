@@ -21,4 +21,5 @@ const CastleIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CastleIcon }
 export default CastleIcon

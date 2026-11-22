@@ -20,4 +20,5 @@ const EarthIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { EarthIcon }
 export default EarthIcon

@@ -19,4 +19,5 @@ const TurtleIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TurtleIcon }
 export default TurtleIcon

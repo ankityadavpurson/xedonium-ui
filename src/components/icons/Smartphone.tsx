@@ -18,4 +18,5 @@ const SmartphoneIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SmartphoneIcon }
 export default SmartphoneIcon

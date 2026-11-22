@@ -18,4 +18,5 @@ const FlagIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FlagIcon }
 export default FlagIcon

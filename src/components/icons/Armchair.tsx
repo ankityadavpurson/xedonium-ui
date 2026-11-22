@@ -19,4 +19,5 @@ const ArmchairIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ArmchairIcon }
 export default ArmchairIcon

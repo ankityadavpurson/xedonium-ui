@@ -231,4 +231,5 @@ export const AccordionSection = ({
 	)
 }
 
+export { Accordion }
 export default Accordion

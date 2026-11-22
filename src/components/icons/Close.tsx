@@ -16,4 +16,5 @@ const CloseIcon = ({ className }: IconProps) => {
 	)
 }
 
+export { CloseIcon }
 export default CloseIcon

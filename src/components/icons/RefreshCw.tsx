@@ -17,4 +17,5 @@ const RefreshCwIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { RefreshCwIcon }
 export default RefreshCwIcon

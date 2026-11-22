@@ -18,4 +18,5 @@ const PieChartIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PieChartIcon }
 export default PieChartIcon

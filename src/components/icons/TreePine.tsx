@@ -18,4 +18,5 @@ const TreePineIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TreePineIcon }
 export default TreePineIcon

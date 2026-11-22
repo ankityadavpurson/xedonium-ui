@@ -18,4 +18,5 @@ const RoadIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { RoadIcon }
 export default RoadIcon

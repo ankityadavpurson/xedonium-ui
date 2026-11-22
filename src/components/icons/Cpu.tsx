@@ -19,4 +19,5 @@ const CpuIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CpuIcon }
 export default CpuIcon

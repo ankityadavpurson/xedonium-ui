@@ -7,4 +7,5 @@ const FreeBsdIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FreeBsdIcon }
 export default FreeBsdIcon

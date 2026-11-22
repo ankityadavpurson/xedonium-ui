@@ -20,4 +20,5 @@ const MinimizeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MinimizeIcon }
 export default MinimizeIcon

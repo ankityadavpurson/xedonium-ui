@@ -18,4 +18,5 @@ const TentIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TentIcon }
 export default TentIcon

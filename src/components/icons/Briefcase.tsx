@@ -20,4 +20,5 @@ const BriefcaseIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BriefcaseIcon }
 export default BriefcaseIcon

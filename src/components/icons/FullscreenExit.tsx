@@ -20,4 +20,5 @@ const FullscreenExitIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FullscreenExitIcon }
 export default FullscreenExitIcon

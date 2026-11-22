@@ -7,4 +7,5 @@ const PostgresqlIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PostgresqlIcon }
 export default PostgresqlIcon

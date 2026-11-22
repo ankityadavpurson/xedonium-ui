@@ -20,4 +20,5 @@ const BathIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BathIcon }
 export default BathIcon

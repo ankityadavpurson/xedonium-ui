@@ -20,4 +20,5 @@ const FullscreenIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FullscreenIcon }
 export default FullscreenIcon

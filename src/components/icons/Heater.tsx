@@ -19,4 +19,5 @@ const HeaterIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { HeaterIcon }
 export default HeaterIcon

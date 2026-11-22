@@ -17,6 +17,7 @@ export const GET = () => {
 		['Colors & tokens', '/foundations/colors'],
 		['Typography', '/foundations/typography'],
 		['Icons', '/foundations/icons'],
+		['Server rendering', '/foundations/server-rendering'],
 		['Changelog', '/changelog'],
 	])}\n\n${sections.join('\n\n')}\n`
 	return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } })

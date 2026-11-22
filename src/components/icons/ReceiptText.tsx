@@ -18,4 +18,5 @@ const ReceiptTextIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ReceiptTextIcon }
 export default ReceiptTextIcon

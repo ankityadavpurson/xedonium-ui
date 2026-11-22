@@ -19,4 +19,5 @@ const TableIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TableIcon }
 export default TableIcon

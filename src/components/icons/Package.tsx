@@ -18,4 +18,5 @@ const PackageIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PackageIcon }
 export default PackageIcon

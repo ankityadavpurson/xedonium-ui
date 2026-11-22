@@ -17,4 +17,5 @@ const ListIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ListIcon }
 export default ListIcon

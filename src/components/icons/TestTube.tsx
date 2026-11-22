@@ -19,4 +19,5 @@ const TestTubeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TestTubeIcon }
 export default TestTubeIcon

@@ -19,4 +19,5 @@ const LogOutIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { LogOutIcon }
 export default LogOutIcon

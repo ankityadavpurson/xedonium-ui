@@ -23,4 +23,5 @@ const PageHeader = ({ title, subtitle, children }: PageHeaderProps) => (
 	</div>
 )
 
+export { PageHeader }
 export default PageHeader

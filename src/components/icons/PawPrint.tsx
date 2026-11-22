@@ -21,4 +21,5 @@ const PawPrintIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PawPrintIcon }
 export default PawPrintIcon

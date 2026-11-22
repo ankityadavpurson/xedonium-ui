@@ -114,4 +114,5 @@ const Progress = ({
 	)
 }
 
+export { Progress }
 export default Progress

@@ -77,4 +77,5 @@ const ThemeToggle = ({ variant = 'button' }: ThemeToggleProps) => {
 	)
 }
 
+export { ThemeToggle }
 export default ThemeToggle

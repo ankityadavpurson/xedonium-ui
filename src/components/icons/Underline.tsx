@@ -18,4 +18,5 @@ const UnderlineIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { UnderlineIcon }
 export default UnderlineIcon

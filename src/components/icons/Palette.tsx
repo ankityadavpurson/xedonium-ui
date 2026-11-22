@@ -20,4 +20,5 @@ const PaletteIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PaletteIcon }
 export default PaletteIcon

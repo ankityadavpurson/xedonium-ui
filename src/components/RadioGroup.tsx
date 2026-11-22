@@ -53,4 +53,5 @@ const RadioGroup = <V extends string | number = string>({
 	)
 }
 
+export { RadioGroup }
 export default RadioGroup

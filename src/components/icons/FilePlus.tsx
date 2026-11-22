@@ -19,4 +19,5 @@ const FilePlusIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FilePlusIcon }
 export default FilePlusIcon

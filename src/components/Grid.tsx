@@ -49,4 +49,5 @@ const Grid = ({
 	</Tag>
 )
 
+export { Grid }
 export default Grid

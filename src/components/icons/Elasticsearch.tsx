@@ -7,4 +7,5 @@ const ElasticsearchIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ElasticsearchIcon }
 export default ElasticsearchIcon

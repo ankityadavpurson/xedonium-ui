@@ -17,4 +17,5 @@ const Undo2Icon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { Undo2Icon }
 export default Undo2Icon

@@ -50,4 +50,5 @@ const List = ({ items, divided = true, className = '' }: ListProps) => (
 	</ul>
 )
 
+export { List }
 export default List

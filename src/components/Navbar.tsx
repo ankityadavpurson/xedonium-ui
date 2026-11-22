@@ -56,4 +56,5 @@ const Navbar = ({
 	</nav>
 )
 
+export { Navbar }
 export default Navbar

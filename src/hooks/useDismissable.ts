@@ -34,4 +34,5 @@ const useDismissable = (
 	}, [open])
 }
 
+export { useDismissable }
 export default useDismissable

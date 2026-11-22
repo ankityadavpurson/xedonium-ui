@@ -20,4 +20,5 @@ const DonutIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { DonutIcon }
 export default DonutIcon

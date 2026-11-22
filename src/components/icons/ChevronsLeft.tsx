@@ -18,4 +18,5 @@ const ChevronsLeftIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ChevronsLeftIcon }
 export default ChevronsLeftIcon

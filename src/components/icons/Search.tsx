@@ -18,4 +18,5 @@ const SearchIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SearchIcon }
 export default SearchIcon

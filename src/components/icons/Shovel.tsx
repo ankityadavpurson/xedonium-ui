@@ -21,4 +21,5 @@ const ShovelIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ShovelIcon }
 export default ShovelIcon

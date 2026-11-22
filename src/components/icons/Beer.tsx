@@ -20,4 +20,5 @@ const BeerIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BeerIcon }
 export default BeerIcon

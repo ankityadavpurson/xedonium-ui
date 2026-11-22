@@ -59,4 +59,5 @@ const useScrollProgress = (target?: ScrollTarget): ScrollProgressState => {
 	return state
 }
 
+export { useScrollProgress }
 export default useScrollProgress

@@ -19,4 +19,5 @@ const MedalIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MedalIcon }
 export default MedalIcon

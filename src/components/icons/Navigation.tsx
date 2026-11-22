@@ -17,4 +17,5 @@ const NavigationIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { NavigationIcon }
 export default NavigationIcon

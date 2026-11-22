@@ -20,4 +20,5 @@ const FileCode2Icon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FileCode2Icon }
 export default FileCode2Icon

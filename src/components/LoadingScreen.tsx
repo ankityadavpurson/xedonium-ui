@@ -15,4 +15,5 @@ const LoadingScreen = ({
 	</PageLayout>
 )
 
+export { LoadingScreen }
 export default LoadingScreen

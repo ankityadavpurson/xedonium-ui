@@ -19,4 +19,5 @@ const ArchiveRestoreIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ArchiveRestoreIcon }
 export default ArchiveRestoreIcon

@@ -221,4 +221,5 @@ const NetworkConnection = ({
 	)
 }
 
+export { NetworkConnection }
 export default NetworkConnection

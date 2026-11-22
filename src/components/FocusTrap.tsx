@@ -19,4 +19,5 @@ const FocusTrap = ({ active = true, className = '', children, ...rest }: FocusTr
 	)
 }
 
+export { FocusTrap }
 export default FocusTrap

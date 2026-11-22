@@ -178,4 +178,5 @@ const NumberField = ({
 	)
 }
 
+export { NumberField }
 export default NumberField

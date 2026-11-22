@@ -29,4 +29,5 @@ const TextLink = ({
 	</Link>
 )
 
+export { TextLink }
 export default TextLink

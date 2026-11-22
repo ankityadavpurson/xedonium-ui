@@ -19,4 +19,5 @@ const WheelIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { WheelIcon }
 export default WheelIcon

@@ -18,4 +18,5 @@ const HourglassIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { HourglassIcon }
 export default HourglassIcon

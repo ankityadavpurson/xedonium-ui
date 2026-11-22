@@ -19,4 +19,5 @@ const UtensilsIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { UtensilsIcon }
 export default UtensilsIcon

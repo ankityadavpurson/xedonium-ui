@@ -17,4 +17,5 @@ const MessageCircleIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MessageCircleIcon }
 export default MessageCircleIcon

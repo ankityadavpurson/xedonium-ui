@@ -20,4 +20,5 @@ const MemoryStickIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MemoryStickIcon }
 export default MemoryStickIcon

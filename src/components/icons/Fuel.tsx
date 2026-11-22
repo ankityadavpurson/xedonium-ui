@@ -20,4 +20,5 @@ const FuelIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FuelIcon }
 export default FuelIcon

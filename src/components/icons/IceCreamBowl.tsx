@@ -20,4 +20,5 @@ const IceCreamBowlIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { IceCreamBowlIcon }
 export default IceCreamBowlIcon

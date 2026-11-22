@@ -19,4 +19,5 @@ const ScrollTextIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ScrollTextIcon }
 export default ScrollTextIcon

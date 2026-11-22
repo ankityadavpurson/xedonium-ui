@@ -17,4 +17,5 @@ const ShieldAlertIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ShieldAlertIcon }
 export default ShieldAlertIcon

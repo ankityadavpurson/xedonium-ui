@@ -18,4 +18,5 @@ const PinIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PinIcon }
 export default PinIcon

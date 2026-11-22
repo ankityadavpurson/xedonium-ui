@@ -18,4 +18,5 @@ const PencilIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PencilIcon }
 export default PencilIcon

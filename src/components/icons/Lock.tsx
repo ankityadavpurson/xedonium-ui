@@ -18,4 +18,5 @@ const LockIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { LockIcon }
 export default LockIcon

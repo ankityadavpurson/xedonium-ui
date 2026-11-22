@@ -19,4 +19,5 @@ const BabyIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BabyIcon }
 export default BabyIcon

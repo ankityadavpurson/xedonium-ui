@@ -21,4 +21,5 @@ const JapaneseYenIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { JapaneseYenIcon }
 export default JapaneseYenIcon

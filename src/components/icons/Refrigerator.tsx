@@ -19,4 +19,5 @@ const RefrigeratorIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { RefrigeratorIcon }
 export default RefrigeratorIcon

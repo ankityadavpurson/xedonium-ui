@@ -39,4 +39,5 @@ const Dashboard = ({ title, subtitle, actions, stats = [], columns = 2, children
 	</div>
 )
 
+export { Dashboard }
 export default Dashboard

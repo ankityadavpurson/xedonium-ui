@@ -20,4 +20,5 @@ const CatIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CatIcon }
 export default CatIcon

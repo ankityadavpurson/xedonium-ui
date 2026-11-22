@@ -1,6 +1,7 @@
 // Verifies the built package: every `exports` target exists in dist/ (patterns checked against the real files), every
 // module has its ESM, CommonJS and type files, and the documented import paths resolve in both module systems.
 // Run after `yarn build` (it is part of `prepublishOnly`).
+import { spawnSync } from 'node:child_process'
 import fs from 'node:fs'
 import { createRequire } from 'node:module'
 import path from 'node:path'
@@ -54,6 +55,12 @@ const expectations = [
 	['xedonium', 'WhatsappIcon'],
 	['xedonium', 'SearchIcon'],
 	['xedonium', 'LogOutIcon'],
+	// subpaths also export their value by name (for island frameworks, #131)
+	['xedonium/Button', 'Button'],
+	['xedonium/BackToTop', 'BackToTop'],
+	['xedonium/hooks/useTimedToast', 'useTimedToast'],
+	['xedonium/icons/Search', 'SearchIcon'],
+	['xedonium/theme/initScript', 'getThemeInitScript'],
 	['xedonium/theme', 'ThemeProvider'],
 	['xedonium/theme', 'useTheme'],
 ]
@@ -67,6 +74,16 @@ for (const [specifier, name] of expectations) {
 		problems.push(`${specifier} failed to load: ${error.message.split('\n')[0]}`)
 	}
 }
+
+// Next.js App Router layouts are Server Components, where `react` has no hooks or createContext: the init script
+// subpath must load there (the docs' Next.js setup imports it into app/layout.tsx)
+const serverImport = spawnSync(
+	process.execPath,
+	['--conditions=react-server', '--input-type=module', '-e', "await import('xedonium/theme/initScript')"],
+	{ cwd: root, encoding: 'utf8' }
+)
+if (serverImport.status !== 0)
+	problems.push(`xedonium/theme/initScript fails under react-server: ${serverImport.stderr.split('\n')[0]}`)
 
 if (problems.length) {
 	console.error(problems.join('\n'))

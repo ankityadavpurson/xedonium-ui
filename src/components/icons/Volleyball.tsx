@@ -22,4 +22,5 @@ const VolleyballIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { VolleyballIcon }
 export default VolleyballIcon

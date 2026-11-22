@@ -63,4 +63,5 @@ const VirtualList = <Item,>({
 	)
 }
 
+export { VirtualList }
 export default VirtualList

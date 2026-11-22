@@ -18,4 +18,5 @@ const CopyIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CopyIcon }
 export default CopyIcon

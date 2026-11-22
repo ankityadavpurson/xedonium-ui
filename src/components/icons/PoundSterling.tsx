@@ -20,4 +20,5 @@ const PoundSterlingIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PoundSterlingIcon }
 export default PoundSterlingIcon

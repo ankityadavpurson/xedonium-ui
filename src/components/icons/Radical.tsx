@@ -17,4 +17,5 @@ const RadicalIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { RadicalIcon }
 export default RadicalIcon

@@ -21,4 +21,5 @@ const CroissantIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CroissantIcon }
 export default CroissantIcon

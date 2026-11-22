@@ -19,4 +19,5 @@ const ArrowDownCircleIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ArrowDownCircleIcon }
 export default ArrowDownCircleIcon

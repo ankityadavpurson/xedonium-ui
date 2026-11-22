@@ -21,4 +21,5 @@ const Building2Icon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { Building2Icon }
 export default Building2Icon

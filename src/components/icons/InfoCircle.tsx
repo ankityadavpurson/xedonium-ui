@@ -18,4 +18,5 @@ const InfoCircleIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { InfoCircleIcon }
 export default InfoCircleIcon

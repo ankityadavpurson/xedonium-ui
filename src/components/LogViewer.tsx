@@ -366,4 +366,5 @@ const LogViewer = ({
 	)
 }
 
+export { LogViewer }
 export default LogViewer

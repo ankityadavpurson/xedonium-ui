@@ -18,4 +18,5 @@ const AtSignIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { AtSignIcon }
 export default AtSignIcon

@@ -18,4 +18,5 @@ const LinkIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { LinkIcon }
 export default LinkIcon

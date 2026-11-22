@@ -17,4 +17,5 @@ const DownloadIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { DownloadIcon }
 export default DownloadIcon

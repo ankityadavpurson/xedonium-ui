@@ -20,4 +20,5 @@ const StopwatchIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { StopwatchIcon }
 export default StopwatchIcon

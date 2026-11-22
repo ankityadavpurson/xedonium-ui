@@ -386,4 +386,5 @@ const FileExplorer = ({
 	)
 }
 
+export { FileExplorer }
 export default FileExplorer

@@ -17,4 +17,5 @@ const MapPinIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MapPinIcon }
 export default MapPinIcon

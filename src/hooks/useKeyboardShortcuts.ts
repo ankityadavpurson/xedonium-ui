@@ -49,4 +49,5 @@ const useKeyboardShortcuts = (shortcuts: Record<string, (event: KeyboardEvent) =
 	}, [enabled])
 }
 
+export { useKeyboardShortcuts }
 export default useKeyboardShortcuts

@@ -7,4 +7,5 @@ const WindowsIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { WindowsIcon }
 export default WindowsIcon

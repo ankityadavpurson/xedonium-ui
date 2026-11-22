@@ -19,4 +19,5 @@ const GoalIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { GoalIcon }
 export default GoalIcon

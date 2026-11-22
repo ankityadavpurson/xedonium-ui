@@ -84,4 +84,5 @@ const FanFavicon = ({ size = 64, theme: themeOverride, label }: FanFaviconProps)
 	)
 }
 
+export { FanFavicon }
 export default FanFavicon

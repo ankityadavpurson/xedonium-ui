@@ -17,4 +17,5 @@ const WifiOffIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { WifiOffIcon }
 export default WifiOffIcon

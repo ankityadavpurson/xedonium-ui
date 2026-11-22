@@ -17,4 +17,5 @@ const FlameIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FlameIcon }
 export default FlameIcon

@@ -18,4 +18,5 @@ const CogIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CogIcon }
 export default CogIcon

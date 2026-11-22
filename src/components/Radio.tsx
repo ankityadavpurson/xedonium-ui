@@ -24,4 +24,5 @@ const Radio = ({ label, className = '', disabled = false, ...rest }: RadioProps)
 	)
 }
 
+export { Radio }
 export default Radio

@@ -18,4 +18,5 @@ const KeyRoundIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { KeyRoundIcon }
 export default KeyRoundIcon

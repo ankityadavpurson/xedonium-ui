@@ -18,4 +18,5 @@ const SortDescIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SortDescIcon }
 export default SortDescIcon

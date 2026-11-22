@@ -19,4 +19,5 @@ const WebcamIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { WebcamIcon }
 export default WebcamIcon

@@ -17,4 +17,5 @@ const StarIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { StarIcon }
 export default StarIcon

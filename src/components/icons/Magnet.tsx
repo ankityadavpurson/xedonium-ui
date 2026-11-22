@@ -18,4 +18,5 @@ const MagnetIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MagnetIcon }
 export default MagnetIcon

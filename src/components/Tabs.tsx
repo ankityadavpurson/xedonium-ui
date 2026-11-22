@@ -186,4 +186,5 @@ const Tabs = ({ items, value, defaultValue, onChange, scrollButtons = 'auto', cl
 	)
 }
 
+export { Tabs }
 export default Tabs

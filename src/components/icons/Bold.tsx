@@ -18,4 +18,5 @@ const BoldIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BoldIcon }
 export default BoldIcon

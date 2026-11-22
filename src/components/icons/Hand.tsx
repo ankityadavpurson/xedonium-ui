@@ -20,4 +20,5 @@ const HandIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { HandIcon }
 export default HandIcon

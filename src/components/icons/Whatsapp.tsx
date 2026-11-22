@@ -7,4 +7,5 @@ const WhatsappIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { WhatsappIcon }
 export default WhatsappIcon

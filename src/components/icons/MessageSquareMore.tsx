@@ -18,4 +18,5 @@ const MessageSquareMoreIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MessageSquareMoreIcon }
 export default MessageSquareMoreIcon

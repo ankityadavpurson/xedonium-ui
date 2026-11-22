@@ -17,4 +17,5 @@ const PuzzleIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PuzzleIcon }
 export default PuzzleIcon

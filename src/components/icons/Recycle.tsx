@@ -22,4 +22,5 @@ const RecycleIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { RecycleIcon }
 export default RecycleIcon

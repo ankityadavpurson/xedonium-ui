@@ -21,4 +21,5 @@ const OrbitIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { OrbitIcon }
 export default OrbitIcon

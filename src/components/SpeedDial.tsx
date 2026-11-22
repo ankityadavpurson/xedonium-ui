@@ -152,4 +152,5 @@ const SpeedDial = ({
 	)
 }
 
+export { SpeedDial }
 export default SpeedDial

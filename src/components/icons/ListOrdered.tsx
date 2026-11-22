@@ -22,4 +22,5 @@ const ListOrderedIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ListOrderedIcon }
 export default ListOrderedIcon

@@ -114,4 +114,5 @@ const BarChart = ({
 	)
 }
 
+export { BarChart }
 export default BarChart

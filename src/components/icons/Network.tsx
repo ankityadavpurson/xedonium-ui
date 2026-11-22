@@ -21,4 +21,5 @@ const NetworkIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { NetworkIcon }
 export default NetworkIcon

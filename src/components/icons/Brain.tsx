@@ -24,4 +24,5 @@ const BrainIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BrainIcon }
 export default BrainIcon

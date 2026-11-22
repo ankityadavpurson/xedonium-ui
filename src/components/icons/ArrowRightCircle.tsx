@@ -19,4 +19,5 @@ const ArrowRightCircleIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ArrowRightCircleIcon }
 export default ArrowRightCircleIcon

@@ -21,4 +21,5 @@ const TramIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TramIcon }
 export default TramIcon

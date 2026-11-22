@@ -17,4 +17,5 @@ const ThermometerIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ThermometerIcon }
 export default ThermometerIcon

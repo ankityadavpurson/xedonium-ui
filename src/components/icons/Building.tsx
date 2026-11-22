@@ -20,4 +20,5 @@ const BuildingIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BuildingIcon }
 export default BuildingIcon

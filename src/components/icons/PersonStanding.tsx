@@ -20,4 +20,5 @@ const PersonStandingIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PersonStandingIcon }
 export default PersonStandingIcon

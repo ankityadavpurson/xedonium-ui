@@ -21,4 +21,5 @@ const ChessIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ChessIcon }
 export default ChessIcon

@@ -19,4 +19,5 @@ const ChairIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ChairIcon }
 export default ChairIcon

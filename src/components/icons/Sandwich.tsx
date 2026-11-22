@@ -21,4 +21,5 @@ const SandwichIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SandwichIcon }
 export default SandwichIcon

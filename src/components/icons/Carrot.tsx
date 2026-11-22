@@ -21,4 +21,5 @@ const CarrotIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CarrotIcon }
 export default CarrotIcon

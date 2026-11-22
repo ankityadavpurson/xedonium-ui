@@ -18,4 +18,5 @@ const WalletIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { WalletIcon }
 export default WalletIcon

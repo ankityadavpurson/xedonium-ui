@@ -19,4 +19,5 @@ const ScanFaceIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ScanFaceIcon }
 export default ScanFaceIcon

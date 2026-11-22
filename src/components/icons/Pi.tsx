@@ -19,4 +19,5 @@ const PiIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PiIcon }
 export default PiIcon

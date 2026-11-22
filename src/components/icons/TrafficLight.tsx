@@ -22,4 +22,5 @@ const TrafficLightIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TrafficLightIcon }
 export default TrafficLightIcon

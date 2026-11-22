@@ -19,4 +19,5 @@ const BeefIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BeefIcon }
 export default BeefIcon

@@ -19,4 +19,5 @@ const HelpCircleIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { HelpCircleIcon }
 export default HelpCircleIcon

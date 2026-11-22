@@ -7,4 +7,5 @@ const LinuxIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { LinuxIcon }
 export default LinuxIcon

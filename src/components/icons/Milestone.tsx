@@ -18,4 +18,5 @@ const MilestoneIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MilestoneIcon }
 export default MilestoneIcon

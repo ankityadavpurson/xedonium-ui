@@ -22,4 +22,5 @@ const WheatIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { WheatIcon }
 export default WheatIcon

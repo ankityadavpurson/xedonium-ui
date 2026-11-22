@@ -23,4 +23,5 @@ const UsbIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { UsbIcon }
 export default UsbIcon

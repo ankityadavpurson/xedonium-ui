@@ -20,4 +20,5 @@ const RadioIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { RadioIcon }
 export default RadioIcon

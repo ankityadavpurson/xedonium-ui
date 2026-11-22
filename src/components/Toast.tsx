@@ -113,4 +113,5 @@ const Toast = ({ toast, toasts, onClose, position = 'bottom-right' }: ToastProps
 	)
 }
 
+export { Toast }
 export default Toast

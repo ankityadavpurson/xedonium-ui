@@ -20,4 +20,5 @@ const QuoteIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { QuoteIcon }
 export default QuoteIcon

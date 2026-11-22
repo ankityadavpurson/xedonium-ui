@@ -17,4 +17,5 @@ const MinusIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MinusIcon }
 export default MinusIcon

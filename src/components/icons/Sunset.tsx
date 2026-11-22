@@ -22,4 +22,5 @@ const SunsetIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SunsetIcon }
 export default SunsetIcon

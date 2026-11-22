@@ -145,4 +145,5 @@ const Rating = ({
 	)
 }
 
+export { Rating }
 export default Rating

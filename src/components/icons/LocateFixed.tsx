@@ -19,4 +19,5 @@ const LocateFixedIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { LocateFixedIcon }
 export default LocateFixedIcon

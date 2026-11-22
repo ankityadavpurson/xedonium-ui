@@ -72,4 +72,5 @@ const FloatingActionButton = ({
 	)
 }
 
+export { FloatingActionButton }
 export default FloatingActionButton

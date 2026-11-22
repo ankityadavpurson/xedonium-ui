@@ -144,4 +144,5 @@ const CodeDisplay = ({
 	)
 }
 
+export { CodeDisplay }
 export default CodeDisplay

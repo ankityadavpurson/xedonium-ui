@@ -20,4 +20,5 @@ const TrophyIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TrophyIcon }
 export default TrophyIcon

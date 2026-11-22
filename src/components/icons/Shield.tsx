@@ -20,4 +20,5 @@ const ShieldIcon = ({ className }: IconProps) => {
 	)
 }
 
+export { ShieldIcon }
 export default ShieldIcon

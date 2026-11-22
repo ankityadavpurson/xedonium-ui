@@ -138,4 +138,5 @@ const useNetworkStatus = ({
 	return { status, online, latency: probe.latency, lastChecked: probe.at, connection, check }
 }
 
+export { useNetworkStatus }
 export default useNetworkStatus

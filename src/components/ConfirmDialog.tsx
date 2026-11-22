@@ -87,4 +87,5 @@ const ConfirmDialog = ({
 	</Modal>
 )
 
+export { ConfirmDialog }
 export default ConfirmDialog

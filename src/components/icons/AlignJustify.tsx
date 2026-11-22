@@ -19,4 +19,5 @@ const AlignJustifyIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { AlignJustifyIcon }
 export default AlignJustifyIcon

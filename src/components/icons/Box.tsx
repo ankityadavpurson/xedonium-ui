@@ -18,4 +18,5 @@ const BoxIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BoxIcon }
 export default BoxIcon

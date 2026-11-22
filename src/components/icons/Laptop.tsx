@@ -18,4 +18,5 @@ const LaptopIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { LaptopIcon }
 export default LaptopIcon

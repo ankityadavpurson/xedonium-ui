@@ -18,4 +18,5 @@ const Dice5Icon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { Dice5Icon }
 export default Dice5Icon

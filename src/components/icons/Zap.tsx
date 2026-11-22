@@ -17,4 +17,5 @@ const ZapIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ZapIcon }
 export default ZapIcon

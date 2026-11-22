@@ -17,4 +17,5 @@ const UploadIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { UploadIcon }
 export default UploadIcon

@@ -19,4 +19,5 @@ const GraduationCapIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { GraduationCapIcon }
 export default GraduationCapIcon

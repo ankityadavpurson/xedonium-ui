@@ -7,4 +7,5 @@ const MariadbIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MariadbIcon }
 export default MariadbIcon

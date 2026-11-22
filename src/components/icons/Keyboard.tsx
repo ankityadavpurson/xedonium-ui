@@ -18,4 +18,5 @@ const KeyboardIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { KeyboardIcon }
 export default KeyboardIcon

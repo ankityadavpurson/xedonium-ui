@@ -19,4 +19,5 @@ const SmileIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SmileIcon }
 export default SmileIcon

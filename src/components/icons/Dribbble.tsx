@@ -20,4 +20,5 @@ const DribbbleIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { DribbbleIcon }
 export default DribbbleIcon

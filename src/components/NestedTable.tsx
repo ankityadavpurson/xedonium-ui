@@ -252,4 +252,5 @@ const NestedTable = <Row extends object = Record<string, unknown>>({
 	)
 }
 
+export { NestedTable }
 export default NestedTable

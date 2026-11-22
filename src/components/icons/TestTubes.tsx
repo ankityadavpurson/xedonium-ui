@@ -22,4 +22,5 @@ const TestTubesIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TestTubesIcon }
 export default TestTubesIcon

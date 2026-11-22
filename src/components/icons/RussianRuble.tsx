@@ -18,4 +18,5 @@ const RussianRubleIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { RussianRubleIcon }
 export default RussianRubleIcon

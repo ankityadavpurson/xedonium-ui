@@ -18,4 +18,5 @@ const OctagonAlertIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { OctagonAlertIcon }
 export default OctagonAlertIcon

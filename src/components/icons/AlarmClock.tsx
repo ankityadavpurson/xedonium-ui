@@ -19,4 +19,5 @@ const AlarmClockIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { AlarmClockIcon }
 export default AlarmClockIcon

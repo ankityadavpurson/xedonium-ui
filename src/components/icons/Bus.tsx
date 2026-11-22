@@ -21,4 +21,5 @@ const BusIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BusIcon }
 export default BusIcon

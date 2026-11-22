@@ -20,4 +20,5 @@ const EyeOffIcon = ({ className }: IconProps) => {
 	)
 }
 
+export { EyeOffIcon }
 export default EyeOffIcon

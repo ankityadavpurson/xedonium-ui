@@ -18,4 +18,5 @@ const CreditCardIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CreditCardIcon }
 export default CreditCardIcon

@@ -20,4 +20,5 @@ const AnchorIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { AnchorIcon }
 export default AnchorIcon

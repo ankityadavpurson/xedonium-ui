@@ -18,4 +18,5 @@ const VideoIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { VideoIcon }
 export default VideoIcon

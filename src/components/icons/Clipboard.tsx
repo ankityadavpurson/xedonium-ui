@@ -18,4 +18,5 @@ const ClipboardIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ClipboardIcon }
 export default ClipboardIcon

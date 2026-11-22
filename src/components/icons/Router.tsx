@@ -20,4 +20,5 @@ const RouterIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { RouterIcon }
 export default RouterIcon

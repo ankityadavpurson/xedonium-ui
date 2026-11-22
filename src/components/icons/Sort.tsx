@@ -24,4 +24,5 @@ const SortIcon = ({ direction, className }: IconProps & { direction?: 'asc' | 'd
 	)
 }
 
+export { SortIcon }
 export default SortIcon

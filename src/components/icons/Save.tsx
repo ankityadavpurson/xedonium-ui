@@ -18,4 +18,5 @@ const SaveIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SaveIcon }
 export default SaveIcon

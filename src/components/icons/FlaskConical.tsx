@@ -19,4 +19,5 @@ const FlaskConicalIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FlaskConicalIcon }
 export default FlaskConicalIcon

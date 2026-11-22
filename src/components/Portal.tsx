@@ -17,4 +17,5 @@ const Portal = ({ children, container }: PortalProps) => {
 	return portal(children, ready, container ? () => container : undefined)
 }
 
+export { Portal }
 export default Portal

@@ -17,4 +17,5 @@ const BoneIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BoneIcon }
 export default BoneIcon

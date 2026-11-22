@@ -7,4 +7,5 @@ const GithubIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { GithubIcon }
 export default GithubIcon

@@ -58,4 +58,5 @@ const Stepper = ({ steps, current = 0, className = '' }: StepperProps) => (
 	</ol>
 )
 
+export { Stepper }
 export default Stepper
