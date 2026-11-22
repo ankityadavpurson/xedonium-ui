@@ -8,6 +8,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+## [1.29.0] - 2026-11-22
+
 ### Added
 
 - Every subpath module also has a named export, with the same name as in the root package, next to its default export: `import { BackToTop } from 'xedonium/BackToTop'`, `import { SearchIcon } from 'xedonium/icons/Search'`, `import { useMediaQuery } from 'xedonium/hooks/useMediaQuery'`. A test checks every component, hook and icon module (#131).
