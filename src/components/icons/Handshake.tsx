@@ -21,4 +21,5 @@ const HandshakeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { HandshakeIcon }
 export default HandshakeIcon

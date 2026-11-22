@@ -125,4 +125,5 @@ const FloatingPanel = ({
 	)
 }
 
+export { FloatingPanel }
 export default FloatingPanel

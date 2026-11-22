@@ -20,4 +20,5 @@ const LayoutGridIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { LayoutGridIcon }
 export default LayoutGridIcon

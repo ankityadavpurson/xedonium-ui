@@ -21,4 +21,5 @@ const AccessibilityIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { AccessibilityIcon }
 export default AccessibilityIcon

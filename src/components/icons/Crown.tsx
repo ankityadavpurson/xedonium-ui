@@ -18,4 +18,5 @@ const CrownIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CrownIcon }
 export default CrownIcon

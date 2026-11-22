@@ -19,4 +19,5 @@ const AngryIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { AngryIcon }
 export default AngryIcon

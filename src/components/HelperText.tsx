@@ -10,4 +10,5 @@ const HelperText = ({ as: Tag = 'p', className = '', children, ...rest }: Helper
 	</Tag>
 )
 
+export { HelperText }
 export default HelperText

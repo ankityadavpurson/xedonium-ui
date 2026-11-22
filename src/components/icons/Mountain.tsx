@@ -17,4 +17,5 @@ const MountainIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MountainIcon }
 export default MountainIcon

@@ -18,4 +18,5 @@ const BracesIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BracesIcon }
 export default BracesIcon

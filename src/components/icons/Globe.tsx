@@ -19,4 +19,5 @@ const GlobeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { GlobeIcon }
 export default GlobeIcon

@@ -17,4 +17,5 @@ const CloudIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CloudIcon }
 export default CloudIcon

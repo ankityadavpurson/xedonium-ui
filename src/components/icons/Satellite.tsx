@@ -21,4 +21,5 @@ const SatelliteIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SatelliteIcon }
 export default SatelliteIcon

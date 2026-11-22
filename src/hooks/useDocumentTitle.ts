@@ -7,4 +7,5 @@ const useDocumentTitle = (title?: string | null, suffix = '') => {
 	}, [title, suffix])
 }
 
+export { useDocumentTitle }
 export default useDocumentTitle

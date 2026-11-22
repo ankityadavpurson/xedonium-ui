@@ -19,4 +19,5 @@ const CalculatorIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CalculatorIcon }
 export default CalculatorIcon

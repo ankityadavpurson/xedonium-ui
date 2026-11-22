@@ -20,4 +20,5 @@ const ForkliftIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ForkliftIcon }
 export default ForkliftIcon

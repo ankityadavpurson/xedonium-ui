@@ -16,4 +16,5 @@ const CheckIcon = ({ className }: IconProps) => {
 	)
 }
 
+export { CheckIcon }
 export default CheckIcon

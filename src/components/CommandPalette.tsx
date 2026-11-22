@@ -220,4 +220,5 @@ const CommandPalette = ({
 	)
 }
 
+export { CommandPalette }
 export default CommandPalette

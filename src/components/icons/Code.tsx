@@ -17,4 +17,5 @@ const CodeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CodeIcon }
 export default CodeIcon

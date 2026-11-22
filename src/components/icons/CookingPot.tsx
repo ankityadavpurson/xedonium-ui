@@ -20,4 +20,5 @@ const CookingPotIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CookingPotIcon }
 export default CookingPotIcon

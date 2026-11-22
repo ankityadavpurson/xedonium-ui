@@ -7,4 +7,5 @@ const SupabaseIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SupabaseIcon }
 export default SupabaseIcon

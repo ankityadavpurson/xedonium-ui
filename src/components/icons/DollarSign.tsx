@@ -18,4 +18,5 @@ const DollarSignIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { DollarSignIcon }
 export default DollarSignIcon

@@ -19,4 +19,5 @@ const BrushIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BrushIcon }
 export default BrushIcon

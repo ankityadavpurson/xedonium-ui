@@ -19,4 +19,5 @@ const MilkIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MilkIcon }
 export default MilkIcon

@@ -94,4 +94,5 @@ const AppBar = ({
 	)
 }
 
+export { AppBar }
 export default AppBar

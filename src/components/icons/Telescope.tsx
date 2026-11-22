@@ -22,4 +22,5 @@ const TelescopeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TelescopeIcon }
 export default TelescopeIcon

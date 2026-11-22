@@ -19,4 +19,5 @@ const HeadphonesIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { HeadphonesIcon }
 export default HeadphonesIcon

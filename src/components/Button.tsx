@@ -39,4 +39,5 @@ const Button = (props: ButtonProps) => {
 	)
 }
 
+export { Button }
 export default Button

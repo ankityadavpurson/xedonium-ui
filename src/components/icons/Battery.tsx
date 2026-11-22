@@ -18,4 +18,5 @@ const BatteryIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BatteryIcon }
 export default BatteryIcon

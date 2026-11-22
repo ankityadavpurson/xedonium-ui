@@ -17,4 +17,5 @@ const XIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { XIcon }
 export default XIcon

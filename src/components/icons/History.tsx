@@ -18,4 +18,5 @@ const HistoryIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { HistoryIcon }
 export default HistoryIcon

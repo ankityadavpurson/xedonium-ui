@@ -18,4 +18,5 @@ const HighlighterIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { HighlighterIcon }
 export default HighlighterIcon

@@ -16,4 +16,5 @@ const VolumeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { VolumeIcon }
 export default VolumeIcon

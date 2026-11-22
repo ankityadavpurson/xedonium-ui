@@ -20,4 +20,5 @@ const ForkKnifeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ForkKnifeIcon }
 export default ForkKnifeIcon

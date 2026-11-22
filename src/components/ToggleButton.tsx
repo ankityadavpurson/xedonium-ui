@@ -42,4 +42,5 @@ const ToggleButton = ({ value, selected = false, onChange, onClick, children, ..
 	)
 }
 
+export { ToggleButton }
 export default ToggleButton

@@ -7,4 +7,5 @@ const SqliteIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SqliteIcon }
 export default SqliteIcon

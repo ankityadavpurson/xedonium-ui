@@ -199,4 +199,5 @@ const NotificationCenter = ({
 	)
 }
 
+export { NotificationCenter }
 export default NotificationCenter

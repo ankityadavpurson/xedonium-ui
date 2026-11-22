@@ -19,4 +19,5 @@ const ShoppingCartIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ShoppingCartIcon }
 export default ShoppingCartIcon

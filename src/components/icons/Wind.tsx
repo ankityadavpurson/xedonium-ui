@@ -19,4 +19,5 @@ const WindIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { WindIcon }
 export default WindIcon

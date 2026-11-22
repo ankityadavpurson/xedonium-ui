@@ -5,4 +5,5 @@ const AreaChart = ({ label = 'Area chart', ...props }: Omit<LineChartProps, 'are
 	<LineChart area label={label} {...props} />
 )
 
+export { AreaChart }
 export default AreaChart

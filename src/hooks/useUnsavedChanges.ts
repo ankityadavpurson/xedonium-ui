@@ -90,4 +90,5 @@ const useUnsavedChanges = ({ when, links = true }: UseUnsavedChangesOptions): Un
 	return { blocked: link !== null, proceed, stay }
 }
 
+export { useUnsavedChanges }
 export default useUnsavedChanges

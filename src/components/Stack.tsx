@@ -5,4 +5,5 @@ const Stack = ({ direction = 'column', gap = 4, ...rest }: FlexProps) => (
 	<Flex direction={direction} gap={gap} {...rest} />
 )
 
+export { Stack }
 export default Stack

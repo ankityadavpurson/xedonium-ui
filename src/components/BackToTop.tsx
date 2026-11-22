@@ -123,4 +123,5 @@ const BackToTop = ({
 	)
 }
 
+export { BackToTop }
 export default BackToTop

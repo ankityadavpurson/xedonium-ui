@@ -80,4 +80,5 @@ const useTimedToast = (duration = 3000, { max = 5 }: { max?: number } = {}) => {
 	return { toast: toasts[toasts.length - 1] ?? null, toasts, showToast, hideToast }
 }
 
+export { useTimedToast }
 export default useTimedToast

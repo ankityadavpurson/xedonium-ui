@@ -20,4 +20,5 @@ const LayoutDashboardIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { LayoutDashboardIcon }
 export default LayoutDashboardIcon

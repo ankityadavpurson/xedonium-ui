@@ -19,4 +19,5 @@ const GemIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { GemIcon }
 export default GemIcon

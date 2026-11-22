@@ -13,4 +13,5 @@ const useEscapeKey = (enabled: boolean, onEscape: () => void) => {
 	}, [enabled, onEscape])
 }
 
+export { useEscapeKey }
 export default useEscapeKey

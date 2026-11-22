@@ -26,4 +26,5 @@ const FanIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FanIcon }
 export default FanIcon

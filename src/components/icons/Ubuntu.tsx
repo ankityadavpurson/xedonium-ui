@@ -7,4 +7,5 @@ const UbuntuIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { UbuntuIcon }
 export default UbuntuIcon

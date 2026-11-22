@@ -18,4 +18,5 @@ const SquareCheckIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SquareCheckIcon }
 export default SquareCheckIcon

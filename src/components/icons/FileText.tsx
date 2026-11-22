@@ -19,4 +19,5 @@ const FileTextIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FileTextIcon }
 export default FileTextIcon

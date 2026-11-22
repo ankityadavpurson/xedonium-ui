@@ -40,4 +40,5 @@ const ButtonGroup = ({
 	</div>
 )
 
+export { ButtonGroup }
 export default ButtonGroup

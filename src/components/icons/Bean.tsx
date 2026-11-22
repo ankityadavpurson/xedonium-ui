@@ -18,4 +18,5 @@ const BeanIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BeanIcon }
 export default BeanIcon

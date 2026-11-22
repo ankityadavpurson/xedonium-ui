@@ -8,6 +8,15 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+### Added
+
+- Every subpath module also has a named export, with the same name as in the root package, next to its default export: `import { BackToTop } from 'xedonium/BackToTop'`, `import { SearchIcon } from 'xedonium/icons/Search'`, `import { useMediaQuery } from 'xedonium/hooks/useMediaQuery'`. A test checks every component, hook and icon module (#131).
+- `xedonium/theme/initScript` exports `getThemeInitScript` from a module without React, so it can be imported where only server code runs, such as a Next.js App Router layout (a Server Component) or an Astro page. `xedonium/theme` cannot be imported there, because it creates a React context.
+
+### Docs
+
+- A new [Server rendering](https://xedonium.com/foundations/server-rendering) page under Foundations shows the setup for Next.js (App Router and Pages Router), React Router 7 and Remix, Gatsby, Astro, Vite and custom servers, and any other framework: where the provider, styles and theme init script go, `suppressHydrationWarning` on `<html>`, React Server Components, and islands (import hydrated components from their subpath, keep `ThemeToggle` in the provider's island, and put components with JSX props in a `.tsx` file) (#131).
+
 ## [1.28.2] - 2026-11-19
 
 ## [1.28.1] - 2026-11-19

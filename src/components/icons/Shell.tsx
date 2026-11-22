@@ -18,4 +18,5 @@ const ShellIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ShellIcon }
 export default ShellIcon

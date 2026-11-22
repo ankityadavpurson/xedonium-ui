@@ -19,4 +19,5 @@ const PcCaseIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PcCaseIcon }
 export default PcCaseIcon

@@ -7,4 +7,5 @@ const AndroidIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { AndroidIcon }
 export default AndroidIcon

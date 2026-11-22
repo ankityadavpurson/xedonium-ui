@@ -18,4 +18,5 @@ const ThumbsUpIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ThumbsUpIcon }
 export default ThumbsUpIcon

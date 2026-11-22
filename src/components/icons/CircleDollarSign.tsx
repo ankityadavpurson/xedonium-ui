@@ -19,4 +19,5 @@ const CircleDollarSignIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CircleDollarSignIcon }
 export default CircleDollarSignIcon

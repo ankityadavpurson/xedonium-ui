@@ -17,4 +17,5 @@ const SlidersIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SlidersIcon }
 export default SlidersIcon

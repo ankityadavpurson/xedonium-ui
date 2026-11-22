@@ -21,4 +21,5 @@ const BridgeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BridgeIcon }
 export default BridgeIcon

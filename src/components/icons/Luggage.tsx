@@ -20,4 +20,5 @@ const LuggageIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { LuggageIcon }
 export default LuggageIcon

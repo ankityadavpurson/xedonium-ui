@@ -21,4 +21,5 @@ const ScissorsIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ScissorsIcon }
 export default ScissorsIcon

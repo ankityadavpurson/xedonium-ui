@@ -18,4 +18,5 @@ const AlertCircleIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { AlertCircleIcon }
 export default AlertCircleIcon

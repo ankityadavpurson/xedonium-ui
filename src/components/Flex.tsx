@@ -57,4 +57,5 @@ const Flex = ({
 	</Tag>
 )
 
+export { Flex }
 export default Flex

@@ -42,4 +42,5 @@ const useFlipAlign = (
 	return preferred === 'end' ? 'start' : 'end'
 }
 
+export { useFlipAlign }
 export default useFlipAlign

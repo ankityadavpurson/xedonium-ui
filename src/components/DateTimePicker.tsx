@@ -104,4 +104,5 @@ const DateTimePicker = ({
 	)
 }
 
+export { DateTimePicker }
 export default DateTimePicker

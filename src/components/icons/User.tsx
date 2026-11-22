@@ -18,4 +18,5 @@ const UserIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { UserIcon }
 export default UserIcon

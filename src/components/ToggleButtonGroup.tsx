@@ -52,4 +52,5 @@ const ToggleButtonGroup = ({
 	)
 }
 
+export { ToggleButtonGroup }
 export default ToggleButtonGroup

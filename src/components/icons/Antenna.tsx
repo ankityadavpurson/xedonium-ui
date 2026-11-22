@@ -20,4 +20,5 @@ const AntennaIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { AntennaIcon }
 export default AntennaIcon

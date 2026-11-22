@@ -20,4 +20,5 @@ const RabbitIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { RabbitIcon }
 export default RabbitIcon

@@ -20,4 +20,5 @@ const TrainIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TrainIcon }
 export default TrainIcon

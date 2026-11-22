@@ -18,4 +18,5 @@ const CookieIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CookieIcon }
 export default CookieIcon

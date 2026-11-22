@@ -18,4 +18,5 @@ const LeafIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { LeafIcon }
 export default LeafIcon

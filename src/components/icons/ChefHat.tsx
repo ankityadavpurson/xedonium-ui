@@ -18,4 +18,5 @@ const ChefHatIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ChefHatIcon }
 export default ChefHatIcon

@@ -22,4 +22,5 @@ const TreePalmIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TreePalmIcon }
 export default TreePalmIcon

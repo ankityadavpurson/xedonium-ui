@@ -19,4 +19,5 @@ const DevicesIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { DevicesIcon }
 export default DevicesIcon

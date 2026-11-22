@@ -21,4 +21,5 @@ const CarIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CarIcon }
 export default CarIcon

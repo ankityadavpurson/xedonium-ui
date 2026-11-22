@@ -7,4 +7,5 @@ const MysqlIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MysqlIcon }
 export default MysqlIcon

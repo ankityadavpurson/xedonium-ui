@@ -75,16 +75,17 @@ import { ThemeProvider, AppBar, PageLayout, Button } from 'xedonium'
 
 `PageLayout` fills the space left in its parent (`flex-1`), so give the parent a full-height flex column (`min-h-screen flex flex-col`), as above. Without it the page sits at the top and content, such as the theme toggle, can overlap.
 
-4. Import only what you use. Every component is its own module, so subpaths load just that module (default exports; in CommonJS use `.default`):
+4. Import only what you use. Every component is its own module, so subpaths load just that module. Each has a default export and a named one with the same name as in the root package:
 
 ```js
 import Button from 'xedonium/Button'
+import { Select } from 'xedonium/Select'
 import CheckIcon from 'xedonium/icons/Check'
 import useTimedToast from 'xedonium/hooks/useTimedToast'
 import { ThemeProvider, useTheme } from 'xedonium/theme'
 ```
 
-`import { Button } from 'xedonium'` keeps working and is tree-shaken.
+`import { Button } from 'xedonium'` keeps working and is tree-shaken. In Astro and other island frameworks, import hydrated components from their subpath (`xedonium/BackToTop`): an island loads the whole module it comes from, so the root package would ship the whole library. See [Server rendering](https://xedonium.com/foundations/server-rendering) for Next.js, React Router, Remix, Gatsby, Astro and custom SSR setups.
 
 ## Tailwind v4 setup
 

@@ -28,4 +28,5 @@ const QrCodeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { QrCodeIcon }
 export default QrCodeIcon

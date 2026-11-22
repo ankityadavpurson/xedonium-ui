@@ -21,4 +21,5 @@ const CableIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CableIcon }
 export default CableIcon

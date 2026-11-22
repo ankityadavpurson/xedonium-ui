@@ -17,4 +17,5 @@ const DumbbellIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { DumbbellIcon }
 export default DumbbellIcon

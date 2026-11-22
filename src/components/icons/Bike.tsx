@@ -21,4 +21,5 @@ const BikeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BikeIcon }
 export default BikeIcon

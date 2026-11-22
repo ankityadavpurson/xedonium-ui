@@ -19,4 +19,5 @@ const MoreVerticalIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MoreVerticalIcon }
 export default MoreVerticalIcon

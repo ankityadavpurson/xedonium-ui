@@ -19,4 +19,5 @@ const FishIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FishIcon }
 export default FishIcon

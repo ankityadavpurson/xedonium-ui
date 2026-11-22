@@ -20,4 +20,5 @@ const ContactRoundIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ContactRoundIcon }
 export default ContactRoundIcon

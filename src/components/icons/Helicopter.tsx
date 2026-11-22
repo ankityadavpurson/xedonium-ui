@@ -21,4 +21,5 @@ const HelicopterIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { HelicopterIcon }
 export default HelicopterIcon

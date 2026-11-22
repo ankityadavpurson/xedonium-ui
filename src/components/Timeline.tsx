@@ -185,4 +185,5 @@ const Timeline = ({ items, branches, orientation = 'vertical', className = '' }:
 	)
 }
 
+export { Timeline }
 export default Timeline

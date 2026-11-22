@@ -7,4 +7,5 @@ const FirebaseIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FirebaseIcon }
 export default FirebaseIcon

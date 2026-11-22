@@ -18,4 +18,5 @@ const Clock12Icon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { Clock12Icon }
 export default Clock12Icon

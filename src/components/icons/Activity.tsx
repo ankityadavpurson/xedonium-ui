@@ -17,4 +17,5 @@ const ActivityIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ActivityIcon }
 export default ActivityIcon

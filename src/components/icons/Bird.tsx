@@ -21,4 +21,5 @@ const BirdIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BirdIcon }
 export default BirdIcon

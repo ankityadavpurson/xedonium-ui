@@ -17,4 +17,5 @@ const Trash2Icon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { Trash2Icon }
 export default Trash2Icon

@@ -19,4 +19,5 @@ const FileEditIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FileEditIcon }
 export default FileEditIcon

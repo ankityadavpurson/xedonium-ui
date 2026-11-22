@@ -18,4 +18,5 @@ const TicketIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TicketIcon }
 export default TicketIcon

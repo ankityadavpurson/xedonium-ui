@@ -19,4 +19,5 @@ const CalendarXIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CalendarXIcon }
 export default CalendarXIcon

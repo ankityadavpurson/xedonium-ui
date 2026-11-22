@@ -18,4 +18,5 @@ const CompassIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CompassIcon }
 export default CompassIcon

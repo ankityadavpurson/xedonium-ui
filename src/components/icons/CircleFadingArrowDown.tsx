@@ -18,4 +18,5 @@ const CircleFadingArrowDownIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CircleFadingArrowDownIcon }
 export default CircleFadingArrowDownIcon

@@ -19,4 +19,5 @@ const FrownIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FrownIcon }
 export default FrownIcon

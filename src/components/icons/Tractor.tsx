@@ -25,4 +25,5 @@ const TractorIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TractorIcon }
 export default TractorIcon

@@ -17,4 +17,5 @@ const BluetoothIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BluetoothIcon }
 export default BluetoothIcon

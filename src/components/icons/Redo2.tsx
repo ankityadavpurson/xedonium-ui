@@ -17,4 +17,5 @@ const Redo2Icon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { Redo2Icon }
 export default Redo2Icon

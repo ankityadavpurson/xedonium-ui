@@ -18,4 +18,5 @@ const DropletsIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { DropletsIcon }
 export default DropletsIcon

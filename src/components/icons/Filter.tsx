@@ -17,4 +17,5 @@ const FilterIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FilterIcon }
 export default FilterIcon

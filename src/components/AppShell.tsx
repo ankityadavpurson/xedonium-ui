@@ -125,4 +125,5 @@ const AppShell = ({
 	)
 }
 
+export { AppShell }
 export default AppShell

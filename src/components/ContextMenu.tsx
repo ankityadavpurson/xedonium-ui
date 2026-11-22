@@ -78,4 +78,5 @@ const ContextMenu = ({
 	)
 }
 
+export { ContextMenu }
 export default ContextMenu

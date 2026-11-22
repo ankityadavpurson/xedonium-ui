@@ -19,4 +19,5 @@ const PrinterIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PrinterIcon }
 export default PrinterIcon

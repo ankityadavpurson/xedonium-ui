@@ -19,4 +19,5 @@ const AlignCenterIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { AlignCenterIcon }
 export default AlignCenterIcon

@@ -191,4 +191,5 @@ const TransferList = ({
 	)
 }
 
+export { TransferList }
 export default TransferList

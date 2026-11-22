@@ -384,4 +384,5 @@ const PipelineGraph = ({
 	)
 }
 
+export { PipelineGraph }
 export default PipelineGraph

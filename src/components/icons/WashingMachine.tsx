@@ -20,4 +20,5 @@ const WashingMachineIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { WashingMachineIcon }
 export default WashingMachineIcon

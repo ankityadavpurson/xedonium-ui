@@ -18,4 +18,5 @@ const MailIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MailIcon }
 export default MailIcon

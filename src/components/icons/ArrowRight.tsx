@@ -17,4 +17,5 @@ const ArrowRightIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ArrowRightIcon }
 export default ArrowRightIcon

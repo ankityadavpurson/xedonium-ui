@@ -20,4 +20,5 @@ const BackpackIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BackpackIcon }
 export default BackpackIcon

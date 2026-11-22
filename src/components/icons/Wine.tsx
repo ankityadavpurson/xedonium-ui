@@ -18,4 +18,5 @@ const WineIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { WineIcon }
 export default WineIcon

@@ -20,4 +20,5 @@ const GitBranchIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { GitBranchIcon }
 export default GitBranchIcon

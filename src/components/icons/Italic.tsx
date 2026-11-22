@@ -19,4 +19,5 @@ const ItalicIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ItalicIcon }
 export default ItalicIcon

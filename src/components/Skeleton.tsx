@@ -23,4 +23,5 @@ const Skeleton = ({ lines, circle = false, className = 'h-4 w-full' }: SkeletonP
 	)
 }
 
+export { Skeleton }
 export default Skeleton

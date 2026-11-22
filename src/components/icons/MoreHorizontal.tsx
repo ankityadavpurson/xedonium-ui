@@ -19,4 +19,5 @@ const MoreHorizontalIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MoreHorizontalIcon }
 export default MoreHorizontalIcon

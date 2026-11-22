@@ -19,4 +19,5 @@ const UnlinkIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { UnlinkIcon }
 export default UnlinkIcon

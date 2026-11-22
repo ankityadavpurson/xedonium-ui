@@ -20,4 +20,5 @@ const SailboatIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SailboatIcon }
 export default SailboatIcon

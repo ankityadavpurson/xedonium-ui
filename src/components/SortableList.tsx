@@ -104,4 +104,5 @@ const SortableList = <Item extends SortableItem = SortableItem>({
 	)
 }
 
+export { SortableList }
 export default SortableList

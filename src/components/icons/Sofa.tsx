@@ -20,4 +20,5 @@ const SofaIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SofaIcon }
 export default SofaIcon

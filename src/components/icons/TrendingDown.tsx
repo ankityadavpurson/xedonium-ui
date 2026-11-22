@@ -18,4 +18,5 @@ const TrendingDownIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TrendingDownIcon }
 export default TrendingDownIcon

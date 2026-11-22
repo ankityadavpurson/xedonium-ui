@@ -17,4 +17,5 @@ const PhoneIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PhoneIcon }
 export default PhoneIcon

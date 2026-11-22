@@ -19,4 +19,5 @@ const PiggyBankIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PiggyBankIcon }
 export default PiggyBankIcon

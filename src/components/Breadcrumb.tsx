@@ -45,4 +45,5 @@ const Breadcrumb = ({ items, linkComponent: Link = 'a', linkProp = 'href', class
 	</nav>
 )
 
+export { Breadcrumb }
 export default Breadcrumb

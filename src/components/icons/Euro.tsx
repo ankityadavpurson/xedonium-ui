@@ -19,4 +19,5 @@ const EuroIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { EuroIcon }
 export default EuroIcon

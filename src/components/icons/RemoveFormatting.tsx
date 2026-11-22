@@ -21,4 +21,5 @@ const RemoveFormattingIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { RemoveFormattingIcon }
 export default RemoveFormattingIcon

@@ -20,4 +20,5 @@ const CitrusIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CitrusIcon }
 export default CitrusIcon

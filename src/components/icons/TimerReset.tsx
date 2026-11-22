@@ -20,4 +20,5 @@ const TimerResetIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TimerResetIcon }
 export default TimerResetIcon

@@ -20,4 +20,5 @@ const InfoIcon = ({ className }: IconProps) => {
 	)
 }
 
+export { InfoIcon }
 export default InfoIcon

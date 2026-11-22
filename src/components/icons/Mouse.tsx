@@ -18,4 +18,5 @@ const MouseIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MouseIcon }
 export default MouseIcon

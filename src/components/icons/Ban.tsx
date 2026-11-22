@@ -18,4 +18,5 @@ const BanIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BanIcon }
 export default BanIcon

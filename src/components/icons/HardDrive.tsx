@@ -19,4 +19,5 @@ const HardDriveIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { HardDriveIcon }
 export default HardDriveIcon

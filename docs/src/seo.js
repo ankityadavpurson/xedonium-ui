@@ -27,6 +27,11 @@ const STATIC = [
 	['/foundations/colors', 'The semantic app-* color tokens and how to override them.', 'Colors & tokens'],
 	['/foundations/typography', 'Type scale and text styles used across Xedonium components.', 'Typography'],
 	['/foundations/icons', 'The full icon set, with names to import.', 'Icons'],
+	[
+		'/foundations/server-rendering',
+		'Server rendering with Next.js, React Router, Remix, Gatsby, Astro and custom SSR: setup, theme without a flash and islands.',
+		'Server rendering',
+	],
 	['/changelog', 'What changed in each release of Xedonium.', 'Changelog'],
 ]
 

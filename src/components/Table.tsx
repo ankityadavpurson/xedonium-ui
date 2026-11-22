@@ -106,4 +106,5 @@ const Table = <Row extends object = Record<string, unknown>>({
 	)
 }
 
+export { Table }
 export default Table

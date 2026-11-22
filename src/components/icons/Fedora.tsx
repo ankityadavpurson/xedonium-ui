@@ -7,4 +7,5 @@ const FedoraIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FedoraIcon }
 export default FedoraIcon

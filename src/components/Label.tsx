@@ -26,4 +26,5 @@ const Label = ({ as, htmlFor, className = '', children, ...rest }: LabelProps) =
 	)
 }
 
+export { Label }
 export default Label

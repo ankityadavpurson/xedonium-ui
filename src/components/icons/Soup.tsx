@@ -18,4 +18,5 @@ const SoupIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SoupIcon }
 export default SoupIcon

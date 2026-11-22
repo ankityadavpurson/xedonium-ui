@@ -21,4 +21,5 @@ const IndianRupeeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { IndianRupeeIcon }
 export default IndianRupeeIcon

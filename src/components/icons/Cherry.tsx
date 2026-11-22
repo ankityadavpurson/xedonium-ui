@@ -20,4 +20,5 @@ const CherryIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CherryIcon }
 export default CherryIcon

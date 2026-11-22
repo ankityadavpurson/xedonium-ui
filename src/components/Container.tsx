@@ -15,4 +15,5 @@ const Container = ({ maxWidth = 'max-w-5xl', className = '', as: Tag = 'div', ch
 	</Tag>
 )
 
+export { Container }
 export default Container

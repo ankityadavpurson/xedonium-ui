@@ -16,4 +16,5 @@ const MenuIcon = ({ className }: IconProps) => {
 	)
 }
 
+export { MenuIcon }
 export default MenuIcon

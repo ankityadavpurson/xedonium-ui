@@ -18,4 +18,5 @@ const ChartLineIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ChartLineIcon }
 export default ChartLineIcon

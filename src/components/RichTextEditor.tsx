@@ -1200,4 +1200,5 @@ const RichTextEditor = ({
 	)
 }
 
+export { RichTextEditor }
 export default RichTextEditor

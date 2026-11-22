@@ -17,4 +17,5 @@ const SigmaIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SigmaIcon }
 export default SigmaIcon

@@ -17,4 +17,5 @@ const WrenchIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { WrenchIcon }
 export default WrenchIcon

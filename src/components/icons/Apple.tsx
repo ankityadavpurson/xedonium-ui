@@ -7,4 +7,5 @@ const AppleIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { AppleIcon }
 export default AppleIcon

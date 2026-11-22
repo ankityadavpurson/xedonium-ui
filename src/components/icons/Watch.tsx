@@ -19,4 +19,5 @@ const WatchIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { WatchIcon }
 export default WatchIcon

@@ -8,4 +8,5 @@ const OldRedisIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { OldRedisIcon }
 export default OldRedisIcon

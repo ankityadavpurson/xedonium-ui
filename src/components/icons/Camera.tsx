@@ -18,4 +18,5 @@ const CameraIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CameraIcon }
 export default CameraIcon

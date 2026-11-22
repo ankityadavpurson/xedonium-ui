@@ -18,4 +18,5 @@ const BookOpenIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BookOpenIcon }
 export default BookOpenIcon

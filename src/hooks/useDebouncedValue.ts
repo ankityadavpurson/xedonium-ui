@@ -53,4 +53,5 @@ const useDebouncedValue = <Value>(value: Value, delay = 300, options: UseDebounc
 	return delay <= 0 ? value : debounced
 }
 
+export { useDebouncedValue }
 export default useDebouncedValue

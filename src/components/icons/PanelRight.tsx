@@ -18,4 +18,5 @@ const PanelRightIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PanelRightIcon }
 export default PanelRightIcon

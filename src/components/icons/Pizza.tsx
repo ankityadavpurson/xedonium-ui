@@ -21,4 +21,5 @@ const PizzaIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PizzaIcon }
 export default PizzaIcon

@@ -20,4 +20,5 @@ const HamburgerIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { HamburgerIcon }
 export default HamburgerIcon

@@ -19,4 +19,5 @@ const TagsIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TagsIcon }
 export default TagsIcon

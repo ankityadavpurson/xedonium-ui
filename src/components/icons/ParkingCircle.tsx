@@ -18,4 +18,5 @@ const ParkingCircleIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ParkingCircleIcon }
 export default ParkingCircleIcon

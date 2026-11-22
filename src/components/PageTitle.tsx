@@ -10,4 +10,5 @@ const PageTitle = ({ as: Tag = 'h1', className = '', children, ...rest }: PageTi
 	</Tag>
 )
 
+export { PageTitle }
 export default PageTitle

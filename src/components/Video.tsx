@@ -465,4 +465,5 @@ const Video = ({
 	)
 }
 
+export { Video }
 export default Video

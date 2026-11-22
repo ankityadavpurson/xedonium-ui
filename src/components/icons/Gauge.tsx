@@ -19,4 +19,5 @@ const GaugeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { GaugeIcon }
 export default GaugeIcon

@@ -59,4 +59,5 @@ const Field = ({
 	)
 }
 
+export { Field }
 export default Field

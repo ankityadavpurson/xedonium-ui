@@ -20,4 +20,5 @@ const DoorOpenIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { DoorOpenIcon }
 export default DoorOpenIcon

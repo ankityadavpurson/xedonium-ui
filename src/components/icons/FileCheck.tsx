@@ -19,4 +19,5 @@ const FileCheckIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FileCheckIcon }
 export default FileCheckIcon

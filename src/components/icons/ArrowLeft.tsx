@@ -15,4 +15,5 @@ const ArrowLeftIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ArrowLeftIcon }
 export default ArrowLeftIcon

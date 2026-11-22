@@ -19,4 +19,5 @@ const RocketIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { RocketIcon }
 export default RocketIcon

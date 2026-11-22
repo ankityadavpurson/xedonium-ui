@@ -18,4 +18,5 @@ const AlertTriangleIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { AlertTriangleIcon }
 export default AlertTriangleIcon

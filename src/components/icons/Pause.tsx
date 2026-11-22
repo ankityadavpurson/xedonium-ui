@@ -7,4 +7,5 @@ const PauseIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PauseIcon }
 export default PauseIcon

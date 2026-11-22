@@ -25,4 +25,5 @@ const Divider = ({ orientation = 'horizontal', label, className = '' }: DividerP
 	)
 }
 
+export { Divider }
 export default Divider

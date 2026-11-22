@@ -20,4 +20,5 @@ const PipetteIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PipetteIcon }
 export default PipetteIcon

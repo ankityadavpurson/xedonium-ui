@@ -20,4 +20,5 @@ const SquirrelIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SquirrelIcon }
 export default SquirrelIcon

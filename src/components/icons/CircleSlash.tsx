@@ -18,4 +18,5 @@ const CircleSlashIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CircleSlashIcon }
 export default CircleSlashIcon

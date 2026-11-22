@@ -19,4 +19,5 @@ const ShapesIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ShapesIcon }
 export default ShapesIcon

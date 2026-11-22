@@ -20,4 +20,5 @@ const MicrowaveIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MicrowaveIcon }
 export default MicrowaveIcon

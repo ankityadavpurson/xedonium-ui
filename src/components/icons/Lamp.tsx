@@ -19,4 +19,5 @@ const LampIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { LampIcon }
 export default LampIcon

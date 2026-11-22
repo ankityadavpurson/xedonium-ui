@@ -25,4 +25,5 @@ const FingerprintIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FingerprintIcon }
 export default FingerprintIcon

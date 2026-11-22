@@ -25,4 +25,5 @@ const SnowflakeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SnowflakeIcon }
 export default SnowflakeIcon

@@ -52,4 +52,5 @@ const Alert = ({ tone = 'info', variant = 'soft', title, onClose, icon, classNam
 	</div>
 )
 
+export { Alert }
 export default Alert

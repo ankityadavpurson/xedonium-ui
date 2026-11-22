@@ -20,4 +20,5 @@ const FlaskRoundIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FlaskRoundIcon }
 export default FlaskRoundIcon

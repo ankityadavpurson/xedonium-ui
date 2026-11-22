@@ -17,4 +17,5 @@ const ShirtIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ShirtIcon }
 export default ShirtIcon

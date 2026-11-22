@@ -117,4 +117,5 @@ const DateRangePicker = ({
 	)
 }
 
+export { DateRangePicker }
 export default DateRangePicker

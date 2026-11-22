@@ -19,4 +19,5 @@ const BanknoteIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BanknoteIcon }
 export default BanknoteIcon

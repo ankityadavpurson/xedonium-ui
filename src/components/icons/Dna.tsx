@@ -19,4 +19,5 @@ const DnaIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { DnaIcon }
 export default DnaIcon

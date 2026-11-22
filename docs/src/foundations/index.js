@@ -6,4 +6,9 @@ export const foundations = [
 	{ path: '/foundations/colors', title: 'Colors & tokens', Page: lazy(() => import('./ColorsPage')) },
 	{ path: '/foundations/typography', title: 'Typography', Page: lazy(() => import('./TypographyPage')) },
 	{ path: '/foundations/icons', title: 'Icons', Page: lazy(() => import('./IconsPage')) },
+	{
+		path: '/foundations/server-rendering',
+		title: 'Server rendering',
+		Page: lazy(() => import('./ServerRenderingPage')),
+	},
 ]

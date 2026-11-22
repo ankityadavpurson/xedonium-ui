@@ -54,4 +54,5 @@ const Backdrop = ({
 	return fullScreen ? portal(layer, ready) : layer
 }
 
+export { Backdrop }
 export default Backdrop

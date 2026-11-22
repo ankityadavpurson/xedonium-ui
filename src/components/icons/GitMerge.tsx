@@ -20,4 +20,5 @@ const GitMergeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { GitMergeIcon }
 export default GitMergeIcon

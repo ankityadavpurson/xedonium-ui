@@ -22,4 +22,5 @@ const MicroscopeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MicroscopeIcon }
 export default MicroscopeIcon

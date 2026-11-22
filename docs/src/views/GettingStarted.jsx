@@ -35,22 +35,12 @@ import CheckIcon from 'xedonium/icons/Check'
 import useTimedToast from 'xedonium/hooks/useTimedToast'
 import { ThemeProvider, useTheme } from 'xedonium/theme'
 
-// the named imports above still work and are tree-shaken too
-import { Button, Select } from 'xedonium'`
+// each subpath also has a named export, with the same name as in the root package
+import { Select } from 'xedonium/Select'
+import { CheckIcon } from 'xedonium/icons/Check'
 
-const server = `// Works with renderToString, Next.js, Remix and Astro: nothing here needs a browser to render.
-// (In the Next.js App Router, import xedonium from a file that starts with "use client".)
-import { Alert, Modal, Button, ThemeProvider } from 'xedonium'
-
-export default function Lair({ open, onClose }) {
-	return (
-		<ThemeProvider>
-			<Alert tone="success" title="Banana secured">Kevin is on guard.</Alert>
-			{/* an open Modal renders nothing in the server's HTML, and appears right after hydration */}
-			<Modal open={open} onClose={onClose} title="Gru's orders">Fetch more bananas.</Modal>
-		</ThemeProvider>
-	)
-}`
+// the root package still works and is tree-shaken by bundlers
+import { Button } from 'xedonium'`
 
 // Where to go after setup: [label, description, destination]. Paths starting with / are in-app routes.
 const NEXT = [
@@ -117,17 +107,16 @@ const GettingStarted = () => {
 			<H2>4. Import only what you use</H2>
 			<Markdown>
 				{
-					'The package ships one file per module. `import { Button } from "xedonium"` is tree-shaken by modern bundlers, and subpaths such as `xedonium/Button`, `xedonium/hooks/*`, `xedonium/icons/*` and `xedonium/theme` load only that module (default exports for components and hooks; `require("xedonium/Button").default` in CommonJS).'
+					'The package ships one file per module. `import { Button } from "xedonium"` is tree-shaken by modern bundlers, and subpaths such as `xedonium/Button`, `xedonium/hooks/*`, `xedonium/icons/*` and `xedonium/theme` load only that module. Each subpath has a default export and a named one with the same name as in the root package (`import { CheckIcon } from "xedonium/icons/Check"`); in CommonJS use `require("xedonium/Button").Button` or `.default`.'
 				}
 			</Markdown>
 			<CodeBlock code={subpaths} />
 			<H2>5. Server rendering</H2>
 			<Markdown>
 				{
-					'Every component renders to a string on the server (`renderToString`, Next.js, Remix, Astro) without `window` or `document`, and without React warnings. A test renders each export in plain Node to keep it that way.\n\nOverlays that live in `<body>` (`Modal`, `Drawer`, `ConfirmDialog`, `CommandPalette`, `Portal`, a full screen `Backdrop` and the panels of `Menu`, `Select` and the pickers) render nothing in the server HTML, as in most UI libraries, and appear right after hydration. Without server rendering they show on the first render, as before.\n\nA few values only the browser knows are read after hydration, so the first paint matches the server HTML: `useMediaQuery` is `false` until then (so `AppShell` starts in its collapsed layout), `Calendar` takes today from the browser, `NetworkConnection` assumes it is online, and `Video` picks the `Auto` resolution for an ordinary screen and link. Pass `value` (or `min` / `max`) to a `Calendar` if the server and your visitors can be in different days.'
+					'Every component renders on the server, in Next.js, React Router (Remix), Gatsby, Astro or your own `renderToString` setup. [Server rendering](/foundations/server-rendering) shows the setup for each framework: where the provider and styles go, the inline script that applies the theme before the first paint, React Server Components, and islands.'
 				}
 			</Markdown>
-			<CodeBlock code={server} />
 			<H2>Next steps</H2>
 			<Grid cols={2} gap={4}>
 				{NEXT.map(([title, text, to]) => (

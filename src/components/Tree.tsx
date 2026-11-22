@@ -166,4 +166,5 @@ const Tree = ({
 	)
 }
 
+export { Tree }
 export default Tree

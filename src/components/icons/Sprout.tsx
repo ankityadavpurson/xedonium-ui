@@ -19,4 +19,5 @@ const SproutIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SproutIcon }
 export default SproutIcon

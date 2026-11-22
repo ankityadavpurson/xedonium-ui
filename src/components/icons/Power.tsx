@@ -17,4 +17,5 @@ const PowerIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { PowerIcon }
 export default PowerIcon

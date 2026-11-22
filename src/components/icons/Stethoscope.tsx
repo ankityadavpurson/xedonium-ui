@@ -19,4 +19,5 @@ const StethoscopeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { StethoscopeIcon }
 export default StethoscopeIcon

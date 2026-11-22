@@ -18,4 +18,5 @@ const Grid2x2Icon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { Grid2x2Icon }
 export default Grid2x2Icon

@@ -206,4 +206,5 @@ const SearchSelect = ({
 	)
 }
 
+export { SearchSelect }
 export default SearchSelect

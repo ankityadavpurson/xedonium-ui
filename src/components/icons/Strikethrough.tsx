@@ -19,4 +19,5 @@ const StrikethroughIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { StrikethroughIcon }
 export default StrikethroughIcon

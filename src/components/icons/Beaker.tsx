@@ -20,4 +20,5 @@ const BeakerIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BeakerIcon }
 export default BeakerIcon

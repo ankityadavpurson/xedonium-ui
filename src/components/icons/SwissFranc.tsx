@@ -19,4 +19,5 @@ const SwissFrancIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SwissFrancIcon }
 export default SwissFrancIcon

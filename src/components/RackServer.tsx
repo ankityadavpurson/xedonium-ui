@@ -181,4 +181,5 @@ const RackServer = () => {
 	)
 }
 
+export { RackServer }
 export default RackServer

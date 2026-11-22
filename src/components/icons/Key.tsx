@@ -18,4 +18,5 @@ const KeyIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { KeyIcon }
 export default KeyIcon

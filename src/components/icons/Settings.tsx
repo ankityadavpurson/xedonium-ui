@@ -18,4 +18,5 @@ const SettingsIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SettingsIcon }
 export default SettingsIcon

@@ -19,4 +19,5 @@ const DatabaseIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { DatabaseIcon }
 export default DatabaseIcon

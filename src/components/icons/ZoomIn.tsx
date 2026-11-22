@@ -20,4 +20,5 @@ const ZoomInIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ZoomInIcon }
 export default ZoomInIcon

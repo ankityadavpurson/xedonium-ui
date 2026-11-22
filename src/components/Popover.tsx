@@ -73,4 +73,5 @@ const Popover = ({
 	)
 }
 
+export { Popover }
 export default Popover

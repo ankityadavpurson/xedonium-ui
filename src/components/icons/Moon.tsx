@@ -17,4 +17,5 @@ const MoonIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { MoonIcon }
 export default MoonIcon

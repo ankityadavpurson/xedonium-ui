@@ -17,4 +17,5 @@ const SlidersHorizontalIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SlidersHorizontalIcon }
 export default SlidersHorizontalIcon

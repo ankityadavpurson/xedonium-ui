@@ -20,4 +20,5 @@ const SaladIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SaladIcon }
 export default SaladIcon

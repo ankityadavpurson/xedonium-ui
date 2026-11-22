@@ -402,4 +402,5 @@ const DataGrid = <Row extends object = Record<string, unknown>>({
 	)
 }
 
+export { DataGrid }
 export default DataGrid

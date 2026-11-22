@@ -19,4 +19,5 @@ const TimerIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { TimerIcon }
 export default TimerIcon

@@ -53,4 +53,5 @@ const Switch = ({
 	</button>
 )
 
+export { Switch }
 export default Switch

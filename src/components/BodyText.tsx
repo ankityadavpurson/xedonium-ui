@@ -10,4 +10,5 @@ const BodyText = ({ as: Tag = 'p', className = '', children, ...rest }: BodyText
 	</Tag>
 )
 
+export { BodyText }
 export default BodyText

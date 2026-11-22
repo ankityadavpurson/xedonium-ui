@@ -17,4 +17,5 @@ const BookmarkIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BookmarkIcon }
 export default BookmarkIcon

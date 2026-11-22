@@ -20,4 +20,5 @@ const FolderTreeIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FolderTreeIcon }
 export default FolderTreeIcon

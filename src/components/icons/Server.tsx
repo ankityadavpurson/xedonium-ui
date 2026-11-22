@@ -19,4 +19,5 @@ const ServerIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { ServerIcon }
 export default ServerIcon

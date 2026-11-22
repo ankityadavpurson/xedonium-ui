@@ -7,4 +7,5 @@ const CassandraIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { CassandraIcon }
 export default CassandraIcon

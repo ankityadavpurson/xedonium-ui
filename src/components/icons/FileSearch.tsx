@@ -20,4 +20,5 @@ const FileSearchIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FileSearchIcon }
 export default FileSearchIcon

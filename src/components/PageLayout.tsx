@@ -38,4 +38,5 @@ const PageLayout = ({
 	)
 }
 
+export { PageLayout }
 export default PageLayout

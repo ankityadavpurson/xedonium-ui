@@ -17,4 +17,5 @@ const RefreshIcon = ({ className }: IconProps) => {
 	)
 }
 
+export { RefreshIcon }
 export default RefreshIcon

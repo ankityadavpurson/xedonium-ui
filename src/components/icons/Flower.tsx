@@ -29,4 +29,5 @@ const FlowerIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { FlowerIcon }
 export default FlowerIcon

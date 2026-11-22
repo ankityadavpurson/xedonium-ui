@@ -40,4 +40,5 @@ const ButtonLink = ({
 	</Link>
 )
 
+export { ButtonLink }
 export default ButtonLink

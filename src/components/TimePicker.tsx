@@ -307,4 +307,5 @@ const TimePicker = ({
 	)
 }
 
+export { TimePicker }
 export default TimePicker

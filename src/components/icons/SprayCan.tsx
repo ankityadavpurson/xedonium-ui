@@ -20,4 +20,5 @@ const SprayCanIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { SprayCanIcon }
 export default SprayCanIcon

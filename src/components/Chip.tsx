@@ -134,4 +134,5 @@ const Chip = ({
 	)
 }
 
+export { Chip }
 export default Chip

@@ -19,4 +19,5 @@ const BellDotIcon = ({ className }: IconProps) => (
 	</svg>
 )
 
+export { BellDotIcon }
 export default BellDotIcon
