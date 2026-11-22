@@ -10,8 +10,6 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [1.30.0] - 2026-11-22
 
-## [1.29.0] - 2026-11-22
-
 ### Added
 
 - `RelativeTime` shows a moment as a live relative label ("3 minutes ago", "yesterday", "in 2 months") in a `<time>` element, with the full date and time, to the second and with the time zone, in a `Tooltip` on hover and keyboard focus (#135).
@@ -21,6 +19,10 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
   - Server rendering: the server writes a label for the moment it renders, and the browser replaces it right after hydration, without a mismatch warning.
   - `formatRelative(date, now?, locale?)` and `formatAbsolute(date, locale?, timeZone?)` are exported for use outside React.
 
+## [1.29.0] - 2026-11-22
+
+### Added
+
 - Every subpath module also has a named export, with the same name as in the root package, next to its default export: `import { BackToTop } from 'xedonium/BackToTop'`, `import { SearchIcon } from 'xedonium/icons/Search'`, `import { useMediaQuery } from 'xedonium/hooks/useMediaQuery'`. A test checks every component, hook and icon module (#131).
 - `xedonium/theme/initScript` exports `getThemeInitScript` from a module without React, so it can be imported where only server code runs, such as a Next.js App Router layout (a Server Component) or an Astro page. `xedonium/theme` cannot be imported there, because it creates a React context.
 
@@ -29,6 +31,15 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 - A new [Server rendering](https://xedonium.com/foundations/server-rendering) page under Foundations shows the setup for Next.js (App Router and Pages Router), React Router 7 and Remix, Gatsby, Astro, Vite and custom servers, and any other framework: where the provider, styles and theme init script go, `suppressHydrationWarning` on `<html>`, React Server Components, and islands (import hydrated components from their subpath, keep `ThemeToggle` in the provider's island, and put components with JSX props in a `.tsx` file) (#131).
 
 ## [1.28.2] - 2026-11-19
+
+### Changed
+
+- The package description on npm now matches the website: React and Tailwind components with no runtime dependencies, forms, charts, overlays and 470+ icons.
+
+### Docs
+
+- The docs site has PNG and ICO favicons (48px, 192px, `favicon.ico` and an Apple touch icon) next to the SVG, so search results show its icon; `/favicon.ico` no longer returns a 404.
+- The landing page, meta description and README say 470+ icons instead of the stale 160+, and `docs:check` keeps the count honest.
 
 ## [1.28.1] - 2026-11-19
 
