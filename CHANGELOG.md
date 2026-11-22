@@ -10,6 +10,13 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ### Added
 
+- `RelativeTime` shows a moment as a live relative label ("3 minutes ago", "yesterday", "in 2 months") in a `<time>` element, with the full date and time, to the second and with the time zone, in a `Tooltip` on hover and keyboard focus (#135).
+  - The label updates every 30 seconds; `tick` changes that (in milliseconds, at least 1000). Instances with the same `tick` share one timer, which stops when none of them is mounted. `tick={false}` (or `0`) makes a static label, worked out when the component renders, with no timer.
+  - Labels are English by default; `locale` changes the label and the tooltip. `tooltip={false}` leaves the tooltip out.
+  - Up to a minute in the future reads as "now", so a server clock slightly ahead of the browser does not show "in 14 seconds".
+  - Server rendering: the server writes a label for the moment it renders, and the browser replaces it right after hydration, without a mismatch warning.
+  - `formatRelative(date, now?, locale?)` and `formatAbsolute(date, locale?, timeZone?)` are exported for use outside React.
+
 - Every subpath module also has a named export, with the same name as in the root package, next to its default export: `import { BackToTop } from 'xedonium/BackToTop'`, `import { SearchIcon } from 'xedonium/icons/Search'`, `import { useMediaQuery } from 'xedonium/hooks/useMediaQuery'`. A test checks every component, hook and icon module (#131).
 - `xedonium/theme/initScript` exports `getThemeInitScript` from a module without React, so it can be imported where only server code runs, such as a Next.js App Router layout (a Server Component) or an Astro page. `xedonium/theme` cannot be imported there, because it creates a React context.
 

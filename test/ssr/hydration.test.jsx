@@ -24,6 +24,8 @@ const cases = [
 	['DatePicker', {}],
 	['Video', { sources }],
 	['ThemeToggle', {}],
+	['RelativeTime', { date: '2026-01-01T00:00:00Z' }],
+	['RelativeTime', { date: '2026-01-01T00:00:00Z', locale: 'fr', tooltip: false }],
 ]
 
 const modules = import.meta.glob('../../src/components/*.tsx')
@@ -63,4 +65,33 @@ describe('hydration', () => {
 		},
 		30000
 	)
+})
+
+describe('RelativeTime after hydration', () => {
+	afterEach(() => vi.useRealTimers())
+
+	it('replaces the label of a page rendered days earlier (a static build) with the current one', async () => {
+		vi.useFakeTimers({ toFake: ['Date'] })
+		vi.setSystemTime(new Date('2026-11-22T12:05:00Z'))
+		const props = { date: '2026-11-22T12:00:00Z' }
+		const html = await serverHtml('RelativeTime', props)
+		expect(html).toContain('5 minutes ago')
+		// the visitor opens the page three days after it was built
+		vi.setSystemTime(new Date('2026-11-25T12:05:00Z'))
+		vi.resetModules()
+		const { default: RelativeTime } = await modules['../../src/components/RelativeTime.tsx']()
+		const container = document.createElement('div')
+		container.innerHTML = html
+		document.body.append(container)
+		const logged = []
+		vi.spyOn(console, 'error').mockImplementation((...args) => logged.push(String(args[0])))
+		let root
+		await act(async () => {
+			root = hydrateRoot(container, h(RelativeTime, props))
+		})
+		expect(logged).toEqual([])
+		expect(container.querySelector('time')).toHaveTextContent('3 days ago')
+		act(() => root.unmount())
+		container.remove()
+	})
 })

@@ -23,6 +23,7 @@ export default {
 	'data-display/timeline': ['Basic', 'Branches', 'Horizontal'],
 	'date-time/calendar': ['Default', 'Jump modes'],
 	'date-time/datepicker': ['Date', 'Date and time'],
+	'date-time/relativetime': ['Live labels', 'Tick', 'Locales and no tooltip'],
 	'date-time/timepicker': ['24-hour', '12-hour'],
 	'feedback/alert': ['Tones', 'Solid variant'],
 	'feedback/loaders': ['Variants', 'Sizes', 'Custom icon'],
