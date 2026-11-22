@@ -61,6 +61,7 @@ const props = {
 	Popover: { trigger: 'x', label: 'x', children: 'x' },
 	Portal: { children: 'x' },
 	RadioGroup: { options: items },
+	RelativeTime: { date: '2026-01-01T00:00:00Z' },
 	SearchSelect: { options: items },
 	Select: { options: items },
 	Sidebar: { items },

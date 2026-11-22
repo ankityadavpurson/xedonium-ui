@@ -1850,6 +1850,26 @@ const props = {
 			['weekStartsOn', '0 | 1', '0', 'First day of the week.'],
 		],
 	},
+	relativetime: {
+		RelativeTime: [
+			[
+				'date',
+				'Date | number | string',
+				'',
+				'The moment to show: a Date, a timestamp in milliseconds or an ISO 8601 string.',
+			],
+			['locale', 'string', "'en'", 'BCP 47 locale for the label and the tooltip, such as `fr` or `en-GB`.'],
+			['tooltip', 'boolean', 'true', 'Show the full date and time in a Tooltip on hover and keyboard focus.'],
+			['tooltipPlacement', 'string', "'top'", 'Tooltip placement (see Tooltip).'],
+			[
+				'tick',
+				'number | false',
+				'30000',
+				'How often the label updates, in milliseconds (at least 1000). Instances with the same `tick` share one timer. `false` (or `0`) for a label that does not update.',
+			],
+			['className', 'string', "''", 'Extra classes for the <time> element.'],
+		],
+	},
 	timepicker: {
 		TimePicker: [
 			['label', 'string', '', 'Label text.'],

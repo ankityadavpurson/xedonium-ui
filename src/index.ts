@@ -21,6 +21,7 @@ export { default as Menu } from './components/Menu'
 export { default as ContextMenu } from './components/ContextMenu'
 export { default as NumberField } from './components/NumberField'
 export { default as Rating } from './components/Rating'
+export { default as RelativeTime, formatAbsolute, formatRelative } from './components/RelativeTime'
 export { default as SpeedDial } from './components/SpeedDial'
 export { default as ToggleButton } from './components/ToggleButton'
 export { default as ToggleButtonGroup } from './components/ToggleButtonGroup'
@@ -689,6 +690,7 @@ export type { PortalProps } from './components/Portal'
 export type { ProgressProps } from './components/Progress'
 export type { RadioProps } from './components/Radio'
 export type { RadioOption, RadioGroupProps } from './components/RadioGroup'
+export type { DateInput, RelativeTimeProps } from './components/RelativeTime'
 export type { SearchSelectProps } from './components/SearchSelect'
 export type { SelectProps } from './components/Select'
 export type { SidebarItem, SidebarProps } from './components/Sidebar'
@@ -705,7 +707,13 @@ export type { TextAreaProps } from './components/TextArea'
 export type { TextLinkProps } from './components/TextLink'
 export type { ThemeToggleProps } from './components/ThemeToggle'
 export type { TimePickerProps } from './components/TimePicker'
-export type { TimelineTone, TimelineItem, TimelineBranch, TimelineOrientation, TimelineProps } from './components/Timeline'
+export type {
+	TimelineTone,
+	TimelineItem,
+	TimelineBranch,
+	TimelineOrientation,
+	TimelineProps,
+} from './components/Timeline'
 export type { PipelineStatus, PipelineNode, PipelineNodeState, PipelineGraphProps } from './components/PipelineGraph'
 export type { PipelineLayout, PipelinePlacement, PipelineEdge } from './utils/pipeline'
 export type { ToastInput, ToastProps } from './components/Toast'
