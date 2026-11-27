@@ -150,7 +150,7 @@ const Tooltip = ({
 						ref={tipRef}
 						aria-hidden="true"
 						style={{ top: position?.top ?? 0, left: position?.left ?? 0, visibility: position ? 'visible' : 'hidden' }}
-						className="pointer-events-none fixed z-[var(--xd-z-tooltip,100)] w-max max-w-[16rem] border border-app-border bg-app-card px-2.5 py-1.5 text-xs normal-case tracking-normal text-app-text shadow-xl"
+						className="pointer-events-none fixed z-[var(--xd-z-tooltip,100)] w-max max-w-[16rem] border [overflow-wrap:anywhere] border-app-border bg-app-card px-2.5 py-1.5 text-xs normal-case tracking-normal text-app-text shadow-xl"
 					>
 						{text}
 					</div>,

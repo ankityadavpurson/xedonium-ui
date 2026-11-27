@@ -18,7 +18,8 @@ const toolButton =
 
 /**
  * The live part of a section: the running result on top, its source below. The source is editable and re-runs on every
- * change (react-live); Reset restores the original and Copy takes the current text. When a component has several
+ * change (react-live); Wrap breaks long lines instead of scrolling sideways, Reset restores the original and Copy takes
+ * the current text. When a component has several
  * examples a toggle picks which one is shown (each keeps its own edits).
  */
 const LiveBody = ({ title, sources, names = [], help, className = '' }) => {
@@ -28,6 +29,7 @@ const LiveBody = ({ title, sources, names = [], help, className = '' }) => {
 	const source = sources[which]
 	const code = edits[which] ?? source
 	const [shown, setShown] = useState({ which, code })
+	const [wrap, setWrap] = useState(false)
 
 	useEffect(() => {
 		const timer = setTimeout(() => setShown({ which, code }), TYPING_PAUSE_MS)
@@ -85,6 +87,14 @@ const LiveBody = ({ title, sources, names = [], help, className = '' }) => {
 						<div className="ml-auto flex items-center gap-3">
 							<button
 								type="button"
+								aria-pressed={wrap}
+								onClick={() => setWrap(w => !w)}
+								className={`${toolButton} py-3 ${wrap ? 'text-app-text' : ''}`}
+							>
+								Wrap
+							</button>
+							<button
+								type="button"
 								disabled={code === source}
 								onClick={() => setEdits(e => ({ ...e, [which]: undefined }))}
 								className={`${toolButton} py-3`}
@@ -98,6 +108,7 @@ const LiveBody = ({ title, sources, names = [], help, className = '' }) => {
 						value={code}
 						onChange={value => setEdits(e => ({ ...e, [which]: value }))}
 						label={`${title} code`}
+						wrap={wrap}
 						className="-m-px"
 					/>
 					<LiveError
