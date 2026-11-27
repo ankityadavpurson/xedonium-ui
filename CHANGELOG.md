@@ -8,6 +8,8 @@ messages (see [CONTRIBUTING.md](CONTRIBUTING.md#commit-messages)). Each release 
 
 ## [Unreleased]
 
+## [1.30.1] - 2026-11-27
+
 ### Fixed
 
 - `Tooltip`: long text with no spaces, such as a hash or a URL, now wraps inside the tooltip instead of running past its right edge. The overflowing text had no background behind it, so content beside the tooltip, such as a `Badge`, showed through and looked as if it were drawn on top (#139).
