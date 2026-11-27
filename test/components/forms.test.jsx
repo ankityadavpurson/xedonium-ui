@@ -95,6 +95,18 @@ describe('Tooltip', () => {
 		expect(wrapper).not.toHaveClass('inline-flex')
 	})
 
+	it('wraps long unbroken text inside the box (#139)', () => {
+		const hash = 'ed1e92dc7f9bb70edf304604861ba8882f84ba54cd4edd795ee149705eed81fd'
+		render(
+			<Tooltip text={hash} placement="right">
+				<code>ed1e92dc7f9b…</code>
+			</Tooltip>
+		)
+		fireEvent.mouseEnter(screen.getByText('ed1e92dc7f9b…').parentElement)
+		const box = screen.getByText(hash, { selector: 'div' })
+		expect(box).toHaveClass('max-w-[16rem]', '[overflow-wrap:anywhere]')
+	})
+
 	it('returns children untouched without text', () => {
 		render(
 			<Tooltip>

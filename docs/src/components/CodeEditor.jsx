@@ -3,7 +3,11 @@ import { highlight } from './highlight'
 
 // Identical metrics for the highlighted <pre> and the transparent <textarea> laid over it
 // geometricPrecision: no per-glyph rounding, so both layers stay character for character the same at any display scaling or zoom
-const TEXT = 'm-0 p-4 font-code text-sm leading-[1.35] [tab-size:2] whitespace-pre [text-rendering:geometricPrecision]'
+const FONT = 'font-code text-sm leading-[1.35] [tab-size:2] [text-rendering:geometricPrecision]'
+const TEXT = `m-0 p-4 ${FONT} whitespace-pre`
+// Wrapped: long lines break at spaces, and anywhere when a run has none (a hash, a URL)
+const WRAPPED = `m-0 p-4 ${FONT} whitespace-pre-wrap [overflow-wrap:anywhere]`
+const GUTTER = 'select-none border-r border-app-border bg-app-card px-3 text-right font-code text-sm leading-[1.35] text-app-muted'
 
 const PAIRS = { '(': ')', '[': ']', '{': '}', '"': '"', "'": "'", '`': '`' }
 const CLOSERS = new Set(Object.values(PAIRS))
@@ -75,8 +79,9 @@ const moveLines = (field, value, start, end, up, copy) => {
  * Brackets, quotes and JSX tags close themselves, and these shortcuts work (Cmd instead of Ctrl on a Mac):
  * Ctrl+/ comments lines, Alt+Up / Down moves them, Shift+Alt+Up / Down copies them, Ctrl+Shift+K deletes them,
  * Ctrl+Enter / Ctrl+Shift+Enter open a line below / above.
+ * `wrap` breaks long lines to the editor's width instead of scrolling sideways; line numbers stay on each line's first row.
  */
-const CodeEditor = ({ value, onChange, label = 'Code editor', lang = 'js', className = '' }) => {
+const CodeEditor = ({ value, onChange, label = 'Code editor', lang = 'js', wrap = false, className = '' }) => {
 	const released = useRef(false) // Escape was pressed: the next Tab leaves the editor
 
 	const handleKeyDown = event => {
@@ -199,37 +204,73 @@ const CodeEditor = ({ value, onChange, label = 'Code editor', lang = 'js', class
 		}
 	}
 
+	const lines = value.split('\n')
+	const layer = wrap ? WRAPPED : TEXT
+
+	const editor = (
+		<>
+			<pre aria-hidden="true" className={`${layer} pointer-events-none text-app-text`}>
+				<code>{highlight(`${value}\n`, lang)}</code>
+			</pre>
+			<textarea
+				aria-label={label}
+				value={value}
+				onChange={event => onChange(event.target.value)}
+				onKeyDown={handleKeyDown}
+				onBlur={() => (released.current = false)}
+				spellCheck={false}
+				autoCapitalize="off"
+				autoComplete="off"
+				autoCorrect="off"
+				wrap={wrap ? 'soft' : 'off'}
+				id="code-editor-textarea"
+				className={`${layer} absolute inset-0 h-full w-full resize-none overflow-hidden border-0 bg-transparent text-transparent caret-[rgb(var(--color-app-text))] outline-none selection:bg-app-soft/30`}
+			/>
+		</>
+	)
+
 	return (
 		<div className={`group relative ${className}`}>
-			<div className="overflow-x-auto bg-app-card">
-				<div className="flex min-w-max">
-					<pre
-						aria-hidden="true"
-						className="sticky left-0 z-10 m-0 select-none border-r border-app-border bg-app-card px-3 py-4 text-right font-code text-sm leading-[1.35] text-app-muted"
-					>
-						{Array.from({ length: value.split('\n').length }, (_, i) => i + 1).join('\n')}
-					</pre>
-					<div className="relative flex-1">
-						<pre aria-hidden="true" className={`${TEXT} pointer-events-none text-app-text`}>
-							<code>{highlight(`${value}\n`, lang)}</code>
-						</pre>
-						<textarea
-							aria-label={label}
-							value={value}
-							onChange={event => onChange(event.target.value)}
-							onKeyDown={handleKeyDown}
-							onBlur={() => (released.current = false)}
-							spellCheck={false}
-							autoCapitalize="off"
-							autoComplete="off"
-							autoCorrect="off"
-							wrap="off"
-							id="code-editor-textarea"
-							className={`${TEXT} absolute inset-0 h-full w-full resize-none overflow-hidden border-0 bg-transparent text-transparent caret-[rgb(var(--color-app-text))] outline-none selection:bg-app-soft/30`}
-						/>
+			{wrap ? (
+				// One grid row per line: an invisible copy of the line wraps exactly like the editor above it, so each row is
+				// as tall as its wrapped line and the number beside it stays on the line's first row
+				<div className="grid grid-cols-[auto_minmax(0,1fr)] bg-app-card">
+					{lines.map((line, i) => {
+						const edge = `${i === 0 ? 'pt-4' : ''} ${i === lines.length - 1 ? 'pb-4' : ''}`
+						// explicit cells: the editor below is placed explicitly, so auto-placed cells would all flow around it into column 1
+						return [
+							<div
+								key={`n${i}`}
+								aria-hidden="true"
+								style={{ gridColumn: 1, gridRow: i + 1 }}
+								className={`${GUTTER} ${edge}`}
+							>
+								{i + 1}
+							</div>,
+							<div
+								key={`l${i}`}
+								aria-hidden="true"
+								style={{ gridColumn: 2, gridRow: i + 1 }}
+								className={`invisible px-4 ${FONT} whitespace-pre-wrap [overflow-wrap:anywhere] ${edge}`}
+							>
+								{line || ' '}
+							</div>,
+						]
+					})}
+					<div className="relative" style={{ gridColumn: 2, gridRow: `1 / span ${lines.length}` }}>
+						<div className="absolute inset-0 overflow-hidden">{editor}</div>
 					</div>
 				</div>
-			</div>
+			) : (
+				<div className="overflow-x-auto bg-app-card">
+					<div className="flex min-w-max">
+						<pre aria-hidden="true" className={`sticky left-0 z-10 m-0 py-4 ${GUTTER}`}>
+							{lines.map((_, i) => i + 1).join('\n')}
+						</pre>
+						<div className="relative flex-1">{editor}</div>
+					</div>
+				</div>
+			)}
 			{/* the frame sits above the line numbers, which are stacked over the text while it scrolls sideways */}
 			<div
 				aria-hidden="true"
